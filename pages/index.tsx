@@ -49,7 +49,8 @@ const Home: NextPage = () => {
                   "https://www.facebook.com/jonnyhaynes",
                   "https://www.instagram.com/jonnyhaynes",
                   "https://github.com/jonnyhaynes",
-                  "https://dribbble.com/jonnyhaynes"
+                  "https://dribbble.com/jonnyhaynes",
+                  "https://mas.to/@jonnyhaynes"
                 ]
 
               }
@@ -155,6 +156,11 @@ const Home: NextPage = () => {
               <li>
                 <a href="https://dribbble.com/jonnyhaynes">
                   <svg className="social-links__item social-links__item--dribbble" role="presentation"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#svg--dribbble"></use></svg>
+                </a>
+              </li>
+              <li>
+                <a rel="me" href="https://mas.to/@jonnyhaynes">
+                  <svg className="social-links__item social-links__item--mastodon" role="presentation"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#svg--mastodon"></use></svg>
                 </a>
               </li>
             </ul>
