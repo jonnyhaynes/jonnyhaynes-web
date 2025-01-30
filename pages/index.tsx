@@ -123,7 +123,7 @@ const Home: NextPage = () => {
           <header className="page-header">
           <div className="wrap">
             <h1 className="page__title"><strong>Jonny Haynes</strong> is an award-winning decorator of pixels, and <a href="http://www.colouringcode.com">colourer of code</a>.</h1>
-            <p className="page__summary">Plays bass, <a href="http://www.sitwell.cc">rides bikes</a>, enjoys craft beer, bourbons and ryes. <a href="https://www.instagram.com/p/v_CVG2i7YT/?taken-by=jonnyhaynes">Part time TV</a> and radio star. Soulmate to one. Dad to three. <a href="https://en.wikipedia.org/wiki/Yorkshire">Northerner</a>.</p>
+            <p className="page__summary">Plays bass, <a href="http://www.sitwell.cc">rides bikes</a>, enjoys craft beer, bourbons and ryes. <a href="https://www.instagram.com/p/v_CVG2i7YT/?taken-by=jonnyhaynes">Part time TV</a> and radio star. Soulmate to one. Dad to five. <a href="https://en.wikipedia.org/wiki/Yorkshire">Northerner</a>.</p>
             <p className="page__summary">I do all my own stunts.</p>
           </div>
         </header>
