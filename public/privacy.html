@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
+
+    <title>Privacy — Jonny Haynes</title>
+    <meta name="description" content="Privacy notice for jonnyhaynes.com." />
+    <meta name="author" content="Jonny Haynes" />
+    <meta name="theme-color" content="#000d1a" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <link
+      href="https://fonts.bunny.net/css?family=jetbrains-mono:400,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      html {
+        block-size: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-block-size: 100%;
+        box-sizing: border-box;
+        padding: 10vmin;
+
+        background: hsl(204 100% 5%);
+        color: hsl(204 30% 80%);
+
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: min(175%, 2.25vmin);
+        line-height: 1.6;
+      }
+
+      main {
+        max-width: 70ch;
+        display: grid;
+        gap: 1lh;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 6vmin;
+        line-height: 1.25cap;
+        text-wrap: balance;
+
+        background: linear-gradient(to right in oklch, hsl(98 100% 62%), hsl(310 100% 59%));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+      }
+
+      h2 {
+        margin: 1lh 0 0;
+        font-size: 1.1em;
+        font-weight: 500;
+        color: hsl(98 60% 70%);
+      }
+
+      p {
+        margin: 0;
+        text-wrap: pretty;
+      }
+
+      a {
+        color: hsl(204 100% 70%);
+        text-underline-offset: 0.15em;
+      }
+
+      a:focus-visible {
+        outline: 2px solid hsl(98 100% 62%);
+        outline-offset: 3px;
+        border-radius: 2px;
+      }
+
+      .back {
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="back"><a href="/">&larr; Back to home</a></p>
+
+      <h1>Privacy</h1>
+
+      <p>
+        This is a small personal website. It does not sell anything, run
+        advertising, or build a profile of you. Here is exactly what happens when
+        you visit.
+      </p>
+
+      <h2>Analytics</h2>
+      <p>
+        The site uses
+        <a href="https://vercel.com/docs/analytics/privacy-policy">Vercel Web Analytics</a>
+        to count page views. It is cookieless: it sets no cookies and stores
+        nothing on your device. It records aggregate, anonymised data such as the
+        page visited, approximate country, referrer, and device type. It does not
+        track you across other sites or identify you personally. For this reason
+        there is no cookie banner — there are no non-essential cookies to consent
+        to.
+      </p>
+
+      <h2>Fonts</h2>
+      <p>
+        Type is served by
+        <a href="https://fonts.bunny.net/">Bunny Fonts</a>, a privacy-first,
+        GDPR-compliant font delivery service that sets no cookies and does not log
+        personal data.
+      </p>
+
+      <h2>Hosting</h2>
+      <p>
+        The site is hosted on
+        <a href="https://vercel.com/">Vercel</a>, which processes standard server
+        request logs (including IP addresses) to deliver the site and protect
+        against abuse, in line with its own privacy policy.
+      </p>
+
+      <h2>Your rights &amp; contact</h2>
+      <p>
+        Because no personal profile is created and no identifying data is stored,
+        there is nothing for you to access or erase here. If you have any privacy
+        question, email <span id="contact"><noscript>jonny [at] colouringcode [dot] com</noscript></span>.
+      </p>
+    </main>
+
+    <script>
+      // Email assembled at runtime so the address never appears in the raw
+      // HTML source that spam scrapers read.
+      (function () {
+        var user = ['jonny'];
+        var domain = ['colouringcode', 'com'];
+        var addr = user.join('') + String.fromCharCode(64) + domain.join('.');
+        var a = document.createElement('a');
+        a.href = 'mailto:' + addr;
+        a.textContent = addr;
+        var slot = document.getElementById('contact');
+        slot.textContent = '';
+        slot.appendChild(a);
+      })();
+    </script>
+  </body>
+</html>

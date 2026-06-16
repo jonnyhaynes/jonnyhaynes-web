@@ -34,6 +34,27 @@ footer {
     color: transparent;
 }
 
+/* Distinguish links by more than colour (WCAG 1.4.1) */
+a {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+/* Visible keyboard focus against the dark background (WCAG 2.4.7) */
+a:focus-visible {
+    outline: 2px solid hsl(98 100% 62%);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    article,
+    footer {
+        animation: none;
+    }
+}
+
 @layer content {
     html {
         block-size: 100%;
@@ -42,7 +63,7 @@ footer {
     body {
         background: hsl(204 100% 5%);
 
-        font-family: "Dank Mono", ui-monospace, monospace;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
         font-size: min(175%, 3.5vmin);
     }
 
