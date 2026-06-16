@@ -42,7 +42,7 @@ footer {
     body {
         background: hsl(204 100% 5%);
 
-        font-family: "Dank Mono", ui-monospace, monospace;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
         font-size: min(175%, 3.5vmin);
     }
 
