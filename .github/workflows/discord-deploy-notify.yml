@@ -25,19 +25,20 @@ jobs:
           REF: ${{ github.event.deployment.ref }}
           REPO: ${{ github.repository }}
         run: |
+          set -euo pipefail
           if [ "$STATE" = "success" ]; then COLOR=3066993; else COLOR=15158332; fi
-          UPPER_STATE=$(echo "$STATE" | tr '[:lower:]' '[:upper:]')
-          SHORT_SHA=$(echo "$SHA" | cut -c1-7)
-          payload=$(jq -n \
-            --arg title "Deploy to $ENVIRONMENT: $UPPER_STATE" \
+          UPPER_STATE=$(printf '%s' "$STATE" | tr '[:lower:]' '[:upper:]')
+          SHORT_SHA=$(printf '%s' "$SHA" | cut -c1-7)
+          jq -n \
+            --arg title "Deploy to ${ENVIRONMENT}: ${UPPER_STATE}" \
             --arg url "$TARGET_URL" \
-            --arg desc "\`$REPO\` deployment is now $UPPER_STATE." \
+            --arg desc "\`${REPO}\` deployment is now ${UPPER_STATE}." \
             --arg env "$ENVIRONMENT" \
             --arg branch "$REF" \
-            --arg commit "[$SHORT_SHA](https://github.com/$REPO/commit/$SHA)" \
+            --arg commit "[${SHORT_SHA}](https://github.com/${REPO}/commit/${SHA})" \
             --argjson color "$COLOR" \
             '{embeds:[{title:$title,url:$url,description:$desc,color:$color,
               fields:[{name:"Environment",value:$env,inline:true},
                       {name:"Branch",value:$branch,inline:true},
-                      {name:"Commit",value:$commit,inline:true}]}]}')
-          curl -fsS -H "Content-Type: application/json" -d "$payload" "$DISCORD_WEBHOOK_URL"
+                      {name:"Commit",value:$commit,inline:true}]}]}' \
+            | curl -fsS -X POST -H "Content-Type: application/json" --data @- "$DISCORD_WEBHOOK_URL"
