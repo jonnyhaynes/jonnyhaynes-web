@@ -1,31 +1,41 @@
 name: Notify Discord on deploy
 
-# Vercel reports deployment status back to GitHub via its GitHub integration.
-# We listen for that and post Production deploy results to the #site-deploys channel.
 on:
   deployment_status: {}
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Send a test message to Discord"
+        type: boolean
+        default: true
 
 jobs:
   notify:
-    # Only Production deploys, and only terminal states (ignore "pending"/"in_progress").
     if: >
-      github.event.deployment_status.environment == 'Production' &&
-      (github.event.deployment_status.state == 'success' ||
-       github.event.deployment_status.state == 'failure' ||
-       github.event.deployment_status.state == 'error')
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.environment == 'Production' &&
+       (github.event.deployment_status.state == 'success' ||
+        github.event.deployment_status.state == 'failure' ||
+        github.event.deployment_status.state == 'error'))
     runs-on: ubuntu-latest
     steps:
       - name: Post to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          STATE: ${{ github.event.deployment_status.state }}
-          ENVIRONMENT: ${{ github.event.deployment_status.environment }}
-          TARGET_URL: ${{ github.event.deployment_status.target_url }}
-          SHA: ${{ github.event.deployment.sha }}
-          REF: ${{ github.event.deployment.ref }}
+          STATE: ${{ github.event.deployment_status.state || 'success' }}
+          ENVIRONMENT: ${{ github.event.deployment_status.environment || 'Production' }}
+          TARGET_URL: ${{ github.event.deployment_status.target_url || 'https://example.com' }}
+          SHA: ${{ github.event.deployment.sha || github.sha }}
+          REF: ${{ github.event.deployment.ref || github.ref_name }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
+          # Fail loudly if the secret is missing/empty — this is the usual culprit.
+          if [ -z "${DISCORD_WEBHOOK_URL:-}" ]; then
+            echo "::error::DISCORD_WEBHOOK_URL secret is empty or not set"
+            exit 1
+          fi
+          echo "URL length: ${#DISCORD_WEBHOOK_URL}"
           if [ "$STATE" = "success" ]; then COLOR=3066993; else COLOR=15158332; fi
           UPPER_STATE=$(printf '%s' "$STATE" | tr '[:lower:]' '[:upper:]')
           SHORT_SHA=$(printf '%s' "$SHA" | cut -c1-7)
@@ -41,4 +51,7 @@ jobs:
               fields:[{name:"Environment",value:$env,inline:true},
                       {name:"Branch",value:$branch,inline:true},
                       {name:"Commit",value:$commit,inline:true}]}]}' \
-            | curl -fsS -X POST -H "Content-Type: application/json" --data @- "$DISCORD_WEBHOOK_URL"
+            > /tmp/payload.json
+          echo "payload bytes: $(wc -c < /tmp/payload.json)"
+          curl -fsS -X POST -H "Content-Type: application/json" --data @/tmp/payload.json "$DISCORD_WEBHOOK_URL"
+          echo "curl exit: $?"
