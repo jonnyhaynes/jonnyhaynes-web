@@ -27,7 +27,7 @@ function App() {
         <p>
           &copy; 1985-{date}. A <a href="https://www.colouringcode.com">Colouring Code</a> design
           and build. Powered by <a href="https://vite.dev/">Vite</a> and{' '}
-          <a href="https://vercel.com">Vercel</a>.
+          <a href="https://vercel.com">Vercel</a>. <a href="/privacy">Privacy</a>.
         </p>
       </footer>
     </>
