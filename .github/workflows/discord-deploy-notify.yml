@@ -1,0 +1,43 @@
+name: Notify Discord on deploy
+
+# Vercel reports deployment status back to GitHub via its GitHub integration.
+# We listen for that and post Production deploy results to the #site-deploys channel.
+on:
+  deployment_status: {}
+
+jobs:
+  notify:
+    # Only Production deploys, and only terminal states (ignore "pending"/"in_progress").
+    if: >
+      github.event.deployment_status.environment == 'Production' &&
+      (github.event.deployment_status.state == 'success' ||
+       github.event.deployment_status.state == 'failure' ||
+       github.event.deployment_status.state == 'error')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          STATE: ${{ github.event.deployment_status.state }}
+          ENVIRONMENT: ${{ github.event.deployment_status.environment }}
+          TARGET_URL: ${{ github.event.deployment_status.target_url }}
+          SHA: ${{ github.event.deployment.sha }}
+          REF: ${{ github.event.deployment.ref }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ "$STATE" = "success" ]; then COLOR=3066993; else COLOR=15158332; fi
+          UPPER_STATE=$(echo "$STATE" | tr '[:lower:]' '[:upper:]')
+          SHORT_SHA=$(echo "$SHA" | cut -c1-7)
+          payload=$(jq -n \
+            --arg title "Deploy to $ENVIRONMENT: $UPPER_STATE" \
+            --arg url "$TARGET_URL" \
+            --arg desc "\`$REPO\` deployment is now $UPPER_STATE." \
+            --arg env "$ENVIRONMENT" \
+            --arg branch "$REF" \
+            --arg commit "[$SHORT_SHA](https://github.com/$REPO/commit/$SHA)" \
+            --argjson color "$COLOR" \
+            '{embeds:[{title:$title,url:$url,description:$desc,color:$color,
+              fields:[{name:"Environment",value:$env,inline:true},
+                      {name:"Branch",value:$branch,inline:true},
+                      {name:"Commit",value:$commit,inline:true}]}]}')
+          curl -fsS -H "Content-Type: application/json" -d "$payload" "$DISCORD_WEBHOOK_URL"
