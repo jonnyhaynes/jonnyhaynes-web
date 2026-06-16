@@ -128,9 +128,24 @@
       <p>
         Because no personal profile is created and no identifying data is stored,
         there is nothing for you to access or erase here. If you have any privacy
-        question, email
-        <a href="mailto:jonny@hma.co.uk">jonny@hma.co.uk</a>.
+        question, email <span id="contact"><noscript>jonny [at] colouringcode [dot] com</noscript></span>.
       </p>
     </main>
+
+    <script>
+      // Email assembled at runtime so the address never appears in the raw
+      // HTML source that spam scrapers read.
+      (function () {
+        var user = ['jonny'];
+        var domain = ['colouringcode', 'com'];
+        var addr = user.join('') + String.fromCharCode(64) + domain.join('.');
+        var a = document.createElement('a');
+        a.href = 'mailto:' + addr;
+        a.textContent = addr;
+        var slot = document.getElementById('contact');
+        slot.textContent = '';
+        slot.appendChild(a);
+      })();
+    </script>
   </body>
 </html>
