@@ -8,10 +8,10 @@ function App() {
           <h1>Jonny Haynes</h1>
           <p>
             An award-winning decorator of pixels, and{' '}
-            <a href="https://www.colouringcode.com">colourer of code</a>.
+            <a href="https://www.linkedin.com/in/jonnyhaynes">colourer of code</a>.
           </p>
           <p>
-            Plays bass, <a href="https://www.sitwell.cc">rides bikes</a>, enjoys craft beer,
+            <a href="https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD?si=MMn9uWF2TWKesRCJiNU4tg">Plays bass</a>, <a href="https://www.sitwell.cc">rides bikes</a>, enjoys craft beer,
             bourbons and ryes.{' '}
             <a href="https://www.instagram.com/p/v_CVG2i7YT/?taken-by=jonnyhaynes">
               Part time TV
