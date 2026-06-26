@@ -101,6 +101,14 @@ a:focus-visible {
         max-width: 70ch;
     }
 
+    /* Nested groups (hero header, each CV/section block) space their own
+       children with the same rhythm as the article grid */
+    .layout-flow header,
+    .layout-flow section {
+        display: grid;
+        gap: 1lh;
+    }
+
     /* Static-content headings use a fixed green→pink gradient (no animation) */
     .layout-flow h1 {
         font-size: 6vmin;

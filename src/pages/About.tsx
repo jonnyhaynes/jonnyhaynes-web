@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 import Footer from '../components/Footer';
 
 /**
@@ -98,6 +100,10 @@ function About() {
     <div className="layout-flow">
       <main>
         <article>
+          <p className="back">
+            <Link to="/">&larr; Back to home</Link>
+          </p>
+
           {/* 1. Hero */}
           <header>
             <h1>About Jonny Haynes</h1>
