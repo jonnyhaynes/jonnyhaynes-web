@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 
 import Footer from '../components/Footer';
 import { useGitHubData } from '../data/github';
+import { useSpotifyTop, useNowPlaying } from '../data/spotify';
 
 /**
  * About page scaffold.
@@ -28,18 +29,6 @@ type CV = {
   skills: string[];
 };
 
-type Track = {
-  title: string;
-  artist: string;
-  albumArt: string | null;
-};
-
-type NowPlaying = {
-  isPlaying: boolean;
-  title: string;
-  artist: string;
-} | null;
-
 type Fitbit = {
   steps: number;
   restingHeartRate: number;
@@ -64,12 +53,6 @@ const cv: CV = {
   skills: ['React Native', 'TypeScript', 'React', 'Node.js', 'AI workflows'],
 };
 
-const topArtists: string[] = ['Loading top artists…'];
-const topTracks: Track[] = [
-  { title: 'Top tracks will load here', artist: 'from the Spotify bake', albumArt: null },
-];
-const nowPlaying: NowPlaying = null;
-
 const fitbit: Fitbit | null = {
   steps: 0,
   restingHeartRate: 0,
@@ -80,6 +63,8 @@ const fitbit: Fitbit | null = {
 
 function About() {
   const github = useGitHubData();
+  const spotify = useSpotifyTop();
+  const nowPlaying = useNowPlaying();
 
   return (
     <div className="layout-flow">
@@ -172,20 +157,47 @@ function About() {
           {/* 4. What I listen to — Spotify */}
           <section aria-labelledby="music-heading">
             <h2 id="music-heading">What I listen to</h2>
-            <h3>Top artists</h3>
-            <ul>
-              {topArtists.map((a) => (
-                <li key={a}>{a}</li>
-              ))}
-            </ul>
-            <h3>Top tracks</h3>
-            <ul>
-              {topTracks.map((t) => (
-                <li key={`${t.title}-${t.artist}`}>
-                  {t.title} — {t.artist}
-                </li>
-              ))}
-            </ul>
+            {spotify ? (
+              <>
+                <p>On heavy rotation over the last few weeks:</p>
+
+                {spotify.artists.length ? (
+                  <>
+                    <h3>Top artists</h3>
+                    <ul className="media-grid">
+                      {spotify.artists.map((a) => (
+                        <li key={a.name}>
+                          {a.image ? (
+                            <img src={a.image} alt="" width={64} height={64} loading="lazy" />
+                          ) : null}
+                          {a.url ? <a href={a.url}>{a.name}</a> : a.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+
+                {spotify.tracks.length ? (
+                  <>
+                    <h3>Top tracks</h3>
+                    <ul className="media-grid">
+                      {spotify.tracks.map((t) => (
+                        <li key={`${t.title}-${t.artist}`}>
+                          {t.albumArt ? (
+                            <img src={t.albumArt} alt="" width={64} height={64} loading="lazy" />
+                          ) : null}
+                          <span>
+                            {t.url ? <a href={t.url}>{t.title}</a> : t.title} — {t.artist}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+              </>
+            ) : (
+              <p>The music data is between tracks. Catch me on Spotify.</p>
+            )}
           </section>
 
           {/* 5. Keeping moving — Fitbit */}

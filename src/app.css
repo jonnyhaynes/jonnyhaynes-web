@@ -116,6 +116,28 @@ a:focus-visible {
         gap: 1lh;
     }
 
+    /* Music: album art alongside its label */
+    .media-grid {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        gap: 0.75lh;
+    }
+
+    .media-grid li {
+        display: flex;
+        align-items: center;
+        gap: 1ch;
+    }
+
+    .media-grid img {
+        flex: none;
+        inline-size: 3lh;
+        block-size: 3lh;
+        border-radius: 4px;
+        object-fit: cover;
+    }
+
     /* Static-content headings use a fixed green→pink gradient (no animation) */
     .layout-flow h1 {
         font-size: 6vmin;
