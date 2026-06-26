@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-06-26T13:12:06.405Z",
+  "fetchedAt": "2026-06-26T13:21:30.795Z",
   "repos": [
     {
       "name": "inline-svg",
@@ -31,29 +31,33 @@
       "stars": 1
     },
     {
-      "name": "karma",
+      "name": "sitwellcc-web",
       "description": "",
-      "url": "https://github.com/jonnyhaynes/karma",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
       "language": "TypeScript",
-      "stars": 0
+      "stars": 1
     },
     {
-      "name": "cookie-disclaimer",
-      "description": "Dynamically add a cookie disclaimer to your website",
-      "url": "https://github.com/jonnyhaynes/cookie-disclaimer",
-      "language": "JavaScript",
-      "stars": 3
+      "name": "jonnyhaynes-web",
+      "description": "",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "language": "HTML",
+      "stars": 1
     }
   ],
   "languages": [
     {
-      "name": "JavaScript",
-      "count": 3
+      "name": "TypeScript",
+      "count": 16
     },
     {
-      "name": "TypeScript",
-      "count": 3
+      "name": "JavaScript",
+      "count": 5
+    },
+    {
+      "name": "HTML",
+      "count": 2
     }
   ],
-  "totalContributions": null
+  "totalContributions": 332
 }
