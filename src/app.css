@@ -103,6 +103,11 @@ a:focus-visible {
         max-width: 70ch;
     }
 
+    /* Space the footer off the content to match the page's edge padding */
+    .layout-flow footer {
+        margin-top: 10vmin;
+    }
+
     /* Nested groups (hero header, each CV/section block) space their own
        children with the same rhythm as the article grid */
     .layout-flow header,
