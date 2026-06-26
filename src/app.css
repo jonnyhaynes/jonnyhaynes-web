@@ -17,8 +17,9 @@
     }
 }
 
-article,
-footer {
+/* Animated gradient text — home page only (article + its footer) */
+.home,
+.layout-fixed footer {
     animation: gradient-change 3s linear infinite alternate;
 
     background: linear-gradient(
@@ -49,8 +50,8 @@ a:focus-visible {
 
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    article,
-    footer {
+    .home,
+    .layout-fixed footer {
         animation: none;
     }
 }
@@ -62,12 +63,15 @@ a:focus-visible {
 
     body {
         background: hsl(204 100% 5%);
+        color: hsl(204 30% 80%);
 
         font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: min(175%, 3.5vmin);
+        font-size: min(175%, 2.25vmin);
+        line-height: 1.6;
     }
 
-    body > div {
+    /* Home: full-viewport column with the footer pinned to the bottom */
+    .layout-fixed {
         height: 100vh;
         min-block-size: 100%;
         box-sizing: border-box;
@@ -77,24 +81,92 @@ a:focus-visible {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        font-size: min(175%, 3.5vmin);
     }
 
-    article {
+    /* About / Privacy: natural document flow, measured column, footer
+       follows the content (matches the original privacy page) */
+    .layout-flow {
+        min-block-size: 100%;
+        box-sizing: border-box;
+        padding: 10vmin;
+    }
+
+    .layout-fixed article,
+    .layout-flow article {
         display: grid;
         gap: 1lh;
+    }
+
+    .layout-flow article {
+        max-width: 70ch;
+    }
+
+    /* Space the footer off the content to match the page's edge padding */
+    .layout-flow footer {
+        margin-top: 10vmin;
+    }
+
+    /* Nested groups (hero header, each CV/section block) space their own
+       children with the same rhythm as the article grid */
+    .layout-flow header,
+    .layout-flow section {
+        display: grid;
+        gap: 1lh;
+    }
+
+    /* Static-content headings use a fixed green→pink gradient (no animation) */
+    .layout-flow h1 {
+        font-size: 6vmin;
+        line-height: 1.25cap;
+
+        background: linear-gradient(
+            to right in oklch,
+            hsl(98 100% 62%),
+            hsl(310 100% 59%)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .layout-flow h2 {
+        margin: 1lh 0 0;
+        font-size: 1.1em;
+        font-weight: 500;
+        color: hsl(98 60% 70%);
+    }
+
+    .layout-flow .back {
+        font-size: 0.9em;
+    }
+
+    /* Links on the static pages and in the shared footer */
+    a {
+        color: hsl(204 100% 70%);
+    }
+
+    /* Home page typography */
+    .layout-fixed h1 {
+        font-size: 8vmin;
+        line-height: 1.25cap;
     }
 
     footer p {
         font-size: min(175%, 2vmin);
     }
 
-    h1 {
-        font-size: 8vmin;
-        line-height: 1.25cap;
-    }
-
     h1, p, body {
         margin: 0;
+    }
+
+    h1 {
         text-wrap: balance;
+    }
+
+    p {
+        text-wrap: pretty;
     }
 }
