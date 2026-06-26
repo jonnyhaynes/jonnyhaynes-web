@@ -30,9 +30,9 @@ function Privacy() {
   }, []);
 
   return (
-    <>
+    <div className="layout-flow">
       <main>
-        <article className="prose">
+        <article>
           <p className="back">
             <Link to="/">&larr; Back to home</Link>
           </p>
@@ -88,7 +88,7 @@ function Privacy() {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }
 

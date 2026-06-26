@@ -95,7 +95,7 @@ const fitbit: Fitbit | null = {
 
 function About() {
   return (
-    <>
+    <div className="layout-flow">
       <main>
         <article>
           {/* 1. Hero */}
@@ -188,7 +188,7 @@ function About() {
 
       {/* 6. Footer */}
       <Footer />
-    </>
+    </div>
   );
 }
 

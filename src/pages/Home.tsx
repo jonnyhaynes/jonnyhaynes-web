@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 
 function Home() {
   return (
-    <>
+    <div className="layout-fixed">
       <main>
         <article className="home">
           <h1>Jonny Haynes</h1>
@@ -27,7 +27,7 @@ function Home() {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }
 
