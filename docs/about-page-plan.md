@@ -150,5 +150,10 @@ reaches the browser bundle.
 
 - `GITHUB_TOKEN` — fine-grained read-only PAT
 - `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`
-- `FITBIT_CLIENT_ID`, `FITBIT_CLIENT_SECRET`, `FITBIT_REFRESH_TOKEN` (+ rotating-token
-  storage mechanism)
+- `FITBIT_CLIENT_ID`, `FITBIT_CLIENT_SECRET`, `FITBIT_REFRESH_TOKEN` — repo secrets
+  for the bake. **Rotating-token storage (DECIDED):** the bake job writes the new
+  refresh token back to the `FITBIT_REFRESH_TOKEN` repo secret via `gh secret set`,
+  using a separate `FITBIT_TOKEN_PAT` (PAT with `secrets: write` on this repo). The
+  token never lands in a file or commit. The auth flow uses PKCE — capture the
+  initial token once with `scripts/fitbit-auth.mjs`. Register
+  `http://127.0.0.1:8889/callback` as a Redirect URI and use a "Personal" app type.

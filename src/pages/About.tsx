@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import Footer from '../components/Footer';
 import { useGitHubData } from '../data/github';
 import { useSpotifyTop, useNowPlaying } from '../data/spotify';
+import { useFitbitData } from '../data/fitbit';
 
 /**
  * About page scaffold.
@@ -29,12 +30,6 @@ type CV = {
   skills: string[];
 };
 
-type Fitbit = {
-  steps: number;
-  restingHeartRate: number;
-  sleepHours: number;
-};
-
 // --- Placeholder data (to be replaced by baked JSON / live fetch) ---------
 
 const cv: CV = {
@@ -53,18 +48,20 @@ const cv: CV = {
   skills: ['React Native', 'TypeScript', 'React', 'Node.js', 'AI workflows'],
 };
 
-const fitbit: Fitbit | null = {
-  steps: 0,
-  restingHeartRate: 0,
-  sleepHours: 0,
-};
-
 // --------------------------------------------------------------------------
 
 function About() {
   const github = useGitHubData();
   const spotify = useSpotifyTop();
   const nowPlaying = useNowPlaying();
+  const fitbit = useFitbitData();
+
+  // The health section is only worth showing if at least one stat is present.
+  const hasFitbit =
+    fitbit != null &&
+    (fitbit.steps != null ||
+      fitbit.sleepHours != null ||
+      fitbit.restingHeartRate != null);
 
   return (
     <div className="layout-flow">
@@ -203,11 +200,20 @@ function About() {
           {/* 5. Keeping moving — Fitbit */}
           <section aria-labelledby="health-heading">
             <h2 id="health-heading">Keeping moving</h2>
-            {fitbit ? (
+            {hasFitbit ? (
               <ul>
-                <li>{fitbit.steps.toLocaleString()} steps</li>
-                <li>{fitbit.restingHeartRate} bpm resting</li>
-                <li>{fitbit.sleepHours} h sleep</li>
+                {fitbit.steps != null ? (
+                  <li>{fitbit.steps.toLocaleString()} steps</li>
+                ) : null}
+                {fitbit.activeMinutes ? (
+                  <li>{fitbit.activeMinutes} active minutes</li>
+                ) : null}
+                {fitbit.sleepHours != null ? (
+                  <li>{fitbit.sleepHours} h sleep</li>
+                ) : null}
+                {fitbit.restingHeartRate != null ? (
+                  <li>{fitbit.restingHeartRate} bpm resting</li>
+                ) : null}
               </ul>
             ) : (
               <p>Health data is taking a rest day.</p>
