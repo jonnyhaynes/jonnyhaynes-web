@@ -64,11 +64,18 @@ reaches the browser bundle.
   `{ headline, summary, positions[], education[], skills[] }`.
 - Re-run manually whenever LinkedIn is updated. No runtime auth.
 
-### GitHub (daily bake)
-- GitHub GraphQL API + a fine-grained **read-only** PAT.
-- Fetch: pinned repos, top languages (by bytes), contribution calendar totals,
-  recent public activity.
-- Output: `github.json`. Easiest integration — build first of the API trio.
+### GitHub (twice-daily bake) — DONE
+- `scripts/fetch-github.mjs`, dual-mode. With a PAT: GraphQL for pinned repos +
+  language breakdown (count by primary language across all owned non-fork repos) +
+  last-year contribution total. Tokenless fallback: public REST recent repos.
+- **Finding:** no repos are currently pinned on the profile, so the script falls
+  back to most-recently-updated repos when `pinnedItems` is empty (never shows an
+  empty list). Pin some repos on GitHub to curate this.
+- Output: `public/data/github.json`. Read at runtime via `src/data/github.ts`.
+- Bake workflow: `.github/workflows/bake-github-data.yml` — runs 06:00/18:00 UTC +
+  manual, commits refreshed JSON to `main` only when it changes (`[skip ci]`).
+- **Secret required:** `GH_DATA_TOKEN` (a PAT). NOT `GITHUB_TOKEN` — that name is
+  reserved by Actions and the built-in token can't read pinnedItems/contributions.
 
 ### Spotify (hybrid)
 - **Auth:** Authorization Code flow. One-time manual authorize to capture a

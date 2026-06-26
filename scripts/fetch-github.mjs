@@ -27,6 +27,17 @@ function languageBreakdown(languages) {
     .sort((a, b) => b.count - a.count);
 }
 
+/** Map a GraphQL repository node to our flat repo shape. */
+function mapRepoNode(r) {
+  return {
+    name: r.name,
+    description: r.description ?? '',
+    url: r.url,
+    language: r.primaryLanguage?.name ?? null,
+    stars: r.stargazerCount,
+  };
+}
+
 async function fetchViaGraphQL() {
   const query = `
     query ($login: String!) {
@@ -42,8 +53,19 @@ async function fetchViaGraphQL() {
             }
           }
         }
-        repositories(first: 100, ownerAffiliations: OWNER, isFork: false) {
-          nodes { primaryLanguage { name } }
+        repositories(
+          first: 100
+          ownerAffiliations: OWNER
+          isFork: false
+          orderBy: { field: UPDATED_AT, direction: DESC }
+        ) {
+          nodes {
+            name
+            description
+            url
+            stargazerCount
+            primaryLanguage { name }
+          }
         }
         contributionsCollection {
           contributionCalendar { totalContributions }
@@ -71,20 +93,20 @@ async function fetchViaGraphQL() {
   }
 
   const user = json.data.user;
-  const repos = user.pinnedItems.nodes.map((r) => ({
-    name: r.name,
-    description: r.description ?? '',
-    url: r.url,
-    language: r.primaryLanguage?.name ?? null,
-    stars: r.stargazerCount,
-  }));
+  const allRepos = user.repositories.nodes;
+  const pinned = user.pinnedItems.nodes;
+
+  // Prefer pinned (curated) repos; fall back to most-recently-updated so the
+  // section is never empty when nothing is pinned.
+  const repos = (pinned.length ? pinned : allRepos.slice(0, 6)).map(mapRepoNode);
 
   return {
     repos,
     languages: languageBreakdown(
-      user.repositories.nodes.map((r) => r.primaryLanguage?.name),
+      allRepos.map((r) => r.primaryLanguage?.name),
     ),
-    totalContributions: user.contributionsCollection.contributionCalendar.totalContributions,
+    totalContributions:
+      user.contributionsCollection.contributionCalendar.totalContributions,
   };
 }
 

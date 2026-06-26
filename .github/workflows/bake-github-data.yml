@@ -1,0 +1,51 @@
+name: Bake GitHub data
+
+# Fetches GitHub data (pinned/recent repos, language breakdown, last-year
+# contribution total) and commits the refreshed public/data/github.json to
+# main, so production stays current. Runs twice daily plus on demand.
+on:
+  schedule:
+    # 06:00 and 18:00 UTC. GitHub may delay scheduled runs under load.
+    - cron: '0 6,18 * * *'
+  workflow_dispatch: {}
+
+# Avoid overlapping runs racing to commit.
+concurrency:
+  group: bake-github-data
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch GitHub data
+        env:
+          # PAT with read access; falls back to the public REST path if unset.
+          GITHUB_TOKEN: ${{ secrets.GH_DATA_TOKEN }}
+          GITHUB_USER: jonnyhaynes
+        run: node scripts/fetch-github.mjs
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- public/data/github.json; then
+            echo "No change in github.json — nothing to commit."
+            exit 0
+          fi
+          git add public/data/github.json
+          git commit -m "Refresh GitHub data [skip ci]"
+          git push
