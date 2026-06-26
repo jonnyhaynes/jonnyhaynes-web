@@ -17,8 +17,9 @@
     }
 }
 
-/* Animated gradient text — home page only */
-.home {
+/* Animated gradient text — home page only (article + its footer) */
+.home,
+.layout-fixed footer {
     animation: gradient-change 3s linear infinite alternate;
 
     background: linear-gradient(
@@ -49,7 +50,8 @@ a:focus-visible {
 
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .home {
+    .home,
+    .layout-fixed footer {
         animation: none;
     }
 }
