@@ -7,11 +7,13 @@ function App() {
         <article>
           <h1>Jonny Haynes</h1>
           <p>
-            An award-winning decorator of pixels, and{' '}
-            <a href="https://www.colouringcode.com">colourer of code</a>.
+            A Full-Stack Developer, specialising in React Native, TypeScript &amp; AI workflows.{' '}
+            <a href="https://www.colouringcode.com">Colouring Code</a> and building
+            award-winning apps.
           </p>
           <p>
-            Plays bass, <a href="https://www.sitwell.cc">rides bikes</a>, enjoys craft beer,
+            <a href="https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD">Plays bass</a>,{' '}
+            <a href="https://www.sitwell.cc">rides bikes</a>, enjoys craft beer,
             bourbons and ryes.{' '}
             <a href="https://www.instagram.com/p/v_CVG2i7YT/?taken-by=jonnyhaynes">
               Part time TV
