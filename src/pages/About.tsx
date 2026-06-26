@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
 import Footer from '../components/Footer';
+import { useGitHubData } from '../data/github';
 
 /**
  * About page scaffold.
@@ -25,14 +26,6 @@ type CV = {
   summary: string;
   positions: Position[];
   skills: string[];
-};
-
-type Repo = {
-  name: string;
-  description: string;
-  url: string;
-  language: string;
-  stars: number;
 };
 
 type Track = {
@@ -71,16 +64,6 @@ const cv: CV = {
   skills: ['React Native', 'TypeScript', 'React', 'Node.js', 'AI workflows'],
 };
 
-const repos: Repo[] = [
-  {
-    name: 'placeholder-repo',
-    description: 'Pinned repos will load here from the GitHub bake.',
-    url: '#',
-    language: 'TypeScript',
-    stars: 0,
-  },
-];
-
 const topArtists: string[] = ['Loading top artists…'];
 const topTracks: Track[] = [
   { title: 'Top tracks will load here', artist: 'from the Spotify bake', albumArt: null },
@@ -96,6 +79,8 @@ const fitbit: Fitbit | null = {
 // --------------------------------------------------------------------------
 
 function About() {
+  const github = useGitHubData();
+
   return (
     <div className="layout-flow">
       <main>
@@ -144,16 +129,43 @@ function About() {
           {/* 3. What I build — GitHub */}
           <section aria-labelledby="github-heading">
             <h2 id="github-heading">What I build</h2>
-            {repos.length ? (
-              <ul>
-                {repos.map((r) => (
-                  <li key={r.name}>
-                    <a href={r.url}>{r.name}</a> — {r.description} ({r.language})
-                  </li>
-                ))}
-              </ul>
+            {github ? (
+              <>
+                {github.totalContributions != null ? (
+                  <p>
+                    {github.totalContributions.toLocaleString()} contributions in
+                    the last year.
+                  </p>
+                ) : null}
+
+                {github.languages.length ? (
+                  <p>
+                    Mostly{' '}
+                    {github.languages.map((l, i) => (
+                      <span key={l.name}>
+                        {i > 0 ? ', ' : ''}
+                        {l.name}
+                      </span>
+                    ))}
+                    .
+                  </p>
+                ) : null}
+
+                {github.repos.length ? (
+                  <ul>
+                    {github.repos.map((r) => (
+                      <li key={r.name}>
+                        <a href={r.url}>{r.name}</a>
+                        {r.description ? ` — ${r.description}` : ''}
+                        {r.language ? ` (${r.language})` : ''}
+                        {r.stars > 0 ? ` · ★ ${r.stars}` : ''}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </>
             ) : (
-              <p>GitHub data unavailable right now.</p>
+              <p>GitHub data is having a moment. Find me on GitHub directly.</p>
             )}
           </section>
 
