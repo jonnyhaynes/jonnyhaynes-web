@@ -78,7 +78,6 @@ async function main() {
       name: a.name,
       url: a.external_urls?.spotify ?? null,
       image: pickImage(a.images),
-      genres: a.genres?.slice(0, 2) ?? [],
     })),
     tracks: tracks.map((t) => ({
       title: t.name,

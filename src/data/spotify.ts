@@ -4,7 +4,6 @@ export type SpotifyArtist = {
   name: string;
   url: string | null;
   image: string | null;
-  genres: string[];
 };
 
 export type SpotifyTrack = {
