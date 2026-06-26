@@ -57,11 +57,21 @@ reaches the browser bundle.
 
 ## Data sources — detail & gotchas
 
-### CV (LinkedIn export → cv.json)
+### CV (LinkedIn export → cv.json) — DONE (from Profile.csv)
 - Source: LinkedIn → Settings → Data Privacy → Get a copy of your data.
-  Yields `Positions.csv`, `Education.csv`, `Skills.csv`, `Profile.csv`.
-- Build a one-off Node parser (`scripts/parse-cv.ts`) → `cv.json` with a clean schema:
-  `{ headline, summary, positions[], education[], skills[] }`.
+- `scripts/parse-cv.mjs <export-dir>` reads `Profile.csv` (and `Positions.csv` /
+  `Skills.csv` if present) → `public/data/cv.json`:
+  `{ name, headline, location, summary, clients[], positions[], skills[] }`.
+- Read at runtime via `src/data/cv.ts` (`useCVData()`); rendered in the
+  "The serious bit" section (location, bio + personality tail as separate
+  paragraphs, clients sentence, skill chips). Graceful null fallback.
+- **Export gotcha:** LinkedIn strips line breaks from the Summary, gluing the
+  "Core Technical Stack" block into unparseable text (e.g. `CSSBackend & CMS:`).
+  The parser slices that block OUT (keeps clean intro + "When I am not…" tail)
+  and uses a `CURATED_SKILLS` list instead — robust, survives re-exports.
+  `Skills.csv` overrides the curated list when present.
+- **Pending enrichment:** drop `Positions.csv` + `Skills.csv` into the export
+  dir and re-run to add the work-history timeline + real skill tags.
 - Re-run manually whenever LinkedIn is updated. No runtime auth.
 
 ### GitHub (twice-daily bake) — DONE

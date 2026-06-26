@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
 import Footer from '../components/Footer';
+import { useCVData } from '../data/cv';
 import { useGitHubData } from '../data/github';
 import { useSpotifyTop, useNowPlaying } from '../data/spotify';
 
@@ -14,21 +15,6 @@ import { useSpotifyTop, useNowPlaying } from '../data/spotify';
  * missing — see the `?.`/fallback patterns below.
  */
 
-type Position = {
-  title: string;
-  company: string;
-  start: string;
-  end: string | null;
-  highlights: string[];
-};
-
-type CV = {
-  headline: string;
-  summary: string;
-  positions: Position[];
-  skills: string[];
-};
-
 type Fitbit = {
   steps: number;
   restingHeartRate: number;
@@ -36,22 +22,6 @@ type Fitbit = {
 };
 
 // --- Placeholder data (to be replaced by baked JSON / live fetch) ---------
-
-const cv: CV = {
-  headline: 'Full-Stack Developer — React Native, TypeScript & AI workflows',
-  summary:
-    'Builds award-winning apps at Colouring Code. Equal parts product thinking and clean code.',
-  positions: [
-    {
-      title: 'Founder & Developer',
-      company: 'Colouring Code',
-      start: '2015',
-      end: null,
-      highlights: ['Award-winning mobile apps', 'React Native + TypeScript'],
-    },
-  ],
-  skills: ['React Native', 'TypeScript', 'React', 'Node.js', 'AI workflows'],
-};
 
 const fitbit: Fitbit | null = {
   steps: 0,
@@ -62,6 +32,7 @@ const fitbit: Fitbit | null = {
 // --------------------------------------------------------------------------
 
 function About() {
+  const cv = useCVData();
   const github = useGitHubData();
   const spotify = useSpotifyTop();
   const nowPlaying = useNowPlaying();
@@ -76,8 +47,8 @@ function About() {
 
           {/* 1. Hero */}
           <header>
-            <h1>About Jonny Haynes</h1>
-            <p>{cv.headline}</p>
+            <h1>About {cv?.name ?? 'Jonny Haynes'}</h1>
+            {cv?.headline ? <p>{cv.headline}</p> : null}
             {nowPlaying?.isPlaying ? (
               <p>
                 🎧 Now playing: <strong>{nowPlaying.title}</strong> — {nowPlaying.artist}
@@ -88,27 +59,62 @@ function About() {
           {/* 2. The serious bit — CV */}
           <section aria-labelledby="cv-heading">
             <h2 id="cv-heading">The serious bit</h2>
-            <p>{cv.summary}</p>
-            {cv.positions.map((p) => (
-              <div key={`${p.company}-${p.title}`}>
-                <h3>
-                  {p.title} · {p.company}
-                </h3>
-                <p>
-                  {p.start} – {p.end ?? 'present'}
-                </p>
-                <ul>
-                  {p.highlights.map((h) => (
-                    <li key={h}>{h}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            <ul>
-              {cv.skills.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
+            {cv ? (
+              <>
+                {cv.location ? <p className="cv-location">{cv.location}</p> : null}
+
+                {cv.summary.split('. When I am not').map((part, i) =>
+                  // Keep the prose readable: the personality tail begins at
+                  // "When I am not…" — render it as its own paragraph.
+                  i === 0 ? (
+                    <p key="bio">{part.endsWith('.') ? part : `${part}.`}</p>
+                  ) : (
+                    <p key="play">When I am not{part}</p>
+                  ),
+                )}
+
+                {cv.positions.length ? (
+                  <div className="cv-roles">
+                    {cv.positions.map((p) => (
+                      <div key={`${p.company}-${p.title}`}>
+                        <h3>
+                          {p.title} · {p.company}
+                        </h3>
+                        {p.start || p.end ? (
+                          <p>
+                            {p.start ?? ''} – {p.end ?? 'present'}
+                          </p>
+                        ) : null}
+                        {p.description ? <p>{p.description}</p> : null}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                {cv.clients.length ? (
+                  <p>
+                    Selected work for{' '}
+                    {cv.clients.map((c, i) => (
+                      <span key={c}>
+                        {i > 0 ? (i === cv.clients.length - 1 ? ' and ' : ', ') : ''}
+                        {c}
+                      </span>
+                    ))}
+                    .
+                  </p>
+                ) : null}
+
+                {cv.skills.length ? (
+                  <ul className="tags">
+                    {cv.skills.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </>
+            ) : (
+              <p>The CV is loading. In the meantime, find me on LinkedIn.</p>
+            )}
           </section>
 
           {/* 3. What I build — GitHub */}

@@ -116,6 +116,42 @@ a:focus-visible {
         gap: 1lh;
     }
 
+    /* CV: location sits quietly under the heading */
+    .cv-location {
+        color: hsl(204 30% 55%);
+        font-size: 0.9em;
+    }
+
+    /* CV: work-history roles spaced as their own grouped blocks */
+    .cv-roles {
+        display: grid;
+        gap: 1lh;
+    }
+
+    .cv-roles h3 {
+        margin: 0;
+        font-size: 1em;
+        font-weight: 500;
+        color: hsl(204 30% 88%);
+    }
+
+    /* Skill tags: a wrapping row of chips */
+    .tags {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5ch;
+    }
+
+    .tags li {
+        border: 1px solid hsl(204 30% 30%);
+        border-radius: 999px;
+        padding: 0.15lh 1ch;
+        font-size: 0.85em;
+        color: hsl(204 30% 80%);
+    }
+
     /* Music: album art alongside its label */
     .media-grid {
         list-style: none;
