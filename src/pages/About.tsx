@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import Footer from '../components/Footer';
 
 /**
  * About page scaffold.
@@ -94,8 +94,6 @@ const fitbit: Fitbit | null = {
 // --------------------------------------------------------------------------
 
 function About() {
-  const date = new Date().getFullYear();
-
   return (
     <>
       <main>
@@ -189,12 +187,7 @@ function About() {
       </main>
 
       {/* 6. Footer */}
-      <footer>
-        <p>
-          &copy; 1985-{date}. A <a href="https://www.colouringcode.com">Colouring Code</a> design
-          and build. <Link to="/">Home</Link>. <a href="/privacy">Privacy</a>.
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -30,6 +30,11 @@ to hire, fun enough to remember.
     whether the repo is public. Doesn't block earlier steps.
 - **Routing: dedicated `/about` route** via react-router. Home links to it; footer gets
   an About link before Privacy.
+- **Privacy folded into React.** The old standalone `public/privacy.html` is now a
+  `/privacy` React route. All three pages (Home, About, Privacy) share one
+  `src/components/Footer.tsx` (single source of truth). The animated gradient is scoped
+  to the home page only (`.home` in app.css); footer + About + Privacy use static
+  colours. Shared font (JetBrains Mono) site-wide; static pages use privacy's palette.
 
 ## Architecture
 

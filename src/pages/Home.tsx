@@ -1,12 +1,12 @@
 import { Link } from 'react-router';
 
-function Home() {
-  const date = new Date().getFullYear();
+import Footer from '../components/Footer';
 
+function Home() {
   return (
     <>
       <main>
-        <article>
+        <article className="home">
           <h1>Jonny Haynes</h1>
           <p>
             A Full-Stack Developer, specialising in React Native, TypeScript &amp; AI workflows.{' '}
@@ -26,14 +26,7 @@ function Home() {
         </article>
       </main>
 
-      <footer>
-        <p>
-          &copy; 1985-{date}. A <a href="https://www.colouringcode.com">Colouring Code</a> design
-          and build. Powered by <a href="https://vite.dev/">Vite</a> and{' '}
-          <a href="https://vercel.com">Vercel</a>. <Link to="/about">About</Link>.{' '}
-          <a href="/privacy">Privacy</a>.
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }
