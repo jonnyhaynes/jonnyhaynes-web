@@ -77,17 +77,19 @@ reaches the browser bundle.
 - **Secret required:** `GH_DATA_TOKEN` (a PAT). NOT `GITHUB_TOKEN` — that name is
   reserved by Actions and the built-in token can't read pinnedItems/contributions.
 
-### Spotify (hybrid)
-- **Auth:** Authorization Code flow. One-time manual authorize to capture a
-  **long-lived refresh token** (does not expire); store as secret. Access tokens
-  last 1 hour — refresh on demand server-side.
-- **Scopes:** `user-top-read` (top artists/tracks),
-  `user-read-currently-playing` / `user-read-recently-played` (now playing).
-- **Quota:** Development mode is fine (limited to ~25 users — it's just you).
-  Rate limit is a rolling 30s window; honour `Retry-After` on 429.
-- **Daily bake:** top artists + top tracks (~4 week range) → `spotify-top.json`.
-- **Live:** `/api/now-playing` Vercel function does refresh→access→fetch, returns
-  current or last-played track. Page polls lightly (e.g. every 30–60s).
+### Spotify (hybrid) — DONE
+- **Auth:** Authorization Code flow via `scripts/spotify-auth.mjs` (one-time local
+  helper on 127.0.0.1:8888) → long-lived refresh token captured.
+- **Scopes:** `user-top-read`, `user-read-currently-playing`,
+  `user-read-recently-played`.
+- **Bake:** `scripts/fetch-spotify.mjs` → top artists + tracks (`short_term`) →
+  `public/data/spotify-top.json`. Workflow `.github/workflows/bake-spotify-data.yml`
+  runs 07:00/19:00 UTC + manual, commits to `main` on change.
+- **Live:** `api/now-playing.js` Vercel function (refresh→access→fetch), polled by
+  `useNowPlaying` every 60s. Needs the three SPOTIFY_* env vars in Vercel.
+- **Note:** `genres` removed — Spotify now returns it empty on artist objects.
+- **Secrets:** `SPOTIFY_CLIENT_ID/SECRET/REFRESH_TOKEN` as GitHub repo secrets
+  (bake) AND Vercel env vars (live now-playing).
 
 ### Fitbit (daily bake) — most fragile, handle with care
 - **Auth:** Authorization Code flow, "Personal" app type (gives access to intraday
