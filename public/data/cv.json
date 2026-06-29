@@ -4,7 +4,14 @@
   "headline": "Full-Stack Developer | Specialising in React Native, TypeScript & AI Workflows | Colouring Code & building award-winning apps",
   "location": "Rotherham, SoYo",
   "summary": "I am a proud northerner, a full-stack developer, a bass player, a cyclist, and a father of five living near Sheffield, South Yorkshire. With nearly two decades of experience in the digital space, starting back in the days of \"Web Designer\" roles in 2006, I have evolved into a specialist in building high-impact, award-winning mobile and web applications. \n\n Currently, I am a Full-Stack Developer at HMA, a highly skilled digital agency where we build complex applications for the health, science, and technology sectors. My true passion lies in engineering robust, cross-platform mobile apps using React Native and Expo, leveraging TypeScript as my development standard. I specialise in architecting scalable mobile solutions, from managing complex global application states with Redux to integrating seamless, secure RESTful APIs. Beyond mobile, I have deep experience building responsive web templates and integrating them into powerful backend platforms like Laravel and WordPress. \n\n Lately, I have been focused on integrating AI tools like Claude Code into our workflow, helping to accelerate our development velocity while maintaining high code quality and documentation standards. Alongside my engineering duties, I serve on HMA's Wellbeing Task Force, helping drive initiatives that support mental health, prevent burnout, and cultivate a healthy, positive studio culture. Over the years, I have had the privilege of engineering solutions for major names, including Microsoft, NVIDIA, Pizza Express, Green Flag, Network Rail, and South Yorkshire Police. \n\n Parallel to my technical work, I have a strong background in developer education and leadership. This includes a year spent consulting and lecturing on Web Development at Wakefield College, as well as years of hands-on mentoring and upskilling junior developers across my agency roles. \n\n When I am not writing code, I am likely on two wheels. In 2016, I founded South Yorkshire's largest cycling club, which is now 200+ members strong, and I regularly volunteer as a British Cycling Accredited Marshal and youth coach. I also possess a 100-meter swimming badge from a long time ago, though I am reasonably confident I can swim further than that now.",
-  "clients": [],
+  "clients": [
+    "Microsoft",
+    "NVIDIA",
+    "Pizza Express",
+    "Green Flag",
+    "Network Rail",
+    "South Yorkshire Police"
+  ],
   "positions": [],
   "skills": [
     "React Native",

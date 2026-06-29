@@ -47,15 +47,14 @@ function About() {
               <>
                 {cv.location ? <p className="cv-location">{cv.location}</p> : null}
 
-                {cv.summary.split('. When I am not').map((part, i) =>
-                  // Keep the prose readable: the personality tail begins at
-                  // "When I am not…" — render it as its own paragraph.
-                  i === 0 ? (
-                    <p key="bio">{part.endsWith('.') ? part : `${part}.`}</p>
-                  ) : (
-                    <p key="play">When I am not{part}</p>
-                  ),
-                )}
+                {cv.summary
+                  // The summary uses blank lines (\n\n) to mark paragraphs;
+                  // render each as its own <p>. Falls back to a single
+                  // paragraph when there are no breaks.
+                  .split(/\n\s*\n/)
+                  .map((para) => para.trim())
+                  .filter(Boolean)
+                  .map((para, i) => <p key={`bio-${i}`}>{para}</p>)}
 
                 {cv.positions.length ? (
                   <div className="cv-roles">
