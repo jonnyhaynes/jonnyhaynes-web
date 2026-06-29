@@ -9,27 +9,11 @@ import { useSpotifyTop, useNowPlaying } from '../data/spotify';
  * About page scaffold.
  *
  * Sections render from data that will later be baked to static JSON
- * (cv, github, spotify-top, fitbit) plus one live fetch for now-playing.
+ * (cv, github, spotify-top) plus one live fetch for now-playing.
  * For now everything uses placeholder data so the layout can be built and
  * styled. Each section is designed to degrade gracefully if its data is
  * missing — see the `?.`/fallback patterns below.
  */
-
-type Fitbit = {
-  steps: number;
-  restingHeartRate: number;
-  sleepHours: number;
-};
-
-// --- Placeholder data (to be replaced by baked JSON / live fetch) ---------
-
-const fitbit: Fitbit | null = {
-  steps: 0,
-  restingHeartRate: 0,
-  sleepHours: 0,
-};
-
-// --------------------------------------------------------------------------
 
 function About() {
   const cv = useCVData();
@@ -205,24 +189,10 @@ function About() {
               <p>The music data is between tracks. Catch me on Spotify.</p>
             )}
           </section>
-
-          {/* 5. Keeping moving — Fitbit */}
-          <section aria-labelledby="health-heading">
-            <h2 id="health-heading">Keeping moving</h2>
-            {fitbit ? (
-              <ul>
-                <li>{fitbit.steps.toLocaleString()} steps</li>
-                <li>{fitbit.restingHeartRate} bpm resting</li>
-                <li>{fitbit.sleepHours} h sleep</li>
-              </ul>
-            ) : (
-              <p>Health data is taking a rest day.</p>
-            )}
-          </section>
         </article>
       </main>
 
-      {/* 6. Footer */}
+      {/* 5. Footer */}
       <Footer />
     </div>
   );
