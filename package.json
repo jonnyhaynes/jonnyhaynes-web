@@ -2,6 +2,8 @@
   "name": "jonnyhaynes-web",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
+  "author": "Jonny Haynes",
   "type": "module",
   "scripts": {
     "dev": "vite",
