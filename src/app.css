@@ -64,7 +64,7 @@ a:focus-visible {
         background: hsl(204 100% 5%);
 
         font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: min(175%, 3.5vmin);
+        font-size: clamp(1rem, 3.5vmin, 1.75rem);
     }
 
     body > div {
@@ -85,7 +85,7 @@ a:focus-visible {
     }
 
     footer p {
-        font-size: min(175%, 2vmin);
+        font-size: clamp(0.8rem, 2vmin, 1rem);
     }
 
     h1 {
