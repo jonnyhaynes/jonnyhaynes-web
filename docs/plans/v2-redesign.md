@@ -1,6 +1,6 @@
 # Portfolio V2 — "Modern Yorkshire" redesign
 
-**Status:** Plan — awaiting approval
+**Status:** In progress — Phase 0 merged to `develop`.
 **Goal:** Rebuild the personal site into a full-stack-role portfolio with a "Modern
 Yorkshire" theme, live GitHub + Spotify data, dark/light mode, and an interactive
 topographic background. Supersedes the old About-page design.
@@ -29,6 +29,26 @@ originating conversation). This plan is the engineering translation of it.
 - **Resume PDF:** Jonny provides before go-live (placeholder link until then).
 - **Spotify "Coding Fuel" playlists (§D):**
   `37i9dQZF1DX8ml53Dz6izK` and `37i9dQZF1DWXXKBeJuKnWE`.
+
+## Deployment & branch strategy (IMPORTANT — production isolation)
+
+V2 must never reach production until launch, regardless of what merges. Enforced by
+branch, not by a feature flag:
+
+- **`main` = production.** Vercel's Production Branch is set to `main` (confirmed).
+  `main` is **frozen** for the duration of V2 — nothing V2-related merges to it until
+  the single launch PR. Production keeps showing V1 until then.
+- **`develop` = V2 integration branch + preview.** Every phase PR targets `develop`
+  (NOT `main`). Vercel auto-builds `develop` as a **preview deployment** with a stable
+  branch-alias URL — that's the review link.
+- **Phase branches:** `feature/v2-<phase>` off `develop`; PR into `develop`.
+- **Launch:** one PR `develop → main` when everything's ready and signed off.
+- **History note:** the old `develop` (a diverged V1 CV/GitHub/Spotify line, ~20
+  commits never merged to main) was archived to tag **`archive/develop-v1`** before
+  `develop` was reset to mirror `main`. Retrieve it via that tag if ever needed.
+
+Practical consequence: PRs are reviewed against this plan and merged to `develop`
+freely; only the final `develop → main` merge is the "go live" action.
 
 ## What already exists and is reusable (from `feature/fitbit`)
 
@@ -90,14 +110,15 @@ against current docs):
 Dark mode: `@custom-variant dark` driven by a `class`/`data-theme` on `<html>`,
 toggled by the theme context (spec §4A). Default dark.
 
-## Work breakdown (phased, each phase = one PR off `main`)
+## Work breakdown (phased, each phase = one PR into `develop`)
 
-Branch naming: `feature/v2-<phase>`. Every PR: `[ai-assisted]` title, references this
-plan, `Manually reviewed by <name>`, human merges once CI (Vercel) is green.
+Branch naming: `feature/v2-<phase>` off `develop`. Every PR targets **`develop`**
+(never `main`), `[ai-assisted]` title, references this plan, `Manually reviewed by
+<name>`, human merges once CI (Vercel preview) is green.
 
-### Phase 0 — Salvage backend onto main (`feature/v2-data-layer`)
-Cherry-pick / port the reusable assets from `feature/fitbit`, **rebased to React 19
-and current deps**, WITHOUT the old UI:
+### Phase 0 — Salvage backend ✅ DONE (merged to `develop`, PR #27)
+Ported the reusable assets from `feature/fitbit` onto `feature/v2-data-layer` off
+current `main` (React 19), WITHOUT the old UI:
 - `src/data/*.ts`, `api/now-playing.js`, `scripts/*`, `.github/workflows/bake-*.yml`,
   `public/data/*.json`, `vercel.json`.
 - Apply all four data-contract fixes here so it's final before UI is built:
