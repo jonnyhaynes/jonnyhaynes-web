@@ -1,38 +1,44 @@
+import { ThemeToggle } from './theme/ThemeToggle';
+
 function App() {
-  const date = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
-    <>
-      <main>
-        <article>
-          <h1>Jonny Haynes</h1>
-          <p>
-            A Full-Stack Developer, specialising in React Native, TypeScript &amp; AI workflows.{' '}
-            <a href="https://www.colouringcode.com">Colouring Code</a> and building
-            award-winning apps.
-          </p>
-          <p>
-            <a href="https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD">Plays bass</a>,{' '}
-            <a href="https://www.sitwell.cc">rides bikes</a>, enjoys craft beer,
-            bourbons and ryes.{' '}
-            <a href="https://www.instagram.com/p/v_CVG2i7YT/?taken-by=jonnyhaynes">
-              Part time TV
-            </a>{' '}
-            and radio star. Soulmate to one. Dad to five.{' '}
-            <a href="https://en.wikipedia.org/wiki/Yorkshire">Northerner</a>.
-          </p>
-          <p>I do all my own stunts.</p>
-        </article>
+    <div className="min-h-dvh bg-background text-foreground">
+      <header className="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
+        <span className="font-mono text-sm text-muted">// Jonny Haynes</span>
+        <ThemeToggle />
+      </header>
+
+      <main className="mx-auto max-w-4xl px-6 py-16">
+        {/* V2 sections (Hero, Projects, Skills, Spotify, Reading, Fitbit,
+            Resume) land in later phases. This shell proves the theme, layout
+            and Big Light toggle work end to end. */}
+        <p className="font-mono text-sm text-muted">
+          // Ey up. Site&apos;s being rebuilt.
+        </p>
       </main>
 
-      <footer>
+      <footer className="mx-auto max-w-4xl px-6 py-10 text-sm text-muted">
         <p>
-          &copy; 1985-{date}. A <a href="https://www.colouringcode.com">Colouring Code</a> design
-          and build. Powered by <a href="https://vite.dev/">Vite</a> and{' '}
-          <a href="https://vercel.com">Vercel</a>. <a href="/privacy">Privacy</a>.
+          Forged in Yorkshire using{' '}
+          <a
+            href="https://react.dev/"
+            className="text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start"
+          >
+            React
+          </a>{' '}
+          &amp;{' '}
+          <a
+            href="https://vite.dev/"
+            className="text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start"
+          >
+            Vite
+          </a>
+          . &copy; 1985&ndash;{year}.
         </p>
       </footer>
-    </>
+    </div>
   );
 }
 

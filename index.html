@@ -6,6 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <!-- Set the theme before first paint to avoid a flash of the wrong palette.
+         Dark is the default; light only if explicitly stored. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
 
     <title>Jonny Haynes - Est. 1985</title>
