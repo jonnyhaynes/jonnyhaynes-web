@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
 
-export type GitHubRepo = {
-  name: string;
-  description: string;
-  url: string;
-  language: string | null;
-  stars: number;
-};
-
 export type GitHubLanguage = {
   name: string;
   count: number;
@@ -50,7 +42,6 @@ export type GitHubLastActivity = {
 export type GitHubData = {
   user: string;
   fetchedAt: string;
-  repos: GitHubRepo[];
   projects: GitHubProject[];
   lastActivity: GitHubLastActivity | null;
   languages: GitHubLanguage[];
