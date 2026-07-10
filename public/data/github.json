@@ -1,27 +1,13 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-06-26T13:21:30.795Z",
+  "fetchedAt": "2026-07-10T13:08:48.792Z",
   "repos": [
     {
-      "name": "inline-svg",
-      "description": "Takes an inline image with an SVG as it's source and swaps it for an inline SVG",
-      "url": "https://github.com/jonnyhaynes/inline-svg",
-      "language": "JavaScript",
-      "stars": 59
-    },
-    {
-      "name": "whoop-mcp-server",
-      "description": "An MCP (Model Context Protocol) server for the Whoop API. Connects your Whoop health data — recovery, sleep, workouts, cycles, and profile — to any MCP-compatible AI tool.",
-      "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
-      "language": "TypeScript",
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "language": "Astro",
       "stars": 1
-    },
-    {
-      "name": "freestyle-libre-mcp-server",
-      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
-      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
-      "language": "TypeScript",
-      "stars": 2
     },
     {
       "name": "apollo-events-bridge",
@@ -31,34 +17,118 @@
       "stars": 1
     },
     {
-      "name": "sitwellcc-web",
-      "description": "",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "language": "TypeScript",
-      "stars": 1
-    },
-    {
       "name": "jonnyhaynes-web",
-      "description": "",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
       "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
       "language": "HTML",
       "stars": 1
-    }
-  ],
-  "projects": [
+    },
     {
       "name": "whoop-mcp-server",
       "description": "An MCP (Model Context Protocol) server for the Whoop API. Connects your Whoop health data — recovery, sleep, workouts, cycles, and profile — to any MCP-compatible AI tool.",
       "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
-      "homepageUrl": null,
       "language": "TypeScript",
-      "languages": ["TypeScript", "JavaScript"],
+      "stars": 1
+    },
+    {
+      "name": "inline-svg",
+      "description": "Takes an inline image with an SVG as it's source and swaps it for an inline SVG",
+      "url": "https://github.com/jonnyhaynes/inline-svg",
+      "language": "JavaScript",
+      "stars": 59
+    },
+    {
+      "name": "skillswap",
+      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
+      "url": "https://github.com/jonnyhaynes/skillswap",
+      "language": "TypeScript",
+      "stars": 0
+    }
+  ],
+  "projects": [
+    {
+      "name": "jonnyhaynes-web",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "homepageUrl": "https://www.jonnyhaynes.com",
+      "language": "HTML",
+      "languages": [
+        "HTML",
+        "Shell",
+        "CSS",
+        "TypeScript",
+        "JavaScript"
+      ],
       "stars": 1,
-      "pushedAt": "2026-06-24T09:12:00Z",
+      "pushedAt": "2026-07-10T12:57:07Z",
       "lastCommit": {
-        "message": "Add cycles endpoint and profile tool",
-        "committedAt": "2026-06-24T09:12:00Z"
-      }
+        "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
+        "committedAt": "2026-07-10T09:39:04Z"
+      },
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-08T20:50:44Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Cap routes list at 10 items, then scroll (#64)",
+        "committedAt": "2026-07-08T20:50:44Z"
+      },
+      "pitch": null,
+      "challenge": "Computing honest ride distance and elevation from raw GPX, and fixing a Google Map that rendered zero-width inside a flex layout."
+    },
+    {
+      "name": "skillswap",
+      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
+      "url": "https://github.com/jonnyhaynes/skillswap",
+      "homepageUrl": "https://skillswap-rho-ten.vercel.app",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "PLpgSQL",
+        "CSS",
+        "HTML",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-06-30T12:38:31Z",
+      "lastCommit": {
+        "message": "fix(security): close PII leak on profiles via table-wide SELECT revok…",
+        "committedAt": "2026-06-30T12:38:28Z"
+      },
+      "pitch": null,
+      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
+    },
+    {
+      "name": "apollo-events-bridge",
+      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
+      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
+      "homepageUrl": null,
+      "language": "JavaScript",
+      "languages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-06-18T10:03:51Z",
+      "lastCommit": {
+        "message": "Add MIT license",
+        "committedAt": "2026-06-18T10:03:49Z"
+      },
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "freestyle-libre-mcp-server",
@@ -66,48 +136,61 @@
       "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
       "homepageUrl": null,
       "language": "TypeScript",
-      "languages": ["TypeScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "stars": 2,
-      "pushedAt": "2026-06-20T15:40:00Z",
+      "pushedAt": "2026-04-08T09:33:23Z",
       "lastCommit": {
-        "message": "Handle expired session tokens gracefully",
-        "committedAt": "2026-06-20T15:40:00Z"
-      }
+        "message": "docs: Update README with detailed setup instructions for LibreLinkUp …",
+        "committedAt": "2026-04-08T09:31:27Z"
+      },
+      "pitch": null,
+      "challenge": "Reaching glucose data through LibreLinkUp’s unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
     },
     {
-      "name": "inline-svg",
-      "description": "Takes an inline image with an SVG as it's source and swaps it for an inline SVG",
-      "url": "https://github.com/jonnyhaynes/inline-svg",
+      "name": "karma",
+      "description": "",
+      "url": "https://github.com/jonnyhaynes/karma",
       "homepageUrl": null,
-      "language": "JavaScript",
-      "languages": ["JavaScript"],
-      "stars": 59,
-      "pushedAt": "2026-05-02T11:00:00Z",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-03-25T17:39:30Z",
       "lastCommit": {
-        "message": "Cache fetched SVG responses",
-        "committedAt": "2026-05-02T11:00:00Z"
-      }
+        "message": "Update README.md",
+        "committedAt": "2026-03-25T17:37:50Z"
+      },
+      "pitch": null,
+      "challenge": null
     }
   ],
   "lastActivity": {
-    "repo": "whoop-mcp-server",
-    "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
-    "message": "Add cycles endpoint and profile tool",
-    "committedAt": "2026-06-24T09:12:00Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
+    "committedAt": "2026-07-10T09:39:04Z"
   },
   "languages": [
     {
       "name": "TypeScript",
-      "count": 16
+      "count": 4
     },
     {
       "name": "JavaScript",
-      "count": 5
+      "count": 3
     },
     {
       "name": "HTML",
-      "count": 2
+      "count": 1
+    },
+    {
+      "name": "Astro",
+      "count": 1
     }
   ],
-  "totalContributions": 332
+  "totalContributions": 516
 }

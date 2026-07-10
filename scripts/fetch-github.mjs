@@ -57,7 +57,51 @@ function mapProjectNode(r) {
     lastCommit: lastCommit
       ? { message: lastCommit.messageHeadline, committedAt: lastCommit.committedDate }
       : null,
+    // Filled from the repo's own .portfolio.json, if present (see below).
+    pitch: null,
+    challenge: null,
   };
+}
+
+/**
+ * Read a repo's `.portfolio.json` (repo root) so each project can describe its
+ * own pitch + hardest-challenge next to its code. Uses the contents API, which
+ * returns base64. Missing file (404) → null; the project just uses its GitHub
+ * "About" as the pitch and shows no challenge. Never throws: portfolio metadata
+ * is optional and must not break the bake.
+ */
+async function fetchPortfolioMeta(repo) {
+  try {
+    const headers = { Accept: 'application/vnd.github+json' };
+    if (TOKEN) headers.Authorization = `Bearer ${TOKEN}`;
+    const res = await fetch(
+      `https://api.github.com/repos/${USER}/${repo}/contents/.portfolio.json`,
+      { headers },
+    );
+    if (!res.ok) return null; // 404 = no metadata; anything else, skip quietly.
+    const json = await res.json();
+    const content = Buffer.from(json.content ?? '', 'base64').toString('utf8');
+    const meta = JSON.parse(content);
+    return {
+      pitch: typeof meta.pitch === 'string' ? meta.pitch : null,
+      challenge: typeof meta.challenge === 'string' ? meta.challenge : null,
+    };
+  } catch {
+    return null; // malformed JSON / network hiccup — ignore, don't fail the bake.
+  }
+}
+
+/** Fetch each project's .portfolio.json in parallel and merge pitch/challenge. */
+async function enrichWithPortfolioMeta(projects) {
+  await Promise.all(
+    projects.map(async (p) => {
+      const meta = await fetchPortfolioMeta(p.name);
+      if (meta) {
+        p.pitch = meta.pitch;
+        p.challenge = meta.challenge;
+      }
+    }),
+  );
 }
 
 async function fetchViaGraphQL() {
@@ -139,6 +183,7 @@ async function fetchViaGraphQL() {
   // V2 projects: the most-recently-pushed repos, richer shape (languages, last
   // commit). allRepos is already PUSHED_AT-desc, so slice from the top.
   const projects = allRepos.slice(0, 6).map(mapProjectNode);
+  await enrichWithPortfolioMeta(projects);
 
   // "Currently building": the single most-recently-pushed repo + its last commit.
   const top = projects[0] ?? null;
@@ -196,7 +241,10 @@ async function fetchViaREST() {
     stars: r.stargazers_count,
     pushedAt: r.pushed_at ?? null,
     lastCommit: null,
+    pitch: null,
+    challenge: null,
   }));
+  await enrichWithPortfolioMeta(projects);
 
   const top = projects[0] ?? null;
   const lastActivity = top

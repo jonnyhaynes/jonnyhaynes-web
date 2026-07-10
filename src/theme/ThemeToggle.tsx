@@ -44,11 +44,23 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      title={toggleTitle}
       aria-label={toggleTitle}
-      className="inline-flex size-10 items-center justify-center rounded-full border border-muted/30 text-foreground transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+      className="group inline-flex items-center rounded-full border border-muted/30 p-1 text-foreground transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
     >
-      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+      {/* Yorkshire prompt — collapsed by default (zero width + no spacing),
+          reveals on hover/focus. The left padding and gap live *inside* the
+          label so they collapse with it, leaving a clean circular button when
+          idle. aria-hidden: the button already carries the label via
+          aria-label. motion-reduce: instant swap for reduced-motion users. */}
+      <span
+        aria-hidden="true"
+        className="max-w-0 overflow-hidden whitespace-nowrap font-mono text-sm opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:pr-2 group-hover:pl-2 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:pr-2 group-focus-visible:pl-2 group-focus-visible:opacity-100 motion-reduce:transition-none"
+      >
+        {toggleTitle}
+      </span>
+      <span className="inline-flex size-8 shrink-0 items-center justify-center">
+        {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+      </span>
     </button>
   );
 }

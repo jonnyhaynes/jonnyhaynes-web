@@ -83,17 +83,42 @@
   }
 }
 
-/* Animated text gradient for the hero headline (spec §A). Shifts the gradient
- * across the text; the enlarged background-size gives it room to travel. */
-@keyframes gradient-shift {
+/* Animated text gradient for the hero headline (spec §A).
+ *
+ * Rather than sliding a static gradient sideways, we animate the gradient's
+ * actual stop colours via registered @property custom properties, interpolated
+ * in oklch. This gives a smooth, living hue drift (the V1 technique) instead of
+ * an obvious pan. Anchored on Moorland Heather, drifting through magenta and
+ * indigo and back. */
+@property --grad-1 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(0.62 0.15 320);
+}
+
+@property --grad-2 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(0.5 0.16 300);
+}
+
+@keyframes gradient-drift {
   to {
-    background-position: 200% center;
+    --grad-1: oklch(0.62 0.2 340); /* magenta */
+    --grad-2: oklch(0.52 0.18 270); /* indigo */
   }
 }
 
 .animate-gradient {
-  background-size: 200% auto;
-  animation: gradient-shift 5s linear infinite alternate;
+  background-image: linear-gradient(
+    to right in oklch,
+    var(--grad-1),
+    var(--grad-2)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-drift 6s linear infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
