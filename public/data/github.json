@@ -1,0 +1,65 @@
+{
+  "user": "jonnyhaynes",
+  "fetchedAt": "2026-06-26T13:21:30.795Z",
+  "repos": [
+    {
+      "name": "inline-svg",
+      "description": "Takes an inline image with an SVG as it's source and swaps it for an inline SVG",
+      "url": "https://github.com/jonnyhaynes/inline-svg",
+      "language": "JavaScript",
+      "stars": 59
+    },
+    {
+      "name": "whoop-mcp-server",
+      "description": "An MCP (Model Context Protocol) server for the Whoop API. Connects your Whoop health data — recovery, sleep, workouts, cycles, and profile — to any MCP-compatible AI tool.",
+      "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
+      "language": "TypeScript",
+      "stars": 1
+    },
+    {
+      "name": "freestyle-libre-mcp-server",
+      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
+      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
+      "language": "TypeScript",
+      "stars": 2
+    },
+    {
+      "name": "apollo-events-bridge",
+      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
+      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
+      "language": "JavaScript",
+      "stars": 1
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "language": "TypeScript",
+      "stars": 1
+    },
+    {
+      "name": "jonnyhaynes-web",
+      "description": "",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "language": "HTML",
+      "stars": 1
+    }
+  ],
+  "projects": [],
+  "lastActivity": null,
+  "languages": [
+    {
+      "name": "TypeScript",
+      "count": 16
+    },
+    {
+      "name": "JavaScript",
+      "count": 5
+    },
+    {
+      "name": "HTML",
+      "count": 2
+    }
+  ],
+  "totalContributions": 332
+}
