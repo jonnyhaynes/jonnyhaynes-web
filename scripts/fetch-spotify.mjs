@@ -90,11 +90,16 @@ function topGenre(artists) {
 }
 
 /**
- * Saved audiobooks for the reading section. Needs `user-library-read`; on 403
- * (scope not granted yet) returns [] so the bake still succeeds.
+ * Latest saved audiobooks for the reading section. Needs `user-library-read`;
+ * on 403 (scope not granted) returns [] so the bake still succeeds.
+ *
+ * Note: Spotify's /me/audiobooks returns items in most-recently-saved order but
+ * exposes NO added_at timestamp and NO reading-progress API — so "latest I've
+ * been reading" is approximated as the 6 most-recently-saved (the API's
+ * default order), newest first.
  */
 async function savedAudiobooks(token) {
-  const url = 'https://api.spotify.com/v1/me/audiobooks?limit=10';
+  const url = 'https://api.spotify.com/v1/me/audiobooks?limit=6';
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (res.status === 403) {
     console.warn(
