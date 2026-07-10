@@ -31,12 +31,12 @@ export function ProjectCard({ project }: { project: GitHubProject }) {
       )}
 
       {challenge && (
-        <div className="mt-4 border-l-2 border-accent-start/50 pl-3">
-          <p className="font-mono text-xs uppercase tracking-wider text-accent-start">
-            Hardest Technical Challenge
-          </p>
-          <p className="mt-1 text-sm text-muted">{challenge}</p>
-        </div>
+        <p className="mt-4 border-l-2 border-accent-start/50 pl-3 text-sm text-muted">
+          <span className="font-mono text-xs uppercase tracking-wider text-accent-start">
+            Hardest bit:{' '}
+          </span>
+          {challenge}
+        </p>
       )}
 
       {/* Links pinned to the bottom so they align across cards of any height. */}
