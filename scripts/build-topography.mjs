@@ -25,8 +25,8 @@ import { join } from 'node:path';
 const WIN = { minX: 420000, minY: 380000, maxX: 445000, maxY: 400000 };
 const CONTOUR_INTERVAL = 40; // metres between isolines — sparse enough to read.
 const DOWNSAMPLE = 1; // full 50m resolution → smoother, more detailed contours.
-const SMOOTH_ITERS = 2; // Chaikin passes to round off the marching-squares steps.
-const MIN_POLYLINE_PTS = 12; // drop short stub contours (noise) more aggressively.
+const SMOOTH_ITERS = 4; // Chaikin passes to round off the marching-squares steps.
+const MIN_POLYLINE_PTS = 20; // drop short stub contours (the stray straight bits).
 
 function parseAsc(text) {
   const lines = text.split('\n');
@@ -135,44 +135,65 @@ function joinSegments(segs) {
         else line.unshift(other);
       }
     }
-    lines.push(line);
+    // A contour is closed if, after chaining, its two ends coincide (the
+    // isoline forms a loop around high/low ground). Most real contours do.
+    const closed =
+      line.length > 3 && key(line[0]) === key(line[line.length - 1]);
+    lines.push({ points: line, closed });
   }
   return lines;
 }
 
-// Chaikin corner-cutting: rounds the staircase into smooth curves.
-function chaikin(points, iters) {
+// Chaikin corner-cutting: rounds the staircase into smooth curves. For closed
+// loops it cuts every edge including the seam (wrapping around) so the loop
+// stays smooth all the way round with no flat spot at the join.
+function chaikin(points, iters, closed = false) {
   let pts = points;
   for (let it = 0; it < iters; it++) {
     if (pts.length < 3) break;
-    const out = [pts[0]];
-    for (let i = 0; i < pts.length - 1; i++) {
-      const p = pts[i], q = pts[i + 1];
+    const out = closed ? [] : [pts[0]];
+    const n = pts.length;
+    const last = closed ? n : n - 1; // closed: also cut the wrap-around edge
+    for (let i = 0; i < last; i++) {
+      const p = pts[i], q = pts[(i + 1) % n];
       out.push([p[0] * 0.75 + q[0] * 0.25, p[1] * 0.75 + q[1] * 0.25]);
       out.push([p[0] * 0.25 + q[0] * 0.75, p[1] * 0.25 + q[1] * 0.75]);
     }
-    out.push(pts[pts.length - 1]);
+    if (!closed) out.push(pts[n - 1]);
     pts = out;
   }
   return pts;
 }
 
-// Drop near-duplicate consecutive points (post-smoothing) to trim bytes.
-function dedupe(pts) {
+// Collinearity thinning: drop a point only when it sits (within EPS) on the
+// straight line between the previous kept point and the next one. This trims
+// redundant points on straight runs — shrinking the file — WITHOUT flattening
+// curves, because points that carry real curvature deviate from that line and
+// are kept. Much better than a distance dedupe, which straightens curves.
+function thin(pts, eps = 0.7, closed = false) {
+  if (pts.length < 3) return pts;
   const out = [pts[0]];
-  for (let i = 1; i < pts.length; i++) {
-    const a = out[out.length - 1], b = pts[i];
-    if (Math.abs(a[0] - b[0]) > 0.5 || Math.abs(a[1] - b[1]) > 0.5) out.push(b);
+  for (let i = 1; i < pts.length - 1; i++) {
+    const a = out[out.length - 1], b = pts[i], c = pts[i + 1];
+    // Perpendicular distance of b from line a→c.
+    const dx = c[0] - a[0], dy = c[1] - a[1];
+    const len = Math.hypot(dx, dy) || 1;
+    const dist = Math.abs((b[0] - a[0]) * dy - (b[1] - a[1]) * dx) / len;
+    if (dist > eps) out.push(b);
   }
+  // Keep the last point for open lines; for closed loops it duplicates the
+  // start (the join returned start==end), so drop it — Z closes the path.
+  if (!closed) out.push(pts[pts.length - 1]);
   return out;
 }
 
-function polylineToPath(pts) {
-  const p = dedupe(pts);
-  // 1-decimal precision in a 500-wide viewBox is plenty and halves the bytes.
+function polylineToPath(p, closed = false) {
+  // Points are already thinned+smoothed. 1-decimal precision in a 500-wide
+  // viewBox is plenty and halves the bytes. Closed loops end with Z.
   return (
     `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}` +
-    p.slice(1).map((q) => `L${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join('')
+    p.slice(1).map((q) => `L${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join('') +
+    (closed ? 'Z' : '')
   );
 }
 
@@ -201,18 +222,23 @@ function main() {
     const segs = isolines(grid, rows, cols, lvl);
     if (!segs.length) continue;
     levels++;
-    // Join the loose segments into continuous contours, drop tiny fragments,
-    // then Chaikin-smooth so the marching-squares staircase reads as curves.
-    const lines = joinSegments(segs).filter((l) => l.length >= MIN_POLYLINE_PTS);
-    for (const line of lines) {
+    // Join the loose segments into continuous contours (closed loops where the
+    // isoline encircles high ground), drop tiny fragments, then smooth.
+    const lines = joinSegments(segs).filter((l) => l.points.length >= MIN_POLYLINE_PTS);
+    for (const { points, closed } of lines) {
       polylines++;
-      paths.push(polylineToPath(chaikin(line, SMOOTH_ITERS)));
+      // Thin the raw (coarse) polyline first — points are ~1 unit apart here,
+      // so collinear thinning behaves well — THEN Chaikin-smooth the survivors
+      // into curves. Closed loops smooth around the seam and render with Z.
+      paths.push(
+        polylineToPath(chaikin(thin(points, 0.7, closed), SMOOTH_ITERS, closed), closed),
+      );
     }
   }
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cols} ${rows}" ` +
-    `fill="none" stroke="currentColor" stroke-width="0.15" stroke-linecap="round" stroke-linejoin="round">` +
+    `fill="none" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round">` +
     paths.map((d) => `<path d="${d}"/>`).join('') +
     `</svg>`;
 
