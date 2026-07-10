@@ -24,26 +24,26 @@ export type ProjectNote = {
  * TODO(jonny): curate this list — pick the 2–4 projects that best sell you.
  */
 export const FEATURED_ORDER: string[] = [
-  'whoop-mcp-server',
+  'skillswap',
   'freestyle-libre-mcp-server',
-  'inline-svg',
+  'sitwellcc-web',
 ];
 
 export const PROJECT_NOTES: Record<string, ProjectNote> = {
   // TODO(jonny): replace the placeholder pitch/challenge text with the real story.
-  'whoop-mcp-server': {
-    pitch: 'An MCP server bridging Whoop health data into any AI tool.',
+  skillswap: {
+    pitch: 'TODO: one-line pitch for skillswap.',
     challenge:
-      'TODO: what was genuinely hard here? (e.g. OAuth token lifecycle, mapping Whoop’s API to the MCP tool schema, rate limits…)',
+      'TODO: the hardest part (the security fix commit suggests PII/access-control work — worth telling that story).',
   },
   'freestyle-libre-mcp-server': {
     pitch: 'Gives Claude live access to Freestyle Libre glucose data via MCP.',
     challenge:
       'TODO: the hardest part (e.g. reverse-engineering the unofficial API, session/auth handling, data normalisation…)',
   },
-  'inline-svg': {
-    pitch: 'Swaps an inline <img> SVG source for the real inline SVG.',
+  'sitwellcc-web': {
+    pitch: 'TODO: one-line pitch for the Sitwell CC site.',
     challenge:
-      'TODO: the tricky bit (e.g. caching fetched SVGs, preserving attributes/accessibility, avoiding layout shift…)',
+      'TODO: the tricky bit (e.g. Astro content pipeline, the routes-from-Discord bridge, performance…)',
   },
 };
