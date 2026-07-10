@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  motion,
+  LazyMotion,
+  domAnimation,
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useSpring,
 } from 'motion/react';
+import * as m from 'motion/react-m';
 
 /**
  * Interactive topographic background (spec §4B).
@@ -122,20 +124,24 @@ export function TopographicBackground() {
         }`}
       />
 
-      {/* Glow layer — accent-coloured, revealed only through the cursor mask. */}
+      {/* Glow layer — accent-coloured, revealed only through the cursor mask.
+          LazyMotion + m.div loads just the DOM-animation features we need,
+          keeping the full motion component out of the bundle. */}
       {interactive && (
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            maskImage,
-            WebkitMaskImage: maskImage,
-          }}
-        >
-          <ContourField
-            patternId="topo-glow"
-            className="absolute inset-[-10%] size-[120%] text-accent-start opacity-40 topo-drift"
-          />
-        </motion.div>
+        <LazyMotion features={domAnimation} strict>
+          <m.div
+            className="absolute inset-0"
+            style={{
+              maskImage,
+              WebkitMaskImage: maskImage,
+            }}
+          >
+            <ContourField
+              patternId="topo-glow"
+              className="absolute inset-[-10%] size-[120%] text-accent-start opacity-40 topo-drift"
+            />
+          </m.div>
+        </LazyMotion>
       )}
     </div>
   );
