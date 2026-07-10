@@ -1,50 +1,6 @@
 {
   "user": "jonnyhaynes",
   "fetchedAt": "2026-07-10T13:08:48.792Z",
-  "repos": [
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "language": "Astro",
-      "stars": 1
-    },
-    {
-      "name": "apollo-events-bridge",
-      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
-      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
-      "language": "JavaScript",
-      "stars": 1
-    },
-    {
-      "name": "jonnyhaynes-web",
-      "description": "My personal website — a static site built with React, Vite & TypeScript.",
-      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-      "language": "HTML",
-      "stars": 1
-    },
-    {
-      "name": "whoop-mcp-server",
-      "description": "An MCP (Model Context Protocol) server for the Whoop API. Connects your Whoop health data — recovery, sleep, workouts, cycles, and profile — to any MCP-compatible AI tool.",
-      "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
-      "language": "TypeScript",
-      "stars": 1
-    },
-    {
-      "name": "inline-svg",
-      "description": "Takes an inline image with an SVG as it's source and swaps it for an inline SVG",
-      "url": "https://github.com/jonnyhaynes/inline-svg",
-      "language": "JavaScript",
-      "stars": 59
-    },
-    {
-      "name": "skillswap",
-      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
-      "url": "https://github.com/jonnyhaynes/skillswap",
-      "language": "TypeScript",
-      "stars": 0
-    }
-  ],
   "projects": [
     {
       "name": "jonnyhaynes-web",

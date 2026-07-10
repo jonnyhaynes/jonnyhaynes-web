@@ -1,7 +1,8 @@
 // Fetches GitHub data and writes public/data/github.json.
 //
-// Two modes:
-//   - With GITHUB_TOKEN: uses the GraphQL API for pinned repos + total
+// Surfaces the most-recently-PUSHED public repos (active work — NOT pinned),
+// their language breakdown, and the last commit. Two modes:
+//   - With GITHUB_TOKEN: GraphQL API for repos + last commit + total
 //     contributions in the last year + language breakdown.
 //   - Without a token: falls back to the public REST API for recent repos
 //     + language breakdown. No contribution total (REST can't give it cheaply).
@@ -25,17 +26,6 @@ function languageBreakdown(languages) {
   return [...counts.entries()]
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count);
-}
-
-/** Map a GraphQL repository node to our flat repo shape. */
-function mapRepoNode(r) {
-  return {
-    name: r.name,
-    description: r.description ?? '',
-    url: r.url,
-    language: r.primaryLanguage?.name ?? null,
-    stars: r.stargazerCount,
-  };
 }
 
 /**
@@ -108,18 +98,6 @@ async function fetchViaGraphQL() {
   const query = `
     query ($login: String!) {
       user(login: $login) {
-        pinnedItems(first: 6, types: REPOSITORY) {
-          nodes {
-            ... on Repository {
-              name
-              description
-              url
-              stargazerCount
-              isPrivate
-              primaryLanguage { name }
-            }
-          }
-        }
         repositories(
           first: 100
           ownerAffiliations: OWNER
@@ -176,17 +154,9 @@ async function fetchViaGraphQL() {
 
   const user = json.data.user;
   const allRepos = user.repositories.nodes;
-  // Drop any pinned PRIVATE repo — this data is committed and served publicly,
-  // so a private repo must never leak into it (repositories() is already
-  // privacy: PUBLIC; pinned items aren't, hence this guard).
-  const pinned = user.pinnedItems.nodes.filter((r) => !r.isPrivate);
 
-  // Prefer pinned (curated) repos; fall back to most-recently-pushed so the
-  // section is never empty when nothing is pinned.
-  const repos = (pinned.length ? pinned : allRepos.slice(0, 6)).map(mapRepoNode);
-
-  // V2 projects: the most-recently-pushed repos, richer shape (languages, last
-  // commit). allRepos is already PUSHED_AT-desc, so slice from the top.
+  // Projects: the most-recently-PUSHED public repos (active work, not pinned).
+  // allRepos is already PUSHED_AT-desc, so slice from the top.
   const projects = allRepos.slice(0, 6).map(mapProjectNode);
   await enrichWithPortfolioMeta(projects);
 
@@ -203,7 +173,6 @@ async function fetchViaGraphQL() {
       : null;
 
   return {
-    repos,
     projects,
     lastActivity,
     languages: languageBreakdown(
@@ -228,14 +197,6 @@ async function fetchViaREST() {
   // endpoint is public-only, but never rely on that for a leak boundary).
   const sourceRepos = all.filter((r) => !r.fork && !r.private);
 
-  const repos = sourceRepos.slice(0, 6).map((r) => ({
-    name: r.name,
-    description: r.description ?? '',
-    url: r.html_url,
-    language: r.language ?? null,
-    stars: r.stargazers_count,
-  }));
-
   // REST gives pushed_at and primary language, but not the last commit message
   // cheaply, so lastCommit degrades to null (the UI hides it gracefully).
   const projects = sourceRepos.slice(0, 6).map((r) => ({
@@ -259,7 +220,6 @@ async function fetchViaREST() {
     : null;
 
   return {
-    repos,
     projects,
     lastActivity,
     languages: languageBreakdown(sourceRepos.map((r) => r.language)),
