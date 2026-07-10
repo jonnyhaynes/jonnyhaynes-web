@@ -2,6 +2,7 @@ import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
 import { Hero } from '../components/Hero';
 import { Projects } from '../components/Projects';
+import { Skills } from '../components/Skills';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
 export function Home() {
@@ -24,8 +25,10 @@ export function Home() {
         <div className="mx-auto max-w-6xl px-6">
           <Projects />
         </div>
-        {/* Skills, Spotify, Reading, Fitbit and Resume/Contact land in later
-            phases. */}
+        <div className="mx-auto max-w-4xl px-6">
+          <Skills />
+        </div>
+        {/* Spotify, Reading, Fitbit and Resume/Contact land in later phases. */}
       </main>
 
       <Footer />
