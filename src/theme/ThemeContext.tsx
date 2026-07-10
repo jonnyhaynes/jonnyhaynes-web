@@ -36,8 +36,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       theme,
       toggle,
       // In dark mode the button turns the light ON; in light mode it turns it OFF.
+      // Light Yorkshire twang (drop "the").
       toggleTitle:
-        theme === 'dark' ? 'Put the big light on' : 'Turn the big light off',
+        theme === 'dark' ? 'Put big light on' : 'Turn big light off',
     }),
     [theme, toggle],
   );

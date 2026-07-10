@@ -8,9 +8,7 @@ export function Hero() {
 
       <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
         <span className="text-foreground">I&apos;m a </span>
-        <span className="animate-gradient bg-gradient-to-r from-accent-start to-accent-end bg-clip-text text-transparent">
-          {SITE.hero.headline}
-        </span>
+        <span className="animate-gradient">{SITE.hero.headline}</span>
       </h1>
 
       <p className="mt-6 max-w-xl text-lg text-muted">{SITE.hero.subheadline}</p>

@@ -44,11 +44,21 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      title={toggleTitle}
       aria-label={toggleTitle}
-      className="inline-flex size-10 items-center justify-center rounded-full border border-muted/30 text-foreground transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+      className="group inline-flex items-center gap-2 rounded-full border border-muted/30 py-1 pr-1 pl-3 text-foreground transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
     >
-      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+      {/* Yorkshire prompt — collapsed by default, reveals on hover/focus.
+          aria-hidden because the button already carries the label via
+          aria-label; motion-safe so reduced-motion users get an instant swap. */}
+      <span
+        aria-hidden="true"
+        className="max-w-0 overflow-hidden whitespace-nowrap font-mono text-sm opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:opacity-100 motion-reduce:transition-none"
+      >
+        {toggleTitle}
+      </span>
+      <span className="inline-flex size-8 items-center justify-center">
+        {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+      </span>
     </button>
   );
 }
