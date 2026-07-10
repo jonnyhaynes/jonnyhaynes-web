@@ -115,6 +115,7 @@ async function fetchViaGraphQL() {
               description
               url
               stargazerCount
+              isPrivate
               primaryLanguage { name }
             }
           }
@@ -123,6 +124,7 @@ async function fetchViaGraphQL() {
           first: 100
           ownerAffiliations: OWNER
           isFork: false
+          privacy: PUBLIC
           orderBy: { field: PUSHED_AT, direction: DESC }
         ) {
           nodes {
@@ -174,7 +176,10 @@ async function fetchViaGraphQL() {
 
   const user = json.data.user;
   const allRepos = user.repositories.nodes;
-  const pinned = user.pinnedItems.nodes;
+  // Drop any pinned PRIVATE repo — this data is committed and served publicly,
+  // so a private repo must never leak into it (repositories() is already
+  // privacy: PUBLIC; pinned items aren't, hence this guard).
+  const pinned = user.pinnedItems.nodes.filter((r) => !r.isPrivate);
 
   // Prefer pinned (curated) repos; fall back to most-recently-pushed so the
   // section is never empty when nothing is pinned.
@@ -219,7 +224,9 @@ async function fetchViaREST() {
     throw new Error(`REST request failed: ${res.status} ${res.statusText}`);
   }
   const all = await res.json();
-  const sourceRepos = all.filter((r) => !r.fork);
+  // Exclude forks and, defensively, any private repo (the /users/:u/repos
+  // endpoint is public-only, but never rely on that for a leak boundary).
+  const sourceRepos = all.filter((r) => !r.fork && !r.private);
 
   const repos = sourceRepos.slice(0, 6).map((r) => ({
     name: r.name,
