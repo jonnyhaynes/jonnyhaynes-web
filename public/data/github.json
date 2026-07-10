@@ -87,7 +87,7 @@
         "committedAt": "2026-07-08T20:50:44Z"
       },
       "pitch": null,
-      "challenge": "The club routes map. Two things fought me: computing distance and elevation gain from raw GPX (naïve elevation summing over-counts every GPS wobble, so it needed a cumulative threshold to only count real climbs), and a Google Map that kept rendering zero-width because it initialised inside a flex/grid container before layout settled — fixed with an explicit height and getting the fitBounds zoom timing right after mount."
+      "challenge": "Computing honest ride distance and elevation from raw GPX, and fixing a Google Map that rendered zero-width inside a flex layout."
     },
     {
       "name": "skillswap",
@@ -109,7 +109,7 @@
         "committedAt": "2026-06-30T12:38:28Z"
       },
       "pitch": null,
-      "challenge": "Getting row-level security right on a social platform where profiles, swaps, messages and reviews all cross between users. An early table-wide SELECT grant quietly exposed profile PII to any authenticated user — the fix was auditing every Supabase RLS policy and revoking the broad grant so each row is only readable by those who should see it, without breaking real-time messaging or the verified-neighbour logic that legitimately reads across users."
+      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
       "name": "apollo-events-bridge",
@@ -147,7 +147,7 @@
         "committedAt": "2026-04-08T09:31:27Z"
       },
       "pitch": null,
-      "challenge": "There is no official Libre API, so the data comes through LibreLinkUp’s unofficial follower/carer endpoints — a two-account auth dance plus auto-detecting the correct regional endpoint at login. On top of that, abstracting three very different providers (LibreView, Terra, Thryve) behind one consistent set of MCP tools so Claude sees a single clean interface."
+      "challenge": "Reaching glucose data through LibreLinkUp’s unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
     },
     {
       "name": "karma",
