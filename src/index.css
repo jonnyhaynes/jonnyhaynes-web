@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+
+/*
+ * V2 "Modern Yorkshire" theme.
+ *
+ * Dark mode is the default and lives on :root. Light mode overrides the same
+ * tokens under [data-theme='light'] on <html>, toggled by the Big Light theme
+ * context. The dark: variant is wired to that attribute (not the OS preference)
+ * so the toggle is the single source of truth.
+ */
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-mono:
+    'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
+
+  /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather */
+  --color-background: #1a1b1e;
+  --color-foreground: #e8ddcb;
+  --color-muted: #9ca3af;
+  --color-accent-start: #9e67b5;
+  --color-accent-end: #7a4988;
+}
+
+/* Light mode — Chalk / Deep Coal / Bright Heather. Overrides the tokens the
+ * theme exposes so utilities like bg-background pick up the right value. */
+[data-theme='light'] {
+  --color-background: #f4f3f0;
+  --color-foreground: #202225;
+  --color-muted: #6b7280;
+  --color-accent-start: #8b52a1;
+  --color-accent-end: #673d7a;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  html[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-mono);
+    /* Smooth the palette swap when the big light goes on/off. */
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  /* Respect users who prefer reduced motion: kill the theme transition. */
+  @media (prefers-reduced-motion: reduce) {
+    body {
+      transition: none;
+    }
+  }
+}
