@@ -15,11 +15,13 @@
   --font-mono:
     'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
 
-  /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather */
+  /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather.
+   * accent-start lightened from #9e67b5 to clear WCAG AA (4.5:1) both as text
+   * on the background and as the "View My Work" button colour (dark text). */
   --color-background: #1a1b1e;
   --color-foreground: #e8ddcb;
   --color-muted: #9ca3af;
-  --color-accent-start: #9e67b5;
+  --color-accent-start: #a877bf;
   --color-accent-end: #7a4988;
 }
 
@@ -28,7 +30,8 @@
 [data-theme='light'] {
   --color-background: #f4f3f0;
   --color-foreground: #202225;
-  --color-muted: #6b7280;
+  /* muted darkened from #6b7280 to clear WCAG AA (4.5:1) as secondary text. */
+  --color-muted: #61697a;
   --color-accent-start: #8b52a1;
   --color-accent-end: #673d7a;
 }
@@ -99,13 +102,15 @@
 @property --grad-2 {
   syntax: '<color>';
   inherits: false;
-  initial-value: oklch(0.5 0.16 300);
+  /* Lightness kept >= 0.6 so the darkest gradient stop stays >= 3:1 against
+   * the dark background across the whole animation (large-text AA). */
+  initial-value: oklch(0.6 0.16 300);
 }
 
 @keyframes gradient-drift {
   to {
     --grad-1: oklch(0.62 0.2 340); /* magenta */
-    --grad-2: oklch(0.52 0.18 270); /* indigo */
+    --grad-2: oklch(0.6 0.18 270); /* indigo */
   }
 }
 
