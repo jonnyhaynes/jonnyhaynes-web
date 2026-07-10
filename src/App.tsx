@@ -1,3 +1,5 @@
+import { Hero } from './components/Hero';
+import { Projects } from './components/Projects';
 import { TopographicBackground } from './components/TopographicBackground';
 import { ThemeToggle } from './theme/ThemeToggle';
 
@@ -12,13 +14,11 @@ function App() {
         <ThemeToggle />
       </header>
 
-      <main className="mx-auto max-w-4xl px-6 py-16">
-        {/* V2 sections (Hero, Projects, Skills, Spotify, Reading, Fitbit,
-            Resume) land in later phases. This shell proves the theme, layout
-            and Big Light toggle work end to end. */}
-        <p className="font-mono text-sm text-muted">
-          // Ey up. Site&apos;s being rebuilt.
-        </p>
+      <main className="mx-auto max-w-4xl px-6">
+        <Hero />
+        <Projects />
+        {/* Skills, Spotify, Reading, Fitbit and Resume/Contact land in later
+            phases. */}
       </main>
 
       <footer className="mx-auto max-w-4xl px-6 py-10 text-sm text-muted">
