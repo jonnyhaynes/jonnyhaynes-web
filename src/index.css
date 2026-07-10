@@ -82,3 +82,22 @@
     animation: none;
   }
 }
+
+/* Animated text gradient for the hero headline (spec §A). Shifts the gradient
+ * across the text; the enlarged background-size gives it room to travel. */
+@keyframes gradient-shift {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-shift 5s linear infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient {
+    animation: none;
+  }
+}

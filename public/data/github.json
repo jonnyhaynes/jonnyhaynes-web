@@ -45,8 +45,56 @@
       "stars": 1
     }
   ],
-  "projects": [],
-  "lastActivity": null,
+  "projects": [
+    {
+      "name": "whoop-mcp-server",
+      "description": "An MCP (Model Context Protocol) server for the Whoop API. Connects your Whoop health data — recovery, sleep, workouts, cycles, and profile — to any MCP-compatible AI tool.",
+      "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": ["TypeScript", "JavaScript"],
+      "stars": 1,
+      "pushedAt": "2026-06-24T09:12:00Z",
+      "lastCommit": {
+        "message": "Add cycles endpoint and profile tool",
+        "committedAt": "2026-06-24T09:12:00Z"
+      }
+    },
+    {
+      "name": "freestyle-libre-mcp-server",
+      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
+      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": ["TypeScript"],
+      "stars": 2,
+      "pushedAt": "2026-06-20T15:40:00Z",
+      "lastCommit": {
+        "message": "Handle expired session tokens gracefully",
+        "committedAt": "2026-06-20T15:40:00Z"
+      }
+    },
+    {
+      "name": "inline-svg",
+      "description": "Takes an inline image with an SVG as it's source and swaps it for an inline SVG",
+      "url": "https://github.com/jonnyhaynes/inline-svg",
+      "homepageUrl": null,
+      "language": "JavaScript",
+      "languages": ["JavaScript"],
+      "stars": 59,
+      "pushedAt": "2026-05-02T11:00:00Z",
+      "lastCommit": {
+        "message": "Cache fetched SVG responses",
+        "committedAt": "2026-05-02T11:00:00Z"
+      }
+    }
+  ],
+  "lastActivity": {
+    "repo": "whoop-mcp-server",
+    "url": "https://github.com/jonnyhaynes/whoop-mcp-server",
+    "message": "Add cycles endpoint and profile tool",
+    "committedAt": "2026-06-24T09:12:00Z"
+  },
   "languages": [
     {
       "name": "TypeScript",
