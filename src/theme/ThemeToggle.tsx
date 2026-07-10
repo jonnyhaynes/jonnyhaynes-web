@@ -45,7 +45,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={toggleTitle}
-      className="group inline-flex items-center rounded-full border border-muted/30 p-1 text-foreground transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+      className="group inline-flex items-center rounded-full border border-muted/30 bg-background/70 p-1 text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
     >
       {/* Yorkshire prompt — collapsed by default (zero width + no spacing),
           reveals on hover/focus. The left padding and gap live *inside* the

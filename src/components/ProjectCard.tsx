@@ -12,7 +12,7 @@ export function ProjectCard({ project }: { project: GitHubProject }) {
       : [];
 
   return (
-    <article className="flex flex-col rounded-lg border border-muted/20 bg-foreground/[0.02] p-6 transition-colors hover:border-accent-start/50">
+    <article className="flex flex-col rounded-lg border border-muted/20 bg-background/70 p-6 backdrop-blur-sm transition-colors hover:border-accent-start/50">
       <h3 className="text-xl font-medium text-foreground">{project.name}</h3>
 
       {pitch && <p className="mt-2 text-muted">{pitch}</p>}
