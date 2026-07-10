@@ -6,7 +6,10 @@ import { Privacy } from './pages/Privacy';
 
 function App() {
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh text-foreground">
+      {/* Note: no bg-background here — the base colour lives on <body> in
+          index.css so the fixed -z-10 topographic layer shows through instead
+          of being painted over by this wrapper's own background. */}
       {/* Behind every route. */}
       <TopographicBackground />
 

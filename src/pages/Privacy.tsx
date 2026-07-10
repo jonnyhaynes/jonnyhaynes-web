@@ -95,6 +95,22 @@ export function Privacy() {
           </section>
 
           <section className="flex flex-col gap-2">
+            <h2 className="text-xl font-medium text-foreground">Map data</h2>
+            <p className="text-muted">
+              The background contours are real South Yorkshire relief, derived
+              from Ordnance Survey OS Terrain&nbsp;50. Contains OS data &copy;
+              Crown copyright and database right 2026, used under the{' '}
+              <a
+                href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                className={LINK}
+              >
+                Open Government Licence v3.0
+              </a>
+              .
+            </p>
+          </section>
+
+          <section className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-foreground">
               Your rights &amp; contact
             </h2>

@@ -12,61 +12,41 @@ import * as m from 'motion/react-m';
 /**
  * Interactive topographic background (spec §4B).
  *
- * A low-opacity contour field sits behind everything. On fine-pointer devices
- * that allow motion, a second accent-coloured copy is revealed only through a
- * radial mask that follows the cursor (a ~300px "spotlight"), and the whole
- * field drifts on a slow diagonal parallax. On touch devices or when the user
- * prefers reduced motion, we render just the static base layer — no pointer
- * listeners, no animation.
+ * The artwork is REAL relief: contour lines generated from Ordnance Survey
+ * Terrain 50 data for the South Yorkshire window (the Dark Peak moors west of
+ * Sheffield down into the city), baked to public/topography-south-yorkshire.svg
+ * (© Crown copyright, OGL v3). See scripts note in the PR.
  *
- * The contour artwork is an inline tiling <pattern>, so it scales to any size
- * with zero network cost and inherits currentColor for theming.
+ * A low-opacity copy sits behind everything. On fine-pointer devices that allow
+ * motion, a second accent-coloured copy is revealed only through a radial mask
+ * that follows the cursor (a ~300px "spotlight"), and the field drifts on a
+ * slow diagonal parallax. Touch / reduced-motion users get just the static base
+ * layer — no pointer listeners, no animation.
+ *
+ * Each layer is a currentColor-filled div masked by the contour SVG, so it
+ * tints with the theme; the SVG loads once as a static asset.
  */
 
 const SPOTLIGHT_RADIUS = 300;
+const TOPO_SVG = '/topography-south-yorkshire.svg';
 
-/** The repeating contour tile, shared by the base and glow layers. */
-function ContourField({
-  className,
-  patternId,
-}: {
-  className?: string;
-  patternId: string;
-}) {
+/** A theme-tinted copy of the contour relief, masked by the baked SVG. */
+function ContourField({ className }: { className?: string }) {
   return (
-    <svg
-      aria-hidden="true"
+    <div
       className={className}
-      width="100%"
-      height="100%"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <defs>
-        <pattern
-          id={patternId}
-          x="0"
-          y="0"
-          width="400"
-          height="400"
-          patternUnits="userSpaceOnUse"
-        >
-          <g
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            strokeLinecap="round"
-          >
-            <path d="M-20 120 C 80 60, 180 180, 300 110 S 460 40, 560 120" />
-            <path d="M-20 170 C 90 120, 170 220, 300 160 S 450 100, 560 170" />
-            <path d="M-20 230 C 70 180, 200 280, 300 220 S 470 170, 560 230" />
-            <path d="M-20 300 C 100 250, 180 350, 300 290 S 440 240, 560 300" />
-            <path d="M40 -10 C 120 60, 60 160, 140 240 S 100 360, 180 430" />
-            <path d="M260 -10 C 340 70, 280 170, 360 250 S 320 370, 400 430" />
-          </g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#${patternId})`} />
-    </svg>
+      style={{
+        backgroundColor: 'currentColor',
+        maskImage: `url(${TOPO_SVG})`,
+        WebkitMaskImage: `url(${TOPO_SVG})`,
+        maskRepeat: 'no-repeat',
+        WebkitMaskRepeat: 'no-repeat',
+        maskSize: 'cover',
+        WebkitMaskSize: 'cover',
+        maskPosition: 'center',
+        WebkitMaskPosition: 'center',
+      }}
+    />
   );
 }
 
@@ -118,15 +98,14 @@ export function TopographicBackground() {
       {/* Base layer — always visible, low opacity. Drifts on a slow diagonal
           parallax unless reduced motion is preferred. */}
       <ContourField
-        patternId="topo-base"
-        className={`absolute inset-[-10%] size-[120%] text-muted opacity-[0.07] ${
+        className={`absolute inset-[-10%] size-[120%] text-muted opacity-20 ${
           prefersReduced ? '' : 'topo-drift'
         }`}
       />
 
       {/* Glow layer — accent-coloured, revealed only through the cursor mask.
-          LazyMotion + m.div loads just the DOM-animation features we need,
-          keeping the full motion component out of the bundle. */}
+          The spotlight mask is composited over the contour mask on a nested
+          wrapper. LazyMotion + m.div loads just the DOM-animation features. */}
       {interactive && (
         <LazyMotion features={domAnimation} strict>
           <m.div
@@ -136,10 +115,7 @@ export function TopographicBackground() {
               WebkitMaskImage: maskImage,
             }}
           >
-            <ContourField
-              patternId="topo-glow"
-              className="absolute inset-[-10%] size-[120%] text-accent-start opacity-40 topo-drift"
-            />
+            <ContourField className="absolute inset-[-10%] size-[120%] text-accent-start opacity-70 topo-drift" />
           </m.div>
         </LazyMotion>
       )}
