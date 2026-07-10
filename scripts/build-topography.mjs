@@ -23,8 +23,10 @@ import { join } from 'node:path';
 // Sheffield sits around E 435000, N 387000; the dramatic relief is the Peak
 // edge just west. This window spans the moors west of the city into the city.
 const WIN = { minX: 420000, minY: 380000, maxX: 445000, maxY: 400000 };
-const CONTOUR_INTERVAL = 50; // metres between isolines — sparse enough to read.
-const DOWNSAMPLE = 2; // use every Nth cell (50m→100m) to cut path count/size.
+const CONTOUR_INTERVAL = 40; // metres between isolines — sparse enough to read.
+const DOWNSAMPLE = 1; // full 50m resolution → smoother, more detailed contours.
+const SMOOTH_ITERS = 2; // Chaikin passes to round off the marching-squares steps.
+const MIN_POLYLINE_PTS = 12; // drop short stub contours (noise) more aggressively.
 
 function parseAsc(text) {
   const lines = text.split('\n');
@@ -101,6 +103,79 @@ function isolines(grid, rows, cols, level) {
   return segs;
 }
 
+// Chain disconnected marching-squares segments into continuous polylines by
+// matching shared endpoints. Quantised keys tolerate float jitter.
+function joinSegments(segs) {
+  const key = (p) => `${p[0].toFixed(2)},${p[1].toFixed(2)}`;
+  const ends = new Map(); // endpoint key → list of segment indices
+  segs.forEach((s, i) => {
+    for (const end of [0, 1]) {
+      const k = key(s[end]);
+      if (!ends.has(k)) ends.set(k, []);
+      ends.get(k).push(i);
+    }
+  });
+  const used = new Array(segs.length).fill(false);
+  const lines = [];
+  for (let seed = 0; seed < segs.length; seed++) {
+    if (used[seed]) continue;
+    used[seed] = true;
+    const line = [segs[seed][0], segs[seed][1]];
+    // Extend forward (dir=1) then backward (dir=0) by hopping shared endpoints.
+    for (const dir of [1, 0]) {
+      for (;;) {
+        const tip = dir ? line[line.length - 1] : line[0];
+        const cand = (ends.get(key(tip)) ?? []).find((i) => !used[i]);
+        if (cand === undefined) break;
+        used[cand] = true;
+        const s = segs[cand];
+        // Append the endpoint that isn't the tip we matched on.
+        const other = key(s[0]) === key(tip) ? s[1] : s[0];
+        if (dir) line.push(other);
+        else line.unshift(other);
+      }
+    }
+    lines.push(line);
+  }
+  return lines;
+}
+
+// Chaikin corner-cutting: rounds the staircase into smooth curves.
+function chaikin(points, iters) {
+  let pts = points;
+  for (let it = 0; it < iters; it++) {
+    if (pts.length < 3) break;
+    const out = [pts[0]];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p = pts[i], q = pts[i + 1];
+      out.push([p[0] * 0.75 + q[0] * 0.25, p[1] * 0.75 + q[1] * 0.25]);
+      out.push([p[0] * 0.25 + q[0] * 0.75, p[1] * 0.25 + q[1] * 0.75]);
+    }
+    out.push(pts[pts.length - 1]);
+    pts = out;
+  }
+  return pts;
+}
+
+// Drop near-duplicate consecutive points (post-smoothing) to trim bytes.
+function dedupe(pts) {
+  const out = [pts[0]];
+  for (let i = 1; i < pts.length; i++) {
+    const a = out[out.length - 1], b = pts[i];
+    if (Math.abs(a[0] - b[0]) > 0.5 || Math.abs(a[1] - b[1]) > 0.5) out.push(b);
+  }
+  return out;
+}
+
+function polylineToPath(pts) {
+  const p = dedupe(pts);
+  // 1-decimal precision in a 500-wide viewBox is plenty and halves the bytes.
+  return (
+    `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}` +
+    p.slice(1).map((q) => `L${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join('')
+  );
+}
+
 function main() {
   const dir = process.argv[2];
   const files = readdirSync(dir).filter((f) => f.toLowerCase().endsWith('.asc'));
@@ -120,25 +195,30 @@ function main() {
   for (const row of grid) for (const v of row) if (!Number.isNaN(v)) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
 
   const paths = [];
+  let levels = 0;
+  let polylines = 0;
   for (let lvl = Math.ceil(lo / CONTOUR_INTERVAL) * CONTOUR_INTERVAL; lvl < hi; lvl += CONTOUR_INTERVAL) {
     const segs = isolines(grid, rows, cols, lvl);
-    // Round to whole grid units — at this resolution sub-unit precision is
-    // invisible and roughly halves the byte count.
-    const d = segs
-      .map(([a, b]) => `M${Math.round(a[0])} ${Math.round(a[1])}L${Math.round(b[0])} ${Math.round(b[1])}`)
-      .join('');
-    if (d) paths.push(d);
+    if (!segs.length) continue;
+    levels++;
+    // Join the loose segments into continuous contours, drop tiny fragments,
+    // then Chaikin-smooth so the marching-squares staircase reads as curves.
+    const lines = joinSegments(segs).filter((l) => l.length >= MIN_POLYLINE_PTS);
+    for (const line of lines) {
+      polylines++;
+      paths.push(polylineToPath(chaikin(line, SMOOTH_ITERS)));
+    }
   }
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cols} ${rows}" ` +
-    `fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round">` +
+    `fill="none" stroke="currentColor" stroke-width="0.15" stroke-linecap="round" stroke-linejoin="round">` +
     paths.map((d) => `<path d="${d}"/>`).join('') +
     `</svg>`;
 
   const out = 'public/topography-south-yorkshire.svg';
   writeFileSync(out, svg);
-  console.log(`elev ${lo}–${hi}m · ${rows}×${cols} grid · ${paths.length} contour levels · ${(svg.length / 1024).toFixed(0)}kB → ${out}`);
+  console.log(`elev ${lo}–${hi}m · ${rows}×${cols} grid · ${levels} levels · ${polylines} contours · ${(svg.length / 1024).toFixed(0)}kB → ${out}`);
 }
 
 main();
