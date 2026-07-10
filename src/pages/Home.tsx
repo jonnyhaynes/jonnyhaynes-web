@@ -1,7 +1,9 @@
 import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
 import { Hero } from '../components/Hero';
+import { Listening } from '../components/Listening';
 import { Projects } from '../components/Projects';
+import { Reading } from '../components/Reading';
 import { Skills } from '../components/Skills';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
@@ -28,7 +30,13 @@ export function Home() {
         <div className="mx-auto max-w-4xl px-6">
           <Skills />
         </div>
-        {/* Spotify, Reading, Fitbit and Resume/Contact land in later phases. */}
+        <div className="mx-auto max-w-4xl px-6">
+          <Listening />
+        </div>
+        <div className="mx-auto max-w-4xl px-6">
+          <Reading />
+        </div>
+        {/* Fitbit and Resume/Contact land in later phases. */}
       </main>
 
       <Footer />
