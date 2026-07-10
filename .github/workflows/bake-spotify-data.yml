@@ -1,0 +1,51 @@
+name: Bake Spotify data
+
+# Fetches top artists + tracks (last ~4 weeks) plus saved audiobooks, and
+# commits the refreshed public/data/spotify-top.json and
+# public/data/spotify-audiobooks.json to main. Runs twice daily plus on demand.
+on:
+  schedule:
+    # 07:00 and 19:00 UTC (offset from the GitHub bake to spread load).
+    - cron: '0 7,19 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: bake-spotify-data
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch Spotify data
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+        run: node scripts/fetch-spotify.mjs
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          files="public/data/spotify-top.json public/data/spotify-audiobooks.json"
+          if git diff --quiet -- $files; then
+            echo "No change in Spotify data — nothing to commit."
+            exit 0
+          fi
+          git add $files
+          git commit -m "Refresh Spotify data [skip ci]"
+          git push
