@@ -64,7 +64,9 @@
       "lastCommit": {
         "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
         "committedAt": "2026-07-10T09:39:04Z"
-      }
+      },
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "sitwellcc-web",
@@ -83,7 +85,9 @@
       "lastCommit": {
         "message": "[ai-assisted] Cap routes list at 10 items, then scroll (#64)",
         "committedAt": "2026-07-08T20:50:44Z"
-      }
+      },
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "skillswap",
@@ -103,7 +107,9 @@
       "lastCommit": {
         "message": "fix(security): close PII leak on profiles via table-wide SELECT revok…",
         "committedAt": "2026-06-30T12:38:28Z"
-      }
+      },
+      "pitch": null,
+      "challenge": "PLACEHOLDER — add a real .portfolio.json to the skillswap repo. e.g. locking down row-level security so profile PII could never leak across users."
     },
     {
       "name": "apollo-events-bridge",
@@ -120,7 +126,9 @@
       "lastCommit": {
         "message": "Add MIT license",
         "committedAt": "2026-06-18T10:03:49Z"
-      }
+      },
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "freestyle-libre-mcp-server",
@@ -137,7 +145,9 @@
       "lastCommit": {
         "message": "docs: Update README with detailed setup instructions for LibreLinkUp …",
         "committedAt": "2026-04-08T09:31:27Z"
-      }
+      },
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "karma",
@@ -153,7 +163,9 @@
       "lastCommit": {
         "message": "Update README.md",
         "committedAt": "2026-03-25T17:37:50Z"
-      }
+      },
+      "pitch": null,
+      "challenge": null
     }
   ],
   "lastActivity": {

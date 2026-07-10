@@ -30,6 +30,10 @@ export type GitHubProject = {
   stars: number;
   pushedAt: string | null;
   lastCommit: GitHubLastCommit | null;
+  /** Optional pitch override from the repo's .portfolio.json. */
+  pitch: string | null;
+  /** "Hardest Technical Challenge" from the repo's .portfolio.json. */
+  challenge: string | null;
 };
 
 /**

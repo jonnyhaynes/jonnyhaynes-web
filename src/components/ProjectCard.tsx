@@ -1,13 +1,10 @@
 import type { GitHubProject } from '../data/github';
-import type { ProjectNote } from '../content/projects';
 import { ExternalLinkIcon, GitHubIcon } from './icons';
 
-/** A featured project: live GitHub data merged with the hand-written note. */
-export type FeaturedProject = GitHubProject & { note?: ProjectNote };
-
-export function ProjectCard({ project }: { project: FeaturedProject }) {
-  const pitch = project.note?.pitch ?? project.description;
-  const challenge = project.note?.challenge;
+export function ProjectCard({ project }: { project: GitHubProject }) {
+  // Pitch: the repo's .portfolio.json override, else its GitHub "About" text.
+  const pitch = project.pitch ?? project.description;
+  const challenge = project.challenge;
   const stack = project.languages.length
     ? project.languages
     : project.language
@@ -42,7 +39,8 @@ export function ProjectCard({ project }: { project: FeaturedProject }) {
         </div>
       )}
 
-      <div className="mt-6 flex items-center gap-4 pt-2">
+      {/* Links pinned to the bottom so they align across cards of any height. */}
+      <div className="mt-auto flex items-center gap-4 pt-6">
         <a
           href={project.url}
           target="_blank"
