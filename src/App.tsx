@@ -1,3 +1,4 @@
+import { TopographicBackground } from './components/TopographicBackground';
 import { ThemeToggle } from './theme/ThemeToggle';
 
 function App() {
@@ -5,6 +6,7 @@ function App() {
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
+      <TopographicBackground />
       <header className="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
         <span className="font-mono text-sm text-muted">// Jonny Haynes</span>
         <ThemeToggle />

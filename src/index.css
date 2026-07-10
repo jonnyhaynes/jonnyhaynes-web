@@ -59,3 +59,26 @@
     }
   }
 }
+
+/* Slow diagonal parallax drift for the topographic background (spec §4B).
+ * The oversized layers (120%, inset -10%) leave room to translate without
+ * exposing an edge. Shared by the base and glow layers so they move together. */
+@keyframes topo-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-8%, -8%, 0);
+  }
+}
+
+.topo-drift {
+  animation: topo-drift 60s linear infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topo-drift {
+    animation: none;
+  }
+}
