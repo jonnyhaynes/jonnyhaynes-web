@@ -82,3 +82,36 @@ export function useGitHubData(): GitHubData | null {
 
   return data;
 }
+
+/** Repos never surfaced as "currently building" (this portfolio itself). */
+const CURRENTLY_BUILDING_EXCLUDE = new Set(['jonnyhaynes-web']);
+
+/**
+ * The repo to show in the "currently building" chip: the most-recently-pushed
+ * project that isn't excluded (so the portfolio doesn't point at itself).
+ * Derived from `projects` (pushedAt-desc); falls back to the baked
+ * `lastActivity` if projects are absent. Returns null when nothing qualifies.
+ */
+export function currentlyBuilding(
+  data: GitHubData | null,
+): GitHubLastActivity | null {
+  if (!data) return null;
+
+  const pick = data.projects.find(
+    (p) => !CURRENTLY_BUILDING_EXCLUDE.has(p.name),
+  );
+  if (pick) {
+    return {
+      repo: pick.name,
+      url: pick.url,
+      message: pick.lastCommit?.message ?? null,
+      committedAt: pick.lastCommit?.committedAt ?? pick.pushedAt,
+    };
+  }
+
+  // No usable project — fall back to lastActivity unless it's the excluded repo.
+  if (data.lastActivity && !CURRENTLY_BUILDING_EXCLUDE.has(data.lastActivity.repo)) {
+    return data.lastActivity;
+  }
+  return null;
+}

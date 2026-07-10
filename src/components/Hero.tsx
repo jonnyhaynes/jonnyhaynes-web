@@ -3,15 +3,19 @@ import { GitHubIcon, LinkedInIcon } from './icons';
 
 export function Hero() {
   return (
-    <section className="flex min-h-[70vh] flex-col justify-center py-16">
-      <p className="font-mono text-sm text-accent-start">{SITE.hero.microcopy}</p>
+    <section className="flex min-h-[80vh] flex-col justify-center py-16">
+      <p className="font-mono text-base text-accent-start sm:text-lg">
+        {SITE.hero.microcopy}
+      </p>
 
-      <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
+      <h1 className="mt-5 text-5xl font-medium tracking-tight sm:text-7xl lg:text-8xl">
         <span className="text-foreground">I&apos;m a </span>
         <span className="animate-gradient">{SITE.hero.headline}</span>
       </h1>
 
-      <p className="mt-6 max-w-xl text-lg text-muted">{SITE.hero.subheadline}</p>
+      <p className="mt-8 max-w-2xl text-lg text-muted sm:text-xl">
+        {SITE.hero.subheadline}
+      </p>
 
       <div className="mt-10 flex flex-wrap items-center gap-4">
         <a
