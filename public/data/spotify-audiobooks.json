@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-10T15:31:01.248Z",
+  "fetchedAt": "2026-07-12T14:03:27.543Z",
   "audiobooks": [
     {
       "title": "How Fascism Works: The Politics of Us and Them",
@@ -8,16 +8,10 @@
       "cover": "https://i.scdn.co/image/ab6766630000703bdb7051063605da2e8b93d1c9"
     },
     {
-      "title": "If We Tolerate This: How the British establishment made the far right respectable",
+      "title": "If We Tolerate This: The rise of the far right  and what we can do to stop it",
       "authors": "Daniel Trilling",
       "url": "https://open.spotify.com/show/3emA2xRzpa27HKS9TtWq1n",
       "cover": "https://i.scdn.co/image/ab6766630000703b40392ad8352c65f2adbac9d1"
-    },
-    {
-      "title": "The Valkyrie",
-      "authors": "Kate Heartfield",
-      "url": "https://open.spotify.com/show/4pU9pInkVfjLWAx1ip6POx",
-      "cover": "https://i.scdn.co/image/ab6766630000703b98a2d4ec629059a1fe49124a"
     },
     {
       "title": "There Is No Antimemetics Division: The thrilling new sci-fi horror novel, 'mind-bendingly brilliant' Guardian",
@@ -32,10 +26,16 @@
       "cover": "https://i.scdn.co/image/ab6766630000703b33844abc0d0808cf358ddba9"
     },
     {
-      "title": "The Almanack of Naval Ravikant: A Guide to Wealth and Happiness",
-      "authors": "Eric Jorgenson, Tim Ferriss, Naval Ravikant",
-      "url": "https://open.spotify.com/show/60GPYwCpkbCdd4EBEUqiwV",
-      "cover": "https://i.scdn.co/image/ab6766630000703bd66c49c06dcec993ba2291db"
+      "title": "1984",
+      "authors": "George Orwell",
+      "url": "https://open.spotify.com/show/1yPC9bBMm1fixXasXnTRGH",
+      "cover": "https://i.scdn.co/image/ab6766630000703b51fff79636ab12e873af0de2"
+    },
+    {
+      "title": "Of Boys and Men",
+      "authors": "Richard V. Reeves",
+      "url": "https://open.spotify.com/show/0X8WLpK4Fl8krcuRUshuO9",
+      "cover": "https://i.scdn.co/image/ab6766630000703b51c17d6c496eda09a3c85a55"
     }
   ]
 }

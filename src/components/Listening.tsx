@@ -72,7 +72,6 @@ function CodingFuel() {
       url: meta?.url ?? `https://open.spotify.com/playlist/${cfg.playlistId}`,
       name: meta?.name ?? cfg.label,
       cover: meta?.cover ?? null,
-      trackCount: meta?.trackCount ?? null,
     };
   });
 
@@ -108,9 +107,6 @@ function CodingFuel() {
                 {c.label}
               </p>
               <p className="truncate font-medium text-foreground">{c.name}</p>
-              {c.trackCount != null && (
-                <p className="text-sm text-muted">{c.trackCount} tracks</p>
-              )}
             </div>
             <span
               aria-hidden="true"

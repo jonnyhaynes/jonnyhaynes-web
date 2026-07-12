@@ -125,7 +125,7 @@ async function savedAudiobooks(token) {
  * a card degrades to a plain link.
  */
 async function fetchPlaylist(token, id, label) {
-  const url = `https://api.spotify.com/v1/playlists/${id}?fields=name,external_urls,images,tracks(total)`;
+  const url = `https://api.spotify.com/v1/playlists/${id}`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) {
     console.warn(`Playlist ${id} (${label}) failed: ${res.status}`);
@@ -138,14 +138,14 @@ async function fetchPlaylist(token, id, label) {
     name: p.name ?? label,
     url: p.external_urls?.spotify ?? `https://open.spotify.com/playlist/${id}`,
     cover: pickImage(p.images),
-    trackCount: p.tracks?.total ?? null,
   };
 }
 
 // The two "Coding Fuel" playlists (must match src/content/spotify.ts).
+// Own playlists (not Spotify's 37i9 editorial ones, which the API 404s).
 const CODING_PLAYLISTS = [
-  { label: 'Flow State', id: '37i9dQZF1DX8ml53Dz6izK' },
-  { label: 'Friday Deploy', id: '37i9dQZF1DWXXKBeJuKnWE' },
+  { label: 'Flow State', id: '1Aq9wLP1IcxVjnDPTd4IGG' },
+  { label: 'Friday Deploy', id: '2aLjAGfDJ9O5gtBxwrDfA1' },
 ];
 
 async function main() {

@@ -20,7 +20,6 @@ export type SpotifyPlaylist = {
   name: string;
   url: string | null;
   cover: string | null;
-  trackCount: number | null;
 };
 
 export type SpotifyTop = {
