@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { SITE } from '../content/site';
 
 /** Subject line pre-filled in the reader's mail client. */
-const SUBJECT = 'Hello from jonnyhaynes.com';
+const SUBJECT = 'Hello from www.jonnyhaynes.com';
 
 /**
  * Contact section — the closing call to action. Target of the hero's "Get in
