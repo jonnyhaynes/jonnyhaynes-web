@@ -90,11 +90,16 @@ function topGenre(artists) {
 }
 
 /**
- * Saved audiobooks for the reading section. Needs `user-library-read`; on 403
- * (scope not granted yet) returns [] so the bake still succeeds.
+ * Latest saved audiobooks for the reading section. Needs `user-library-read`;
+ * on 403 (scope not granted) returns [] so the bake still succeeds.
+ *
+ * Note: Spotify's /me/audiobooks returns items in most-recently-saved order but
+ * exposes NO added_at timestamp and NO reading-progress API — so "latest I've
+ * been reading" is approximated as the 6 most-recently-saved (the API's
+ * default order), newest first.
  */
 async function savedAudiobooks(token) {
-  const url = 'https://api.spotify.com/v1/me/audiobooks?limit=10';
+  const url = 'https://api.spotify.com/v1/me/audiobooks?limit=6';
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (res.status === 403) {
     console.warn(
@@ -114,14 +119,46 @@ async function savedAudiobooks(token) {
   }));
 }
 
+/**
+ * Metadata for one "Coding Fuel" playlist (public — no extra scope), used to
+ * render a themed card instead of a Spotify iframe. Returns null on failure so
+ * a card degrades to a plain link.
+ */
+async function fetchPlaylist(token, id, label) {
+  const url = `https://api.spotify.com/v1/playlists/${id}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) {
+    console.warn(`Playlist ${id} (${label}) failed: ${res.status}`);
+    return { label, id, name: label, url: null, cover: null, trackCount: null };
+  }
+  const p = await res.json();
+  return {
+    label,
+    id,
+    name: p.name ?? label,
+    url: p.external_urls?.spotify ?? `https://open.spotify.com/playlist/${id}`,
+    cover: pickImage(p.images),
+  };
+}
+
+// The two "Coding Fuel" playlists (must match src/content/spotify.ts).
+// Own playlists (not Spotify's 37i9 editorial ones, which the API 404s).
+const CODING_PLAYLISTS = [
+  { label: 'Flow State', id: '1Aq9wLP1IcxVjnDPTd4IGG' },
+  { label: 'Friday Deploy', id: '2aLjAGfDJ9O5gtBxwrDfA1' },
+];
+
 async function main() {
   console.log('Fetching Spotify top items…');
   const token = await getAccessToken();
 
-  const [artists, tracks, audiobooks] = await Promise.all([
+  const [artists, tracks, audiobooks, playlists] = await Promise.all([
     topItems(token, 'artists'),
     topItems(token, 'tracks'),
     savedAudiobooks(token),
+    Promise.all(
+      CODING_PLAYLISTS.map((p) => fetchPlaylist(token, p.id, p.label)),
+    ),
   ]);
 
   const payload = {
@@ -139,6 +176,7 @@ async function main() {
       url: t.external_urls?.spotify ?? null,
       albumArt: pickImage(t.album?.images),
     })),
+    playlists,
   };
 
   const audiobooksPayload = {
@@ -155,6 +193,7 @@ async function main() {
   console.log(
     `Wrote ${OUT}: ${payload.artists.length} artists, ${payload.tracks.length} tracks` +
       (payload.topGenre ? `, top genre "${payload.topGenre}"` : ', no genre data') +
+      `, ${playlists.length} playlists` +
       `\nWrote ${OUT_AUDIOBOOKS}: ${audiobooks.length} audiobooks`,
   );
 }

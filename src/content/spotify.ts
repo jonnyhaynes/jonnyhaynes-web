@@ -5,6 +5,6 @@ export type CodingPlaylist = {
 };
 
 export const CODING_PLAYLISTS: CodingPlaylist[] = [
-  { label: 'Flow State', playlistId: '37i9dQZF1DX8ml53Dz6izK' },
-  { label: 'Friday Deploy', playlistId: '37i9dQZF1DWXXKBeJuKnWE' },
+  { label: 'Flow State', playlistId: '1Aq9wLP1IcxVjnDPTd4IGG' },
+  { label: 'Friday Deploy', playlistId: '2aLjAGfDJ9O5gtBxwrDfA1' },
 ];

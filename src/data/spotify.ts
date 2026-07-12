@@ -13,6 +13,15 @@ export type SpotifyTrack = {
   albumArt: string | null;
 };
 
+/** A "Coding Fuel" playlist, baked from the Spotify playlist API. */
+export type SpotifyPlaylist = {
+  label: string;
+  id: string;
+  name: string;
+  url: string | null;
+  cover: string | null;
+};
+
 export type SpotifyTop = {
   fetchedAt: string;
   timeRange: string;
@@ -20,6 +29,8 @@ export type SpotifyTop = {
   topGenre: string | null;
   artists: SpotifyArtist[];
   tracks: SpotifyTrack[];
+  /** Coding-fuel playlists (may be absent in older baked data). */
+  playlists?: SpotifyPlaylist[];
 };
 
 export type NowPlaying = {

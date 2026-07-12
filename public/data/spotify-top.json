@@ -1,17 +1,17 @@
 {
-  "fetchedAt": "2026-06-26T13:47:09.216Z",
+  "fetchedAt": "2026-07-12T14:03:27.542Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
     {
-      "name": "blink-182",
-      "url": "https://open.spotify.com/artist/6FBDaR13swtiWwGhX1WQsP",
-      "image": "https://i.scdn.co/image/ab6761610000f1785da36f8b98dd965336a1507a"
-    },
-    {
       "name": "Limp Bizkit",
       "url": "https://open.spotify.com/artist/165ZgPlLkK7bf5bDoFc6Sb",
       "image": "https://i.scdn.co/image/67ab66b1154c3115005086d60853fc954717a2ea"
+    },
+    {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Queen",
@@ -19,49 +19,37 @@
       "image": "https://i.scdn.co/image/ab67726900008f7447488c35a509d42072c23976"
     },
     {
+      "name": "Frank Turner",
+      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
+      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
+    },
+    {
       "name": "Michael Jackson",
       "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
       "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178001bed1a54fe90023cae1d1b"
+      "name": "AC/DC",
+      "url": "https://open.spotify.com/artist/711MCceyCBcFnzjGY4Q7Un",
+      "image": "https://i.scdn.co/image/ab6761610000f178c4c77549095c86acb4e77b37"
     },
     {
-      "name": "In Flames",
-      "url": "https://open.spotify.com/artist/57ylwQTnFnIhJh4nu4rxCs",
-      "image": "https://i.scdn.co/image/ab6761610000f1785c3bd919d1344a738af14136"
+      "name": "Rush",
+      "url": "https://open.spotify.com/artist/2Hkut4rAAyrQxRdof7FVJq",
+      "image": "https://i.scdn.co/image/ab6761610000f178896c4b043fb3063178afd716"
     },
     {
-      "name": "Daði Freyr",
-      "url": "https://open.spotify.com/artist/3Hb64DQZIhDCgyHKrzBXOL",
-      "image": "https://i.scdn.co/image/ab6761610000f178b6f9c9bd5a9081d52186bb94"
-    },
-    {
-      "name": "Pantera",
-      "url": "https://open.spotify.com/artist/14pVkFUHDL207LzLHtSA18",
-      "image": "https://i.scdn.co/image/ab6761610000f178e21999c0102c240bdf094d9b"
+      "name": "Lamb of God",
+      "url": "https://open.spotify.com/artist/3JFsVIxOn7STeilPICkkB2",
+      "image": "https://i.scdn.co/image/ab6761610000f178b6d0c45dea35ce01e293af64"
     }
   ],
   "tracks": [
     {
-      "title": "I'm Out and I Wanna Go Home",
-      "artist": "Daði Freyr",
-      "url": "https://open.spotify.com/track/1hiwr6Ps0GihMMP573L5Jv",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
-    },
-    {
-      "title": "Billie Jean",
-      "artist": "Michael Jackson",
-      "url": "https://open.spotify.com/track/7J1uxwnxfQLu4APicE5Rnj",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
-    },
-    {
-      "title": "WHERE IS MY HUSBAND!",
-      "artist": "RAYE",
-      "url": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90"
+      "title": "The Dark Forest",
+      "artist": "Muse",
+      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     },
     {
       "title": "Raining Blood",
@@ -70,28 +58,56 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485180a99dcf52a34999e87571dd"
     },
     {
-      "title": "Bohemian Rhapsody - Remastered 2011",
-      "artist": "Queen",
-      "url": "https://open.spotify.com/track/4u7EnebtmKWzUH433cf5Qv",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851e319baafd16e84f0408af2a0"
+      "title": "Billie Jean",
+      "artist": "Michael Jackson",
+      "url": "https://open.spotify.com/track/7J1uxwnxfQLu4APicE5Rnj",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
     },
     {
-      "title": "Anthem Part Two",
-      "artist": "blink-182",
-      "url": "https://open.spotify.com/track/24CRDgNOgA72JLL7PHFjgB",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851d9d27e5b56e2b983e54dba64"
+      "title": "Tom Sawyer",
+      "artist": "Rush",
+      "url": "https://open.spotify.com/track/3QZ7uX97s82HFYSmQUAN1D",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
+    },
+    {
+      "title": "Bohemian Rhapsody - Remastered 2011",
+      "artist": "Queen",
+      "url": "https://open.spotify.com/track/7tFiyTwD0nx5a1eklYtX2J",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce4f1737bc8a646c8c4bd25a"
+    },
+    {
+      "title": "Limelight",
+      "artist": "Rush",
+      "url": "https://open.spotify.com/track/0K6yUnIKNsFtfIpTgGtcHm",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
     },
     {
       "title": "Nightshift Superstar",
       "artist": "Muse",
-      "url": "https://open.spotify.com/track/0ysOBzp8xSrbDenht9mQ9C",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048516dae912c03a46c0bcdb2ddc5"
+      "url": "https://open.spotify.com/track/51ukPU68k4Zl0cLdNGXaHn",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     },
     {
-      "title": "Radio Ga Ga - Remastered 2011",
-      "artist": "Queen",
-      "url": "https://open.spotify.com/track/1nQRg9q9uwALGzouOX5OyQ",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048515be5f807f6f0549e198a44b4"
+      "title": "Life Is Glamorous",
+      "artist": "Spencer Sutherland",
+      "url": "https://open.spotify.com/track/5UtOFBfAcrUpY42Alf8k9Y",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048512a3b82c830575dea0ee1ddf9"
+    }
+  ],
+  "playlists": [
+    {
+      "label": "Flow State",
+      "id": "1Aq9wLP1IcxVjnDPTd4IGG",
+      "name": "EDM Pop Punk",
+      "url": "https://open.spotify.com/playlist/1Aq9wLP1IcxVjnDPTd4IGG",
+      "cover": "https://mosaic.scdn.co/300/ab67616d00001e024bfb3a9ffa48cae6b6552c99ab67616d00001e02925dc9bc32594442bcb23af2ab67616d00001e02bf134707d20f3a6941d64637ab67616d00001e02f9af25efb94d2007141b7704"
+    },
+    {
+      "label": "Friday Deploy",
+      "id": "2aLjAGfDJ9O5gtBxwrDfA1",
+      "name": "Daily Mix",
+      "url": "https://open.spotify.com/playlist/2aLjAGfDJ9O5gtBxwrDfA1",
+      "cover": "https://mosaic.scdn.co/300/ab67616d00001e024a31b146c7cf07705d912efeab67616d00001e0281e0d9617e70d75e7ae11fa6ab67616d00001e02f3b69d9d67be7275bd96b39fab67616d00001e02f48ab38cf0b4a1d1f54be08f"
     }
   ]
 }

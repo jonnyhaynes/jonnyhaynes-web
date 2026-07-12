@@ -7,7 +7,10 @@ import { useSpotifyAudiobooks } from '../data/spotify';
  */
 export function Reading() {
   const data = useSpotifyAudiobooks();
-  const books = data?.audiobooks ?? [];
+  // Cap at the 6 latest (the bake already limits to 6; this guards against
+  // stale/larger data). Spotify has no reading-progress API, so "latest" =
+  // most-recently-saved order the API returns.
+  const books = (data?.audiobooks ?? []).slice(0, 6);
   if (!books.length) return null;
 
   return (
