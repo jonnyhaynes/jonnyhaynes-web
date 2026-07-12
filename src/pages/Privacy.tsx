@@ -22,7 +22,7 @@ export function Privacy() {
     const domain = ['gmail', 'com'];
     const addr = user.join('') + String.fromCharCode(64) + domain.join('.');
 
-    const subject = encodeURIComponent('Privacy question — jonnyhaynes.co.uk');
+    const subject = encodeURIComponent('Privacy question — jonnyhaynes.com');
     const link = document.createElement('a');
     link.href = `mailto:${addr}?subject=${subject}`;
     link.textContent = addr;

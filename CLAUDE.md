@@ -1,4 +1,4 @@
-# Claude Code context for jonnyhaynes.co.uk
+# Claude Code context for jonnyhaynes.com
 
 This file orients Claude Code on this repo. Keep it lean -- it points, it doesn't
 explain. Substantive design and rationale live in `/docs`; read those before any
