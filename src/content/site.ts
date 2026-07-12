@@ -5,6 +5,7 @@ export const SITE = {
   githubUrl: 'https://github.com/jonnyhaynes',
   linkedinUrl: 'https://www.linkedin.com/in/jonnyhaynes/',
   email: 'jonny@hma.co.uk',
+  resumeUrl: '/resume.pdf',
   hero: {
     microcopy: '// Ey up. I’m Jonny.',
     // Animated-gradient headline (role).
