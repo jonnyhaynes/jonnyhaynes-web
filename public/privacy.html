@@ -135,7 +135,7 @@
       <p>
         Because no personal profile is created and no identifying data is stored,
         there is nothing for you to access or erase here. If you have any privacy
-        question, email <span id="contact"><noscript>jonny [at] colouringcode [dot] com</noscript></span>.
+        question, email <span id="contact"><noscript>jonny.d.haynes [at] gmail [dot] com</noscript></span>.
       </p>
     </main>
 
@@ -143,11 +143,12 @@
       // Email assembled at runtime so the address never appears in the raw
       // HTML source that spam scrapers read.
       (function () {
-        var user = ['jonny'];
-        var domain = ['colouringcode', 'com'];
+        var user = ['jonny.d.haynes'];
+        var domain = ['gmail', 'com'];
         var addr = user.join('') + String.fromCharCode(64) + domain.join('.');
+        var subject = encodeURIComponent('Privacy question — jonnyhaynes.co.uk');
         var a = document.createElement('a');
-        a.href = 'mailto:' + addr;
+        a.href = 'mailto:' + addr + '?subject=' + subject;
         a.textContent = addr;
         var slot = document.getElementById('contact');
         slot.textContent = '';

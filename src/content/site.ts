@@ -4,7 +4,9 @@ export const SITE = {
   name: 'Jonny Haynes',
   githubUrl: 'https://github.com/jonnyhaynes',
   linkedinUrl: 'https://www.linkedin.com/in/jonnyhaynes/',
-  email: 'jonny@hma.co.uk',
+  // Assembled from parts at runtime (see Contact) so the literal address never
+  // sits in the shipped HTML/JS for scrapers. Order: [user, domain, tld].
+  emailParts: ['jonny.d.haynes', 'gmail', 'com'],
   resumeUrl: '/resume.pdf',
   hero: {
     microcopy: '// Ey up. I’m Jonny.',
