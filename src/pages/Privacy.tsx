@@ -8,9 +8,9 @@ const LINK =
   'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start';
 
 /**
- * Privacy page. Static content, folded in from the old standalone
- * public/privacy.html so the whole site shares one footer and stylesheet.
- * Restyled for V2 (Tailwind); no animated gradient.
+ * Privacy page. Static content, served by the /privacy route so the whole
+ * site shares one footer and stylesheet. Restyled for V2 (Tailwind); no
+ * animated gradient.
  */
 export function Privacy() {
   const contactRef = useRef<HTMLSpanElement>(null);
