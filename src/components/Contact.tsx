@@ -7,7 +7,9 @@ const SUBJECT = 'Hello from www.jonnyhaynes.com';
 
 /**
  * Contact section — the closing call to action. Target of the hero's "Get in
- * Touch" CTA (#contact). "Download Resume" links to the PDF in public/.
+ * Touch" CTA (#contact). The "Download Resume" button only renders when a
+ * resume URL is configured (see SITE.resumeUrl), so it degrades away while the
+ * PDF is being rebuilt from docs/resume.md.
  *
  * The email is assembled from parts at runtime rather than written as a literal
  * string, so the full address never sits in the shipped source that spam
@@ -37,12 +39,14 @@ export function Contact() {
         >
           Email Me
         </a>
-        <a
-          href={SITE.resumeUrl}
-          className="rounded-md border border-muted/40 bg-background/70 px-5 py-2.5 font-medium text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-        >
-          Download Resume
-        </a>
+        {SITE.resumeUrl && (
+          <a
+            href={SITE.resumeUrl}
+            className="rounded-md border border-muted/40 bg-background/70 px-5 py-2.5 font-medium text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+          >
+            Download Resume
+          </a>
+        )}
       </div>
     </section>
   );
