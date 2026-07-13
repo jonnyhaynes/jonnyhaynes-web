@@ -94,9 +94,7 @@ export function NowPlaying() {
 
   return (
     <section
-      // Cap the width on mobile/tablet so the square art doesn't balloon on
-      // big phones/tablets; released at lg where it fills its 1/3 column.
-      className="flex w-full max-w-sm flex-col gap-3 lg:max-w-none"
+      className="flex w-full flex-col gap-3"
       aria-label="Now playing on Spotify"
     >
       {/* Politely announce state changes to assistive tech. */}

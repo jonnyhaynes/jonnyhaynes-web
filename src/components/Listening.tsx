@@ -128,15 +128,19 @@ export function Listening() {
         // What I listen to
       </h2>
 
-      {/* Desktop: visualiser takes one third on the left, rotation + fuel span
-          the other two thirds on the right. Single column below lg, visualiser
-          first (matches the old order). */}
-      <div className="mt-6 grid gap-8 lg:grid-cols-3 lg:items-start">
+      {/* Responsive layout:
+          - mobile (<md): single column, stacked full width.
+          - tablet (md): 2-col grid — Now Playing alone in row 1 / col 1; the
+            rotation + fuel block spans both cols on the rows below (col-span-2
+            can't fit beside the 1-col card in a 2-col grid, so it wraps down).
+          - desktop (lg): 3-col grid — the same col-span-2 block now fits in the
+            remaining two columns beside Now Playing, sitting to its right. */}
+      <div className="mt-6 grid gap-8 md:grid-cols-2 md:items-start lg:grid-cols-3">
         <NowPlaying />
-        {/* Nudge the right column down on desktop so "Heavy rotation" lines up
-            with the top of the album art rather than the status line above it
-            (status line text-xs ≈ 1rem + the gap-3 ≈ 0.75rem = 1.75rem). */}
-        <div className="flex flex-col gap-8 lg:col-span-2 lg:pt-7">
+        {/* On desktop, nudge down so "Heavy rotation" lines up with the top of
+            the album art rather than the status line above it (status line
+            text-xs ≈ 1rem + the gap-3 ≈ 0.75rem = 1.75rem). */}
+        <div className="flex flex-col gap-8 md:col-span-2 lg:pt-7">
           <HeavyRotation />
           <CodingFuel />
         </div>
