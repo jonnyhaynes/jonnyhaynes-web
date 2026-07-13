@@ -1,41 +1,29 @@
 {
-  "fetchedAt": "2026-07-12T14:03:27.543Z",
+  "fetchedAt": "2026-07-13T17:16:57.580Z",
   "audiobooks": [
     {
       "title": "How Fascism Works: The Politics of Us and Them",
       "authors": "Jason Stanley",
       "url": "https://open.spotify.com/show/5rchFuM1kWUtUc8pfjl8v5",
-      "cover": "https://i.scdn.co/image/ab6766630000703bdb7051063605da2e8b93d1c9"
+      "cover": "https://i.scdn.co/image/ab676663000022a8db7051063605da2e8b93d1c9"
     },
     {
       "title": "If We Tolerate This: The rise of the far right  and what we can do to stop it",
       "authors": "Daniel Trilling",
       "url": "https://open.spotify.com/show/3emA2xRzpa27HKS9TtWq1n",
-      "cover": "https://i.scdn.co/image/ab6766630000703b40392ad8352c65f2adbac9d1"
+      "cover": "https://i.scdn.co/image/ab676663000022a840392ad8352c65f2adbac9d1"
     },
     {
       "title": "There Is No Antimemetics Division: The thrilling new sci-fi horror novel, 'mind-bendingly brilliant' Guardian",
       "authors": "qntm",
       "url": "https://open.spotify.com/show/6Yg3i7lZEK8bDq01y04TQD",
-      "cover": "https://i.scdn.co/image/ab6766630000703b2678645afc594c701291c661"
+      "cover": "https://i.scdn.co/image/ab676663000022a82678645afc594c701291c661"
     },
     {
       "title": "Before & Laughter",
       "authors": "Jimmy Carr",
       "url": "https://open.spotify.com/show/0kwSE1vUUrISTPcRIekY72",
-      "cover": "https://i.scdn.co/image/ab6766630000703b33844abc0d0808cf358ddba9"
-    },
-    {
-      "title": "1984",
-      "authors": "George Orwell",
-      "url": "https://open.spotify.com/show/1yPC9bBMm1fixXasXnTRGH",
-      "cover": "https://i.scdn.co/image/ab6766630000703b51fff79636ab12e873af0de2"
-    },
-    {
-      "title": "Of Boys and Men",
-      "authors": "Richard V. Reeves",
-      "url": "https://open.spotify.com/show/0X8WLpK4Fl8krcuRUshuO9",
-      "cover": "https://i.scdn.co/image/ab6766630000703b51c17d6c496eda09a3c85a55"
+      "cover": "https://i.scdn.co/image/ab676663000022a833844abc0d0808cf358ddba9"
     }
   ]
 }
