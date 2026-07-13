@@ -130,27 +130,30 @@ export function NowPlaying() {
             className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/50 to-transparent"
           />
 
-          {/* Overlaid content: label, title/artist, then bars along the bottom. */}
+          {/* Overlaid content: a solid-backed text block for guaranteed
+              contrast over any cover, then the bars along the bottom. */}
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4">
-            <p className="font-mono text-xs text-white/80">
-              {playing ? 'Now playing' : 'Last played'}
-            </p>
-            <p className="font-medium text-white">
-              {data!.url ? (
-                <a
-                  href={data!.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-                >
-                  {data!.title}
-                  <span className="sr-only"> (opens on Spotify in a new tab)</span>
-                </a>
-              ) : (
-                data!.title
-              )}
-            </p>
-            <p className="text-sm text-white/90">{data!.artist}</p>
+            <div className="flex flex-col gap-0.5 rounded-md bg-black/80 p-3">
+              <p className="font-mono text-xs text-white/90">
+                {playing ? 'Now playing' : 'Last played'}
+              </p>
+              <p className="font-medium text-white">
+                {data!.url ? (
+                  <a
+                    href={data!.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+                  >
+                    {data!.title}
+                    <span className="sr-only"> (opens on Spotify in a new tab)</span>
+                  </a>
+                ) : (
+                  data!.title
+                )}
+              </p>
+              <p className="text-sm text-white/90">{data!.artist}</p>
+            </div>
             {playing && (
               <Visualiser playing={playing} tempo={features?.tempo} energy={features?.energy} />
             )}
