@@ -1,17 +1,13 @@
-import { useGitHubData, type GitHubProject } from '../data/github';
-import { FEATURED_ORDER } from '../content/projects';
+import { useGitHubData, featuredProjects } from '../data/github';
 import { ProjectCard } from './ProjectCard';
 
 export function Projects() {
   const data = useGitHubData();
 
-  // Order the fetched projects by the curated FEATURED_ORDER; a featured repo
-  // missing from the fetch is skipped. Pitch + challenge come baked into each
-  // project from its own .portfolio.json (see fetch-github.mjs).
-  const byName = new Map((data?.projects ?? []).map((p) => [p.name, p]));
-  const featured: GitHubProject[] = FEATURED_ORDER.map((name) =>
-    byName.get(name),
-  ).filter((p): p is GitHubProject => p !== undefined);
+  // The three most-recently-pushed repos (excluding the portfolio itself).
+  // Pitch + challenge come baked into each project from its own .portfolio.json
+  // (see fetch-github.mjs).
+  const featured = featuredProjects(data);
 
   return (
     // The parent (App) gives this a max-w-6xl container, wider than the
