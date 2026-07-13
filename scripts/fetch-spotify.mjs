@@ -60,11 +60,16 @@ async function topItems(token, type) {
   return json.items;
 }
 
-/** Smallest image >= 64px (or the smallest available) for a compact grid. */
-function pickImage(images) {
+/**
+ * Smallest image at least `minWidth` wide (or the largest available if none
+ * reach it), picking the tightest fit to avoid shipping oversized art. Default
+ * 64px suits the compact avatar/thumbnail grids; pass a larger minWidth for
+ * bigger tiles (e.g. the reading covers) so they aren't upscaled and blurry.
+ */
+function pickImage(images, minWidth = 64) {
   if (!images?.length) return null;
   const sorted = [...images].sort((a, b) => (a.width ?? 0) - (b.width ?? 0));
-  return (sorted.find((i) => (i.width ?? 0) >= 64) ?? sorted[0]).url;
+  return (sorted.find((i) => (i.width ?? 0) >= minWidth) ?? sorted[sorted.length - 1]).url;
 }
 
 /**
@@ -115,7 +120,10 @@ async function savedAudiobooks(token) {
     title: b.name,
     authors: b.authors?.map((a) => a.name).join(', ') ?? '',
     url: b.external_urls?.spotify ?? null,
-    cover: pickImage(b.images),
+    // Larger min: the reading tiles are portrait and are the section's visual
+    // hero. A small thumb upscales and looks blurry, and a 2-col tile on a big
+    // phone can exceed 300px — so target the largest (~640px) Spotify offers.
+    cover: pickImage(b.images, 640),
   }));
 }
 
