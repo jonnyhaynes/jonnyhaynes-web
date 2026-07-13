@@ -137,7 +137,7 @@ export function NowPlaying() {
               <p className="font-mono text-xs text-white/90">
                 {playing ? 'Now playing' : 'Last played'}
               </p>
-              <p className="font-medium text-white">
+              <p className="line-clamp-2 font-medium text-white">
                 {data!.url ? (
                   <a
                     href={data!.url}
@@ -187,7 +187,7 @@ export function NowPlaying() {
           <p className="font-mono text-xs text-muted">
             {playing ? 'Now playing' : 'Last played'}
           </p>
-          <p className="font-medium text-foreground">
+          <p className="line-clamp-2 font-medium text-foreground">
             {data!.url ? (
               <a
                 href={data!.url}
