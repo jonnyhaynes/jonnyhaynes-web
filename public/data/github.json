@@ -1,49 +1,28 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-10T13:08:48.792Z",
+  "fetchedAt": "2026-07-13T18:42:38.650Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
       "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
       "homepageUrl": "https://www.jonnyhaynes.com",
-      "language": "HTML",
+      "language": "TypeScript",
       "languages": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
         "HTML",
-        "Shell",
-        "CSS",
-        "TypeScript",
-        "JavaScript"
+        "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-10T12:57:07Z",
+      "pushedAt": "2026-07-13T18:41:38Z",
       "lastCommit": {
-        "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
-        "committedAt": "2026-07-10T09:39:04Z"
+        "message": "Fix GitHub bake: push via auto-merging PR, not direct push to main (#55)",
+        "committedAt": "2026-07-13T18:41:37Z"
       },
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-08T20:50:44Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Cap routes list at 10 items, then scroll (#64)",
-        "committedAt": "2026-07-08T20:50:44Z"
-      },
-      "pitch": null,
-      "challenge": "Computing honest ride distance and elevation from raw GPX, and fixing a Google Map that rendered zero-width inside a flex layout."
+      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
+      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
     },
     {
       "name": "skillswap",
@@ -59,32 +38,34 @@
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-06-30T12:38:31Z",
+      "pushedAt": "2026-07-10T15:21:56Z",
       "lastCommit": {
-        "message": "fix(security): close PII leak on profiles via table-wide SELECT revok…",
-        "committedAt": "2026-06-30T12:38:28Z"
+        "message": "Update .portfolio.json with structured data (#8)",
+        "committedAt": "2026-07-10T15:21:56Z"
       },
-      "pitch": null,
+      "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
       "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
-      "name": "apollo-events-bridge",
-      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
-      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
-      "homepageUrl": null,
-      "language": "JavaScript",
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
       "languages": [
-        "JavaScript",
-        "HTML"
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
       ],
       "stars": 1,
-      "pushedAt": "2026-06-18T10:03:51Z",
+      "pushedAt": "2026-07-10T14:51:16Z",
       "lastCommit": {
-        "message": "Add MIT license",
-        "committedAt": "2026-06-18T10:03:49Z"
+        "message": "Update challenge description in portfolio JSON",
+        "committedAt": "2026-07-10T14:51:16Z"
       },
-      "pitch": null,
-      "challenge": null
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "freestyle-libre-mcp-server",
@@ -97,13 +78,32 @@
         "JavaScript"
       ],
       "stars": 2,
-      "pushedAt": "2026-04-08T09:33:23Z",
+      "pushedAt": "2026-07-10T14:49:52Z",
       "lastCommit": {
-        "message": "docs: Update README with detailed setup instructions for LibreLinkUp …",
-        "committedAt": "2026-04-08T09:31:27Z"
+        "message": "Update .portfolio.json with structured data",
+        "committedAt": "2026-07-10T14:49:51Z"
       },
-      "pitch": null,
-      "challenge": "Reaching glucose data through LibreLinkUp’s unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
+      "pitch": "An MCP server giving Claude access to Freestyle Libre glucose data.",
+      "challenge": "Reaching glucose data through LibreLinkUp's unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
+    },
+    {
+      "name": "apollo-events-bridge",
+      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
+      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
+      "homepageUrl": null,
+      "language": "JavaScript",
+      "languages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-10T14:49:28Z",
+      "lastCommit": {
+        "message": "Add .portfolio.json with project details",
+        "committedAt": "2026-07-10T14:49:28Z"
+      },
+      "pitch": "Reads Apollo's Discord event embeds and serves them as JSON for a website.",
+      "challenge": "Parsing Apollo's undocumented Discord event embeds — via a bot with Message Content Intent — so the format can be re-derived when Apollo changes it."
     },
     {
       "name": "karma",
@@ -115,38 +115,34 @@
         "TypeScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-03-25T17:39:30Z",
+      "pushedAt": "2026-07-10T14:48:40Z",
       "lastCommit": {
-        "message": "Update README.md",
-        "committedAt": "2026-03-25T17:37:50Z"
+        "message": "Add portfolio configuration for Strava and Komoot",
+        "committedAt": "2026-07-10T14:48:39Z"
       },
-      "pitch": null,
-      "challenge": null
+      "pitch": "Syncs cycling activities between Strava and Komoot.",
+      "challenge": "Syncing Strava and Komoot across two OAuth flows and rate limits, converting activity streams to GPX with atomic, resumable state."
     }
   ],
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
-    "committedAt": "2026-07-10T09:39:04Z"
+    "message": "Fix GitHub bake: push via auto-merging PR, not direct push to main (#55)",
+    "committedAt": "2026-07-13T18:41:37Z"
   },
   "languages": [
     {
       "name": "TypeScript",
-      "count": 4
+      "count": 5
     },
     {
       "name": "JavaScript",
       "count": 3
     },
     {
-      "name": "HTML",
-      "count": 1
-    },
-    {
       "name": "Astro",
       "count": 1
     }
   ],
-  "totalContributions": 516
+  "totalContributions": 632
 }
