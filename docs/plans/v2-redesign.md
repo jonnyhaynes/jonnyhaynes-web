@@ -1,6 +1,7 @@
 # Portfolio V2 — "Modern Yorkshire" redesign
 
-**Status:** In progress — Phase 0 merged to `develop`.
+**Status:** Phases 0–7 complete on `feature/v2-close`. Remaining: reconcile
+`develop` drift, then the launch PR `develop → main` (go-live).
 **Goal:** Rebuild the personal site into a full-stack-role portfolio with a "Modern
 Yorkshire" theme, live GitHub + Spotify data, dark/light mode, and an interactive
 topographic background. Supersedes the old About-page design.

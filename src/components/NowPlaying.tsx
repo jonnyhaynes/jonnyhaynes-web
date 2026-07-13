@@ -39,7 +39,7 @@ export function NowPlaying() {
 
       {/* Track, or the "enjoying the silence" fallback */}
       {data && (playing || data.title) ? (
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           {data.albumArt && (
             <img
               src={data.albumArt}
@@ -56,7 +56,7 @@ export function NowPlaying() {
                   href={data.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="transition-colors hover:text-accent-start"
+                  className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
                 >
                   {data.title}
                 </a>

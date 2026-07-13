@@ -7,7 +7,7 @@ export function Hero() {
       <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
 
       <h1 className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
-        <span className="text-foreground">I&apos;m a </span>
+        <span className="text-foreground">I’m a </span>
         <span className="animate-gradient">{SITE.hero.headline}</span>
       </h1>
 

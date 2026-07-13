@@ -5,7 +5,7 @@ import { Footer } from '../components/Footer';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
 const LINK =
-  'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start';
+  'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 /**
  * Privacy page. Static content, served by the /privacy route so the whole
@@ -37,14 +37,21 @@ export function Privacy() {
 
   return (
     <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+
       <header className="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
-        <Link to="/" className="font-mono text-sm text-muted transition-colors hover:text-accent-start">
+        <Link
+          to="/"
+          className="font-mono text-sm text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+        >
           &larr; Back to home
         </Link>
         <ThemeToggle />
       </header>
 
-      <main className="mx-auto max-w-4xl px-6 py-8">
+      <main id="main" className="mx-auto max-w-4xl px-6 py-8">
         <article className="flex flex-col gap-6">
           <h1 className="text-4xl font-medium tracking-tight">Privacy</h1>
 
