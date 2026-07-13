@@ -80,7 +80,9 @@ function CodingFuel() {
       <p className="font-mono text-xs uppercase tracking-wider text-muted">
         Coding fuel
       </p>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+      {/* Two-up on tablet, but back to single column inside the narrow right
+          column of the desktop two-column layout. */}
+      <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
         {cards.map((c) => (
           <a
             key={c.label}
@@ -128,10 +130,14 @@ export function Listening() {
         // What I listen to
       </h2>
 
-      <div className="mt-6 flex flex-col gap-8">
+      {/* Two columns on desktop: visualiser left, rotation + fuel stacked right.
+          Single column below lg, visualiser first (matches the old order). */}
+      <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:items-start">
         <NowPlaying />
-        <HeavyRotation />
-        <CodingFuel />
+        <div className="flex flex-col gap-8">
+          <HeavyRotation />
+          <CodingFuel />
+        </div>
       </div>
     </section>
   );

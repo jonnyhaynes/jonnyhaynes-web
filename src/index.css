@@ -172,7 +172,9 @@
 }
 
 .is-playing .eq-bar {
-  animation: eq-bounce 0.9s ease-in-out infinite;
+  /* Duration tracks the track's tempo when known (set via --eq-duration on the
+   * container); defaults to the original 0.9s when tempo is unavailable. */
+  animation: eq-bounce var(--eq-duration, 0.9s) ease-in-out infinite;
 }
 
 .is-playing .eq-bar:nth-child(2) {

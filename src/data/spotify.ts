@@ -33,12 +33,29 @@ export type SpotifyTop = {
   playlists?: SpotifyPlaylist[];
 };
 
+/** Musical character of a track (0–1 unless noted). Null when the audio-features
+ * endpoint is unavailable — every consumer must degrade gracefully. */
+export type SpotifyAudioFeatures = {
+  /** Beats per minute. */
+  tempo: number | null;
+  energy: number | null;
+  /** Musical positivity/mood. */
+  valence: number | null;
+  danceability: number | null;
+};
+
 export type NowPlaying = {
   isPlaying: boolean;
   title?: string;
   artist?: string;
   url?: string | null;
   albumArt?: string | null;
+  trackId?: string | null;
+  /** Playback position at fetch time (ms); interpolated client-side thereafter. */
+  progressMs?: number | null;
+  durationMs?: number | null;
+  /** Present only for the actively-playing track; null on API failure. */
+  audioFeatures?: SpotifyAudioFeatures | null;
 };
 
 export type SpotifyAudiobook = {
@@ -128,4 +145,36 @@ export function useNowPlaying(intervalMs = 60_000): NowPlaying | null {
   }, [intervalMs]);
 
   return data;
+}
+
+/**
+ * Interpolates the live playback position between 60s polls so a progress bar
+ * advances smoothly. Anchors on the poll's progressMs and ticks every second,
+ * clamped to durationMs. Returns null when not playing or data is missing, so
+ * the progress bar simply doesn't render. Resets whenever the track or reported
+ * position changes (i.e. on each fresh poll).
+ */
+export function usePlaybackPosition(data: NowPlaying | null): number | null {
+  // Elapsed-since-anchor, bumped only from the interval callback (never
+  // synchronously in the effect body — that triggers cascading renders).
+  const [tick, setTick] = useState(0);
+
+  const playing = data?.isPlaying ?? false;
+  const anchorMs = data?.progressMs ?? null;
+  const durationMs = data?.durationMs ?? null;
+  const trackId = data?.trackId ?? null;
+
+  useEffect(() => {
+    if (!playing || anchorMs == null || durationMs == null) return;
+
+    const anchoredAt = performance.now();
+    // Force a re-derive each second; the actual position is computed below so
+    // no state need be written synchronously here.
+    const id = setInterval(() => setTick(performance.now() - anchoredAt), 1000);
+    return () => clearInterval(id);
+    // trackId included so a track change with an identical progressMs still resets.
+  }, [playing, anchorMs, durationMs, trackId]);
+
+  if (!playing || anchorMs == null || durationMs == null) return null;
+  return Math.min(anchorMs + tick, durationMs);
 }
