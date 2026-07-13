@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-12T14:03:27.542Z",
+  "fetchedAt": "2026-07-13T17:16:57.580Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f178896c4b043fb3063178afd716"
     },
     {
-      "name": "Lamb of God",
-      "url": "https://open.spotify.com/artist/3JFsVIxOn7STeilPICkkB2",
-      "image": "https://i.scdn.co/image/ab6761610000f178b6d0c45dea35ce01e293af64"
+      "name": "Green Day",
+      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
+      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
@@ -70,28 +70,28 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
     },
     {
+      "title": "Enter Sandman - Remastered 2021",
+      "artist": "Metallica",
+      "url": "https://open.spotify.com/track/3DwQ7AH3xGD9h65ezslm6q",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
+    },
+    {
       "title": "Bohemian Rhapsody - Remastered 2011",
       "artist": "Queen",
       "url": "https://open.spotify.com/track/7tFiyTwD0nx5a1eklYtX2J",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ce4f1737bc8a646c8c4bd25a"
     },
     {
+      "title": "The Kill (Bury Me)",
+      "artist": "Thirty Seconds To Mars",
+      "url": "https://open.spotify.com/track/12IZu2qzsoaHgHlCfjwwjs",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0b0a20bf4ddc2c9af6d53e0"
+    },
+    {
       "title": "Limelight",
       "artist": "Rush",
       "url": "https://open.spotify.com/track/0K6yUnIKNsFtfIpTgGtcHm",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
-    },
-    {
-      "title": "Nightshift Superstar",
-      "artist": "Muse",
-      "url": "https://open.spotify.com/track/51ukPU68k4Zl0cLdNGXaHn",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
-    },
-    {
-      "title": "Life Is Glamorous",
-      "artist": "Spencer Sutherland",
-      "url": "https://open.spotify.com/track/5UtOFBfAcrUpY42Alf8k9Y",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048512a3b82c830575dea0ee1ddf9"
     }
   ],
   "playlists": [
