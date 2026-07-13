@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
 
-const BAR_COUNT = 12;
+const BAR_COUNT = 32;
 
 /**
  * A row of equalizer bars anchored to the bottom edge of the card, overlaid on
@@ -36,16 +35,23 @@ function Visualiser({
 
   return (
     <div
-      className={`flex h-16 items-end gap-1 ${playing ? 'is-playing' : ''}`}
+      className={`eq-row flex h-14 items-end gap-[2px] ${playing ? 'is-playing' : ''}`}
       style={style}
       aria-hidden="true"
     >
       {Array.from({ length: BAR_COUNT }, (_, i) => (
         <span
-          // Stagger each bar so the row ripples rather than pulsing in unison.
           key={i}
-          className="eq-bar flex-1 rounded-sm bg-white/80"
-          style={{ animationDelay: `${(i % 6) * -0.15}s`, height: '100%' }}
+          className="eq-bar flex-1 rounded-full"
+          style={
+            {
+              // Position each bar's slice of the shared gradient by its place in
+              // the row; seed a varied start so bars don't animate in lockstep.
+              '--eq-pos': `${(i / (BAR_COUNT - 1)) * 100}%`,
+              animationDelay: `${(i % 7) * -0.13}s`,
+              height: '100%',
+            } as React.CSSProperties
+          }
         />
       ))}
     </div>
@@ -59,68 +65,9 @@ function formatTime(ms: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-/**
- * Samples the average colour of an album-art image via a tiny offscreen canvas
- * (no dependency). Returns an rgb() string, or null while loading / on failure
- * (e.g. a tainted cross-origin canvas) so the glow falls back to the accent.
- */
-function useDominantColour(src: string | null | undefined): string | null {
-  // Store the colour alongside the src it was sampled from, so a stale colour
-  // from the previous track is never shown while the new one loads. setState is
-  // only ever called from the async onload callback (not synchronously in the
-  // effect body), keeping the react-hooks linter happy.
-  const [sampled, setSampled] = useState<{ src: string; colour: string } | null>(null);
-
-  useEffect(() => {
-    if (!src) return;
-
-    let cancelled = false;
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = src;
-
-    img.onload = () => {
-      if (cancelled) return;
-      try {
-        const size = 16; // downscale — we only want an average, not detail.
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        ctx.drawImage(img, 0, 0, size, size);
-        const { data } = ctx.getImageData(0, 0, size, size);
-        let r = 0;
-        let g = 0;
-        let b = 0;
-        const px = data.length / 4;
-        for (let i = 0; i < data.length; i += 4) {
-          r += data[i];
-          g += data[i + 1];
-          b += data[i + 2];
-        }
-        setSampled({
-          src,
-          colour: `rgb(${Math.round(r / px)}, ${Math.round(g / px)}, ${Math.round(b / px)})`,
-        });
-      } catch {
-        // Tainted canvas or similar — keep the accent fallback.
-      }
-    };
-
-    return () => {
-      cancelled = true;
-    };
-  }, [src]);
-
-  // Only surface the colour if it belongs to the current src.
-  return sampled && sampled.src === src ? sampled.colour : null;
-}
-
 export function NowPlaying() {
   const data = useNowPlaying();
   const position = usePlaybackPosition(data);
-  const glow = useDominantColour(data?.albumArt);
 
   // The hook returns null while loading and on failure/rate-limit; any object
   // (even isPlaying:false) means the API answered → "Connected".
@@ -153,10 +100,7 @@ export function NowPlaying() {
 
       {hasArt ? (
         // Square, full-bleed art card with everything overlaid.
-        <div
-          className="relative aspect-square w-full overflow-hidden rounded-lg border border-muted/20"
-          style={{ boxShadow: glow ? `0 8px 40px -12px ${glow}` : undefined }}
-        >
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-muted/20">
           <img
             src={data!.albumArt!}
             alt=""

@@ -117,32 +117,56 @@ export function useSpotifyAudiobooks(): SpotifyAudiobooks | null {
   return data;
 }
 
+/** Slow poll when paused/idle — nothing is changing fast. */
+const IDLE_POLL_MS = 60_000;
+/** Never poll more often than this, even on a nearly-finished track. */
+const MIN_POLL_MS = 10_000;
+/** Buffer past the reported track end so the next track has registered. */
+const END_BUFFER_MS = 2_000;
+
 /**
- * Polls the live /api/now-playing function. Returns null while loading / on
- * failure; the hero chip only renders when something is actually playing.
+ * Polls the live /api/now-playing function on a *self-scheduling* timer: while a
+ * track is playing it aims the next poll at the track's end (so fresh artwork /
+ * metadata appear right when the song changes), clamped to [MIN_POLL_MS,
+ * IDLE_POLL_MS]; when paused or idle it backs off to IDLE_POLL_MS. Returns null
+ * while loading / on failure so the section degrades gracefully.
  */
-export function useNowPlaying(intervalMs = 60_000): NowPlaying | null {
+export function useNowPlaying(): NowPlaying | null {
   const [data, setData] = useState<NowPlaying | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+
+    // Decide how long to wait before the next poll based on the response.
+    const nextDelay = (d: NowPlaying | null): number => {
+      if (!d?.isPlaying || d.progressMs == null || d.durationMs == null) {
+        return IDLE_POLL_MS;
+      }
+      const remaining = d.durationMs - d.progressMs + END_BUFFER_MS;
+      return Math.min(IDLE_POLL_MS, Math.max(MIN_POLL_MS, remaining));
+    };
 
     const poll = () => {
       fetch('/api/now-playing')
         .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
         .then((json: NowPlaying) => {
-          if (!cancelled) setData(json);
+          if (cancelled) return;
+          setData(json);
+          timer = setTimeout(poll, nextDelay(json));
         })
-        .catch(() => {});
+        .catch(() => {
+          // On failure, retry on the slow cadence rather than giving up.
+          if (!cancelled) timer = setTimeout(poll, IDLE_POLL_MS);
+        });
     };
 
     poll();
-    const id = setInterval(poll, intervalMs);
     return () => {
       cancelled = true;
-      clearInterval(id);
+      clearTimeout(timer);
     };
-  }, [intervalMs]);
+  }, []);
 
   return data;
 }

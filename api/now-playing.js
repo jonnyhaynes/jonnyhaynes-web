@@ -67,8 +67,10 @@ async function audioFeatures(trackId, auth) {
 }
 
 export default async function handler(req, res) {
-  // Short cache: real-time-ish without hammering Spotify on every page view.
-  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=60');
+  // Very short edge cache: the client schedules polls right at track-end, so a
+  // long cache would serve a stale track at the moment we need the new one.
+  // Still shields Spotify from per-page-view bursts.
+  res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=30');
 
   try {
     const token = await getAccessToken();

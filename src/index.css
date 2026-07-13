@@ -154,46 +154,90 @@
   }
 }
 
-/* Equalizer bars for the "now playing" visualiser. A row of bars bounces,
- * staggered (delays set inline per bar), only while playing. Peak height scales
- * with --eq-amplitude (from the track's energy) and speed with --eq-duration
- * (from tempo); both have sensible fallbacks. Honest, non-audio motion — there
- * is no live audio stream to react to. */
-@keyframes eq-bounce {
-  0%,
-  100% {
-    transform: scaleY(0.2);
-  }
-  50% {
-    transform: scaleY(var(--eq-amplitude, 0.75));
-  }
+/* Equalizer bars for the "now playing" visualiser. A row of thin bars, painted
+ * with the site's living magenta→indigo gradient (spanning the whole row, not
+ * per bar) and bouncing only while playing. Peak height scales with
+ * --eq-amplitude (track energy) and base speed with --eq-duration (tempo); both
+ * fall back to sensible defaults. Honest, non-audio motion — there is no live
+ * audio stream to react to.
+ *
+ * Randomness (not a travelling wave): each bar is assigned a different keyframe
+ * — with its own peak heights — plus a mix of durations and delays across
+ * nth-child buckets, so no coherent left-to-right pattern emerges. */
+.eq-row {
+  /* Drift the shared gradient hues via the same registered @property colours as
+   * the hero headline, so the whole row's colour lives and breathes in sync. */
+  animation: gradient-drift 6s linear infinite alternate;
+  /* Establish a container so bars can size their gradient to the row width. */
+  container-type: inline-size;
 }
 
 .eq-bar {
   transform-origin: bottom;
-  transform: scaleY(0.25);
+  transform: scaleY(0.3);
+  /* Each bar paints the full-width row gradient but only shows the slice at its
+   * own horizontal position (background-size = the row width, positioned per
+   * bar via --eq-pos), so the bars together read as one continuous gradient
+   * across the visualiser rather than each repeating the whole ramp. */
+  background-image: linear-gradient(to right in oklch, var(--grad-1), var(--grad-2));
+  background-size: 100cqw 100%;
+  background-position: var(--eq-pos, 50%) center;
+  background-repeat: no-repeat;
 }
 
-/* Vary the resting/peak height a touch per bar so the row reads as organic
- * rather than a uniform pulse. */
-.eq-bar:nth-child(3n) {
-  transform: scaleY(0.4);
+@keyframes eq-a {
+  0%, 100% { transform: scaleY(0.15); }
+  50% { transform: scaleY(var(--eq-amplitude, 0.75)); }
 }
-.eq-bar:nth-child(4n) {
-  transform: scaleY(0.15);
+@keyframes eq-b {
+  0%, 100% { transform: scaleY(0.5); }
+  40% { transform: scaleY(calc(var(--eq-amplitude, 0.75) * 0.7)); }
+  70% { transform: scaleY(0.2); }
+}
+@keyframes eq-c {
+  0%, 100% { transform: scaleY(0.25); }
+  30% { transform: scaleY(var(--eq-amplitude, 0.75)); }
+  60% { transform: scaleY(0.4); }
+}
+@keyframes eq-d {
+  0%, 100% { transform: scaleY(0.6); }
+  50% { transform: scaleY(0.1); }
 }
 
 .is-playing .eq-bar {
-  animation: eq-bounce var(--eq-duration, 0.9s) ease-in-out infinite;
+  animation: eq-a var(--eq-duration, 0.9s) ease-in-out infinite;
+}
+/* Different keyframe + off-multiple durations per bucket → no wave, and because
+ * the durations are mutually irrational-ish they keep drifting out of phase. */
+.is-playing .eq-bar:nth-child(3n) {
+  animation-name: eq-b;
+  animation-duration: calc(var(--eq-duration, 0.9s) * 1.37);
+}
+.is-playing .eq-bar:nth-child(3n + 1) {
+  animation-name: eq-c;
+  animation-duration: calc(var(--eq-duration, 0.9s) * 0.83);
+}
+.is-playing .eq-bar:nth-child(4n) {
+  animation-name: eq-d;
+  animation-duration: calc(var(--eq-duration, 0.9s) * 1.11);
+}
+.is-playing .eq-bar:nth-child(5n) {
+  animation-duration: calc(var(--eq-duration, 0.9s) * 1.53);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .eq-row {
+    animation: none;
+  }
   .is-playing .eq-bar {
     animation: none;
-    /* Hold a static staggered profile so the visualiser still reads as bars. */
+    /* Hold a static, varied profile so the visualiser still reads as bars. */
     transform: scaleY(var(--eq-amplitude, 0.6));
   }
   .is-playing .eq-bar:nth-child(2n) {
-    transform: scaleY(0.35);
+    transform: scaleY(0.3);
+  }
+  .is-playing .eq-bar:nth-child(3n) {
+    transform: scaleY(0.5);
   }
 }
