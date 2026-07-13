@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-13T17:23:52.839Z",
+  "fetchedAt": "2026-07-13T20:16:15.435Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -88,10 +88,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851f0b0a20bf4ddc2c9af6d53e0"
     },
     {
-      "title": "Limelight",
-      "artist": "Rush",
-      "url": "https://open.spotify.com/track/0K6yUnIKNsFtfIpTgGtcHm",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
+      "title": "Beat It",
+      "artist": "Michael Jackson",
+      "url": "https://open.spotify.com/track/3BovdzfaX4jb5KFQwoPfAw",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
     }
   ],
   "playlists": [
