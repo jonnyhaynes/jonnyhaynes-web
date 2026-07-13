@@ -1,6 +1,6 @@
 # Now Playing visualiser + "What I listen to" two-column layout
 
-**Status:** Draft — awaiting human approval (plan-first per CLAUDE.md)
+**Status:** Complete — implemented in PR #45 (issue #44); awaiting human review + merge
 **Type:** `[ai-assisted]`
 **Related:** `src/components/NowPlaying.tsx`, `src/components/Listening.tsx`, `api/now-playing.js`, `src/data/spotify.ts`, `src/index.css`
 
