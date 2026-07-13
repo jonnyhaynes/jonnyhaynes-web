@@ -28,7 +28,7 @@ function HeavyRotation() {
                   <img
                     src={a.image}
                     alt={a.name}
-                    className="size-12 rounded-full"
+                    className="size-12 rounded-full object-cover"
                     width={48}
                     height={48}
                   />
@@ -87,7 +87,7 @@ function CodingFuel() {
             href={c.url}
             target="_blank"
             rel="noreferrer noopener"
-            className="group flex items-center gap-4 rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm transition-colors hover:border-accent-start/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+            className="group flex min-w-0 items-center gap-4 rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm transition-colors hover:border-accent-start/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
           >
             {c.cover ? (
               <img

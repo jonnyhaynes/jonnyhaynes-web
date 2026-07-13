@@ -8,8 +8,8 @@ const SUBJECT = 'Hello from www.jonnyhaynes.com';
 /**
  * Contact section — the closing call to action. Target of the hero's "Get in
  * Touch" CTA (#contact). The "Download Resume" button only renders when a
- * resume URL is configured (see SITE.resumeUrl), so it degrades away while the
- * PDF is being rebuilt from docs/resume.md.
+ * resume URL is configured (see SITE.resumeUrl), so it degrades away if the
+ * PDF (public/resume.pdf, built from docs/resume.md) is ever absent.
  *
  * The email is assembled from parts at runtime rather than written as a literal
  * string, so the full address never sits in the shipped source that spam

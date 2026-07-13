@@ -7,9 +7,10 @@ export const SITE = {
   // Assembled from parts at runtime (see Contact) so the literal address never
   // sits in the shipped HTML/JS for scrapers. Order: [user, domain, tld].
   emailParts: ['jonny.d.haynes', 'gmail', 'com'],
-  // Resume PDF being rebuilt from docs/resume.md; null hides the download
-  // button until the file lands in public/ (graceful degradation).
-  resumeUrl: null as string | null,
+  // Resume PDF, built from docs/resume.md by scripts/resume/build-resume.mjs
+  // and committed to public/. null would hide the download button (graceful
+  // degradation) while it's absent.
+  resumeUrl: '/resume.pdf' as string | null,
   hero: {
     microcopy: '// Ey up. I’m Jonny.',
     // Animated-gradient headline (role).

@@ -16,17 +16,17 @@ export function Reading() {
   return (
     <section id="reading" className="scroll-mt-16 py-16">
       <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // What I&apos;m reading
+        // What I’m reading
       </h2>
 
       <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {books.map((b) => (
-          <li key={b.title}>
+          <li key={b.title} className="min-w-0">
             <a
               href={b.url ?? '#'}
               target="_blank"
               rel="noreferrer noopener"
-              className="flex gap-3 rounded-lg border border-muted/20 bg-background/70 p-3 backdrop-blur-sm transition-colors hover:border-accent-start/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              className="flex min-w-0 gap-3 rounded-lg border border-muted/20 bg-background/70 p-3 backdrop-blur-sm transition-colors hover:border-accent-start/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
               {b.cover && (
                 <img
@@ -37,7 +37,7 @@ export function Reading() {
                   height={64}
                 />
               )}
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="truncate font-medium text-foreground">{b.title}</p>
                 <p className="truncate text-sm text-muted">{b.authors}</p>
               </div>
