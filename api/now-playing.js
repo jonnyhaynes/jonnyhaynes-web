@@ -8,6 +8,7 @@
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currently-playing';
 const RECENT_URL = 'https://api.spotify.com/v1/me/player/recently-played?limit=1';
+const AUDIO_FEATURES_URL = 'https://api.spotify.com/v1/audio-features';
 
 async function getAccessToken() {
   const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } = process.env;
@@ -31,19 +32,45 @@ async function getAccessToken() {
   return json.access_token;
 }
 
-function trackShape(track, isPlaying) {
+function trackShape(track, isPlaying, progressMs = null) {
   return {
     isPlaying,
     title: track.name,
     artist: track.artists?.map((a) => a.name).join(', ') ?? '',
     url: track.external_urls?.spotify ?? null,
     albumArt: track.album?.images?.[0]?.url ?? null,
+    trackId: track.id ?? null,
+    progressMs,
+    durationMs: track.duration_ms ?? null,
   };
 }
 
+// Best-effort audio-features lookup. Spotify restricted this endpoint for apps
+// registered after Nov 2024; on any failure we return nulls so every dependent
+// visual (tempo-driven equalizer, energy/valence/danceability meters) degrades
+// gracefully rather than breaking the section.
+async function audioFeatures(trackId, auth) {
+  if (!trackId) return null;
+  try {
+    const res = await fetch(`${AUDIO_FEATURES_URL}/${trackId}`, auth);
+    if (res.status !== 200) return null;
+    const f = await res.json();
+    return {
+      tempo: typeof f.tempo === 'number' ? f.tempo : null,
+      energy: typeof f.energy === 'number' ? f.energy : null,
+      valence: typeof f.valence === 'number' ? f.valence : null,
+      danceability: typeof f.danceability === 'number' ? f.danceability : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
-  // Short cache: real-time-ish without hammering Spotify on every page view.
-  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=60');
+  // Very short edge cache: the client schedules polls right at track-end, so a
+  // long cache would serve a stale track at the moment we need the new one.
+  // Still shields Spotify from per-page-view bursts.
+  res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=30');
 
   try {
     const token = await getAccessToken();
@@ -55,7 +82,11 @@ export default async function handler(req, res) {
     if (playing.status === 200) {
       const data = await playing.json();
       if (data?.item && data.is_playing) {
-        return res.status(200).json(trackShape(data.item, true));
+        const shape = trackShape(data.item, true, data.progress_ms ?? null);
+        // Only enrich the actively-playing track — progress and tempo are
+        // meaningless for a paused/recent track.
+        shape.audioFeatures = await audioFeatures(shape.trackId, auth);
+        return res.status(200).json(shape);
       }
     }
 
