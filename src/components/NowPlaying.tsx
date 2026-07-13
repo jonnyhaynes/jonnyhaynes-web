@@ -39,7 +39,7 @@ export function NowPlaying() {
 
       {/* Track, or the "enjoying the silence" fallback */}
       {data && (playing || data.title) ? (
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           {data.albumArt && (
             <img
               src={data.albumArt}
