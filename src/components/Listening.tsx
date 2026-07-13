@@ -133,7 +133,10 @@ export function Listening() {
           first (matches the old order). */}
       <div className="mt-6 grid gap-8 lg:grid-cols-3 lg:items-start">
         <NowPlaying />
-        <div className="flex flex-col gap-8 lg:col-span-2">
+        {/* Nudge the right column down on desktop so "Heavy rotation" lines up
+            with the top of the album art rather than the status line above it
+            (status line text-xs ≈ 1rem + the gap-3 ≈ 0.75rem = 1.75rem). */}
+        <div className="flex flex-col gap-8 lg:col-span-2 lg:pt-7">
           <HeavyRotation />
           <CodingFuel />
         </div>
