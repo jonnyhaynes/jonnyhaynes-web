@@ -242,7 +242,7 @@ async function main() {
   await mkdir(dirname(OUT), { recursive: true });
   await writeFile(OUT, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(
-    `Wrote ${OUT}: ${payload.repos.length} repos, ${payload.languages.length} languages` +
+    `Wrote ${OUT}: ${payload.projects.length} projects, ${payload.languages.length} languages` +
       (payload.totalContributions != null
         ? `, ${payload.totalContributions} contributions`
         : ' (no contribution total — tokenless mode)'),
