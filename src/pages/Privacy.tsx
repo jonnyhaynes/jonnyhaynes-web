@@ -8,9 +8,9 @@ const LINK =
   'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start';
 
 /**
- * Privacy page. Static content, folded in from the old standalone
- * public/privacy.html so the whole site shares one footer and stylesheet.
- * Restyled for V2 (Tailwind); no animated gradient.
+ * Privacy page. Static content, served by the /privacy route so the whole
+ * site shares one footer and stylesheet. Restyled for V2 (Tailwind); no
+ * animated gradient.
  */
 export function Privacy() {
   const contactRef = useRef<HTMLSpanElement>(null);
@@ -18,12 +18,13 @@ export function Privacy() {
   useEffect(() => {
     // Email assembled at runtime so the address never appears in the raw HTML
     // source that spam scrapers read.
-    const user = ['jonny'];
-    const domain = ['colouringcode', 'com'];
+    const user = ['jonny.d.haynes'];
+    const domain = ['gmail', 'com'];
     const addr = user.join('') + String.fromCharCode(64) + domain.join('.');
 
+    const subject = encodeURIComponent('Privacy question — www.jonnyhaynes.com');
     const link = document.createElement('a');
-    link.href = `mailto:${addr}`;
+    link.href = `mailto:${addr}?subject=${subject}`;
     link.textContent = addr;
     link.className = LINK;
 
@@ -119,7 +120,7 @@ export function Privacy() {
               stored, there is nothing for you to access or erase here. If you
               have any privacy question, email{' '}
               <span ref={contactRef}>
-                <noscript>jonny [at] colouringcode [dot] com</noscript>
+                <noscript>jonny.d.haynes [at] gmail [dot] com</noscript>
               </span>
               .
             </p>

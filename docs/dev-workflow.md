@@ -1,6 +1,6 @@
-# jonnyhaynes.co.uk Development Workflow
+# jonnyhaynes.com Development Workflow
 
-The repeatable process and standing conventions for building jonnyhaynes.co.uk. This
+The repeatable process and standing conventions for building jonnyhaynes.com. This
 captures *how* we build; *what* to build lives in the source-of-truth docs under
 `/docs`. Read the relevant sections before starting a piece of work, and flag any
 change to a load-bearing decision explicitly rather than slipping it in.

@@ -1,5 +1,7 @@
+import { Contact } from '../components/Contact';
 import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
+import { Health } from '../components/Health';
 import { Hero } from '../components/Hero';
 import { Listening } from '../components/Listening';
 import { Projects } from '../components/Projects';
@@ -36,7 +38,12 @@ export function Home() {
         <div className="mx-auto max-w-4xl px-6">
           <Reading />
         </div>
-        {/* Fitbit and Resume/Contact land in later phases. */}
+        <div className="mx-auto max-w-4xl px-6">
+          <Health />
+        </div>
+        <div className="mx-auto max-w-4xl px-6">
+          <Contact />
+        </div>
       </main>
 
       <Footer />
