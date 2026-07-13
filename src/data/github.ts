@@ -78,8 +78,26 @@ export function useGitHubData(): GitHubData | null {
   return data;
 }
 
-/** Repos never surfaced as "currently building" (this portfolio itself). */
-const CURRENTLY_BUILDING_EXCLUDE = new Set(['jonnyhaynes-web']);
+/**
+ * Repos never surfaced as own work (this portfolio itself) — excluded from both
+ * the "currently building" chip and the featured Projects grid.
+ */
+export const SELF_EXCLUDE = new Set(['jonnyhaynes-web']);
+
+/**
+ * The featured projects for the Projects grid: the most-recently-pushed repos
+ * (baked data is already pushedAt-desc), excluding the portfolio itself. Returns
+ * an empty array when data is absent so the section degrades gracefully.
+ */
+export function featuredProjects(
+  data: GitHubData | null,
+  limit = 3,
+): GitHubProject[] {
+  if (!data) return [];
+  return data.projects
+    .filter((p) => !SELF_EXCLUDE.has(p.name))
+    .slice(0, limit);
+}
 
 /**
  * The repo to show in the "currently building" chip: the most-recently-pushed
@@ -92,9 +110,7 @@ export function currentlyBuilding(
 ): GitHubLastActivity | null {
   if (!data) return null;
 
-  const pick = data.projects.find(
-    (p) => !CURRENTLY_BUILDING_EXCLUDE.has(p.name),
-  );
+  const pick = data.projects.find((p) => !SELF_EXCLUDE.has(p.name));
   if (pick) {
     return {
       repo: pick.name,
@@ -105,7 +121,7 @@ export function currentlyBuilding(
   }
 
   // No usable project — fall back to lastActivity unless it's the excluded repo.
-  if (data.lastActivity && !CURRENTLY_BUILDING_EXCLUDE.has(data.lastActivity.repo)) {
+  if (data.lastActivity && !SELF_EXCLUDE.has(data.lastActivity.repo)) {
     return data.lastActivity;
   }
   return null;
