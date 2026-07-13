@@ -28,7 +28,7 @@ function HeavyRotation() {
                   <img
                     src={a.image}
                     alt={a.name}
-                    className="size-12 rounded-full"
+                    className="size-12 rounded-full object-cover"
                     width={48}
                     height={48}
                   />
