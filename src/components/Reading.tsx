@@ -16,7 +16,7 @@ export function Reading() {
   return (
     <section id="reading" className="scroll-mt-16 py-16">
       <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // What I&apos;m reading
+        // What I’m reading
       </h2>
 
       <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
