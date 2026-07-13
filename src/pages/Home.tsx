@@ -12,6 +12,10 @@ import { ThemeToggle } from '../theme/ThemeToggle';
 export function Home() {
   return (
     <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+
       {/* The // Jonny Haynes line is gone — the hero carries the name now.
           The live "currently building" chip takes its place opposite the
           toggle. */}
@@ -20,7 +24,7 @@ export function Home() {
         <ThemeToggle />
       </header>
 
-      <main>
+      <main id="main">
         {/* Hero and prose sections stay at the narrower reading width; the
             Projects grid manages its own wider container. */}
         <div className="mx-auto max-w-4xl px-6">

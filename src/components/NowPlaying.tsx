@@ -56,7 +56,7 @@ export function NowPlaying() {
                   href={data.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="transition-colors hover:text-accent-start"
+                  className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
                 >
                   {data.title}
                 </a>
