@@ -27,7 +27,9 @@ export function Hero() {
           Get in Touch
         </a>
 
-        <div className="ml-auto flex items-center gap-3">
+        {/* Mobile: full width forces the icons onto their own row beneath the
+            buttons. From sm up: auto width, pushed right on the same row. */}
+        <div className="flex w-full items-center gap-3 sm:ml-auto sm:w-auto">
           <a
             href={SITE.githubUrl}
             target="_blank"
