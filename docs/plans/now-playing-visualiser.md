@@ -65,18 +65,31 @@ From **one extra call** — `GET /v1/audio-features/{id}`:
   `requestAnimationFrame`/`setInterval(1s)` between polls so the bar advances
   smoothly without hammering the API. Reset on each new poll / track change.
 
-### 3. `src/components/NowPlaying.tsx`
+### 3. `src/components/NowPlaying.tsx` — square full-bleed card (revised)
 
-- **Progress bar:** thin bar under the track meta; width = `position / durationMs`.
-  Show `m:ss / m:ss`. Only when playing and both values present.
-- **Colour glow:** extract dominant colour from `albumArt` client-side (small
-  canvas average or a tiny sampler — no new dependency) and apply as a soft
-  `box-shadow`/radial background behind the card. Fallback: existing `accent-start`.
-- **Tempo-driven equalizer:** pass `tempo` to `<Equalizer>`; map BPM → animation
-  duration via CSS custom property (`--eq-duration`) instead of the fixed 0.9s.
-  Clamp to a sane range (e.g. 0.4s–1.2s). Fallback to 0.9s when tempo is null.
-- **Audio-features meters:** three slim bars (energy / positivity / danceability),
-  each `0–1` → width %. Omitted entirely when features are null.
+**Revised direction (v2):** the card is a **square** with the album art filling its
+full width. Everything else is overlaid on the art — no separate meta row, no
+side-by-side thumbnail. The feature meters are **dropped**.
+
+- **Square art, full-bleed:** `aspect-square`, art `object-cover` filling the card,
+  `overflow-hidden` + `rounded-lg`. This is the whole card body.
+- **Gradient scrim:** a dark bottom-up gradient (transparent → dark) over the lower
+  ~45% of the art, so overlaid text and bars stay legible on *any* cover.
+- **Visualiser bars in the scrim:** a row of ~12 equalizer bars anchored to the
+  bottom edge, rising over the art within the scrim. Bounce **speed** driven by real
+  `tempo` (via `--eq-duration`); a per-bar height loop supplies the (honest, non-audio)
+  motion. `energy` optionally scales overall bar amplitude. Fallback: fixed speed.
+- **Title / artist:** overlaid in the scrim above the bars, white text with the
+  existing link/hover behaviour. `Now playing` / `Last played` label retained.
+- **Progress bar:** a thin line pinned to the **very bottom edge** of the card,
+  width = `position / durationMs`. Only when playing with both values present.
+- **Colour glow:** dominant colour from `albumArt` (canvas sampler, no dependency)
+  kept as a soft glow *behind* the card (`box-shadow`), accent fallback.
+- **Fallback / not-playing:** when there's no art or nothing has ever played, show
+  the existing `// Currently enjoying the silence.` state (no square art). When
+  showing `Last played`, render the art statically with no bars/progress.
+- **Removed:** the `FeatureMeters` component and all energy/positivity/dance UI.
+  (Audio-features `tempo`/`energy` still fetched and used to drive the bars.)
 
 ### 4. `src/components/Listening.tsx`
 

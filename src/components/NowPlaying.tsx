@@ -1,32 +1,53 @@
-import { useEffect, useRef, useState } from 'react';
-import {
-  useNowPlaying,
-  usePlaybackPosition,
-  type SpotifyAudioFeatures,
-} from '../data/spotify';
+import { useEffect, useState } from 'react';
+import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
+
+const BAR_COUNT = 12;
 
 /**
- * Three CSS equalizer bars; they bounce only when `playing` (spec §D). Bounce
- * speed tracks the track's tempo when available (faster song → faster bars),
- * falling back to the default 0.9s. Driven by the --eq-duration custom property.
+ * A row of equalizer bars anchored to the bottom edge of the card, overlaid on
+ * the album art within the scrim. Bounce speed tracks the track's tempo (faster
+ * song → faster bars) and overall amplitude scales with energy; both fall back
+ * to sensible defaults. The per-bar height loop is honest, non-audio motion —
+ * we have no live audio stream to react to (see plan). Hidden when not playing.
  */
-function Equalizer({ playing, tempo }: { playing: boolean; tempo?: number | null }) {
-  // Map BPM → animation duration. ~60bpm → slow, ~180bpm → fast; clamp so the
-  // motion always reads as an equalizer rather than a strobe or a crawl.
+function Visualiser({
+  playing,
+  tempo,
+  energy,
+}: {
+  playing: boolean;
+  tempo?: number | null;
+  energy?: number | null;
+}) {
+  // Map BPM → animation duration. ~60bpm slow, ~180bpm fast; clamp so the motion
+  // always reads as an equalizer rather than a strobe or a crawl.
   const duration =
     tempo && tempo > 0
       ? `${Math.min(1.2, Math.max(0.4, 120 / tempo)).toFixed(2)}s`
       : undefined;
 
+  // Energy (0–1) scales how tall the bars get; default to a lively 0.7.
+  const amplitude = typeof energy === 'number' ? 0.4 + energy * 0.6 : 0.75;
+
+  const style: React.CSSProperties = {
+    '--eq-amplitude': amplitude.toFixed(2),
+    ...(duration ? { '--eq-duration': duration } : {}),
+  } as React.CSSProperties;
+
   return (
     <div
-      className={`flex h-5 items-end gap-0.5 ${playing ? 'is-playing' : ''}`}
-      style={duration ? ({ '--eq-duration': duration } as React.CSSProperties) : undefined}
+      className={`flex h-16 items-end gap-1 ${playing ? 'is-playing' : ''}`}
+      style={style}
       aria-hidden="true"
     >
-      <span className="eq-bar w-1 rounded-sm bg-accent-start" style={{ height: '100%' }} />
-      <span className="eq-bar w-1 rounded-sm bg-accent-start" style={{ height: '100%' }} />
-      <span className="eq-bar w-1 rounded-sm bg-accent-start" style={{ height: '100%' }} />
+      {Array.from({ length: BAR_COUNT }, (_, i) => (
+        <span
+          // Stagger each bar so the row ripples rather than pulsing in unison.
+          key={i}
+          className="eq-bar flex-1 rounded-sm bg-white/80"
+          style={{ animationDelay: `${(i % 6) * -0.15}s`, height: '100%' }}
+        />
+      ))}
     </div>
   );
 }
@@ -36,55 +57,6 @@ function formatTime(ms: number): string {
   const m = Math.floor(total / 60);
   const s = total % 60;
   return `${m}:${s.toString().padStart(2, '0')}`;
-}
-
-/** Thin progress bar + m:ss / m:ss, using the interpolated live position. */
-function ProgressBar({ position, duration }: { position: number; duration: number }) {
-  const pct = duration > 0 ? Math.min(100, (position / duration) * 100) : 0;
-  return (
-    <div className="mt-2 flex flex-col gap-1">
-      <div className="h-1 overflow-hidden rounded-full bg-muted/25">
-        <div
-          className="h-full rounded-full bg-accent-start transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-      <div className="flex justify-between font-mono text-[0.65rem] text-muted">
-        <span>{formatTime(position)}</span>
-        <span>{formatTime(duration)}</span>
-      </div>
-    </div>
-  );
-}
-
-/** Three slim labelled meters for the track's musical character. Rendered only
- * when at least one feature is present; individual null meters are skipped. */
-function FeatureMeters({ features }: { features: SpotifyAudioFeatures }) {
-  const meters = [
-    { label: 'Energy', value: features.energy },
-    { label: 'Positivity', value: features.valence },
-    { label: 'Dance', value: features.danceability },
-  ].filter((m): m is { label: string; value: number } => typeof m.value === 'number');
-
-  if (!meters.length) return null;
-
-  return (
-    <div className="mt-3 flex flex-col gap-2">
-      {meters.map((m) => (
-        <div key={m.label} className="flex items-center gap-3">
-          <span className="w-16 shrink-0 font-mono text-[0.65rem] uppercase tracking-wider text-muted">
-            {m.label}
-          </span>
-          <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted/25">
-            <div
-              className="h-full rounded-full bg-accent-start/70"
-              style={{ width: `${Math.round(m.value * 100)}%` }}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
 }
 
 /**
@@ -149,7 +121,6 @@ export function NowPlaying() {
   const data = useNowPlaying();
   const position = usePlaybackPosition(data);
   const glow = useDominantColour(data?.albumArt);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // The hook returns null while loading and on failure/rate-limit; any object
   // (even isPlaying:false) means the API answered → "Connected".
@@ -158,31 +129,17 @@ export function NowPlaying() {
   const features = data?.audioFeatures ?? null;
   const duration = data?.durationMs ?? null;
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative flex flex-col gap-3 overflow-hidden rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm"
-      style={
-        {
-          '--glow': glow ?? 'var(--color-accent-start, currentColor)',
-        } as React.CSSProperties
-      }
-    >
-      {/* Album-art colour glow — soft radial wash keyed to the current track.
-          Gated behind playing so a paused/last-played card stays calm. */}
-      {playing && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-px opacity-20 transition-colors duration-700"
-          style={{
-            background:
-              'radial-gradient(120% 80% at 15% 0%, var(--glow), transparent 70%)',
-          }}
-        />
-      )}
+  const hasTrack = Boolean(data && (playing || data.title));
+  const hasArt = hasTrack && Boolean(data?.albumArt);
+  const progressPct =
+    playing && position != null && duration && duration > 0
+      ? Math.min(100, (position / duration) * 100)
+      : null;
 
+  return (
+    <div className="flex flex-col gap-3">
       {/* API health indicator */}
-      <div className="relative flex items-center gap-2 font-mono text-xs">
+      <div className="flex items-center gap-2 font-mono text-xs">
         <span
           className={`inline-block size-2 rounded-full ${
             connected ? 'bg-accent-start' : 'bg-muted'
@@ -194,54 +151,103 @@ export function NowPlaying() {
         </span>
       </div>
 
-      {/* Track, or the "enjoying the silence" fallback */}
-      {data && (playing || data.title) ? (
-        <div className="relative">
-          <div className="flex min-w-0 items-center gap-3">
-            {data.albumArt && (
-              <img
-                src={data.albumArt}
-                alt=""
-                className="size-14 rounded"
-                width={56}
-                height={56}
-              />
+      {hasArt ? (
+        // Square, full-bleed art card with everything overlaid.
+        <div
+          className="relative aspect-square w-full overflow-hidden rounded-lg border border-muted/20"
+          style={{ boxShadow: glow ? `0 8px 40px -12px ${glow}` : undefined }}
+        >
+          <img
+            src={data!.albumArt!}
+            alt=""
+            className="absolute inset-0 size-full object-cover"
+          />
+
+          {/* Gradient scrim — keeps overlaid text/bars legible on any cover. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/50 to-transparent"
+          />
+
+          {/* Overlaid content: label, title/artist, then bars along the bottom. */}
+          <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4">
+            <p className="font-mono text-xs text-white/70">
+              {playing ? 'Now playing' : 'Last played'}
+            </p>
+            <p className="truncate font-medium text-white">
+              {data!.url ? (
+                <a
+                  href={data!.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+                >
+                  {data!.title}
+                </a>
+              ) : (
+                data!.title
+              )}
+            </p>
+            <p className="truncate text-sm text-white/80">{data!.artist}</p>
+            {playing && (
+              <Visualiser playing={playing} tempo={features?.tempo} energy={features?.energy} />
             )}
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-medium text-foreground">
-                {data.url ? (
-                  <a
-                    href={data.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-                  >
-                    {data.title}
-                  </a>
-                ) : (
-                  data.title
-                )}
-              </p>
-              <p className="truncate text-sm text-muted">{data.artist}</p>
-              <p className="mt-0.5 font-mono text-xs text-muted">
-                {playing ? 'Now playing' : 'Last played'}
-              </p>
-            </div>
-            <Equalizer playing={playing} tempo={features?.tempo} />
           </div>
 
-          {/* Live progress bar — only while playing with known duration. */}
-          {playing && position != null && duration != null && (
-            <ProgressBar position={position} duration={duration} />
+          {/* Progress bar pinned to the very bottom edge of the card. */}
+          {progressPct != null && (
+            <div className="absolute inset-x-0 bottom-0 h-1 bg-white/20">
+              <div
+                className="h-full bg-accent-start transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
           )}
-
-          {/* Audio-features meters — omitted entirely when unavailable. */}
-          {playing && features && <FeatureMeters features={features} />}
+        </div>
+      ) : hasTrack ? (
+        // Track known but no art — simple text card (rare fallback).
+        <div className="rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm">
+          <p className="font-mono text-xs text-muted">
+            {playing ? 'Now playing' : 'Last played'}
+          </p>
+          <p className="truncate font-medium text-foreground">
+            {data!.url ? (
+              <a
+                href={data!.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              >
+                {data!.title}
+              </a>
+            ) : (
+              data!.title
+            )}
+          </p>
+          <p className="truncate text-sm text-muted">{data!.artist}</p>
+          {progressPct != null && (
+            <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted/25">
+              <div
+                className="h-full rounded-full bg-accent-start transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+          )}
         </div>
       ) : (
-        <p className="relative font-mono text-sm text-muted">
-          // Currently enjoying the silence.
-        </p>
+        <div className="rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm">
+          <p className="font-mono text-sm text-muted">
+            // Currently enjoying the silence.
+          </p>
+        </div>
+      )}
+
+      {/* Time readout under the card while playing. */}
+      {playing && position != null && duration != null && (
+        <div className="flex justify-between font-mono text-[0.65rem] text-muted">
+          <span>{formatTime(position)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
       )}
     </div>
   );

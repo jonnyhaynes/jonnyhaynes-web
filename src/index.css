@@ -154,39 +154,46 @@
   }
 }
 
-/* Equalizer bars for the "now playing" widget (spec §D). Three bars bounce,
- * staggered, only while playing (the .is-playing modifier drives it). */
+/* Equalizer bars for the "now playing" visualiser. A row of bars bounces,
+ * staggered (delays set inline per bar), only while playing. Peak height scales
+ * with --eq-amplitude (from the track's energy) and speed with --eq-duration
+ * (from tempo); both have sensible fallbacks. Honest, non-audio motion — there
+ * is no live audio stream to react to. */
 @keyframes eq-bounce {
   0%,
   100% {
-    transform: scaleY(0.3);
+    transform: scaleY(0.2);
   }
   50% {
-    transform: scaleY(1);
+    transform: scaleY(var(--eq-amplitude, 0.75));
   }
 }
 
 .eq-bar {
   transform-origin: bottom;
+  transform: scaleY(0.25);
+}
+
+/* Vary the resting/peak height a touch per bar so the row reads as organic
+ * rather than a uniform pulse. */
+.eq-bar:nth-child(3n) {
   transform: scaleY(0.4);
+}
+.eq-bar:nth-child(4n) {
+  transform: scaleY(0.15);
 }
 
 .is-playing .eq-bar {
-  /* Duration tracks the track's tempo when known (set via --eq-duration on the
-   * container); defaults to the original 0.9s when tempo is unavailable. */
   animation: eq-bounce var(--eq-duration, 0.9s) ease-in-out infinite;
-}
-
-.is-playing .eq-bar:nth-child(2) {
-  animation-delay: -0.3s;
-}
-
-.is-playing .eq-bar:nth-child(3) {
-  animation-delay: -0.6s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .is-playing .eq-bar {
     animation: none;
+    /* Hold a static staggered profile so the visualiser still reads as bars. */
+    transform: scaleY(var(--eq-amplitude, 0.6));
+  }
+  .is-playing .eq-bar:nth-child(2n) {
+    transform: scaleY(0.35);
   }
 }
