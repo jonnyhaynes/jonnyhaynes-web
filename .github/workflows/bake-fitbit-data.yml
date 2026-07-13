@@ -1,0 +1,69 @@
+name: Bake Fitbit data
+
+# Fetches activity + sleep + resting heart rate and commits the refreshed
+# public/data/fitbit.json to main. Runs twice daily plus on demand.
+#
+# ROTATING TOKEN: Fitbit issues a new refresh token on every refresh and
+# invalidates the old one. The fetch step emits the new token as a step
+# output; the "Persist rotated refresh token" step writes it back to the
+# FITBIT_REFRESH_TOKEN repo secret via the GitHub API so the next run can
+# authenticate. This needs a PAT (FITBIT_TOKEN_PAT) with `secrets: write`
+# on this repo — the built-in GITHUB_TOKEN cannot update secrets.
+on:
+  schedule:
+    # 08:00 and 20:00 UTC (offset from the GitHub/Spotify bakes to spread load).
+    - cron: '0 8,20 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: bake-fitbit-data
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch Fitbit data
+        id: fetch
+        env:
+          FITBIT_CLIENT_ID: ${{ secrets.FITBIT_CLIENT_ID }}
+          FITBIT_CLIENT_SECRET: ${{ secrets.FITBIT_CLIENT_SECRET }}
+          FITBIT_REFRESH_TOKEN: ${{ secrets.FITBIT_REFRESH_TOKEN }}
+        run: node scripts/fetch-fitbit.mjs
+
+      - name: Persist rotated refresh token
+        # Always run, even if a later step fails — the new token has already
+        # invalidated the old one, so it MUST be saved or auth breaks.
+        if: ${{ always() && steps.fetch.outputs.refresh_token != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.FITBIT_TOKEN_PAT }}
+          NEW_TOKEN: ${{ steps.fetch.outputs.refresh_token }}
+        run: |
+          set -euo pipefail
+          gh secret set FITBIT_REFRESH_TOKEN --body "$NEW_TOKEN" --repo "$GITHUB_REPOSITORY"
+          echo "Rotated FITBIT_REFRESH_TOKEN secret updated."
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- public/data/fitbit.json; then
+            echo "No change in fitbit.json — nothing to commit."
+            exit 0
+          fi
+          git add public/data/fitbit.json
+          git commit -m "Refresh Fitbit data [skip ci]"
+          git push

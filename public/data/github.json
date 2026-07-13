@@ -1,0 +1,152 @@
+{
+  "user": "jonnyhaynes",
+  "fetchedAt": "2026-07-10T13:08:48.792Z",
+  "projects": [
+    {
+      "name": "jonnyhaynes-web",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "homepageUrl": "https://www.jonnyhaynes.com",
+      "language": "HTML",
+      "languages": [
+        "HTML",
+        "Shell",
+        "CSS",
+        "TypeScript",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-10T12:57:07Z",
+      "lastCommit": {
+        "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
+        "committedAt": "2026-07-10T09:39:04Z"
+      },
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-08T20:50:44Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Cap routes list at 10 items, then scroll (#64)",
+        "committedAt": "2026-07-08T20:50:44Z"
+      },
+      "pitch": null,
+      "challenge": "Computing honest ride distance and elevation from raw GPX, and fixing a Google Map that rendered zero-width inside a flex layout."
+    },
+    {
+      "name": "skillswap",
+      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
+      "url": "https://github.com/jonnyhaynes/skillswap",
+      "homepageUrl": "https://skillswap-rho-ten.vercel.app",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "PLpgSQL",
+        "CSS",
+        "HTML",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-06-30T12:38:31Z",
+      "lastCommit": {
+        "message": "fix(security): close PII leak on profiles via table-wide SELECT revok…",
+        "committedAt": "2026-06-30T12:38:28Z"
+      },
+      "pitch": null,
+      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
+    },
+    {
+      "name": "apollo-events-bridge",
+      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
+      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
+      "homepageUrl": null,
+      "language": "JavaScript",
+      "languages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-06-18T10:03:51Z",
+      "lastCommit": {
+        "message": "Add MIT license",
+        "committedAt": "2026-06-18T10:03:49Z"
+      },
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "freestyle-libre-mcp-server",
+      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
+      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "stars": 2,
+      "pushedAt": "2026-04-08T09:33:23Z",
+      "lastCommit": {
+        "message": "docs: Update README with detailed setup instructions for LibreLinkUp …",
+        "committedAt": "2026-04-08T09:31:27Z"
+      },
+      "pitch": null,
+      "challenge": "Reaching glucose data through LibreLinkUp’s unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
+    },
+    {
+      "name": "karma",
+      "description": "",
+      "url": "https://github.com/jonnyhaynes/karma",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-03-25T17:39:30Z",
+      "lastCommit": {
+        "message": "Update README.md",
+        "committedAt": "2026-03-25T17:37:50Z"
+      },
+      "pitch": null,
+      "challenge": null
+    }
+  ],
+  "lastActivity": {
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Merge pull request #26 from jonnyhaynes/chore/agent-setup",
+    "committedAt": "2026-07-10T09:39:04Z"
+  },
+  "languages": [
+    {
+      "name": "TypeScript",
+      "count": 4
+    },
+    {
+      "name": "JavaScript",
+      "count": 3
+    },
+    {
+      "name": "HTML",
+      "count": 1
+    },
+    {
+      "name": "Astro",
+      "count": 1
+    }
+  ],
+  "totalContributions": 516
+}
