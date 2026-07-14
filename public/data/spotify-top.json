@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-13T20:16:15.435Z",
+  "fetchedAt": "2026-07-14T09:05:29.562Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178c4c77549095c86acb4e77b37"
     },
     {
+      "name": "Thirty Seconds To Mars",
+      "url": "https://open.spotify.com/artist/0RqtSIYZmd4fiBKVFqyIqD",
+      "image": "https://i.scdn.co/image/ab6761610000f1785307a8a358283efe769d9c2a"
+    },
+    {
       "name": "Rush",
       "url": "https://open.spotify.com/artist/2Hkut4rAAyrQxRdof7FVJq",
       "image": "https://i.scdn.co/image/ab6761610000f178896c4b043fb3063178afd716"
-    },
-    {
-      "name": "Green Day",
-      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
-      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
