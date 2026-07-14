@@ -115,16 +115,46 @@ There's no single clean sort key across both. Plan:
 5. **Wire into the page** — add `<Gaming />` to the About/home composition
    alongside the other activity sections (exact placement TBD with you).
 
-## Secrets to add (you obtain these; they never go to the model)
+## Obtaining the keys (owner action; they never go to the model)
 
-| Secret | Where to get it |
-|--------|-----------------|
-| `STEAM_API_KEY` | steamcommunity.com/dev/apikey |
-| `STEAM_ID` | your 64-bit SteamID (steamid.io) |
-| `XBL_API_KEY` | xbl.io — sign in with Microsoft account |
+Three secrets, all free. Add each to **GitHub → Settings → Secrets and variables
+→ Actions → New repository secret** under the exact name below. No secret reaches
+the client bundle; the baked JSON is public static data only.
 
-Added to **GitHub Actions repository secrets**. No secret reaches the client
-bundle; the baked JSON is public static data only.
+### `STEAM_API_KEY`
+1. Go to https://steamcommunity.com/dev/apikey (sign in with Steam).
+2. Enter any domain when prompted (e.g. `jonnyhaynes.com` — it's just a label,
+   not enforced).
+3. Copy the key shown. Instant, tied to your account.
+
+### `STEAM_ID` (the 64-bit SteamID, **not** the vanity URL name)
+- If your profile URL is `steamcommunity.com/profiles/7656119…` — that 17-digit
+  number **is** your SteamID.
+- If it's `steamcommunity.com/id/<name>` (a vanity URL), paste that URL into
+  https://steamid.io and copy the **steamID64** value (starts `7656119…`).
+
+⚠️ **Steam privacy requirement:** in Steam → Edit Profile → Privacy Settings, set
+both **My profile** and **Game details** to **Public**. If "Game details" is
+private the API returns an empty list even with a valid key — the single most
+common cause of silently getting nothing back.
+
+### `XBL_API_KEY` (Xbox, via the third-party OpenXBL service)
+No official Microsoft key exists for personal recently-played data — it goes
+through OpenXBL:
+1. Go to https://xbl.io and sign in (OAuth with your Microsoft/Xbox account).
+2. On your OpenXBL account page, generate/copy the **API key**.
+3. Free tier ≈ 150 requests/hour — ample for a twice-daily bake.
+
+### Testing before the scheduled bake
+Once the secrets exist, trigger it manually: GitHub → **Actions** → **Bake gaming
+data** → **Run workflow**. Or run locally (keys stay in your shell, not the repo):
+
+```
+STEAM_API_KEY=… STEAM_ID=… XBL_API_KEY=… node scripts/fetch-gaming.mjs
+```
+
+It writes `public/data/gaming.json` and logs how many games came from each
+platform.
 
 ## Implementation notes
 
