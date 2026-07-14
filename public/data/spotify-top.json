@@ -1,13 +1,8 @@
 {
-  "fetchedAt": "2026-07-14T09:05:29.562Z",
+  "fetchedAt": "2026-07-14T20:12:39.430Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
-    {
-      "name": "Limp Bizkit",
-      "url": "https://open.spotify.com/artist/165ZgPlLkK7bf5bDoFc6Sb",
-      "image": "https://i.scdn.co/image/67ab66b1154c3115005086d60853fc954717a2ea"
-    },
     {
       "name": "Muse",
       "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
@@ -27,6 +22,11 @@
       "name": "Michael Jackson",
       "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
       "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
+    },
+    {
+      "name": "Limp Bizkit",
+      "url": "https://open.spotify.com/artist/165ZgPlLkK7bf5bDoFc6Sb",
+      "image": "https://i.scdn.co/image/67ab66b1154c3115005086d60853fc954717a2ea"
     },
     {
       "name": "AC/DC",
@@ -82,16 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ce4f1737bc8a646c8c4bd25a"
     },
     {
+      "title": "Master Of Puppets",
+      "artist": "Metallica",
+      "url": "https://open.spotify.com/track/2MuWTIM3b0YEAskbeeFE1i",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851668e3aca3167e6e569a9aa20"
+    },
+    {
       "title": "The Kill (Bury Me)",
       "artist": "Thirty Seconds To Mars",
       "url": "https://open.spotify.com/track/12IZu2qzsoaHgHlCfjwwjs",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851f0b0a20bf4ddc2c9af6d53e0"
-    },
-    {
-      "title": "Beat It",
-      "artist": "Michael Jackson",
-      "url": "https://open.spotify.com/track/3BovdzfaX4jb5KFQwoPfAw",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
     }
   ],
   "playlists": [
