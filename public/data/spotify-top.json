@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-07-13T17:23:52.839Z",
+  "fetchedAt": "2026-07-15T09:09:44.289Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "rock",
   "artists": [
     {
-      "name": "Limp Bizkit",
-      "url": "https://open.spotify.com/artist/165ZgPlLkK7bf5bDoFc6Sb",
-      "image": "https://i.scdn.co/image/67ab66b1154c3115005086d60853fc954717a2ea"
+      "name": "Green Day",
+      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
+      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     },
     {
       "name": "Muse",
@@ -29,27 +29,39 @@
       "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
     },
     {
+      "name": "Limp Bizkit",
+      "url": "https://open.spotify.com/artist/165ZgPlLkK7bf5bDoFc6Sb",
+      "image": "https://i.scdn.co/image/67ab66b1154c3115005086d60853fc954717a2ea"
+    },
+    {
+      "name": "Slipknot",
+      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
+      "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
+    },
+    {
       "name": "AC/DC",
       "url": "https://open.spotify.com/artist/711MCceyCBcFnzjGY4Q7Un",
       "image": "https://i.scdn.co/image/ab6761610000f178c4c77549095c86acb4e77b37"
-    },
-    {
-      "name": "Rush",
-      "url": "https://open.spotify.com/artist/2Hkut4rAAyrQxRdof7FVJq",
-      "image": "https://i.scdn.co/image/ab6761610000f178896c4b043fb3063178afd716"
-    },
-    {
-      "name": "Green Day",
-      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
-      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
+    {
+      "title": "Enter Sandman - Remastered 2021",
+      "artist": "Metallica",
+      "url": "https://open.spotify.com/track/3DwQ7AH3xGD9h65ezslm6q",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
+    },
     {
       "title": "The Dark Forest",
       "artist": "Muse",
       "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
+    },
+    {
+      "title": "Boulevard of Broken Dreams",
+      "artist": "Green Day",
+      "url": "https://open.spotify.com/track/5cbTCQ14BC974Zsx6OlXF8",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
     },
     {
       "title": "Raining Blood",
@@ -64,34 +76,22 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
     },
     {
+      "title": "Master Of Puppets",
+      "artist": "Metallica",
+      "url": "https://open.spotify.com/track/2MuWTIM3b0YEAskbeeFE1i",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851668e3aca3167e6e569a9aa20"
+    },
+    {
       "title": "Tom Sawyer",
       "artist": "Rush",
       "url": "https://open.spotify.com/track/3QZ7uX97s82HFYSmQUAN1D",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
     },
     {
-      "title": "Enter Sandman - Remastered 2021",
-      "artist": "Metallica",
-      "url": "https://open.spotify.com/track/3DwQ7AH3xGD9h65ezslm6q",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
-    },
-    {
-      "title": "Bohemian Rhapsody - Remastered 2011",
-      "artist": "Queen",
-      "url": "https://open.spotify.com/track/7tFiyTwD0nx5a1eklYtX2J",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce4f1737bc8a646c8c4bd25a"
-    },
-    {
-      "title": "The Kill (Bury Me)",
-      "artist": "Thirty Seconds To Mars",
-      "url": "https://open.spotify.com/track/12IZu2qzsoaHgHlCfjwwjs",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0b0a20bf4ddc2c9af6d53e0"
-    },
-    {
-      "title": "Limelight",
-      "artist": "Rush",
-      "url": "https://open.spotify.com/track/0K6yUnIKNsFtfIpTgGtcHm",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
