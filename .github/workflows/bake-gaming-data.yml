@@ -1,0 +1,72 @@
+name: Bake gaming data
+
+# Fetches recently-played games from Steam (official API) + Xbox (via OpenXBL)
+# and commits the refreshed public/data/gaming.json to main. Runs twice daily
+# plus on demand.
+on:
+  schedule:
+    # 09:00 and 21:00 UTC (a free slot: GitHub is 06/18, Spotify 07/19,
+    # Fitbit 08/20 — offset to spread API load).
+    - cron: '0 9,21 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: bake-gaming-data
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch gaming data
+        env:
+          STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+          STEAM_ID: ${{ secrets.STEAM_ID }}
+          XBL_API_KEY: ${{ secrets.XBL_API_KEY }}
+        run: node scripts/fetch-gaming.mjs
+
+      # main is a protected branch (PR required + Vercel check), so we can't push
+      # to it directly. Push the refreshed data to a fixed branch, open a PR if
+      # one isn't already open, and enable auto-merge — since the branch rule
+      # requires 0 approvals, it merges itself once the Vercel check passes.
+      - name: Open/refresh data PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          files="public/data/gaming.json"
+          if git diff --quiet -- $files; then
+            echo "No change in gaming data — nothing to commit."
+            exit 0
+          fi
+
+          branch="bake/gaming-data"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add $files
+          git commit -m "Refresh gaming data [skip ci]"
+          # Force: this is a disposable, machine-owned data branch.
+          git push --force origin "$branch"
+
+          # Open the PR only if there isn't already an open one for this branch.
+          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr create \
+              --base main --head "$branch" \
+              --title "Refresh gaming data" \
+              --body "Automated data bake (recently-played games from Steam + Xbox). Auto-merges once the Vercel check passes."
+            gh pr merge "$branch" --auto --squash
+          fi

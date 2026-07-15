@@ -1,6 +1,7 @@
 import { Contact } from '../components/Contact';
 import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
+import { Gaming } from '../components/Gaming';
 import { Health } from '../components/Health';
 import { Hero } from '../components/Hero';
 import { Listening } from '../components/Listening';
@@ -41,6 +42,9 @@ export function Home() {
         </div>
         <div className="mx-auto max-w-4xl px-6">
           <Reading />
+        </div>
+        <div className="mx-auto max-w-4xl px-6">
+          <Gaming />
         </div>
         <div className="mx-auto max-w-4xl px-6">
           <Health />
