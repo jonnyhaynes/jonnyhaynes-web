@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-16T09:15:00.629Z",
+  "fetchedAt": "2026-07-16T20:02:58.227Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -29,11 +29,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
     },
     {
-      "name": "Limp Bizkit",
-      "url": "https://open.spotify.com/artist/165ZgPlLkK7bf5bDoFc6Sb",
-      "image": "https://i.scdn.co/image/67ab66b1154c3115005086d60853fc954717a2ea"
-    },
-    {
       "name": "Slipknot",
       "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
       "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
@@ -42,6 +37,11 @@
       "name": "AC/DC",
       "url": "https://open.spotify.com/artist/711MCceyCBcFnzjGY4Q7Un",
       "image": "https://i.scdn.co/image/ab6761610000f178c4c77549095c86acb4e77b37"
+    },
+    {
+      "name": "Thirty Seconds To Mars",
+      "url": "https://open.spotify.com/artist/0RqtSIYZmd4fiBKVFqyIqD",
+      "image": "https://i.scdn.co/image/ab6761610000f1785307a8a358283efe769d9c2a"
     }
   ],
   "tracks": [
