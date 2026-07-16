@@ -1,7 +1,27 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-15T08:24:06.826Z",
+  "fetchedAt": "2026-07-16T08:23:33.332Z",
   "projects": [
+    {
+      "name": "colouringcode-web",
+      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
+      "url": "https://github.com/jonnyhaynes/colouringcode-web",
+      "homepageUrl": "https://www.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "Shell",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-07-16T07:28:24Z",
+      "lastCommit": {
+        "message": "Merge pull request #2 from jonnyhaynes/feature/animated-clouds",
+        "committedAt": "2026-07-15T15:47:28Z"
+      },
+      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
+      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -16,13 +36,56 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-14T20:12:56Z",
+      "pushedAt": "2026-07-15T22:05:14Z",
       "lastCommit": {
-        "message": "Refresh Spotify data [skip ci] (#68)",
-        "committedAt": "2026-07-14T20:12:56Z"
+        "message": "[ai-assisted] Add \"What I'm playing\" gaming section (Steam + Xbox) (#59)",
+        "committedAt": "2026-07-15T13:52:17Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-15T12:01:48Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Drive team profiles from Sanity (coaching/committee/wel…",
+        "committedAt": "2026-07-15T12:01:48Z"
+      },
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
+    },
+    {
+      "name": "rovrum.town",
+      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
+      "url": "https://github.com/jonnyhaynes/rovrum.town",
+      "homepageUrl": "https://www.rovrum.town",
+      "language": "HTML",
+      "languages": [
+        "HTML",
+        "TypeScript",
+        "Astro",
+        "JavaScript",
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-07-15T10:51:14Z",
+      "lastCommit": {
+        "message": "Merge pull request #36 from jonnyhaynes/docs/readme-license-badge",
+        "committedAt": "2026-07-15T10:51:13Z"
+      },
+      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
+      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
     },
     {
       "name": "skillswap",
@@ -47,27 +110,6 @@
       "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-10T14:51:16Z",
-      "lastCommit": {
-        "message": "Update challenge description in portfolio JSON",
-        "committedAt": "2026-07-10T14:51:16Z"
-      },
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
-    {
       "name": "freestyle-libre-mcp-server",
       "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
       "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
@@ -85,55 +127,18 @@
       },
       "pitch": "An MCP server giving Claude access to Freestyle Libre glucose data.",
       "challenge": "Reaching glucose data through LibreLinkUp's unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
-    },
-    {
-      "name": "apollo-events-bridge",
-      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
-      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
-      "homepageUrl": null,
-      "language": "JavaScript",
-      "languages": [
-        "JavaScript",
-        "HTML"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-10T14:49:28Z",
-      "lastCommit": {
-        "message": "Add .portfolio.json with project details",
-        "committedAt": "2026-07-10T14:49:28Z"
-      },
-      "pitch": "Reads Apollo's Discord event embeds and serves them as JSON for a website.",
-      "challenge": "Parsing Apollo's undocumented Discord event embeds — via a bot with Message Content Intent — so the format can be re-derived when Apollo changes it."
-    },
-    {
-      "name": "karma",
-      "description": "",
-      "url": "https://github.com/jonnyhaynes/karma",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-10T14:48:40Z",
-      "lastCommit": {
-        "message": "Add portfolio configuration for Strava and Komoot",
-        "committedAt": "2026-07-10T14:48:39Z"
-      },
-      "pitch": "Syncs cycling activities between Strava and Komoot.",
-      "challenge": "Syncing Strava and Komoot across two OAuth flows and rate limits, converting activity streams to GPX with atomic, resumable state."
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh Spotify data [skip ci] (#68)",
-    "committedAt": "2026-07-14T20:12:56Z"
+    "repo": "colouringcode-web",
+    "url": "https://github.com/jonnyhaynes/colouringcode-web",
+    "message": "Merge pull request #2 from jonnyhaynes/feature/animated-clouds",
+    "committedAt": "2026-07-15T15:47:28Z"
   },
   "languages": [
     {
       "name": "TypeScript",
-      "count": 5
+      "count": 6
     },
     {
       "name": "JavaScript",
@@ -142,7 +147,11 @@
     {
       "name": "Astro",
       "count": 1
+    },
+    {
+      "name": "HTML",
+      "count": 1
     }
   ],
-  "totalContributions": 645
+  "totalContributions": 697
 }
