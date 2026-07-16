@@ -1,7 +1,29 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-16T08:23:33.332Z",
+  "fetchedAt": "2026-07-16T19:21:02.009Z",
   "projects": [
+    {
+      "name": "jonnyhaynes-web",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "homepageUrl": "https://www.jonnyhaynes.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "HTML",
+        "Shell"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-16T11:03:53Z",
+      "lastCommit": {
+        "message": "Refresh gaming data [skip ci] (#75)",
+        "committedAt": "2026-07-16T11:03:53Z"
+      },
+      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
+      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
     {
       "name": "colouringcode-web",
       "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
@@ -21,28 +43,6 @@
       },
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "jonnyhaynes-web",
-      "description": "My personal website — a static site built with React, Vite & TypeScript.",
-      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-      "homepageUrl": "https://www.jonnyhaynes.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript",
-        "CSS",
-        "HTML",
-        "Shell"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-15T22:05:14Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Add \"What I'm playing\" gaming section (Steam + Xbox) (#59)",
-        "committedAt": "2026-07-15T13:52:17Z"
-      },
-      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
-      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
     },
     {
       "name": "sitwellcc-web",
@@ -130,10 +130,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "colouringcode-web",
-    "url": "https://github.com/jonnyhaynes/colouringcode-web",
-    "message": "Merge pull request #2 from jonnyhaynes/feature/animated-clouds",
-    "committedAt": "2026-07-15T15:47:28Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh gaming data [skip ci] (#75)",
+    "committedAt": "2026-07-16T11:03:53Z"
   },
   "languages": [
     {
@@ -153,5 +153,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 697
+  "totalContributions": 698
 }
