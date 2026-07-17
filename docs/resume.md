@@ -1,6 +1,6 @@
 # Jonny Haynes
 
-**Full-Stack Developer** | Specialising in React Native, TypeScript & AI Workflows | Colouring code & building award-winning apps
+**Full-Stack Developer** | Specialising in React, React Native, TypeScript & AI Workflows | Colouring code & building award-winning apps
 
 - **Phone:** 07460843016
 - **Email:** jonny.d.haynes@gmail.com
