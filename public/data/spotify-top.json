@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-17T09:10:22.299Z",
+  "fetchedAt": "2026-07-17T20:05:56.308Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -9,14 +9,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
       "name": "Queen",
       "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
       "image": "https://i.scdn.co/image/ab67726900008f7447488c35a509d42072c23976"
+    },
+    {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Frank Turner",
