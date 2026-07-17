@@ -68,18 +68,34 @@ async function fetchXbox() {
   }
   try {
     const res = await fetch('https://xbl.io/api/v2/player/titleHistory', {
-      headers: { 'X-Authorization': XBL_API_KEY, Accept: 'application/json' },
+      headers: {
+        'X-Authorization': XBL_API_KEY,
+        Accept: 'application/json',
+        // OpenXBL's upstream (Xbox Live) rejects the runtime's default
+        // `Accept-Language: *` as an invalid locale, so set an explicit one.
+        'Accept-Language': 'en-US',
+      },
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const json = await res.json();
-    const titles = json.titles ?? [];
+    // OpenXBL always wraps the payload in a { content, code } envelope and
+    // returns HTTP 200 even for errors — so res.ok never catches a bad request.
+    // On success `content` holds the payload ({ titles: [...] }); on error it's
+    // the message string and `code` is the real 4xx. Surface non-200 as a
+    // failure so the section never silently empties again.
+    if (json.code !== 200 || !Array.isArray(json.content?.titles)) {
+      throw new Error(`OpenXBL error ${json.code ?? '?'}: ${JSON.stringify(json.content)}`);
+    }
+    const titles = json.content.titles;
     return titles
       .map((t) => {
         const lastPlayed = t.titleHistory?.lastTimePlayed ?? null;
         return {
           title: t.name,
           platform: 'xbox',
-          coverUrl: t.displayImage ?? null,
+          // Xbox art comes back as http:// — force https so it isn't blocked
+          // as mixed content on the (https) site.
+          coverUrl: t.displayImage ? t.displayImage.replace(/^http:/, 'https:') : null,
           lastPlayed,
           url: null,
           _ts: lastPlayed ? new Date(lastPlayed).getTime() : 0,
