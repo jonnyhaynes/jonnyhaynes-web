@@ -48,7 +48,7 @@ export function useGamingData(): GamingData | null {
  * (Xbox by last-played, then Steam by recent playtime). Returns [] when data is
  * absent so the section degrades gracefully.
  */
-export function recentGames(data: GamingData | null, limit = 6): GameTile[] {
+export function recentGames(data: GamingData | null, limit = 7): GameTile[] {
   if (!data) return [];
   return data.games.slice(0, limit);
 }
