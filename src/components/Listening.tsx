@@ -136,10 +136,7 @@ export function Listening() {
             sit them side by side comfortably. */}
       <div className="mt-6 grid gap-8 md:grid-cols-2 md:items-start">
         <NowPlaying />
-        {/* On desktop, nudge down so "Heavy rotation" lines up with the top of
-            the album art rather than the status line above it (status line
-            text-xs ≈ 1rem + the gap-3 ≈ 0.75rem = 1.75rem). */}
-        <div className="flex flex-col gap-8 md:pt-7">
+        <div className="flex flex-col gap-8">
           <HeavyRotation />
           <CodingFuel />
         </div>

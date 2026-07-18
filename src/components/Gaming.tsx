@@ -108,7 +108,7 @@ function TvHero({ game }: { game: GameTile }) {
         <div className="mt-3 flex items-center gap-3 px-1">
           <span
             aria-hidden="true"
-            className="h-2 w-2 rounded-full bg-accent-start shadow-[0_0_6px_1px_var(--color-accent-start)]"
+            className="deck-led h-2 w-2 rounded-full bg-accent-start shadow-[0_0_6px_1px_var(--color-accent-start)]"
           />
           <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[#4a5160] dark:text-muted">
             Now playing
