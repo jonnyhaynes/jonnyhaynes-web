@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-18T13:19:16.666Z",
+  "fetchedAt": "2026-07-18T20:04:00.232Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -52,16 +52,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
     },
     {
-      "title": "I Want You Back",
-      "artist": "The Jackson 5",
-      "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485116aaf05fe82237576a7d0e38"
-    },
-    {
       "title": "The Dark Forest",
       "artist": "Muse",
       "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
+    },
+    {
+      "title": "I Want You Back",
+      "artist": "The Jackson 5",
+      "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485116aaf05fe82237576a7d0e38"
     },
     {
       "title": "Master Of Puppets",
@@ -76,12 +76,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
     },
     {
-      "title": "Raining Blood",
-      "artist": "Slayer",
-      "url": "https://open.spotify.com/track/6IbvZskf2GX2VSMd9Q93WL",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485180a99dcf52a34999e87571dd"
-    },
-    {
       "title": "Billie Jean",
       "artist": "Michael Jackson",
       "url": "https://open.spotify.com/track/7J1uxwnxfQLu4APicE5Rnj",
@@ -92,6 +86,12 @@
       "artist": "Rush",
       "url": "https://open.spotify.com/track/3QZ7uX97s82HFYSmQUAN1D",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
+    },
+    {
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
