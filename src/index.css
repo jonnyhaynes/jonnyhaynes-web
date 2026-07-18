@@ -154,6 +154,54 @@
   }
 }
 
+/* CRT "TV screen" treatment for the gaming hero (the most-recent game). The
+ * cover art fills the screen inside a bezel; these overlays give it a subtle
+ * living-tube feel without tipping into kitsch:
+ *   .crt-scanlines — faint horizontal lines that drift slowly downward
+ *   .crt-glow      — soft accent bloom around the screen edge (site palette)
+ * Both sit above the cover as pointer-events:none overlays. Motion is gated on
+ * prefers-reduced-motion; the static lines/glow remain so it still reads as a TV. */
+@keyframes crt-scan {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    /* Travel exactly one line-pair so the loop is seamless. */
+    background-position-y: 4px;
+  }
+}
+
+.crt-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.16) 0,
+    rgba(0, 0, 0, 0.16) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  animation: crt-scan 0.5s steps(4) infinite;
+  will-change: background-position;
+}
+
+.crt-glow {
+  /* Accent bloom drawn inward from the edges, plus a soft top sheen — the tube
+   * catching light. Hues drift via the same registered @property colours as the
+   * hero headline so the whole page's accent breathes in sync. */
+  box-shadow:
+    inset 0 0 24px 2px color-mix(in oklch, var(--grad-1) 45%, transparent),
+    inset 0 0 8px 1px color-mix(in oklch, var(--grad-2) 35%, transparent);
+  animation: gradient-drift 6s linear infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-scanlines {
+    animation: none;
+  }
+  .crt-glow {
+    animation: none;
+  }
+}
+
 /* Equalizer bars for the "now playing" visualiser. A row of thin bars, painted
  * with the site's living magenta→indigo gradient (spanning the whole row, not
  * per bar) and bouncing only while playing. Peak height scales with
