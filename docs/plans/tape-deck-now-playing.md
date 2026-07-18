@@ -1,5 +1,11 @@
 # Plan: tape-deck styling for the Now Playing card (A/B trial)
 
+> **Superseded.** The Deck variant won the A/B trial, but the cassette/reel
+> metaphor was then dropped in favour of a Winamp-style visualizer. See
+> [`now-playing-visualizers.md`](./now-playing-visualizers.md) for what shipped.
+> This doc is kept for history.
+
+
 ## Goal
 
 Make the music section's **Now Playing** card look like a cassette / tape deck.

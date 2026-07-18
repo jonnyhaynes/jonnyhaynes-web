@@ -1,63 +1,34 @@
 import { useState } from 'react';
 import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
 import type { NowPlaying as NowPlayingData } from '../data/spotify';
+import { Visualizer, VisualizerIcon } from './visualizers';
+import { VISUALIZERS, type VisualizerKind } from './visualizers-meta';
 
-const BAR_COUNT = 32;
+// Persist the chosen visualizer the same way the theme toggle persists: an
+// explicit choice is written to localStorage; otherwise we default to spectrum.
+const VISUALIZER_KEY = 'now-playing-visualizer';
 
-/**
- * A row of equalizer bars anchored to the bottom edge of the card, overlaid on
- * the album art within the scrim. Bounce speed tracks the track's tempo (faster
- * song → faster bars) and overall amplitude scales with energy; both fall back
- * to sensible defaults. The per-bar height loop is honest, non-audio motion —
- * we have no live audio stream to react to (see plan). Hidden when not playing.
- */
-function Visualiser({
-  playing,
-  tempo,
-  energy,
-}: {
-  playing: boolean;
-  tempo?: number | null;
-  energy?: number | null;
-}) {
-  // Map BPM → animation duration. ~60bpm slow, ~180bpm fast; clamp so the motion
-  // always reads as an equalizer rather than a strobe or a crawl.
-  const duration =
-    tempo && tempo > 0
-      ? `${Math.min(1.2, Math.max(0.4, 120 / tempo)).toFixed(2)}s`
-      : undefined;
+function isVisualizerKind(v: string | null): v is VisualizerKind {
+  return v === 'spectrum' || v === 'scope' || v === 'plasma';
+}
 
-  // Energy (0–1) scales how tall the bars get; default to a lively 0.7.
-  const amplitude = typeof energy === 'number' ? 0.4 + energy * 0.6 : 0.75;
-
-  const style: React.CSSProperties = {
-    '--eq-amplitude': amplitude.toFixed(2),
-    ...(duration ? { '--eq-duration': duration } : {}),
-  } as React.CSSProperties;
-
-  return (
-    <div
-      className={`eq-row flex h-14 items-end gap-[2px] ${playing ? 'is-playing' : ''}`}
-      style={style}
-      aria-hidden="true"
-    >
-      {Array.from({ length: BAR_COUNT }, (_, i) => (
-        <span
-          key={i}
-          className="eq-bar flex-1 rounded-full"
-          style={
-            {
-              // Position each bar's slice of the shared gradient by its place in
-              // the row; seed a varied start so bars don't animate in lockstep.
-              '--eq-pos': `${(i / (BAR_COUNT - 1)) * 100}%`,
-              animationDelay: `${(i % 7) * -0.13}s`,
-              height: '100%',
-            } as React.CSSProperties
-          }
-        />
-      ))}
-    </div>
-  );
+function useVisualizer(): [VisualizerKind, (k: VisualizerKind) => void] {
+  const [kind, setKind] = useState<VisualizerKind>(() => {
+    const saved =
+      typeof localStorage !== 'undefined'
+        ? localStorage.getItem(VISUALIZER_KEY)
+        : null;
+    return isVisualizerKind(saved) ? saved : 'spectrum';
+  });
+  const set = (k: VisualizerKind) => {
+    setKind(k);
+    try {
+      localStorage.setItem(VISUALIZER_KEY, k);
+    } catch {
+      // Private-mode/quota failures are non-fatal — the choice just won't stick.
+    }
+  };
+  return [kind, set];
 }
 
 function formatTime(ms: number): string {
@@ -67,80 +38,17 @@ function formatTime(ms: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-// Map BPM → reel-spin duration (seconds per revolution). Faster song → faster
-// reel; clamped so it always reads as turning rather than a strobe or a crawl.
-function reelDuration(tempo?: number | null): string | undefined {
-  if (!tempo || tempo <= 0) return undefined;
-  return `${Math.min(2, Math.max(0.6, 150 / tempo)).toFixed(2)}s`;
-}
-
-/**
- * A single cassette reel: a spinning hub sized to the window. `spinning` gates
- * the animation so it freezes when the playback timer stops.
- */
-function Reel({
-  spinning,
-  tempo,
-  className = '',
-}: {
-  spinning: boolean;
-  tempo?: number | null;
-  className?: string;
-}) {
-  const dur = reelDuration(tempo);
-  return (
-    <span
-      aria-hidden="true"
-      className={`${spinning ? 'is-spinning' : ''} ${className}`}
-      style={dur ? ({ '--reel-duration': dur } as React.CSSProperties) : undefined}
-    >
-      <span className="reel block size-full" />
-    </span>
-  );
-}
-
-type VariantProps = {
+type DeckProps = {
   data: NowPlayingData;
-  playing: boolean;
   spinning: boolean;
   position: number | null;
   duration: number | null;
   tempo?: number | null;
   energy?: number | null;
   progressPct: number | null;
+  visualizer: VisualizerKind;
+  onVisualizerChange: (k: VisualizerKind) => void;
 };
-
-/** Shared track title (linked when a url is present) + artist block. */
-function TrackText({
-  data,
-  variant,
-}: {
-  data: NowPlayingData;
-  variant: 'light' | 'dark';
-}) {
-  const titleColor = variant === 'dark' ? 'text-white' : 'text-foreground';
-  const artistColor = variant === 'dark' ? 'text-white/90' : 'text-muted';
-  return (
-    <>
-      <p className={`line-clamp-2 font-medium ${titleColor}`}>
-        {data.url ? (
-          <a
-            href={data.url}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-          >
-            {data.title}
-            <span className="sr-only"> (opens on Spotify in a new tab)</span>
-          </a>
-        ) : (
-          data.title
-        )}
-      </p>
-      <p className={`text-sm ${artistColor}`}>{data.artist}</p>
-    </>
-  );
-}
 
 /** Progressbar element shared across variants. */
 function Progress({
@@ -176,179 +84,145 @@ function Progress({
 }
 
 /**
- * Variant A — Cassette shell. The card is a cassette: album art shows through a
- * window flanked by two spinning reels, with the track/artist on a paper label
- * and a tape-style progress bar along the bottom.
+ * The Now Playing card: a brushed-metal front panel with a switchable
+ * visualizer screen as the hero (spectrum / oscilloscope / plasma), a marquee
+ * readout of the track, and a progress bar.
  */
-function CassetteA({ data, spinning, position, duration, tempo, progressPct }: VariantProps) {
-  return (
-    <div className="cassette-shell relative aspect-square w-full overflow-hidden rounded-lg border border-muted/20 p-4">
-      {/* Screw dots in the corners for cassette flavour. */}
-      <span
-        aria-hidden="true"
-        className="absolute left-2 top-2 size-2 rounded-full bg-black/40"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute right-2 top-2 size-2 rounded-full bg-black/40"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute bottom-2 left-2 size-2 rounded-full bg-black/40"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute bottom-2 right-2 size-2 rounded-full bg-black/40"
-      />
-
-      {/* Window: album art with the two reels riding over it. */}
-      <div className="cassette-window relative mx-auto flex aspect-[2/1] w-full items-center justify-around overflow-hidden rounded-md">
-        {data.albumArt && (
-          <img
-            src={data.albumArt}
-            alt=""
-            className="absolute inset-0 size-full object-cover opacity-70"
-          />
-        )}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-black/30"
-        />
-        <Reel spinning={spinning} tempo={tempo} className="relative z-10 block size-[38%]" />
-        <Reel spinning={spinning} tempo={tempo} className="relative z-10 block size-[38%]" />
-      </div>
-
-      {/* Paper label with the track info. */}
-      <div className="mt-3 rounded-sm bg-background/85 p-3 backdrop-blur-sm">
-        <p className="font-mono text-xs uppercase tracking-wider text-accent-start">
-          {data.isPlaying ? 'Now playing' : 'Last played'}
-        </p>
-        <TrackText data={data} variant="light" />
-      </div>
-
-      {/* Tape-style progress along the bottom. */}
-      {progressPct != null && (
-        <div className="absolute inset-x-0 bottom-0">
-          <Progress
-            progressPct={progressPct}
-            position={position}
-            duration={duration}
-            className="h-1 bg-white/20"
-            fillClassName="h-full bg-accent-start transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-/**
- * Variant B — Full deck unit. A brushed-metal front panel wraps the cassette
- * window, with decorative transport controls and VU-style meters (the
- * equaliser restyled) below.
- */
-function DeckB({
+function Deck({
   data,
-  playing,
   spinning,
   position,
   duration,
   tempo,
   energy,
   progressPct,
-}: VariantProps) {
+  visualizer,
+  onVisualizerChange,
+}: DeckProps) {
   return (
-    <div className="deck-panel w-full overflow-hidden rounded-lg border border-muted/20 p-4">
-      {/* Header strip: brand + power light. */}
+    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-lg border border-muted/20 p-4">
+      {/* Header strip: playing/last-played label + power light. */}
       <div className="mb-3 flex items-center justify-between">
         <p className="font-mono text-xs uppercase tracking-widest text-muted">
-          Stereo Cassette Deck
+          {data.isPlaying ? 'Now playing' : 'Last played'}
         </p>
+        {/* Power LED — a glowing accent dot (as in the Gaming bezel). While the
+            track plays it breathes; when it stops it eases down to a steady dot
+            over the same duration as the visualizer collapse, rather than
+            snapping off. Paused under reduced motion. */}
         <span
           aria-hidden="true"
-          className={`size-2 rounded-full ${data.isPlaying ? 'bg-accent-start' : 'bg-muted'}`}
+          className={`size-2 rounded-full bg-accent-start shadow-[0_0_6px_1px_var(--color-accent-start)] ${
+            spinning ? 'deck-led' : 'deck-led-resting'
+          }`}
         />
       </div>
 
-      {/* Cassette window embedded in the panel. */}
-      <div className="cassette-window relative flex aspect-[5/2] w-full items-center justify-around overflow-hidden rounded-md border border-black/40">
+      {/* Visualizer screen — the hero. A recessed dark display (deck-lcd) with
+          scanlines. Square, so the album art behind it reads as a proper cover.
+          The chosen visualizer persists to localStorage like the site theme
+          (see useVisualizer). */}
+      <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+        {/* Album art sits behind the visualizer, dimmed under a scrim so the
+            accent-coloured bars/wave/plasma stay legible over any cover. */}
         {data.albumArt && (
-          <img
-            src={data.albumArt}
-            alt=""
-            className="absolute inset-0 size-full object-cover opacity-60"
-          />
+          <>
+            <img
+              src={data.albumArt}
+              alt=""
+              className="absolute inset-0 size-full object-cover opacity-40"
+            />
+            <div aria-hidden="true" className="absolute inset-0 bg-black/55" />
+          </>
         )}
-        <div aria-hidden="true" className="absolute inset-0 bg-black/40" />
-        <Reel spinning={spinning} tempo={tempo} className="relative z-10 block size-[32%]" />
-        {/* Centre label over the tape. */}
-        <div className="relative z-10 max-w-[45%] text-center">
-          <p className="font-mono text-[0.65rem] uppercase tracking-wider text-white/80">
-            {data.isPlaying ? 'Playing' : 'Last'}
-          </p>
-          <p className="line-clamp-2 text-xs font-medium text-white">{data.title}</p>
-        </div>
-        <Reel spinning={spinning} tempo={tempo} className="relative z-10 block size-[32%]" />
-      </div>
-
-      {/* Track/artist below the window. */}
-      <div className="mt-3">
-        <TrackText data={data} variant="light" />
-      </div>
-
-      {/* Transport controls (decorative) + VU meters. */}
-      <div className="mt-3 flex items-center gap-4">
-        <div
-          aria-hidden="true"
-          className="flex gap-1 font-mono text-xs text-muted"
-        >
-          <span className="rounded border border-muted/30 px-1.5 py-0.5">⏮</span>
-          <span className="rounded border border-muted/30 px-1.5 py-0.5">
-            {playing ? '⏸' : '▶'}
-          </span>
-          <span className="rounded border border-muted/30 px-1.5 py-0.5">⏭</span>
-        </div>
-        <div className="min-w-0 flex-1">
-          <Visualiser playing={spinning} tempo={tempo} energy={energy} />
+        <div className="absolute inset-0 z-10">
+          <Visualizer
+            kind={visualizer}
+            active={spinning}
+            tempo={tempo}
+            energy={energy}
+          />
         </div>
       </div>
 
-      {progressPct != null && (
-        <div className="mt-3">
+      {/* Readout line under the screen: a marquee of the track (title + artist)
+          glowing in the accent. The single inner element is what scrolls. */}
+      <div className="deck-readout mt-3 font-mono text-xs">
+        <span className="deck-lcd-text marquee block">
+          {data.url ? (
+            <a
+              href={data.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+            >
+              ▸ {data.title} — {data.artist}
+              <span className="sr-only"> (opens on Spotify in a new tab)</span>
+            </a>
+          ) : (
+            <span>
+              ▸ {data.title} — {data.artist}
+            </span>
+          )}
+        </span>
+      </div>
+
+      {/* Progress bar. While playing it tracks position; when the track stops
+          it drains to empty over ~3.5s so it comes to rest with the visualizer
+          rather than freezing at its last width. */}
+      {duration != null && (
+        <div className="mt-2">
           <Progress
-            progressPct={progressPct}
+            progressPct={spinning ? (progressPct ?? 0) : 0}
             position={position}
             duration={duration}
             className="h-1 overflow-hidden rounded-full bg-muted/25"
-            fillClassName="h-full rounded-full bg-accent-start transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+            fillClassName={`h-full rounded-full bg-accent-start ease-linear motion-reduce:transition-none ${
+              spinning
+                ? 'transition-[width] duration-1000'
+                : 'transition-[width] duration-[3500ms]'
+            }`}
           />
         </div>
       )}
+
+      {/* Visualizer mode switcher — an icon-only segmented control. The active
+          segment fills with the accent; each button carries its full name for
+          assistive tech + a tooltip. */}
+      <div
+        className="mt-3 grid grid-cols-3 gap-1 rounded-md border border-muted/25 bg-black/20 p-1"
+        role="group"
+        aria-label="Visualizer style"
+      >
+        {VISUALIZERS.map((v) => {
+          const selected = v.kind === visualizer;
+          return (
+            <button
+              key={v.kind}
+              type="button"
+              onClick={() => onVisualizerChange(v.kind)}
+              aria-pressed={selected}
+              title={v.label}
+              className={`flex items-center justify-center rounded py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
+                selected
+                  ? 'bg-accent-start/20 text-accent-start'
+                  : 'text-muted hover:bg-white/5 hover:text-foreground'
+              }`}
+            >
+              <VisualizerIcon kind={v.kind} active={selected} />
+              <span className="sr-only">{v.label}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
-}
-
-// TODO: remove after the A/B tape-deck decision — temporary variant switch.
-type Variant = 'a' | 'b';
-const VARIANT_KEY = 'tapedeck-variant';
-
-function useVariant(): [Variant, (v: Variant) => void] {
-  const [variant, setVariant] = useState<Variant>(() => {
-    const saved =
-      typeof localStorage !== 'undefined' ? localStorage.getItem(VARIANT_KEY) : null;
-    return saved === 'a' || saved === 'b' ? saved : 'a';
-  });
-  const set = (v: Variant) => {
-    setVariant(v);
-    localStorage.setItem(VARIANT_KEY, v);
-  };
-  return [variant, set];
 }
 
 export function NowPlaying() {
   const data = useNowPlaying();
   const position = usePlaybackPosition(data);
-  const [variant, setVariant] = useVariant(); // TODO: remove after A/B decision
+  const [visualizer, setVisualizer] = useVisualizer();
 
   // The hook returns null while loading and on failure/rate-limit; any object
   // (even isPlaying:false) means the API answered → "Connected".
@@ -358,9 +232,11 @@ export function NowPlaying() {
   const duration = data?.durationMs ?? null;
 
   const hasTrack = Boolean(data && (playing || data.title));
-  const hasArt = hasTrack && Boolean(data?.albumArt);
+  // Computed whenever we have a position + duration (not gated on `playing`), so
+  // the bar stays mounted through the stop and can drain to empty instead of
+  // vanishing. The drain itself is driven by `spinning` in the Deck.
   const progressPct =
-    playing && position != null && duration && duration > 0
+    position != null && duration && duration > 0
       ? Math.min(100, (position / duration) * 100)
       : null;
 
@@ -381,16 +257,17 @@ export function NowPlaying() {
       ? `${playing ? 'Now playing' : 'Last played'}: ${data!.title} by ${data!.artist}.`
       : 'Nothing playing on Spotify.';
 
-  const variantProps: VariantProps | null = data
+  const deckProps: DeckProps | null = data
     ? {
         data,
-        playing,
         spinning: timerRunning,
         position,
         duration,
         tempo: features?.tempo,
         energy: features?.energy,
         progressPct,
+        visualizer,
+        onVisualizerChange: setVisualizer,
       }
     : null;
 
@@ -404,65 +281,8 @@ export function NowPlaying() {
         {announcement}
       </p>
 
-      {/* API health indicator (decorative dot + text). */}
-      <p className="flex items-center gap-2 font-mono text-xs">
-        <span
-          className={`inline-block size-2 rounded-full ${
-            connected ? 'bg-accent-start' : 'bg-muted'
-          } ${connected ? 'animate-pulse motion-reduce:animate-none' : ''}`}
-          aria-hidden="true"
-        />
-        <span className="text-muted">
-          Spotify API: {connected ? 'Connected' : 'Offline'}
-        </span>
-      </p>
-
-      {/* TODO: remove after the A/B tape-deck decision — variant switch. */}
-      <div className="flex gap-1 font-mono text-xs" role="group" aria-label="Tape-deck variant">
-        {(['a', 'b'] as const).map((v) => (
-          <button
-            key={v}
-            type="button"
-            onClick={() => setVariant(v)}
-            aria-pressed={variant === v}
-            className={`rounded border px-2 py-0.5 uppercase transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
-              variant === v
-                ? 'border-accent-start text-accent-start'
-                : 'border-muted/30 text-muted hover:border-accent-start/50'
-            }`}
-          >
-            {v === 'a' ? 'Cassette' : 'Deck'}
-          </button>
-        ))}
-      </div>
-
-      {hasTrack && variantProps ? (
-        hasArt || variant === 'b' ? (
-          variant === 'a' ? (
-            <CassetteA {...variantProps} />
-          ) : (
-            <DeckB {...variantProps} />
-          )
-        ) : (
-          // Track known but no art — simple text card (rare fallback).
-          <div className="rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm">
-            <p className="font-mono text-xs text-muted">
-              {playing ? 'Now playing' : 'Last played'}
-            </p>
-            <TrackText data={data!} variant="light" />
-            {progressPct != null && (
-              <div className="mt-3">
-                <Progress
-                  progressPct={progressPct}
-                  position={position}
-                  duration={duration}
-                  className="h-1 overflow-hidden rounded-full bg-muted/25"
-                  fillClassName="h-full rounded-full bg-accent-start transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
-                />
-              </div>
-            )}
-          </div>
-        )
+      {hasTrack && deckProps ? (
+        <Deck {...deckProps} />
       ) : (
         <div className="rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm">
           <p className="font-mono text-sm text-muted">
@@ -471,18 +291,6 @@ export function NowPlaying() {
         </div>
       )}
 
-      {/* Time readout under the card while playing. Visual only — the progress
-          bar's aria-valuetext already conveys elapsed/total to assistive tech,
-          so bare numbers here would just be noise. */}
-      {playing && position != null && duration != null && (
-        <div
-          className="flex justify-between font-mono text-xs text-muted"
-          aria-hidden="true"
-        >
-          <span>{formatTime(position)}</span>
-          <span>{formatTime(duration)}</span>
-        </div>
-      )}
     </section>
   );
 }
