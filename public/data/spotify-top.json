@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-17T20:05:56.308Z",
+  "fetchedAt": "2026-07-18T08:48:40.452Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -19,14 +19,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
-      "name": "Frank Turner",
-      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
-      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
-    },
-    {
       "name": "Michael Jackson",
       "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
       "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
+    },
+    {
+      "name": "Frank Turner",
+      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
+      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     },
     {
       "name": "Slipknot",
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
     },
     {
+      "name": "Metallica",
+      "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
+      "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
+    },
+    {
       "name": "AC/DC",
       "url": "https://open.spotify.com/artist/711MCceyCBcFnzjGY4Q7Un",
       "image": "https://i.scdn.co/image/ab6761610000f178c4c77549095c86acb4e77b37"
-    },
-    {
-      "name": "Thirty Seconds To Mars",
-      "url": "https://open.spotify.com/artist/0RqtSIYZmd4fiBKVFqyIqD",
-      "image": "https://i.scdn.co/image/ab6761610000f1785307a8a358283efe769d9c2a"
     }
   ],
   "tracks": [
@@ -52,10 +52,22 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
     },
     {
+      "title": "I Want You Back",
+      "artist": "The Jackson 5",
+      "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485116aaf05fe82237576a7d0e38"
+    },
+    {
       "title": "The Dark Forest",
       "artist": "Muse",
       "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
+    },
+    {
+      "title": "Master Of Puppets",
+      "artist": "Metallica",
+      "url": "https://open.spotify.com/track/2MuWTIM3b0YEAskbeeFE1i",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851668e3aca3167e6e569a9aa20"
     },
     {
       "title": "Boulevard of Broken Dreams",
@@ -76,22 +88,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
     },
     {
-      "title": "Master Of Puppets",
-      "artist": "Metallica",
-      "url": "https://open.spotify.com/track/2MuWTIM3b0YEAskbeeFE1i",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851668e3aca3167e6e569a9aa20"
-    },
-    {
       "title": "Tom Sawyer",
       "artist": "Rush",
       "url": "https://open.spotify.com/track/3QZ7uX97s82HFYSmQUAN1D",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
-    },
-    {
-      "title": "Ace of Spades",
-      "artist": "Motörhead",
-      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
