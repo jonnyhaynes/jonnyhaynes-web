@@ -83,6 +83,14 @@ export function NowPlaying() {
       ? Math.min(100, (position / duration) * 100)
       : null;
 
+  // The interpolated position clamps to duration and stops advancing once the
+  // track ends, but the next poll (and fresh track) can lag a couple of seconds
+  // behind. Freeze the equaliser once the timer has stopped so the bars don't
+  // keep bouncing over a finished track — motion resumes when the next track
+  // loads with a fresh position.
+  const timerRunning =
+    playing && position != null && duration != null && position < duration;
+
   // Single spoken summary of the current state, announced politely when it
   // changes (track change, play→pause, connect/disconnect) so screen-reader
   // users hear updates without the visual bars/scrim.
@@ -155,7 +163,11 @@ export function NowPlaying() {
               <p className="text-sm text-white/90">{data!.artist}</p>
             </div>
             {playing && (
-              <Visualiser playing={playing} tempo={features?.tempo} energy={features?.energy} />
+              <Visualiser
+                playing={timerRunning}
+                tempo={features?.tempo}
+                energy={features?.energy}
+              />
             )}
           </div>
 
