@@ -18,7 +18,7 @@ const STEAM_API_KEY = process.env.STEAM_API_KEY;
 const STEAM_ID = process.env.STEAM_ID;
 const XBL_API_KEY = process.env.XBL_API_KEY;
 const OUT = 'public/data/gaming.json';
-const LIMIT = 6;
+const LIMIT = 7;
 
 /**
  * Recently-played Steam games. Steam's endpoint gives playtime_2weeks but NO
