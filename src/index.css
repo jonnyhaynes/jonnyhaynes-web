@@ -289,3 +289,82 @@
     transform: scaleY(0.5);
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Tape-deck Now Playing (A/B trial). Two variants share the spinning reel:
+ *   - Variant A: a cassette shell wrapping the album art.
+ *   - Variant B: a hi-fi deck front panel wrapping that cassette.
+ * Reel speed tracks tempo via --reel-duration (faster song → faster spin),
+ * gated on .is-spinning so it freezes exactly when the playback timer stops
+ * (mirrors .is-playing on the equaliser). Honest, non-audio motion.
+ * ------------------------------------------------------------------------- */
+@keyframes reel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reel {
+  /* The hub sits still; spokes/teeth ride the rotation so the reel reads as
+   * turning even over a static album cover behind the window. */
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      color-mix(in oklch, var(--grad-2) 70%, black) 0deg 18deg,
+      color-mix(in oklch, var(--grad-1) 55%, black) 18deg 36deg
+    );
+  box-shadow:
+    inset 0 0 0 2px color-mix(in oklch, black 55%, transparent),
+    inset 0 0 6px 2px color-mix(in oklch, black 40%, transparent);
+}
+
+.is-spinning .reel {
+  animation: reel-spin var(--reel-duration, 1.1s) linear infinite;
+}
+
+/* Cassette shell (Variant A) — plastic body with a subtle sheen. */
+.cassette-shell {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--color-background) 82%, white) 0%,
+      color-mix(in oklch, var(--color-background) 92%, black) 55%,
+      color-mix(in oklch, var(--color-background) 78%, black) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 25%, transparent),
+    inset 0 0 0 1px color-mix(in oklch, black 30%, transparent);
+}
+
+/* The window in the shell that reveals the album art between the reels. */
+.cassette-window {
+  box-shadow:
+    inset 0 0 0 2px color-mix(in oklch, black 45%, transparent),
+    inset 0 2px 8px color-mix(in oklch, black 55%, transparent);
+}
+
+/* Deck front panel (Variant B) — brushed metal via layered fine gradients. */
+.deck-panel {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklch, var(--color-background) 88%, white) 0px,
+      color-mix(in oklch, var(--color-background) 80%, black) 1px,
+      color-mix(in oklch, var(--color-background) 88%, white) 2px
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-background) 90%, white) 0%,
+      color-mix(in oklch, var(--color-background) 82%, black) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 20%, transparent),
+    inset 0 0 0 1px color-mix(in oklch, black 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-spinning .reel {
+    animation: none;
+  }
+}
