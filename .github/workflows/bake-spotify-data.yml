@@ -29,6 +29,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+
+      # sharp (used to derive each audiobook cover's dominant colour for the
+      # bookshelf spines) is a real dependency, so the bake now needs an install.
+      - name: Install dependencies
+        run: npm ci
 
       - name: Fetch Spotify data
         env:
