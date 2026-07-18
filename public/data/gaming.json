@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-18T10:21:02.815Z",
+  "fetchedAt": "2026-07-18T11:43:56.615Z",
   "games": [
     {
       "title": "Clair Obscur: Expedition 33",
@@ -41,6 +41,13 @@
       "platform": "xbox",
       "coverUrl": "https://store-images.s-microsoft.com/image/apps.1429.14574664570876265.471d597a-3551-49d3-8539-0d6889ee7e31.f6d656cb-455e-472f-912b-b0c840a72e32",
       "lastPlayed": "2026-03-21T09:05:51.9215799Z",
+      "url": null
+    },
+    {
+      "title": "Tony Hawk's™ Pro Skater™ 3 + 4",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.7791.13968131629601189.02100553-7fb7-4f1a-b080-6b3ac33c153c.1164e424-06a5-4cbd-a501-43f0aedc4f1a",
+      "lastPlayed": "2026-03-21T08:33:51.2598904Z",
       "url": null
     }
   ]
