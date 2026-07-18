@@ -11,6 +11,7 @@
 
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
+import sharp from 'sharp';
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
@@ -72,6 +73,37 @@ function pickImage(images, minWidth = 64) {
   return (sorted.find((i) => (i.width ?? 0) >= minWidth) ?? sorted[sorted.length - 1]).url;
 }
 
+/** sRGB channel (0–255) → linearised value, per the WCAG relative-luminance formula. */
+function linearise(channel) {
+  const c = channel / 255;
+  return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+}
+
+/**
+ * Dominant colour of a cover, for synthesising a book "spine" in the reading
+ * section (Spotify gives covers but no spine images). Downloads the cover,
+ * asks sharp for its dominant RGB, and pairs it with a legible ink colour
+ * (WCAG relative luminance → dark ink on light spines, light ink on dark ones,
+ * using the site's own foreground tokens). Returns null on any failure so a
+ * single bad cover never fails the bake — same tolerance as the 403 path.
+ */
+async function dominantColor(imageUrl) {
+  if (!imageUrl) return null;
+  try {
+    const buf = Buffer.from(await (await fetch(imageUrl)).arrayBuffer());
+    const { dominant } = await sharp(buf).stats();
+    const { r, g, b } = dominant;
+    const luminance =
+      0.2126 * linearise(r) + 0.7152 * linearise(g) + 0.0722 * linearise(b);
+    // Site foreground tokens: light cream on dark spines, near-black on light.
+    const ink = luminance > 0.4 ? '#1a1b1e' : '#e8ddcb';
+    return { bg: `rgb(${r} ${g} ${b})`, ink };
+  } catch (err) {
+    console.warn(`Spine colour failed for ${imageUrl}: ${err.message}`);
+    return null;
+  }
+}
+
 /**
  * Modal genre across the top artists — the "Current Vibe: [Genre]" string.
  * Returns null when no artist carries genre data.
@@ -100,11 +132,11 @@ function topGenre(artists) {
  *
  * Note: Spotify's /me/audiobooks returns items in most-recently-saved order but
  * exposes NO added_at timestamp and NO reading-progress API — so "latest I've
- * been reading" is approximated as the 4 most-recently-saved (the API's
+ * been reading" is approximated as the 7 most-recently-saved (the API's
  * default order), newest first.
  */
 async function savedAudiobooks(token) {
-  const url = 'https://api.spotify.com/v1/me/audiobooks?limit=4';
+  const url = 'https://api.spotify.com/v1/me/audiobooks?limit=7';
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (res.status === 403) {
     console.warn(
@@ -116,15 +148,22 @@ async function savedAudiobooks(token) {
     throw new Error(`Audiobooks failed: ${res.status} ${res.statusText}`);
   }
   const json = await res.json();
-  return (json.items ?? []).map((b) => ({
-    title: b.name,
-    authors: b.authors?.map((a) => a.name).join(', ') ?? '',
-    url: b.external_urls?.spotify ?? null,
-    // Larger min: the reading tiles are portrait and are the section's visual
-    // hero. A small thumb upscales and looks blurry, and a 2-col tile on a big
-    // phone can exceed 300px — so target the largest (~640px) Spotify offers.
-    cover: pickImage(b.images, 640),
-  }));
+  return Promise.all(
+    (json.items ?? []).map(async (b) => {
+      // Larger min: the reading tiles are the section's visual hero. A small
+      // thumb upscales and looks blurry, and a tile on a big phone can exceed
+      // 300px — so target the largest (~640px) Spotify offers.
+      const cover = pickImage(b.images, 640);
+      return {
+        title: b.name,
+        authors: b.authors?.map((a) => a.name).join(', ') ?? '',
+        url: b.external_urls?.spotify ?? null,
+        cover,
+        // Dominant-colour "spine" for the reading render; null on failure.
+        spine: await dominantColor(cover),
+      };
+    }),
+  );
 }
 
 /**
