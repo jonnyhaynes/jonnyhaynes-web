@@ -80,7 +80,7 @@ function CodingFuel() {
       <p className="font-mono text-xs uppercase tracking-wider text-muted">
         Coding fuel
       </p>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+      <div className="mt-3 grid gap-4">
         {cards.map((c) => (
           <a
             key={c.label}
@@ -130,17 +130,16 @@ export function Listening() {
 
       {/* Responsive layout:
           - mobile (<md): single column, stacked full width.
-          - tablet (md): 2-col grid — Now Playing alone in row 1 / col 1; the
-            rotation + fuel block spans both cols on the rows below (col-span-2
-            can't fit beside the 1-col card in a 2-col grid, so it wraps down).
-          - desktop (lg): 3-col grid — the same col-span-2 block now fits in the
-            remaining two columns beside Now Playing, sitting to its right. */}
-      <div className="mt-6 grid gap-8 md:grid-cols-2 md:items-start lg:grid-cols-3">
+          - desktop (md+): 2-col grid — Now Playing gets a 50%-width column; the
+            rotation + fuel block fills the other half. Within that half the
+            Coding Fuel cards stack (single column) since 50% is too narrow to
+            sit them side by side comfortably. */}
+      <div className="mt-6 grid gap-8 md:grid-cols-2 md:items-start">
         <NowPlaying />
         {/* On desktop, nudge down so "Heavy rotation" lines up with the top of
             the album art rather than the status line above it (status line
             text-xs ≈ 1rem + the gap-3 ≈ 0.75rem = 1.75rem). */}
-        <div className="flex flex-col gap-8 md:col-span-2 lg:pt-7">
+        <div className="flex flex-col gap-8 md:pt-7">
           <HeavyRotation />
           <CodingFuel />
         </div>
