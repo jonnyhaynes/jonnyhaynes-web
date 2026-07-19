@@ -25,6 +25,15 @@
   --color-accent-end: #7a4988;
 }
 
+/* The deck LCD screen is a fixed dark display in both themes, so its glowing
+ * readout text keys off this brighter accent regardless of the page theme. In
+ * light mode the page accent is darkened for AA on the light background, which
+ * would dip the LCD text below AA against the dark screen — so the LCD keeps the
+ * dark-mode heather here. Lives outside @theme (not a utility token). */
+:root {
+  --color-lcd-accent: #a877bf;
+}
+
 /* Light mode — Chalk / Deep Coal / Bright Heather. Overrides the tokens the
  * theme exposes so utilities like bg-background pick up the right value. */
 [data-theme='light'] {
@@ -308,10 +317,10 @@
 }
 
 .deck-lcd-text {
-  color: color-mix(in oklch, var(--color-accent-start) 88%, white);
+  color: color-mix(in oklch, var(--color-lcd-accent) 88%, white);
   text-shadow:
-    0 0 4px color-mix(in oklch, var(--color-accent-start) 70%, transparent),
-    0 0 10px color-mix(in oklch, var(--color-accent-start) 45%, transparent);
+    0 0 4px color-mix(in oklch, var(--color-lcd-accent) 70%, transparent),
+    0 0 10px color-mix(in oklch, var(--color-lcd-accent) 45%, transparent);
 }
 
 /* Marquee readout — the track scrolls right-to-left, masked at both edges so it
