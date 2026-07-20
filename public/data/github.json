@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-20T09:26:13.440Z",
+  "fetchedAt": "2026-07-20T19:49:40.950Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,13 +16,33 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-20T09:23:25Z",
+      "pushedAt": "2026-07-20T17:22:58Z",
       "lastCommit": {
-        "message": "[ai-assisted] Now Playing: restore WCAG AA on the player panel text (…",
-        "committedAt": "2026-07-20T08:57:53Z"
+        "message": "[ai-assisted] Hero: mechanical arrivals-board role headline (#130)",
+        "committedAt": "2026-07-20T17:22:37Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "colouringcode-web",
+      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
+      "url": "https://github.com/jonnyhaynes/colouringcode-web",
+      "homepageUrl": "https://www.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "Shell",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-07-20T15:05:02Z",
+      "lastCommit": {
+        "message": "Merge pull request #5 from jonnyhaynes/feature/design-refine-checkup",
+        "committedAt": "2026-07-20T15:05:02Z"
+      },
+      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
+      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     },
     {
       "name": "sitwellcc-web",
@@ -37,33 +57,13 @@
         "JavaScript"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-18T19:33:10Z",
+      "pushedAt": "2026-07-20T14:52:50Z",
       "lastCommit": {
-        "message": "[ai-assisted] Drive page headers and meta from Sanity (#66)",
-        "committedAt": "2026-07-18T19:32:39Z"
+        "message": "[ai-assisted] Fix critical accessibility blockers across the site (#68)",
+        "committedAt": "2026-07-20T14:52:50Z"
       },
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
-    {
-      "name": "colouringcode-web",
-      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
-      "url": "https://github.com/jonnyhaynes/colouringcode-web",
-      "homepageUrl": "https://www.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-16T07:28:24Z",
-      "lastCommit": {
-        "message": "Merge pull request #2 from jonnyhaynes/feature/animated-clouds",
-        "committedAt": "2026-07-15T15:47:28Z"
-      },
-      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
-      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     },
     {
       "name": "rovrum.town",
@@ -132,8 +132,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "[ai-assisted] Now Playing: restore WCAG AA on the player panel text (…",
-    "committedAt": "2026-07-20T08:57:53Z"
+    "message": "[ai-assisted] Hero: mechanical arrivals-board role headline (#130)",
+    "committedAt": "2026-07-20T17:22:37Z"
   },
   "languages": [
     {
@@ -153,5 +153,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 736
+  "totalContributions": 763
 }
