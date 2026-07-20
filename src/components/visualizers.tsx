@@ -19,12 +19,11 @@ type VisualizerProps = {
   active: boolean;
   tempo?: number | null;
   energy?: number | null;
-  // Minimum "aliveness" the collapse envelope is allowed to reach at rest, 0..1.
-  // 0 (default, the hero screen) lets a stopped visualizer settle to a bare
-  // screen. The switcher mini-previews pass a small floor so a stopped preview
-  // still shows enough to identify the mode (notably plasma, which otherwise
-  // fades to nothing — see drawPlasma).
-  restFloor?: number;
+  // Paint a single representative mid-motion frame and skip the RAF loop —
+  // regardless of `active`. Used by the inactive switcher chips, which show a
+  // full, still miniature of their visualizer (shape visible, but not moving)
+  // while only the selected chip animates. Reduced motion forces this too.
+  staticFrame?: boolean;
 };
 
 // A representative static frame time for reduced-motion / paused states.
@@ -123,7 +122,7 @@ function useCanvas(
   tempo: number | null | undefined,
   energy: number | null | undefined,
   draw: DrawFn,
-  restFloor = 0,
+  staticFrame = false,
 ) {
   const ref = useRef<HTMLCanvasElement>(null);
   // Persist the animation clock across active/paused transitions so the ease
@@ -152,14 +151,12 @@ function useCanvas(
       draw(ctx, w, h, t, { beat, amp, liveAmp: amp * (1 - rest), rest, a, a2 });
     };
 
-    // The collapse never fully reaches rest when a floor is set (preview mode):
-    // cap `rest` at 1 - restFloor so a stopped visualizer keeps a little life.
-    const capRest = (r: number) => r * (1 - restFloor);
-
-    // Reduced motion: no animation. Show a mid-motion frame while playing, or
-    // the (optionally floored) resting frame once stopped.
-    if (prefersReducedMotion()) {
-      const paintStatic = () => paint(STILL_T, capRest(active ? 0 : 1));
+    // A single representative frame, no RAF: forced for staticFrame chips (the
+    // inactive switcher chips) and under reduced motion. Painted at STILL_T with
+    // rest=0 so the visualizer shows its full shape — just held still — rather
+    // than the collapsed baseline.
+    if (staticFrame || prefersReducedMotion()) {
+      const paintStatic = () => paint(STILL_T, 0);
       paintStatic();
       window.addEventListener('resize', paintStatic);
       return () => window.removeEventListener('resize', paintStatic);
@@ -188,7 +185,7 @@ function useCanvas(
         progressRef.current + (stepDir * dt) / EASE_MS,
       );
       const settled = progressRef.current === target;
-      const rest = capRest(easeInOut(progressRef.current));
+      const rest = easeInOut(progressRef.current);
 
       // Advance the clock, slowed by `rest`: full speed at rest=0, frozen at
       // rest=1. With the amplitude decay (liveAmp) this reads as the visualizer
@@ -204,7 +201,7 @@ function useCanvas(
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [active, tempo, energy, draw, restFloor]);
+  }, [active, tempo, energy, draw, staticFrame]);
 
   return ref;
 }
@@ -277,16 +274,16 @@ const drawPlasma: DrawFn = (ctx, w, h, t, { beat, liveAmp, rest, a, a2 }) => {
 
 // --- components -----------------------------------------------------------
 
-function Spectrum({ active, tempo, energy, restFloor }: VisualizerProps) {
-  const ref = useCanvas(active, tempo, energy, drawSpectrum, restFloor);
+function Spectrum({ active, tempo, energy, staticFrame }: VisualizerProps) {
+  const ref = useCanvas(active, tempo, energy, drawSpectrum, staticFrame);
   return <canvas ref={ref} className="block size-full" aria-hidden="true" />;
 }
-function Oscilloscope({ active, tempo, energy, restFloor }: VisualizerProps) {
-  const ref = useCanvas(active, tempo, energy, drawScope, restFloor);
+function Oscilloscope({ active, tempo, energy, staticFrame }: VisualizerProps) {
+  const ref = useCanvas(active, tempo, energy, drawScope, staticFrame);
   return <canvas ref={ref} className="block size-full" aria-hidden="true" />;
 }
-function Plasma({ active, tempo, energy, restFloor }: VisualizerProps) {
-  const ref = useCanvas(active, tempo, energy, drawPlasma, restFloor);
+function Plasma({ active, tempo, energy, staticFrame }: VisualizerProps) {
+  const ref = useCanvas(active, tempo, energy, drawPlasma, staticFrame);
   return <canvas ref={ref} className="block size-full" aria-hidden="true" />;
 }
 
