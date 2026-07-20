@@ -475,6 +475,11 @@
   --knob-metal-edge: #18191d;
   --knob-cap-hi: #3a3c44;
   --knob-cap-lo: #22242a;
+  /* Outline ring + drop shadow around the disc. Near-black is right on the
+     dark metal but reads as a harsh dark outline on light aluminium, so these
+     are theme-aware (see the light-theme block). */
+  --knob-ring: rgba(0, 0, 0, 0.5);
+  --knob-drop: rgba(0, 0, 0, 0.4);
 }
 
 [data-theme='light'] {
@@ -486,6 +491,10 @@
   --knob-metal-edge: #8f8b81;
   --knob-cap-hi: #e6e3db;
   --knob-cap-lo: #bcb8ae;
+  /* Soft mid-grey edge + lighter drop, so the disc has a gentle rim rather
+     than the near-black outline the dark-theme values gave. */
+  --knob-ring: rgba(90, 84, 74, 0.35);
+  --knob-drop: rgba(90, 84, 74, 0.22);
 }
 
 .knob-control {
@@ -564,8 +573,8 @@
     var(--knob-metal-edge) 100%
   );
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--knob-ring),
+    0 2px 4px var(--knob-drop),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
