@@ -40,7 +40,7 @@ export function Home() {
         <div className="mx-auto max-w-4xl px-6">
           <Listening />
         </div>
-        <div className="mx-auto max-w-4xl px-6">
+        <div className="mx-auto max-w-6xl px-6">
           <Reading />
         </div>
         <div className="mx-auto max-w-4xl px-6">
