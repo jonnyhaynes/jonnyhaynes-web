@@ -43,6 +43,13 @@
   /* Scrim over album art inside the screen — dark on the dark screen. */
   --color-lcd-scrim: color-mix(in oklch, black 55%, transparent);
 
+  /* Deck front panel — matches the Gaming TV cabinet (see .group cabinet in
+   * Gaming.tsx): a plastic gradient + ring, dark plastic here, light grey in the
+   * light block. Kept in sync with the TV so the two "devices" read as a set. */
+  --color-deck-panel-top: #2a2b30;
+  --color-deck-panel-bottom: #141519;
+  --color-deck-panel-ring: color-mix(in oklch, black 40%, transparent);
+
   /* Recessed control surfaces (the switcher track + its hover). Foreground-based
    * so they read as a subtle inset in both themes: a faint dark fill on dark, a
    * faint dark fill on light — no hardcoded black/white that only works on one. */
@@ -72,6 +79,11 @@
   --color-lcd-inset-shadow: color-mix(in oklch, black 12%, transparent);
   --color-lcd-text-tint: black;
   --color-lcd-scrim: color-mix(in oklch, white 60%, transparent);
+
+  /* Panel — light grey plastic, matching the Gaming TV cabinet's light values. */
+  --color-deck-panel-top: #eceae4;
+  --color-deck-panel-bottom: #d8d4cb;
+  --color-deck-panel-ring: color-mix(in oklch, black 10%, transparent);
 }
 
 @layer base {
@@ -247,23 +259,20 @@
  * everything here is the surrounding chrome. Honest, non-audio motion.
  * ------------------------------------------------------------------------- */
 
-/* Deck front panel — brushed metal via layered fine gradients. */
+/* Deck front panel — a plastic cabinet matching the Gaming TV (Gaming.tsx): a
+ * vertical plastic gradient with a hairline ring and a soft drop shadow, so the
+ * player and the TV read as the same family of "device". Light grey plastic in
+ * light mode, dark plastic in dark mode, via the --color-deck-panel-* tokens. */
 .deck-panel {
-  background:
-    repeating-linear-gradient(
-      90deg,
-      color-mix(in oklch, var(--color-background) 88%, white) 0px,
-      color-mix(in oklch, var(--color-background) 80%, black) 1px,
-      color-mix(in oklch, var(--color-background) 88%, white) 2px
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in oklch, var(--color-background) 90%, white) 0%,
-      color-mix(in oklch, var(--color-background) 82%, black) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    var(--color-deck-panel-top) 0%,
+    var(--color-deck-panel-bottom) 100%
+  );
   box-shadow:
-    inset 0 1px 0 color-mix(in oklch, white 20%, transparent),
-    inset 0 0 0 1px color-mix(in oklch, black 35%, transparent);
+    0 0 0 1px var(--color-deck-panel-ring),
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 /* LCD readout — a recessed screen that inverts with the theme (dark in dark
