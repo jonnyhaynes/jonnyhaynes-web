@@ -100,7 +100,7 @@ function Deck({
   onVisualizerChange,
 }: DeckProps) {
   return (
-    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-lg border border-muted/20 p-4">
+    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
       {/* Header strip: playing/last-played label + power light. */}
       <div className="mb-3 flex items-center justify-between">
         <p className="font-mono text-xs uppercase tracking-widest text-muted">
