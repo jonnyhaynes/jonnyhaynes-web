@@ -230,13 +230,40 @@
   white-space: nowrap;
 }
 
-/* One character cell. Fixed to 1ch so the grid stays rigid whatever glyph is
- * showing (monospace → 1ch is exactly one character wide). */
+/* Wrapper around both flip words. --role-slots (set in Hero) is the total slot
+ * count across both words + the space between; --slot-w is one cell's width.
+ * Each slot paints the SAME gradient sized to the full role and shifted by its
+ * own column, so the colour runs continuously across every letter (a single
+ * background-clip:text span can't be used — the slots are independent
+ * inline-blocks so the clip wouldn't span them). */
+.flip-role {
+  display: inline-flex;
+  align-items: baseline;
+  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
+   * shared by the slots below so the maths lines up. */
+  --slot-w: calc(1ch - 0.025em);
+}
+
+/* One character cell. Fixed width keeps the grid rigid whatever glyph is
+ * showing (monospace), and matches the static text's rhythm via --slot-w. */
 .flip-slot {
   display: inline-block;
-  width: 1ch;
+  width: var(--slot-w);
   text-align: center;
-  will-change: transform, filter;
+  will-change: opacity, filter;
+}
+
+/* The blank slot between the two words — no gradient text, just spacing. */
+.flip-slot--space {
+  width: var(--slot-w);
+}
+
+/* Size each slot's gradient to the whole role and slide it left by this slot's
+ * column, so the stops align into one unbroken gradient across all letters. */
+.flip-role .flip-slot.animate-gradient {
+  background-size: calc(var(--slot-w) * var(--role-slots)) 100%;
+  background-position-x: calc(var(--slot-w) * var(--slot-i, 0) * -1);
+  background-repeat: no-repeat;
 }
 
 /* While a slot is mid-riffle: a brief per-glyph flicker (no vertical movement —

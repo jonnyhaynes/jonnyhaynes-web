@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 import { SITE } from '../content/site';
 import { FlipWord } from './FlipWord';
 import { GitHubIcon, LinkedInIcon } from './icons';
@@ -6,6 +6,16 @@ import { GitHubIcon, LinkedInIcon } from './icons';
 const [WORDS_1, WORDS_2] = SITE.hero.roleWords;
 // How long each state holds before the board flips.
 const HOLD_MS = 5000;
+
+// Slot counts drive the shared-gradient geometry: each flapper is as wide as
+// its longest word, plus one slot for the space between them. Every slot paints
+// a gradient sized to `roleSlots` columns and shifted by its own offset, so the
+// colour runs unbroken across the whole role.
+const longest = (ws: readonly string[]) =>
+  ws.reduce((m, w) => Math.max(m, w.length), 0);
+const WORDS_1_SLOTS = longest(WORDS_1);
+const WORDS_2_SLOTS = longest(WORDS_2);
+const roleSlots = WORDS_1_SLOTS + 1 + WORDS_2_SLOTS;
 
 export function Hero() {
   const [i1, setI1] = useState(0);
@@ -62,11 +72,27 @@ export function Hero() {
             decorative motion (aria-hidden inside FlipWord). No live region:
             this must not re-announce on every flip. */}
         <span className="sr-only">{currentRole}</span>
-        <FlipWord words={WORDS_1} index={i1} />
-        <span className="text-foreground"> </span>
-        {/* Stagger the second word so the board flips like a mechanical
-            sequence rather than snapping both words at once. */}
-        <FlipWord words={WORDS_2} index={i2} delayMs={150} />
+        {/* The two flip words share one continuous gradient: each slot paints
+            the SAME full-width gradient (background sized to the whole role via
+            --role-slots) and shifts its background-position by its column, so
+            the colour runs unbroken across every letter instead of restarting
+            per slot. See .flip-slot / .flip-role in index.css. */}
+        <span
+          className="flip-role"
+          aria-hidden="true"
+          style={{ '--role-slots': roleSlots } as CSSProperties}
+        >
+          <FlipWord words={WORDS_1} index={i1} slotOffset={0} />
+          <span className="flip-slot flip-slot--space" />
+          {/* Stagger the second word so the board resolves as a mechanical
+              sequence rather than both words landing at once. */}
+          <FlipWord
+            words={WORDS_2}
+            index={i2}
+            delayMs={150}
+            slotOffset={WORDS_1_SLOTS + 1}
+          />
+        </span>
       </h1>
 
       <p className="mt-6 max-w-xl text-lg text-muted">{SITE.hero.subheadline}</p>
