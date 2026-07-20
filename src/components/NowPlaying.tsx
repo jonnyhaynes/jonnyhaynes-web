@@ -206,40 +206,23 @@ function Deck({
               onClick={() => onVisualizerChange(v.kind)}
               aria-pressed={selected}
               title={v.label}
-              className={`relative flex h-9 items-center justify-center overflow-hidden rounded transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
-                selected
-                  ? 'bg-accent-start'
-                  : 'text-[var(--color-deck-panel-text)]'
-              }`}
+              className="relative flex h-9 items-center justify-center overflow-hidden rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
-              {/* Both states show the same full-bleed live miniature of the
-                  visualizer — a tiny copy of the playing screen. The difference
-                  is the colours, swapped: the inactive chip draws heather ink on
-                  a recessed dark LCD; the selected chip swaps that to ink-on-
-                  heather by re-pointing the accent tokens the canvas reads (see
-                  readToken) at the page background/foreground. Because those
-                  tokens flip per theme, the swapped ink stays legible in both:
-                  dark ink on the (lighter) dark-theme heather, light ink on the
-                  (darker) light-theme heather. --color-foreground on accent-end
-                  gives plasma's full-field wash a tonal range. Animates with the
-                  deck (spinning), settles when stopped, still frame under
-                  reduced motion (see useCanvas). */}
-              <span
-                aria-hidden="true"
-                className={
-                  selected
-                    ? 'absolute inset-0 [--color-accent-end:var(--color-foreground)] [--color-accent-start:var(--color-background)]'
-                    : 'deck-mini-screen absolute inset-0'
-                }
-              >
+              {/* Every chip is the same full-bleed miniature of its visualizer —
+                  heather on a recessed dark LCD, a tiny copy of the playing
+                  screen. Selection is shown by motion: only the selected chip
+                  animates (active while the deck is playing); the others hold a
+                  static still-frame. All freeze under reduced motion (useCanvas).
+                  Selection is also exposed via aria-pressed for assistive tech. */}
+              <span aria-hidden="true" className="deck-mini-screen absolute inset-0">
                 <Visualizer
                   kind={v.kind}
-                  active={spinning}
+                  active={selected && spinning}
                   tempo={tempo}
                   energy={energy}
-                  // Keep a little life at rest so a stopped preview still reads
-                  // as its mode (esp. plasma, which otherwise fades to nothing).
-                  restFloor={0.25}
+                  // Inactive chips hold a full, still frame; only the selected
+                  // chip animates (when the deck is playing).
+                  staticFrame={!selected}
                 />
               </span>
               <span className="sr-only">{v.label}</span>
