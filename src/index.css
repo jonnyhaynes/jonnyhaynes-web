@@ -297,6 +297,14 @@
      The readout + progress pad right by this so text/fill never runs under
      the knob. */
   --knob-clearance: calc(var(--knob-size) + 8px);
+
+  /* The knob hangs 0.62·size below the LCD bottom. The readout+progress stack
+     below the LCD is ~40px tall, so at larger knob sizes the knob juts past it
+     and would sit flush with (or below) the panel floor. Reserve extra bottom
+     padding on top of Tailwind's p-4 so there's always a visible gap of chrome
+     beneath the knob. The max() falls back to the normal 1rem when the content
+     stack already clears the knob (small sizes). */
+  padding-bottom: max(1rem, calc(var(--knob-size) * 0.62 - 26px));
 }
 
 /* LCD readout — a recessed screen that inverts with the theme (dark in dark
