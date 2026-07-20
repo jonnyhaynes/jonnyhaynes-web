@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
 import type { NowPlaying as NowPlayingData } from '../data/spotify';
 import { Visualizer } from './visualizers';
-import { VISUALIZERS, type VisualizerKind } from './visualizers-meta';
+import { type VisualizerKind } from './visualizers-meta';
+import { KnobControl } from './KnobControl';
 
 // Persist the chosen visualizer the same way the theme toggle persists: an
 // explicit choice is written to localStorage; otherwise we default to spectrum.
@@ -118,34 +119,41 @@ function Deck({
         />
       </div>
 
-      {/* Visualizer screen — the hero. A recessed dark display (deck-lcd) with
-          scanlines. Square, so the album art behind it reads as a proper cover.
-          The chosen visualizer persists to localStorage like the site theme
-          (see useVisualizer). */}
-      <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
-        {/* Album art sits behind the visualizer, dimmed under a scrim so the
-            accent-coloured bars/wave/plasma stay legible over any cover. */}
-        {data.albumArt && (
-          <>
-            <img
-              src={data.albumArt}
-              alt=""
-              className="absolute inset-0 size-full object-cover opacity-40"
+      {/* Visualizer screen + knob. The LCD (deck-lcd) is a recessed display
+          with scanlines; a concave notch is masked out of its bottom-right
+          corner (see .deck-lcd in index.css) and the knob nests in it, on the
+          chrome — the knob never overlaps the live visualizer. The relative
+          wrapper is the knob's positioning context. The chosen visualizer
+          persists to localStorage like the site theme (see useVisualizer). */}
+      <div className="relative">
+        <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+          {/* Album art sits behind the visualizer, dimmed under a scrim so the
+              accent-coloured bars/wave/plasma stay legible over any cover. */}
+          {data.albumArt && (
+            <>
+              <img
+                src={data.albumArt}
+                alt=""
+                className="absolute inset-0 size-full object-cover opacity-40"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-[var(--color-lcd-scrim)]"
+              />
+            </>
+          )}
+          <div className="absolute inset-0 z-10">
+            <Visualizer
+              kind={visualizer}
+              active={spinning}
+              tempo={tempo}
+              energy={energy}
             />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-[var(--color-lcd-scrim)]"
-            />
-          </>
-        )}
-        <div className="absolute inset-0 z-10">
-          <Visualizer
-            kind={visualizer}
-            active={spinning}
-            tempo={tempo}
-            energy={energy}
-          />
+          </div>
         </div>
+
+        {/* Rotary switcher — nests in the LCD's notched corner. */}
+        <KnobControl visualizer={visualizer} onChange={onVisualizerChange} />
       </div>
 
       {/* Readout line under the screen: a marquee of the track (title + artist)
@@ -188,48 +196,6 @@ function Deck({
           />
         </div>
       )}
-
-      {/* Visualizer mode switcher — an icon-only segmented control. The active
-          segment fills with the accent; each button carries its full name for
-          assistive tech + a tooltip. */}
-      <div
-        className="mt-3 grid grid-cols-3 gap-1 rounded-md border border-muted/25 bg-[var(--color-control-recess)] p-1"
-        role="group"
-        aria-label="Visualizer style"
-      >
-        {VISUALIZERS.map((v) => {
-          const selected = v.kind === visualizer;
-          return (
-            <button
-              key={v.kind}
-              type="button"
-              onClick={() => onVisualizerChange(v.kind)}
-              aria-pressed={selected}
-              title={v.label}
-              className="relative flex h-9 items-center justify-center overflow-hidden rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-            >
-              {/* Every chip is the same full-bleed miniature of its visualizer —
-                  heather on a recessed dark LCD, a tiny copy of the playing
-                  screen. Selection is shown by motion: only the selected chip
-                  animates (active while the deck is playing); the others hold a
-                  static still-frame. All freeze under reduced motion (useCanvas).
-                  Selection is also exposed via aria-pressed for assistive tech. */}
-              <span aria-hidden="true" className="deck-mini-screen absolute inset-0">
-                <Visualizer
-                  kind={v.kind}
-                  active={selected && spinning}
-                  tempo={tempo}
-                  energy={energy}
-                  // Inactive chips hold a full, still frame; only the selected
-                  // chip animates (when the deck is playing).
-                  staticFrame={!selected}
-                />
-              </span>
-              <span className="sr-only">{v.label}</span>
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }
