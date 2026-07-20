@@ -308,6 +308,27 @@
     inset 0 2px 6px var(--color-lcd-inset-shadow);
 }
 
+/* Switcher mini-screen — a shrunk .deck-lcd for the inactive switcher buttons,
+ * so each reads as a tiny copy of the playing screen behind its live visualizer.
+ * Reuses the same theme-flipping screen tokens; a tighter 1px/2px scanline
+ * pitch suits the small size, and the inset is lighter than the hero screen. */
+.deck-mini-screen {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 1px,
+      var(--color-lcd-scanline) 1px,
+      var(--color-lcd-scanline) 2px
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-lcd-screen-top) 0%,
+      var(--color-lcd-screen-bottom) 100%
+    );
+  box-shadow: inset 0 0 0 1px var(--color-lcd-inset);
+}
+
 /* Power LED — a glowing accent dot that breathes (opacity + accent bloom).
  * Shared by the Now Playing header and the Gaming bezel so both "now playing"
  * indicators pulse identically. Held steady under reduced motion. */
