@@ -59,16 +59,6 @@
    * faint dark fill on light — no hardcoded black/white that only works on one. */
   --color-control-recess: color-mix(in oklch, var(--color-foreground) 8%, transparent);
   --color-control-hover: color-mix(in oklch, var(--color-foreground) 12%, transparent);
-
-  /* Selected switcher chip — the live preview runs here with the colours swapped
-   * vs the inactive mini-screen: dark ink on a heather fill (instead of heather
-   * ink on a dark screen). The ink is a fixed dark in BOTH themes so the chip
-   * reads as "dark-on-heather" consistently; chip-ink-2 gives plasma a tonal
-   * range. --color-chip-fill is the heather; in the light block it is lightened
-   * so the dark ink clears contrast on the otherwise-darker light-theme heather. */
-  --color-chip-fill: var(--color-accent-start);
-  --color-chip-ink: #1a1b1e;
-  --color-chip-ink-2: #4a3555;
 }
 
 /* Light mode — Chalk / Deep Coal / Bright Heather. Overrides the tokens the
@@ -102,12 +92,6 @@
    * on the cabinet grey — this is the exact slate the Gaming TV uses for its
    * light-mode "Now playing" label (Gaming.tsx), so text matches too. */
   --color-deck-panel-text: #4a5160;
-
-  /* Selected chip: keep the brighter (dark-theme) heather here rather than the
-   * AA-darkened page accent, so the fixed dark chip-ink clears 4.5:1 on it and
-   * the active chip reads as dark-on-heather in light theme too (the darkened
-   * #8b52a1 would drop the ink to ~3.1:1). */
-  --color-chip-fill: #a877bf;
 }
 
 @layer base {

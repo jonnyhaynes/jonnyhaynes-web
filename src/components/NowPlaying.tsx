@@ -208,25 +208,27 @@ function Deck({
               title={v.label}
               className={`relative flex h-9 items-center justify-center overflow-hidden rounded transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
                 selected
-                  ? 'bg-[var(--color-chip-fill)]'
+                  ? 'bg-accent-start'
                   : 'text-[var(--color-deck-panel-text)]'
               }`}
             >
               {/* Both states show the same full-bleed live miniature of the
                   visualizer — a tiny copy of the playing screen. The difference
                   is the colours, swapped: the inactive chip draws heather ink on
-                  a recessed dark LCD; the selected chip swaps that to a fixed
-                  dark ink on the heather fill (--color-chip-*). The swap uses a
-                  fixed dark in both themes (not the theme-flipping background) so
-                  the active chip reads as dark-on-heather consistently; chip-ink-2
-                  gives plasma a tonal range. Re-points the accent tokens the
-                  canvas reads (see readToken). Animates with the deck (spinning),
-                  settles when stopped, still frame under reduced motion. */}
+                  a recessed dark LCD; the selected chip swaps that to ink-on-
+                  heather by re-pointing the accent tokens the canvas reads (see
+                  readToken) at the page background/foreground. Because those
+                  tokens flip per theme, the swapped ink stays legible in both:
+                  dark ink on the (lighter) dark-theme heather, light ink on the
+                  (darker) light-theme heather. --color-foreground on accent-end
+                  gives plasma's full-field wash a tonal range. Animates with the
+                  deck (spinning), settles when stopped, still frame under
+                  reduced motion (see useCanvas). */}
               <span
                 aria-hidden="true"
                 className={
                   selected
-                    ? 'absolute inset-0 [--color-accent-end:var(--color-chip-ink-2)] [--color-accent-start:var(--color-chip-ink)]'
+                    ? 'absolute inset-0 [--color-accent-end:var(--color-foreground)] [--color-accent-start:var(--color-background)]'
                     : 'deck-mini-screen absolute inset-0'
                 }
               >
