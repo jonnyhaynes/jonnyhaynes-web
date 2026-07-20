@@ -306,27 +306,26 @@
   box-shadow:
     inset 0 0 0 1px var(--color-lcd-inset),
     inset 0 2px 6px var(--color-lcd-inset-shadow);
-}
 
-/* Switcher mini-screen — a shrunk .deck-lcd for the inactive switcher buttons,
- * so each reads as a tiny copy of the playing screen behind its live visualizer.
- * Reuses the same theme-flipping screen tokens; a tighter 1px/2px scanline
- * pitch suits the small size, and the inset is lighter than the hero screen. */
-.deck-mini-screen {
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 1px,
-      var(--color-lcd-scanline) 1px,
-      var(--color-lcd-scanline) 2px
-    ),
-    linear-gradient(
-      180deg,
-      var(--color-lcd-screen-top) 0%,
-      var(--color-lcd-screen-bottom) 100%
-    );
-  box-shadow: inset 0 0 0 1px var(--color-lcd-inset);
+  /* Concave notch — a circular bite scooped from the bottom-right corner so
+     the visualizer switcher knob (.knob-control) can nest in it, on the
+     chrome, without ever overlapping the live screen. The mask cuts the
+     screen layers (scanlines + gradient) and, because the visualizer's
+     inset-0 layer lives inside this box, clips that too. Tune the centre/
+     radius against the real knob so the gap around it is even. */
+  --notch-cx: calc(100% - 22px);
+  --notch-cy: calc(100% - 6px);
+  --notch-r: 28px;
+  -webkit-mask: radial-gradient(
+    circle var(--notch-r) at var(--notch-cx) var(--notch-cy),
+    transparent 0 var(--notch-r),
+    black calc(var(--notch-r) + 0.5px)
+  );
+  mask: radial-gradient(
+    circle var(--notch-r) at var(--notch-cx) var(--notch-cy),
+    transparent 0 var(--notch-r),
+    black calc(var(--notch-r) + 0.5px)
+  );
 }
 
 /* Power LED — a glowing accent dot that breathes (opacity + accent bloom).
@@ -438,97 +437,213 @@
   }
 }
 
-/* Switcher icons — animate the active mode's glyph so it previews its effect.
- * Idle glyphs sit still; only .is-active parts animate. All paused under
- * reduced motion. Animated parts transform within their own fill-box. */
-.viz-icon .viz-bar,
-.viz-icon .viz-wave,
-.viz-icon .viz-blob,
-.viz-icon .viz-core {
-  transform-box: fill-box;
+/* ---------------------------------------------------------------------------
+ * Knob Control — brushed-metal rotary knob for the visualizer switcher.
+ * Nests in the concave notch cut from the LCD's bottom-right corner (see
+ * .deck-lcd above), sitting on the deck-panel chrome — it does NOT overlap
+ * the live visualizer. The metal is theme-aware via --knob-* tokens.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --knob-metal-hi: #4a4d55;
+  --knob-metal-mid: #2e3038;
+  --knob-metal-lo: #1e2025;
+  --knob-metal-edge: #18191d;
+  --knob-cap-hi: #3a3c44;
+  --knob-cap-lo: #22242a;
 }
 
-/* Spectrum bars — bounce from the baseline, staggered so they don't move as a
- * block. */
-.viz-icon .viz-bar {
-  transform-origin: bottom;
-}
-.viz-icon.is-active .viz-bar {
-  animation: viz-bar-bounce 0.9s ease-in-out infinite;
-}
-.viz-icon.is-active .viz-bar-1 {
-  animation-delay: -0.1s;
-}
-.viz-icon.is-active .viz-bar-2 {
-  animation-delay: -0.55s;
-  animation-duration: 0.75s;
-}
-.viz-icon.is-active .viz-bar-3 {
-  animation-delay: -0.3s;
-  animation-duration: 1.05s;
-}
-.viz-icon.is-active .viz-bar-4 {
-  animation-delay: -0.7s;
-  animation-duration: 0.8s;
-}
-@keyframes viz-bar-bounce {
-  0%,
-  100% {
-    transform: scaleY(0.45);
-  }
-  50% {
-    transform: scaleY(1);
-  }
+[data-theme='light'] {
+  /* Brighter, warmer brushed aluminium so the knob doesn't read as a dark
+     foreign object on the light-theme LCD/chrome. */
+  --knob-metal-hi: #f2f0ea;
+  --knob-metal-mid: #cfccc3;
+  --knob-metal-lo: #aaa69c;
+  --knob-metal-edge: #8f8b81;
+  --knob-cap-hi: #e6e3db;
+  --knob-cap-lo: #bcb8ae;
 }
 
-/* Oscilloscope — the double-width wave scrolls left one period, seamlessly. */
-.viz-icon.is-active .viz-wave {
-  animation: viz-wave-scroll 1.1s linear infinite;
-}
-@keyframes viz-wave-scroll {
-  to {
-    /* One repeat of the path is 12 user units wide. */
-    transform: translateX(12px);
-  }
+.knob-control {
+  position: absolute;
+  /* Sits IN the notch, on the chrome — small positive insets aligned with
+     --notch-cx/cy on .deck-lcd. */
+  bottom: 8px;
+  right: 2px;
+  z-index: 20;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Plasma — the blob pulses gently; the core breathes in counter-phase. */
-.viz-icon .viz-blob,
-.viz-icon .viz-core {
-  transform-origin: center;
+/* Captions row */
+.knob-labels {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 1px;
 }
-.viz-icon.is-active .viz-blob {
-  animation: viz-blob-pulse 2.4s ease-in-out infinite;
+
+.knob-label {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 2.4vw, 11px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-deck-panel-text);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 1px 2px;
+  transition:
+    color 0.15s,
+    text-shadow 0.15s;
+  border-radius: 1px;
 }
-.viz-icon.is-active .viz-core {
-  animation: viz-core-breathe 1.6s ease-in-out infinite;
+
+.knob-label[data-active='true'] {
+  color: var(--color-accent-start);
+  text-shadow:
+    0 0 4px color-mix(in oklch, var(--color-accent-start) 70%, transparent),
+    0 0 10px color-mix(in oklch, var(--color-accent-start) 45%, transparent);
 }
-@keyframes viz-blob-pulse {
-  0%,
-  100% {
-    transform: scale(0.92) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.05) rotate(8deg);
-  }
+
+.knob-label:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 2px;
 }
-@keyframes viz-core-breathe {
-  0%,
-  100% {
-    transform: scale(0.7);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
+
+/* Dots row */
+.knob-dots {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 3px;
+}
+
+.knob-dot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+[data-theme='light'] .knob-dot {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.knob-dot[data-active='true'] {
+  background: var(--color-accent-start);
+  box-shadow: 0 0 5px var(--color-accent-start);
+}
+
+/* Knob face — the physical rotary knob */
+.knob-face {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: ns-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Brushed metal disc — theme-aware via --knob-metal-* tokens */
+.knob-metal {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 35%,
+    var(--knob-metal-hi) 0%,
+    var(--knob-metal-mid) 35%,
+    var(--knob-metal-lo) 70%,
+    var(--knob-metal-edge) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Grip ring — conic ridges every 12 degrees */
+.knob-ridges {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.knob-ridges::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 6deg at 50% 50%,
+    rgba(255, 255, 255, 0.03) 0deg,
+    transparent 1deg,
+    transparent 11deg,
+    rgba(255, 255, 255, 0.03) 12deg
+  );
+  mask: radial-gradient(
+    circle,
+    transparent 44%,
+    black 44.5%,
+    black 49%,
+    transparent 49.5%
+  );
+  -webkit-mask: radial-gradient(
+    circle,
+    transparent 44%,
+    black 44.5%,
+    black 49%,
+    transparent 49.5%
+  );
+}
+
+/* Indicator line — points at the active dot */
+.knob-indicator {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 2px;
+  height: 14px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--color-accent-start);
+  box-shadow: 0 0 4px var(--color-accent-start);
+  transform-origin: bottom center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .viz-icon.is-active .viz-bar,
-  .viz-icon.is-active .viz-wave,
-  .viz-icon.is-active .viz-blob,
-  .viz-icon.is-active .viz-core {
-    animation: none;
+  .knob-indicator {
+    transition: none;
   }
+}
+
+/* Center cap */
+.knob-cap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    var(--knob-cap-hi),
+    var(--knob-cap-lo)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
