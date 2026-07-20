@@ -212,6 +212,113 @@
   }
 }
 
+/* Split-flap ("flip clock") role board in the hero headline. Two flappers
+ * (FlipWord) sit inline; each plays a two-panel card flip when its word
+ * changes: the outgoing word's top edge folds down and away (.flip-out) while
+ * the incoming word is revealed beneath (.flip-in). The panels are decorative
+ * and aria-hidden — the readable role text is an sr-only span in Hero — so this
+ * is pure ambient motion. A hairline (.flip-word__hinge) marks the fold axis
+ * like a real board's seam, and each flapper can be staggered via --flip-delay
+ * so the words don't snap in unison. Layout never shifts: .flip-word__sizer
+ * stacks every possible word invisibly to reserve the widest box, and the
+ * visible flap is absolutely positioned over it. Motion is gated below on
+ * prefers-reduced-motion (and Hero won't advance the index in that case). */
+.flip-word {
+  position: relative;
+  display: inline-flex;
+  vertical-align: baseline;
+  perspective: 320px;
+}
+
+/* Invisible stack of all words — reserves width/height so nothing reflows. */
+.flip-word__sizer {
+  display: inline-grid;
+  visibility: hidden;
+}
+.flip-word__ghost {
+  grid-area: 1 / 1; /* stack all words in one cell; box grows to the widest */
+  white-space: nowrap;
+}
+
+/* Visible flap layered over the sizer. */
+.flip-word__flap {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.flip-word__panel {
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+  backface-visibility: hidden;
+  transform-origin: bottom center;
+}
+
+/* --flip-delay (set per-flapper in FlipWord) staggers the board so the words
+ * don't snap in unison. The incoming word keeps its own +0.14s reveal offset
+ * on top of the stagger. Falls back to 0 if unset. */
+.flip-out {
+  animation: flip-out 0.42s ease-in var(--flip-delay, 0ms) forwards;
+}
+.flip-in {
+  animation: flip-in 0.42s ease-out
+    calc(var(--flip-delay, 0ms) + 0.14s) backwards;
+}
+
+/* Split-flap hinge: a hairline across the fold axis (the panels' bottom edge,
+ * where transform-origin sits), with a faint highlight just above it to catch
+ * the light like a real board's seam. Decorative, non-interactive. */
+.flip-word__hinge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--color-foreground) 22%, transparent),
+    color-mix(in oklch, var(--color-foreground) 6%, transparent)
+  );
+}
+
+/* Outgoing word: hinge at the bottom edge, fold forward and down out of view. */
+@keyframes flip-out {
+  from {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+}
+
+/* Incoming word: swing up from behind into place. */
+@keyframes flip-in {
+  from {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+/* Reduced motion: no flip. The incoming word simply appears; the sizer keeps
+ * the layout stable. Consistent with every other animation in this file. */
+@media (prefers-reduced-motion: reduce) {
+  .flip-out {
+    animation: none;
+    opacity: 0;
+  }
+  .flip-in {
+    animation: none;
+  }
+}
+
 /* CRT "TV screen" treatment for the gaming hero (the most-recent game). The
  * cover art fills the screen inside a bezel; these overlays give it a subtle
  * living-tube feel without tipping into kitsch:

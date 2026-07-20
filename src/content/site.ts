@@ -13,8 +13,14 @@ export const SITE = {
   resumeUrl: '/resume.pdf' as string | null,
   hero: {
     microcopy: '// Ey up. I’m Jonny.',
-    // Animated-gradient headline (role).
-    headline: 'Full-Stack Developer',
+    // Split-flap role board: two flappers, each cycling its own list
+    // independently. Rendered with the animated-gradient text treatment. The
+    // lead-in is always "I’m a " — every word-1 value is consonant-led, so "a"
+    // is always correct; a vowel-led word here would need an a/an rule.
+    roleWords: [
+      ['Full-Stack', 'Front-End', 'Software'],
+      ['Developer', 'Engineer'],
+    ],
     // Tech focus.
     subheadline:
       'Building React, React Native and TypeScript products — with AI woven through the workflow.',
