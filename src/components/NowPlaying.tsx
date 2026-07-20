@@ -206,13 +206,37 @@ function Deck({
               onClick={() => onVisualizerChange(v.kind)}
               aria-pressed={selected}
               title={v.label}
-              className={`flex items-center justify-center rounded py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
+              className={`relative flex h-9 items-center justify-center overflow-hidden rounded transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
                 selected
                   ? 'bg-accent-start text-background'
-                  : 'text-[var(--color-deck-panel-text)] hover:bg-[var(--color-control-hover)] hover:text-foreground'
+                  : 'text-[var(--color-deck-panel-text)]'
               }`}
             >
-              <VisualizerIcon kind={v.kind} active={selected} />
+              {selected ? (
+                // Selected segment: the solid accent chip is the "you are here"
+                // marker (a live preview here would be accent-on-accent). The
+                // glyph inverts to the panel background for AA (see #116).
+                <VisualizerIcon kind={v.kind} active />
+              ) : (
+                // Inactive segment: a full-bleed live miniature of the visualizer
+                // on a small recessed LCD screen, so it reads as a tiny copy of
+                // the playing screen. Animates with the deck (spinning), settles
+                // when stopped, still frame under reduced motion (see useCanvas).
+                <span
+                  aria-hidden="true"
+                  className="deck-mini-screen absolute inset-0"
+                >
+                  <Visualizer
+                    kind={v.kind}
+                    active={spinning}
+                    tempo={tempo}
+                    energy={energy}
+                    // Keep a little life at rest so a stopped preview still reads
+                    // as its mode (esp. plasma, which otherwise fades to nothing).
+                    restFloor={0.25}
+                  />
+                </span>
+              )}
               <span className="sr-only">{v.label}</span>
             </button>
           );
