@@ -132,7 +132,10 @@ function Deck({
               alt=""
               className="absolute inset-0 size-full object-cover opacity-40"
             />
-            <div aria-hidden="true" className="absolute inset-0 bg-black/55" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[var(--color-lcd-scrim)]"
+            />
           </>
         )}
         <div className="absolute inset-0 z-10">
@@ -190,7 +193,7 @@ function Deck({
           segment fills with the accent; each button carries its full name for
           assistive tech + a tooltip. */}
       <div
-        className="mt-3 grid grid-cols-3 gap-1 rounded-md border border-muted/25 bg-black/20 p-1"
+        className="mt-3 grid grid-cols-3 gap-1 rounded-md border border-muted/25 bg-[var(--color-control-recess)] p-1"
         role="group"
         aria-label="Visualizer style"
       >
@@ -206,7 +209,7 @@ function Deck({
               className={`flex items-center justify-center rounded py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
                 selected
                   ? 'bg-accent-start/20 text-accent-start'
-                  : 'text-muted hover:bg-white/5 hover:text-foreground'
+                  : 'text-muted hover:bg-[var(--color-control-hover)] hover:text-foreground'
               }`}
             >
               <VisualizerIcon kind={v.kind} active={selected} />
