@@ -287,6 +287,19 @@
  * mode, light in light mode) via the --color-lcd-* tokens. The track/artist glow
  * in the accent (heather), with faint horizontal scanlines and an inset shadow
  * so it reads like a lit hi-fi display set into the metal panel. */
+/* The LCD + knob share this wrapper as their sizing context. Making it a
+ * container lets the knob and the LCD's notch scale in `cqw` (percent of the
+ * wrapper width = the LCD width), so the whole switcher grows/shrinks with the
+ * deck rather than being a fixed pixel size. */
+.deck-lcd-wrap {
+  container-type: inline-size;
+  /* Knob diameter, ~34% of the LCD width, clamped so it stays usable at the
+     card's min/max. Everything else (notch, dots, indicator) derives from it. */
+  --knob-size: clamp(38px, 34cqw, 68px);
+  /* Gap between the knob edge and the notch rim. */
+  --knob-gap: calc(var(--knob-size) * 0.14);
+}
+
 .deck-lcd {
   background:
     /* scanlines */
@@ -311,11 +324,11 @@
      the visualizer switcher knob (.knob-control) can nest in it, on the
      chrome, without ever overlapping the live screen. The mask cuts the
      screen layers (scanlines + gradient) and, because the visualizer's
-     inset-0 layer lives inside this box, clips that too. Tune the centre/
-     radius against the real knob so the gap around it is even. */
-  --notch-cx: calc(100% - 22px);
-  --notch-cy: calc(100% - 6px);
-  --notch-r: 28px;
+     inset-0 layer lives inside this box, clips that too. Centre + radius are
+     derived from --knob-size so the notch scales with the knob. */
+  --notch-r: calc(var(--knob-size) / 2 + var(--knob-gap));
+  --notch-cx: calc(100% - var(--knob-size) / 2 - 2px);
+  --notch-cy: calc(100% + var(--knob-size) * 0.12);
   -webkit-mask: radial-gradient(
     circle var(--notch-r) at var(--notch-cx) var(--notch-cy),
     transparent 0 var(--notch-r),
@@ -466,76 +479,55 @@
 
 .knob-control {
   position: absolute;
-  /* Sits IN the notch, on the chrome — small positive insets aligned with
-     --notch-cx/cy on .deck-lcd. */
-  bottom: 8px;
+  /* Sits IN the notch, on the chrome. The knob CENTRE must coincide with the
+     notch centre, which is 0.12·size BELOW the LCD bottom edge. `bottom`
+     positions the knob's bottom edge; for the centre to sit 0.12·size below
+     the LCD bottom, the bottom edge is (0.12·size + size/2) below it. */
+  bottom: calc(var(--knob-size) * -0.62);
   right: 2px;
   z-index: 20;
-  width: 112px;
-  height: 112px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: var(--knob-size);
+  height: var(--knob-size);
 }
 
-/* Captions row */
-.knob-labels {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 1px;
-}
-
-.knob-label {
-  font-family: var(--font-mono);
-  font-size: clamp(10px, 2.4vw, 11px);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-deck-panel-text);
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 1px 2px;
-  transition:
-    color 0.15s,
-    text-shadow 0.15s;
-  border-radius: 1px;
-}
-
-.knob-label[data-active='true'] {
-  color: var(--color-accent-start);
-  text-shadow:
-    0 0 4px color-mix(in oklch, var(--color-accent-start) 70%, transparent),
-    0 0 10px color-mix(in oklch, var(--color-accent-start) 45%, transparent);
-}
-
-.knob-label:focus-visible {
-  outline: 2px solid var(--color-accent-start);
-  outline-offset: 2px;
-}
-
-/* Dots row */
-.knob-dots {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 3px;
-}
-
-.knob-dot {
-  display: block;
-  width: 4px;
-  height: 4px;
+/* Knob face — the physical rotary knob. Fills the control; everything inside
+   scales with --knob-size. */
+.knob-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  cursor: ns-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Dots — arced on the knob face at each mode's angle (--dot-angle), so the
+   indicator line points at the active dot. They ARE the accessible radios. */
+.knob-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--knob-size) * 0.11);
+  height: calc(var(--knob-size) * 0.11);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
   cursor: pointer;
+  /* Rotate to the mode's angle, then push out along that radius so the dot
+     lands near the face's edge; the negative half-size re-centres it. */
+  transform: translate(-50%, -50%)
+    rotate(var(--dot-angle))
+    translateY(calc(var(--knob-size) * -0.32))
+    rotate(calc(-1 * var(--dot-angle)));
   transition:
     background 0.15s,
     box-shadow 0.15s;
 }
 
 [data-theme='light'] .knob-dot {
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.22);
 }
 
 .knob-dot[data-active='true'] {
@@ -543,15 +535,9 @@
   box-shadow: 0 0 5px var(--color-accent-start);
 }
 
-/* Knob face — the physical rotary knob */
-.knob-face {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: ns-resize;
-  user-select: none;
-  touch-action: none;
+.knob-dot:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 2px;
 }
 
 /* Brushed metal disc — theme-aware via --knob-metal-* tokens */
@@ -576,7 +562,7 @@
 /* Grip ring — conic ridges every 12 degrees */
 .knob-ridges {
   position: absolute;
-  inset: 3px;
+  inset: calc(var(--knob-size) * 0.075);
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
@@ -615,7 +601,7 @@
   bottom: 50%;
   left: 50%;
   width: 2px;
-  height: 14px;
+  height: calc(var(--knob-size) * 0.35);
   margin-left: -1px;
   border-radius: 1px;
   background: var(--color-accent-start);
@@ -636,9 +622,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
+  width: calc(var(--knob-size) * 0.25);
+  height: calc(var(--knob-size) * 0.25);
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   background: radial-gradient(
     circle at 40% 35%,

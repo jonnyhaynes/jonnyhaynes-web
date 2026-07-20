@@ -125,7 +125,7 @@ function Deck({
           chrome — the knob never overlaps the live visualizer. The relative
           wrapper is the knob's positioning context. The chosen visualizer
           persists to localStorage like the site theme (see useVisualizer). */}
-      <div className="relative">
+      <div className="deck-lcd-wrap relative">
         <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
           {/* Album art sits behind the visualizer, dimmed under a scrim so the
               accent-coloured bars/wave/plasma stay legible over any cover. */}

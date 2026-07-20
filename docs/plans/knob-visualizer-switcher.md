@@ -1,8 +1,25 @@
 # Knob visualizer switcher
 
 Replace the 3-button segmented control in the NowPlaying deck with a
-machined-metal rotary knob that cuts into the bottom-right corner of the
-visualizer LCD screen.
+machined-metal rotary knob that nests in a concave notch cut from the
+bottom-right corner of the visualizer LCD screen.
+
+> **Revision (post-review, in `knob-visualizer-switcher` branch):** after
+> seeing it live the design was simplified —
+> - **No captions.** The `Bars / Wave / Plasma` word labels were removed.
+> - **Dots are on the knob face** and carry the accessible `role="radio"`
+>   semantics (roving tabindex + arrow keys) that the captions used to hold.
+>   They're arced at each mode's `angle` (-45/0/+45°) so the indicator line
+>   points at the active dot. `aria-label` comes from each mode's full name.
+> - **The knob scales with the deck.** `.deck-lcd-wrap` is a
+>   `container-type: inline-size` context; `--knob-size` is `clamp(38px,
+>   34cqw, 68px)` and the notch, dots, indicator and cap all derive from it,
+>   so the whole switcher grows/shrinks with the card. Notch centre and knob
+>   centre are both expressed in `--knob-size` so they stay aligned at every
+>   size.
+>
+> Sections below describing captions / fixed 40px sizing are superseded by
+> the above.
 
 ---
 
