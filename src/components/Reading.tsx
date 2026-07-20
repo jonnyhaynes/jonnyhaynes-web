@@ -34,17 +34,18 @@ export function Reading() {
 
   return (
     <section id="reading" className="scroll-mt-16 py-16">
-      {/* Title constrained to the narrower "What I'm playing" width. That
-          section is `max-w-4xl px-6`, so its content is 4xl minus the px-6
-          padding — we match both the max-width and the padding here (and on the
-          shelf line) so the edges line up exactly, not just the outer box. */}
-      <h2 className="mx-auto max-w-4xl px-6 font-mono text-sm uppercase tracking-wider text-muted">
+      {/* Title sits in the section's own wrapper, which is `max-w-4xl px-6` —
+          identical to the "What I'm playing" section — so the title and shelf
+          line match its width and left edge at every screen size with no extra
+          classes. Only the books row (below) breaks out wider. */}
+      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
         // What I’m reading
       </h2>
 
-      {/* Mobile / small screens: stacked cover + horizontal bars. */}
+      {/* Mobile only: stacked cover + horizontal bars. The leaning shelf takes
+          over at `md` (tablet and up). */}
       <div className="mt-8 flex flex-col gap-4 md:hidden">
-        <FeatureCover book={feature} className="w-full max-w-xs" />
+        <FeatureCover book={feature} className="w-full" />
         {rest.length > 0 && (
           <ul className="flex flex-col gap-2" role="list">
             {rest.map((b) => (
@@ -55,12 +56,13 @@ export function Reading() {
       </div>
 
       {/* Desktop: the leaning bookshelf — one row of spines standing on their
-          ends, with the face-out cover in the centre. The books span the full
-          6xl row; the shelf line beneath them is a separate element pulled in to
-          4xl (see below), so the line matches "What I'm playing" width while the
-          books stay wide. */}
+          ends, with the face-out cover in the centre. The section wrapper is
+          max-w-4xl (matching "What I'm playing"), but the books want more room,
+          so this row breaks out symmetrically to the wider max-w-6xl content
+          width via a centered fixed max-width and negative side margins. The
+          title and shelf line stay at the wrapper's 4xl width. */}
       <ul
-        className="bookshelf mt-10 hidden items-end justify-center gap-3 md:flex"
+        className="bookshelf relative left-1/2 mt-10 hidden w-[min(72rem,100vw-3rem)] max-w-none -translate-x-1/2 items-end justify-center gap-3 md:flex"
         role="list"
       >
         {/* Left pair — lean right, into the cover. Outermost (i=0) leans most.
@@ -92,14 +94,11 @@ export function Reading() {
         ))}
       </ul>
 
-      {/* The shelf line — centered and constrained to the same 4xl + px-6 as the
-          title (and "What I'm playing") so its edges line up with that section,
-          narrower than the row of books above it. The border lives on an inner
-          element so the px-6 padding actually insets the visible line (a border
-          on the padded box would still span the full width). Desktop only. */}
-      <div className="mx-auto hidden max-w-4xl px-6 md:block">
-        <div className="book-shelf-line" />
-      </div>
+      {/* The shelf line spans the section wrapper's content width (max-w-4xl,
+          matching "What I'm playing") — narrower than the broken-out books row
+          above it. No extra max-width/padding of its own, so it can't drift from
+          the title. Shown with the leaning shelf (`md`) only. */}
+      <div className="book-shelf-line hidden md:block" />
     </section>
   );
 }

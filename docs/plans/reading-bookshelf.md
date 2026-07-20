@@ -126,10 +126,14 @@ Design (desktop), iterated live with the owner:
 - Each spine **pivots on the bottom corner it rests on** (`transform-origin` set per lean
   direction via `--pivot-x`) so every base sits **flush on the baseline** — verified: all
   spine + cover bottoms share one Y.
-- The **shelf line and section title** are constrained to `max-w-4xl px-6` to match the
-  "What I'm playing" (Gaming) section width, so they align to it while the books span the
-  wider `max-w-6xl` row. The shelf line is a separate element (border on an inner div so
-  the padding insets it); `Home.tsx` moves the Reading wrapper `max-w-4xl` → `max-w-6xl`.
+- The **section wrapper stays `max-w-4xl px-6`** (identical to the "What I'm playing"
+  Gaming section), so the **title and shelf line match that section's width and left edge
+  at every breakpoint with no special classes** — they simply live in the wrapper. Only
+  the **books row breaks out wider** (`relative left-1/2 -translate-x-1/2
+  w-[min(72rem,100vw-3rem)] max-w-none`), centred on the viewport up to `6xl` and capped
+  to the viewport so it never causes horizontal scroll. (An earlier attempt put the
+  wrapper at `6xl` and re-approximated a `4xl` box for the title/line inside it; that
+  drifted out of alignment on tablet, so the wrapper-matches-Gaming approach replaced it.)
 - **Mobile** keeps the simpler stacked fallback (cover on top, horizontal bars below).
 - `prefers-reduced-motion`: spines stand straight, no lean or hover motion.
 
