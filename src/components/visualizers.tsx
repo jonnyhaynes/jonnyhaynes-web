@@ -35,9 +35,13 @@ const prefersReducedMotion = () =>
   window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 // --- colour helpers -------------------------------------------------------
-function readToken(name: string, fallback: string): string {
+// Resolve a CSS custom property from the given element's computed style, so a
+// local override set on an ancestor (e.g. the selected switcher chip, which
+// re-points the accent tokens at a dark colour) cascades in. Falls back to
+// document root when no element is passed.
+function readToken(name: string, fallback: string, el?: Element | null): string {
   if (typeof window === 'undefined') return fallback;
-  const v = getComputedStyle(document.documentElement)
+  const v = getComputedStyle(el ?? document.documentElement)
     .getPropertyValue(name)
     .trim();
   return v || fallback;
@@ -143,8 +147,8 @@ function useCanvas(
       const { ctx, w, h } = fit(canvas);
       if (!ctx) return;
       ctx.clearRect(0, 0, w, h);
-      const a = toRgb(readToken('--color-accent-start', '#a877bf'));
-      const a2 = toRgb(readToken('--color-accent-end', '#7a4988'));
+      const a = toRgb(readToken('--color-accent-start', '#a877bf', canvas));
+      const a2 = toRgb(readToken('--color-accent-end', '#7a4988', canvas));
       draw(ctx, w, h, t, { beat, amp, liveAmp: amp * (1 - rest), rest, a, a2 });
     };
 

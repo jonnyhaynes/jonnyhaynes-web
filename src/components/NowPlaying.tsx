@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
 import type { NowPlaying as NowPlayingData } from '../data/spotify';
-import { Visualizer, VisualizerIcon } from './visualizers';
+import { Visualizer } from './visualizers';
 import { VISUALIZERS, type VisualizerKind } from './visualizers-meta';
 
 // Persist the chosen visualizer the same way the theme toggle persists: an
@@ -212,31 +212,32 @@ function Deck({
                   : 'text-[var(--color-deck-panel-text)]'
               }`}
             >
-              {selected ? (
-                // Selected segment: the solid accent chip is the "you are here"
-                // marker (a live preview here would be accent-on-accent). The
-                // glyph inverts to the panel background for AA (see #116).
-                <VisualizerIcon kind={v.kind} active />
-              ) : (
-                // Inactive segment: a full-bleed live miniature of the visualizer
-                // on a small recessed LCD screen, so it reads as a tiny copy of
-                // the playing screen. Animates with the deck (spinning), settles
-                // when stopped, still frame under reduced motion (see useCanvas).
-                <span
-                  aria-hidden="true"
-                  className="deck-mini-screen absolute inset-0"
-                >
-                  <Visualizer
-                    kind={v.kind}
-                    active={spinning}
-                    tempo={tempo}
-                    energy={energy}
-                    // Keep a little life at rest so a stopped preview still reads
-                    // as its mode (esp. plasma, which otherwise fades to nothing).
-                    restFloor={0.25}
-                  />
-                </span>
-              )}
+              {/* Both states show the same full-bleed live miniature of the
+                  visualizer — a tiny copy of the playing screen. The difference
+                  is the colours: inactive draws the accent on a recessed dark
+                  LCD; selected reverses it — a dark visualizer on the solid
+                  accent chip — by re-pointing the accent tokens the canvas reads
+                  (see readToken) at the page background. Animates with the deck
+                  (spinning), settles when stopped, still frame under reduced
+                  motion (see useCanvas). */}
+              <span
+                aria-hidden="true"
+                className={
+                  selected
+                    ? 'absolute inset-0 [--color-accent-end:var(--color-foreground)] [--color-accent-start:var(--color-background)]'
+                    : 'deck-mini-screen absolute inset-0'
+                }
+              >
+                <Visualizer
+                  kind={v.kind}
+                  active={spinning}
+                  tempo={tempo}
+                  energy={energy}
+                  // Keep a little life at rest so a stopped preview still reads
+                  // as its mode (esp. plasma, which otherwise fades to nothing).
+                  restFloor={0.25}
+                />
+              </span>
               <span className="sr-only">{v.label}</span>
             </button>
           );
