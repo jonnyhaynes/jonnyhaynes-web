@@ -230,18 +230,22 @@
   white-space: nowrap;
 }
 
-/* Wrapper around both flip words. --role-slots (set in Hero) is the total slot
- * count across both words + the space between; --slot-w is one cell's width.
- * Each slot paints the SAME gradient sized to the full role and shifted by its
- * own column, so the colour runs continuously across every letter (a single
- * background-clip:text span can't be used — the slots are independent
- * inline-blocks so the clip wouldn't span them). */
+/* Wrapper around both flip words. The two words stack: word 1 flows inline
+ * after "I'm a"; word 2 is forced onto its own line, flush to the h1's left
+ * margin (see below). --slot-w is one cell's width, shared by the slots. */
 .flip-role {
-  display: inline-flex;
-  align-items: baseline;
+  display: inline;
   /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
-   * shared by the slots below so the maths lines up. */
+   * so the flip letters sit at the same rhythm as the static "I'm a". */
   --slot-w: calc(1ch - 0.025em);
+}
+
+/* Word 2 drops to a new line, aligned to the left margin under "I'm a" (not
+ * indented under word 1). A block break with a negative margin isn't needed —
+ * as a block it starts at the h1's content edge, which is exactly the left
+ * margin. */
+.flip-role > .flip-word:nth-of-type(2) {
+  display: flex;
 }
 
 /* One character cell. Fixed width keeps the grid rigid whatever glyph is
@@ -253,13 +257,10 @@
   will-change: opacity, filter;
 }
 
-/* The blank slot between the two words — no gradient text, just spacing. */
-.flip-slot--space {
-  width: var(--slot-w);
-}
-
-/* Size each slot's gradient to the whole role and slide it left by this slot's
- * column, so the stops align into one unbroken gradient across all letters. */
+/* Size each slot's gradient to its word's width and slide it left by this
+ * slot's column, so the colour runs unbroken across the word's letters (a
+ * single background-clip:text span can't span the independent inline-block
+ * slots). --role-slots and --slot-i are set per-word / per-slot in FlipWord. */
 .flip-role .flip-slot.animate-gradient {
   background-size: calc(var(--slot-w) * var(--role-slots)) 100%;
   background-position-x: calc(var(--slot-w) * var(--slot-i, 0) * -1);

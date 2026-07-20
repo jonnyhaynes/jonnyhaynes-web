@@ -44,14 +44,10 @@ export function FlipWord({
   words,
   index,
   delayMs = 0,
-  slotOffset = 0,
 }: {
   words: readonly string[];
   index: number;
   delayMs?: number;
-  // Absolute column of this flapper's first slot within the whole role, so each
-  // slot can offset the shared gradient's background-position to line up.
-  slotOffset?: number;
 }) {
   const reduced = useReducedMotion();
 
@@ -121,12 +117,16 @@ export function FlipWord({
   });
 
   return (
-    <span className="flip-word" aria-hidden="true">
+    <span
+      className="flip-word"
+      aria-hidden="true"
+      style={{ '--role-slots': slotCount } as CSSProperties}
+    >
       {slots.map((slot, i) => (
         <span
           key={i}
           className={`flip-slot animate-gradient${slot.rolling ? ' flip-slot--rolling' : ''}`}
-          style={{ '--slot-i': slotOffset + i } as CSSProperties}
+          style={{ '--slot-i': i } as CSSProperties}
         >
           {/* Non-breaking space keeps an empty slot's box. */}
           {slot.char === '' ? ' ' : slot.char}
