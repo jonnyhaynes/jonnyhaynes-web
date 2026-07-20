@@ -88,8 +88,26 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
 
   return (
     <div className="knob-control" role="radiogroup" aria-label="Visualizer style">
-      {/* Captions — the accessible radios. */}
-      <div className="knob-labels">
+      {/* Knob face — drag to turn. The dots on the face are the accessible
+          radios (roving tabindex + arrow keys); the metal/indicator/cap are
+          decorative. */}
+      <div
+        className="knob-face"
+        onPointerDown={startDrag}
+        onPointerMove={onDrag}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+      >
+        <div className="knob-metal" aria-hidden="true" />
+        <div className="knob-ridges" aria-hidden="true" />
+        <div
+          className="knob-indicator"
+          aria-hidden="true"
+          style={{ transform: `rotate(${angle}deg)` }}
+        />
+        <div className="knob-cap" aria-hidden="true" />
+
+        {/* Dots — arced on the face at each mode's angle; they ARE the radios. */}
         {VISUALIZERS.map((opt) => {
           const active = opt.kind === visualizer;
           return (
@@ -100,45 +118,15 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
               aria-checked={active}
               aria-label={opt.label}
               tabIndex={active ? 0 : -1}
-              className="knob-label"
+              className="knob-dot"
               data-active={active}
+              style={{ '--dot-angle': `${opt.angle}deg` } as React.CSSProperties}
               onClick={() => onChange(opt.kind)}
               onKeyDown={handleKeyDown}
-            >
-              {opt.short}
-            </button>
+              onPointerDown={(e) => e.stopPropagation()}
+            />
           );
         })}
-      </div>
-
-      {/* Dots — decorative indicator positions; clickable for mouse users. */}
-      <div className="knob-dots" aria-hidden="true">
-        {VISUALIZERS.map((opt) => (
-          <span
-            key={opt.kind}
-            className="knob-dot"
-            data-active={opt.kind === visualizer}
-            onClick={() => onChange(opt.kind)}
-          />
-        ))}
-      </div>
-
-      {/* Knob face — decorative; drag to turn. */}
-      <div
-        className="knob-face"
-        aria-hidden="true"
-        onPointerDown={startDrag}
-        onPointerMove={onDrag}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-      >
-        <div className="knob-metal" />
-        <div className="knob-ridges" />
-        <div
-          className="knob-indicator"
-          style={{ transform: `rotate(${angle}deg)` }}
-        />
-        <div className="knob-cap" />
       </div>
     </div>
   );

@@ -125,7 +125,7 @@ function Deck({
           chrome — the knob never overlaps the live visualizer. The relative
           wrapper is the knob's positioning context. The chosen visualizer
           persists to localStorage like the site theme (see useVisualizer). */}
-      <div className="relative">
+      <div className="deck-lcd-wrap relative">
         <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
           {/* Album art sits behind the visualizer, dimmed under a scrim so the
               accent-coloured bars/wave/plasma stay legible over any cover. */}
@@ -157,8 +157,12 @@ function Deck({
       </div>
 
       {/* Readout line under the screen: a marquee of the track (title + artist)
-          glowing in the accent. The single inner element is what scrolls. */}
-      <div className="deck-readout mt-3 font-mono text-xs">
+          glowing in the accent. The single inner element is what scrolls.
+          Padded right so the text clears the knob overhanging from the LCD. */}
+      <div
+        className="deck-readout mt-3 font-mono text-xs"
+        style={{ paddingRight: 'var(--knob-clearance)' }}
+      >
         <span className="deck-lcd-text marquee block">
           {data.url ? (
             <a
@@ -182,7 +186,7 @@ function Deck({
           it drains to empty over ~3.5s so it comes to rest with the visualizer
           rather than freezing at its last width. */}
       {duration != null && (
-        <div className="mt-2">
+        <div className="mt-2" style={{ paddingRight: 'var(--knob-clearance)' }}>
           <Progress
             progressPct={spinning ? (progressPct ?? 0) : 0}
             position={position}
