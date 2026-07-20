@@ -208,23 +208,25 @@ function Deck({
               title={v.label}
               className={`relative flex h-9 items-center justify-center overflow-hidden rounded transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
                 selected
-                  ? 'bg-accent-start text-background'
+                  ? 'bg-[var(--color-chip-fill)]'
                   : 'text-[var(--color-deck-panel-text)]'
               }`}
             >
               {/* Both states show the same full-bleed live miniature of the
                   visualizer — a tiny copy of the playing screen. The difference
-                  is the colours: inactive draws the accent on a recessed dark
-                  LCD; selected reverses it — a dark visualizer on the solid
-                  accent chip — by re-pointing the accent tokens the canvas reads
-                  (see readToken) at the page background. Animates with the deck
-                  (spinning), settles when stopped, still frame under reduced
-                  motion (see useCanvas). */}
+                  is the colours, swapped: the inactive chip draws heather ink on
+                  a recessed dark LCD; the selected chip swaps that to a fixed
+                  dark ink on the heather fill (--color-chip-*). The swap uses a
+                  fixed dark in both themes (not the theme-flipping background) so
+                  the active chip reads as dark-on-heather consistently; chip-ink-2
+                  gives plasma a tonal range. Re-points the accent tokens the
+                  canvas reads (see readToken). Animates with the deck (spinning),
+                  settles when stopped, still frame under reduced motion. */}
               <span
                 aria-hidden="true"
                 className={
                   selected
-                    ? 'absolute inset-0 [--color-accent-end:var(--color-foreground)] [--color-accent-start:var(--color-background)]'
+                    ? 'absolute inset-0 [--color-accent-end:var(--color-chip-ink-2)] [--color-accent-start:var(--color-chip-ink)]'
                     : 'deck-mini-screen absolute inset-0'
                 }
               >
