@@ -212,6 +212,88 @@
   }
 }
 
+/* Split-flap / airport-arrivals board in the hero headline. Each flapper
+ * (FlipWord) is a fixed grid of character slots (.flip-slot) in the site's
+ * monospace face; on a word change each slot riffles through glyphs and settles
+ * on its letter, staggered left-to-right — the arrivals-board tumble. The
+ * riffle itself is driven in JS (per-slot timing); this file styles the slots
+ * and gives each settling glyph a quick vertical "snap" so it reads mechanical.
+ *
+ * Decorative and aria-hidden — the readable role text is a single sr-only span
+ * in Hero, so screen readers get one clean name and none of this churn. Layout
+ * is stable: the slot count is fixed per flapper (longest word), and monospace
+ * slots are constant width, so the board never reflows. Reduced motion is
+ * honoured in FlipWord (no riffle; final letters appear at once). */
+.flip-word {
+  display: inline-flex;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+/* Wrapper around both flip words. The two words stack: word 1 flows inline
+ * after "I'm a"; word 2 is forced onto its own line, flush to the h1's left
+ * margin (see below). --slot-w is one cell's width, shared by the slots. */
+.flip-role {
+  display: inline;
+  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
+   * so the flip letters sit at the same rhythm as the static "I'm a". */
+  --slot-w: calc(1ch - 0.025em);
+}
+
+/* Word 2 drops to a new line, aligned to the left margin under "I'm a" (not
+ * indented under word 1). A block break with a negative margin isn't needed —
+ * as a block it starts at the h1's content edge, which is exactly the left
+ * margin. */
+.flip-role > .flip-word:nth-of-type(2) {
+  display: flex;
+}
+
+/* One character cell. Fixed width keeps the grid rigid whatever glyph is
+ * showing (monospace), and matches the static text's rhythm via --slot-w. */
+.flip-slot {
+  display: inline-block;
+  width: var(--slot-w);
+  text-align: center;
+  will-change: opacity, filter;
+}
+
+/* Size each slot's gradient to its word's width and slide it left by this
+ * slot's column, so the colour runs unbroken across the word's letters (a
+ * single background-clip:text span can't span the independent inline-block
+ * slots). --role-slots and --slot-i are set per-word / per-slot in FlipWord. */
+.flip-role .flip-slot.animate-gradient {
+  background-size: calc(var(--slot-w) * var(--role-slots)) 100%;
+  background-position-x: calc(var(--slot-w) * var(--slot-i, 0) * -1);
+  background-repeat: no-repeat;
+}
+
+/* While a slot is mid-riffle: a brief per-glyph flicker (no vertical movement —
+ * the glyphs stay locked in their cell and cycle in place, like a slot reel).
+ * Each glyph change re-triggers this via the React re-render, so it reads as
+ * continuous rolling without letters jumping out of line. */
+.flip-slot--rolling {
+  animation: flip-slot-roll 90ms ease-out;
+}
+
+@keyframes flip-slot-roll {
+  0% {
+    opacity: 0.35;
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Reduced motion: FlipWord already skips the riffle, but belt-and-braces —
+ * never animate the slot roll. Consistent with the rest of this file. */
+@media (prefers-reduced-motion: reduce) {
+  .flip-slot--rolling {
+    animation: none;
+  }
+}
+
 /* CRT "TV screen" treatment for the gaming hero (the most-recent game). The
  * cover art fills the screen inside a bezel; these overlays give it a subtle
  * living-tube feel without tipping into kitsch:
