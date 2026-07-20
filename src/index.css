@@ -49,6 +49,10 @@
   --color-deck-panel-top: #2a2b30;
   --color-deck-panel-bottom: #141519;
   --color-deck-panel-ring: color-mix(in oklch, black 40%, transparent);
+  /* Secondary text on the panel (header + inactive switcher labels). On the dark
+   * cabinet the muted token already clears AA (7.2:1); the light block darkens it
+   * to match the TV label and clear 4.5:1 on the lighter cabinet grey. */
+  --color-deck-panel-text: var(--color-muted);
 
   /* Recessed control surfaces (the switcher track + its hover). Foreground-based
    * so they read as a subtle inset in both themes: a faint dark fill on dark, a
@@ -84,6 +88,10 @@
   --color-deck-panel-top: #eceae4;
   --color-deck-panel-bottom: #d8d4cb;
   --color-deck-panel-ring: color-mix(in oklch, black 10%, transparent);
+  /* Darker than --color-muted so header + switcher labels clear WCAG AA (4.5:1)
+   * on the cabinet grey — this is the exact slate the Gaming TV uses for its
+   * light-mode "Now playing" label (Gaming.tsx), so text matches too. */
+  --color-deck-panel-text: #4a5160;
 }
 
 @layer base {

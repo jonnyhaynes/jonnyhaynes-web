@@ -103,7 +103,7 @@ function Deck({
     <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
       {/* Header strip: playing/last-played label + power light. */}
       <div className="mb-3 flex items-center justify-between">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted">
+        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
           {data.isPlaying ? 'Now playing' : 'Last played'}
         </p>
         {/* Power LED — a glowing accent dot (as in the Gaming bezel). While the
@@ -208,8 +208,8 @@ function Deck({
               title={v.label}
               className={`flex items-center justify-center rounded py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start ${
                 selected
-                  ? 'bg-accent-start/20 text-accent-start'
-                  : 'text-muted hover:bg-[var(--color-control-hover)] hover:text-foreground'
+                  ? 'bg-accent-start text-background'
+                  : 'text-[var(--color-deck-panel-text)] hover:bg-[var(--color-control-hover)] hover:text-foreground'
               }`}
             >
               <VisualizerIcon kind={v.kind} active={selected} />
