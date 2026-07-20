@@ -5,7 +5,7 @@ import { GitHubIcon, LinkedInIcon } from './icons';
 
 const [WORDS_1, WORDS_2] = SITE.hero.roleWords;
 // How long each state holds before the board flips.
-const HOLD_MS = 3000;
+const HOLD_MS = 5000;
 
 export function Hero() {
   const [i1, setI1] = useState(0);
