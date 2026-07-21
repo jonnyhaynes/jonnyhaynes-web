@@ -23,7 +23,7 @@ export function Footer() {
         </a>{' '}
         &amp;{' '}
         <a href="https://claude.com/claude-code" className={LINK}>
-          Claude
+          AI
         </a>
         . &copy; 1985&ndash;{year}.{' '}
         <Link to="/privacy" className={LINK}>
