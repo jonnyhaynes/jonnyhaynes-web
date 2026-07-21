@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
+import {
+  deriveTrackParams,
+  useNowPlaying,
+  usePlaybackPosition,
+} from '../data/spotify';
 import type { NowPlaying as NowPlayingData } from '../data/spotify';
 import { Visualizer } from './visualizers';
 import { type VisualizerKind } from './visualizers-meta';
@@ -15,11 +19,16 @@ function isVisualizerKind(v: string | null): v is VisualizerKind {
 
 function useVisualizer(): [VisualizerKind, (k: VisualizerKind) => void] {
   const [kind, setKind] = useState<VisualizerKind>(() => {
-    const saved =
-      typeof localStorage !== 'undefined'
-        ? localStorage.getItem(VISUALIZER_KEY)
-        : null;
-    return isVisualizerKind(saved) ? saved : 'spectrum';
+    try {
+      const saved =
+        typeof localStorage !== 'undefined'
+          ? localStorage.getItem(VISUALIZER_KEY)
+          : null;
+      return isVisualizerKind(saved) ? saved : 'spectrum';
+    } catch {
+      // Private-mode/storage-disabled failures — fall back to the default.
+      return 'spectrum';
+    }
   });
   const set = (k: VisualizerKind) => {
     setKind(k);
@@ -80,6 +89,84 @@ function Progress({
       }
     >
       <div className={fillClassName} style={{ width: `${progressPct}%` }} />
+    </div>
+  );
+}
+
+/**
+ * Readout line under the screen: a marquee of the track (title + artist)
+ * glowing in the accent. Always scrolls — the motion is part of the hi-fi
+ * look, even when the text technically fits.
+ */
+function MarqueeReadout({ data }: { data: NowPlayingData }) {
+  return (
+    <div
+      className="deck-readout mt-3 font-mono text-xs"
+      style={{ paddingRight: 'var(--knob-clearance)' }}
+    >
+      <span className="deck-lcd-text marquee block">
+        {data.url ? (
+          <a
+            href={data.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+          >
+            ▸ {data.title} — {data.artist}
+            <span className="sr-only"> (opens on Spotify in a new tab)</span>
+          </a>
+        ) : (
+          <span>
+            ▸ {data.title} — {data.artist}
+          </span>
+        )}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Standby deck — the same hi-fi chrome as the active player, but with a "no
+ * signal" screen and a dim LED. This keeps the device metaphor consistent when
+ * Spotify is idle or disconnected, instead of dropping into a generic message
+ * box.
+ */
+function DeckStandby() {
+  return (
+    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
+      {/* Header strip: standby label + steady dim LED. */}
+      <div className="mb-3 flex items-center justify-between">
+        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
+          Standby
+        </p>
+        <span
+          aria-hidden="true"
+          className="size-2 rounded-full bg-[var(--color-deck-panel-text)] opacity-40"
+        />
+      </div>
+
+      <div className="deck-lcd-wrap relative">
+        <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+            <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--color-deck-panel-text)] opacity-90">
+              No signal
+            </span>
+            <span aria-hidden="true" className="deck-standby-line" />
+          </div>
+        </div>
+
+        {/* Knob is rendered for visual symmetry but disabled in standby. */}
+        <KnobControl visualizer="scope" onChange={() => {}} disabled />
+      </div>
+
+      <div
+        className="deck-readout mt-3 font-mono text-xs"
+        style={{ paddingRight: 'var(--knob-clearance)' }}
+      >
+        <span className="deck-lcd-text marquee block">
+          <span>▸ Currently enjoying the silence.</span>
+        </span>
+      </div>
     </div>
   );
 }
@@ -156,31 +243,7 @@ function Deck({
         <KnobControl visualizer={visualizer} onChange={onVisualizerChange} />
       </div>
 
-      {/* Readout line under the screen: a marquee of the track (title + artist)
-          glowing in the accent. The single inner element is what scrolls.
-          Padded right so the text clears the knob overhanging from the LCD. */}
-      <div
-        className="deck-readout mt-3 font-mono text-xs"
-        style={{ paddingRight: 'var(--knob-clearance)' }}
-      >
-        <span className="deck-lcd-text marquee block">
-          {data.url ? (
-            <a
-              href={data.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-            >
-              ▸ {data.title} — {data.artist}
-              <span className="sr-only"> (opens on Spotify in a new tab)</span>
-            </a>
-          ) : (
-            <span>
-              ▸ {data.title} — {data.artist}
-            </span>
-          )}
-        </span>
-      </div>
+      <MarqueeReadout data={data} />
 
       {/* Progress bar. While playing it tracks position; when the track stops
           it drains to empty over ~3.5s so it comes to rest with the visualizer
@@ -238,9 +301,16 @@ export function NowPlaying() {
   // users hear updates without the visual bars/scrim.
   const announcement = !connected
     ? 'Spotify not connected.'
-    : hasTrack
-      ? `${playing ? 'Now playing' : 'Last played'}: ${data!.title} by ${data!.artist}.`
+    : data && hasTrack
+      ? `${playing ? 'Now playing' : 'Last played'}: ${data.title ?? 'Unknown track'} by ${data.artist ?? 'unknown artist'}.`
       : 'Nothing playing on Spotify.';
+
+  // Real audio-features when Spotify provides them; otherwise a deterministic
+  // per-track derivation so every track still moves differently (the endpoint
+  // is restricted for newer apps, so in practice this is the usual path).
+  const derived = data?.trackId
+    ? deriveTrackParams({ id: data.trackId, popularity: data.popularity })
+    : null;
 
   const deckProps: DeckProps | null = data
     ? {
@@ -248,8 +318,8 @@ export function NowPlaying() {
         spinning: timerRunning,
         position,
         duration,
-        tempo: features?.tempo,
-        energy: features?.energy,
+        tempo: features?.tempo ?? derived?.tempo,
+        energy: features?.energy ?? derived?.energy,
         progressPct,
         visualizer,
         onVisualizerChange: setVisualizer,
@@ -269,11 +339,7 @@ export function NowPlaying() {
       {hasTrack && deckProps ? (
         <Deck {...deckProps} />
       ) : (
-        <div className="rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm">
-          <p className="font-mono text-sm text-muted">
-            // Currently enjoying the silence.
-          </p>
-        </div>
+        <DeckStandby />
       )}
 
     </section>

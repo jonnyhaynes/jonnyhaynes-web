@@ -1,9 +1,10 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { VISUALIZERS, type VisualizerKind } from './visualizers-meta';
 
 type KnobControlProps = {
   visualizer: VisualizerKind;
   onChange: (kind: VisualizerKind) => void;
+  disabled?: boolean;
 };
 
 // Vertical drag distance (px) that advances one mode. Dragging up = previous,
@@ -18,7 +19,7 @@ const DRAG_STEP = 30;
  * (`aria-hidden`) affordances — the face drags, the dots click. The indicator
  * rotates to the active mode's angle.
  */
-export function KnobControl({ visualizer, onChange }: KnobControlProps) {
+export function KnobControl({ visualizer, onChange, disabled }: KnobControlProps) {
   const index = VISUALIZERS.findIndex((v) => v.kind === visualizer);
   const activeIndex = index === -1 ? 0 : index;
   const angle = VISUALIZERS[activeIndex].angle;
@@ -28,9 +29,19 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
   const lastY = useRef<number | null>(null);
   const accum = useRef(0);
 
+  // The current index as a ref so a single drag accumulating MULTIPLE steps
+  // chains them correctly — each step must start from where the previous one
+  // landed, not the render-closure `activeIndex` (which made extra steps of a
+  // fast drag silently retarget the same adjacent mode).
+  const indexRef = useRef(activeIndex);
+  useEffect(() => {
+    indexRef.current = activeIndex;
+  }, [activeIndex]);
+
   const setByIndex = (i: number) => {
     // Wrap so the knob is a continuous dial.
     const wrapped = ((i % VISUALIZERS.length) + VISUALIZERS.length) % VISUALIZERS.length;
+    indexRef.current = wrapped;
     const next = VISUALIZERS[wrapped];
     if (next.kind !== visualizer) onChange(next.kind);
   };
@@ -48,11 +59,11 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
     lastY.current = e.clientY;
     while (accum.current <= -DRAG_STEP) {
       accum.current += DRAG_STEP;
-      setByIndex(activeIndex - 1);
+      setByIndex(indexRef.current - 1);
     }
     while (accum.current >= DRAG_STEP) {
       accum.current -= DRAG_STEP;
-      setByIndex(activeIndex + 1);
+      setByIndex(indexRef.current + 1);
     }
   };
 
@@ -68,12 +79,12 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
       case 'ArrowUp':
       case 'ArrowLeft':
         e.preventDefault();
-        setByIndex(activeIndex - 1);
+        setByIndex(indexRef.current - 1);
         break;
       case 'ArrowDown':
       case 'ArrowRight':
         e.preventDefault();
-        setByIndex(activeIndex + 1);
+        setByIndex(indexRef.current + 1);
         break;
       case 'Home':
         e.preventDefault();
@@ -86,17 +97,26 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
     }
   };
 
+  const handleClick = (kind: VisualizerKind) => {
+    if (!disabled) onChange(kind);
+  };
+
   return (
-    <div className="knob-control" role="radiogroup" aria-label="Visualizer style">
+    <div
+      className="knob-control"
+      role="radiogroup"
+      aria-label="Visualizer style"
+      aria-disabled={disabled ? true : undefined}
+    >
       {/* Knob face — drag to turn. The dots on the face are the accessible
           radios (roving tabindex + arrow keys); the metal/indicator/cap are
-          decorative. */}
+          decorative. In standby mode the knob is visible but non-interactive. */}
       <div
-        className="knob-face"
-        onPointerDown={startDrag}
-        onPointerMove={onDrag}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
+        className={`knob-face${disabled ? ' knob-face--disabled' : ''}`}
+        onPointerDown={disabled ? undefined : startDrag}
+        onPointerMove={disabled ? undefined : onDrag}
+        onPointerUp={disabled ? undefined : endDrag}
+        onPointerCancel={disabled ? undefined : endDrag}
       >
         <div className="knob-metal" aria-hidden="true" />
         <div className="knob-ridges" aria-hidden="true" />
@@ -117,13 +137,14 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
               role="radio"
               aria-checked={active}
               aria-label={opt.label}
-              tabIndex={active ? 0 : -1}
+              tabIndex={disabled ? -1 : active ? 0 : -1}
               className="knob-dot"
               data-active={active}
               style={{ '--dot-angle': `${opt.angle}deg` } as React.CSSProperties}
-              onClick={() => onChange(opt.kind)}
-              onKeyDown={handleKeyDown}
+              onClick={() => handleClick(opt.kind)}
+              onKeyDown={disabled ? undefined : handleKeyDown}
               onPointerDown={(e) => e.stopPropagation()}
+              disabled={disabled}
             />
           );
         })}

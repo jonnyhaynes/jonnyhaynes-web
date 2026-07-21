@@ -91,6 +91,35 @@ Three modes, switchable by the visitor and **persisted** like the site theme:
 - No changes to data fetching, polling cadence, or the baked JSON shape.
 - No audio. Motion stays "honest, non-audio".
 
+## Addendum: visualizer engineering + data-honesty tightening (2026-07-21)
+
+A post-implementation pass tightened the visualizer:
+
+- **Derived per-track params.** Spotify's audio-features endpoint is restricted
+  for apps registered after Nov 2024, so the card was falling back to fixed
+  defaults (116 BPM / 0.62) and every track looked identical. The API now
+  exposes `popularity`, and the client uses a deterministic per-track derivation
+  when audio-features is unavailable: a djb2 hash of the track id picks a
+  plausible tempo (80–170 BPM), and `popularity` stands in for energy. This is
+  still honest, non-audio motion — each track has a stable, distinct rhythm.
+- **Performance.** The canvas size is no longer measured per frame; a
+  `ResizeObserver` updates a cached size. Accent colours are read once per frame
+  and re-invalidated only when `<html data-theme>` changes. The spectrum bars
+  share one full-height gradient per frame instead of 28 separate gradients.
+- **Robustness.** `toRgb` was hex-only and would break if tokens became modern
+  colour syntax; it now normalises any CSS colour via a canvas `fillStyle`
+  round-trip. The knob drag had a stale-state bug where fast multi-step drags
+  silently repeated the same adjacent mode; the current index is now tracked in
+  a ref and updated synchronously. `prefers-reduced-motion` is observed live
+  via `useSyncExternalStore`, so toggling the OS setting updates the visualizer
+  without waiting for a track change.
+- **Dead code removal.** The `staticFrame` prop (a leftover from a dropped
+  chip-preview switcher design) was plumbed through all three components but
+  never used. It, and its stale comments, have been removed.
+- **Polish.** The marquee readout only scrolls when the text actually overflows.
+  The `localStorage` read is try/catch'd. The `aria-live` announcement drops the
+  non-null assertions.
+
 ## Verification
 
 - `npm run build` (tsc + vite) and `npm run lint` clean.

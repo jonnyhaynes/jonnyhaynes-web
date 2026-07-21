@@ -6,10 +6,12 @@
 //   STEAM_API_KEY=xxx STEAM_ID=yyy XBL_API_KEY=zzz node scripts/fetch-gaming.mjs
 //
 // Design (mirrors fetch-spotify.mjs): each source is wrapped so a failure logs a
-// warning and yields [] rather than failing the whole bake — one platform being
-// down (or Xbox's third-party service being flaky) must never lose the other's
-// data. If BOTH yield nothing we still write a valid { games: [] } file so the
-// section degrades to hidden, not a 404.
+// warning and yields no games rather than failing the whole bake — one platform
+// being down (or Xbox's third-party service being flaky) must never lose the
+// other's data. Each source reports a status ('ok' | 'error' | 'skipped') baked
+// into the payload's `sources` block for debugging. If BOTH yield nothing we
+// still write a valid { games: [] } file so the section degrades to hidden,
+// not a 404.
 
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
@@ -31,7 +33,7 @@ const LIMIT = 7;
 async function fetchSteam() {
   if (!STEAM_API_KEY || !STEAM_ID) {
     console.warn('Steam: STEAM_API_KEY / STEAM_ID not set — skipping.');
-    return [];
+    return { status: 'skipped', games: [] };
   }
   try {
     const url =
@@ -41,20 +43,23 @@ async function fetchSteam() {
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const json = await res.json();
     const games = json.response?.games ?? [];
-    return games
-      .slice()
-      .sort((a, b) => (b.playtime_2weeks ?? 0) - (a.playtime_2weeks ?? 0))
-      .map((g) => ({
-        title: g.name,
-        platform: 'steam',
-        coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
-        lastPlayed: null,
-        url: `https://store.steampowered.com/app/${g.appid}`,
-        _recentMins: g.playtime_2weeks ?? 0,
-      }));
+    return {
+      status: 'ok',
+      games: games
+        .slice()
+        .sort((a, b) => (b.playtime_2weeks ?? 0) - (a.playtime_2weeks ?? 0))
+        .map((g) => ({
+          title: g.name,
+          platform: 'steam',
+          coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
+          lastPlayed: null,
+          url: `https://store.steampowered.com/app/${g.appid}`,
+          _recentMins: g.playtime_2weeks ?? 0,
+        })),
+    };
   } catch (err) {
     console.warn(`Steam: fetch failed (${err.message}) — writing no Steam games.`);
-    return [];
+    return { status: 'error', games: [] };
   }
 }
 
@@ -66,7 +71,7 @@ async function fetchSteam() {
 async function fetchXbox() {
   if (!XBL_API_KEY) {
     console.warn('Xbox: XBL_API_KEY not set — skipping.');
-    return [];
+    return { status: 'skipped', games: [] };
   }
   try {
     const res = await fetch('https://xbl.io/api/v2/player/titleHistory', {
@@ -89,25 +94,28 @@ async function fetchXbox() {
       throw new Error(`OpenXBL error ${json.code ?? '?'}: ${JSON.stringify(json.content)}`);
     }
     const titles = json.content.titles;
-    return titles
-      .map((t) => {
-        const lastPlayed = t.titleHistory?.lastTimePlayed ?? null;
-        return {
-          title: t.name,
-          platform: 'xbox',
-          // Xbox art comes back as http:// — force https so it isn't blocked
-          // as mixed content on the (https) site.
-          coverUrl: t.displayImage ? t.displayImage.replace(/^http:/, 'https:') : null,
-          lastPlayed,
-          url: null,
-          _ts: lastPlayed ? new Date(lastPlayed).getTime() : 0,
-        };
-      })
-      .filter((g) => g.title)
-      .sort((a, b) => b._ts - a._ts);
+    return {
+      status: 'ok',
+      games: titles
+        .map((t) => {
+          const lastPlayed = t.titleHistory?.lastTimePlayed ?? null;
+          return {
+            title: t.name,
+            platform: 'xbox',
+            // Xbox art comes back as http:// — force https so it isn't blocked
+            // as mixed content on the (https) site.
+            coverUrl: t.displayImage ? t.displayImage.replace(/^http:/, 'https:') : null,
+            lastPlayed,
+            url: null,
+            _ts: lastPlayed ? new Date(lastPlayed).getTime() : 0,
+          };
+        })
+        .filter((g) => g.title)
+        .sort((a, b) => b._ts - a._ts),
+    };
   } catch (err) {
     console.warn(`Xbox: fetch failed (${err.message}) — writing no Xbox games.`);
-    return [];
+    return { status: 'error', games: [] };
   }
 }
 
@@ -118,13 +126,20 @@ async function main() {
   // Merge: Xbox games (real timestamps, newest first) lead, then Steam games by
   // recent playtime. A documented approximation — the two sources expose
   // different signals, so there's no single clean cross-platform sort key.
-  const merged = [...xbox, ...steam]
+  const merged = [...xbox.games, ...steam.games]
     .slice(0, LIMIT)
     // Drop the internal sort helpers before serialising.
     .map(({ _ts, _recentMins, ...tile }) => tile);
 
   const payload = {
     fetchedAt: new Date().toISOString(),
+    // Per-source outcome, so a platform silently absent from the merged list
+    // (no recent play vs. private profile vs. dead API) is debuggable from the
+    // baked file. Not surfaced in the UI.
+    sources: {
+      steam: { status: steam.status, count: steam.games.length },
+      xbox: { status: xbox.status, count: xbox.games.length },
+    },
     games: merged,
   };
 
@@ -132,7 +147,7 @@ async function main() {
   await writeFile(OUT, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(
     `Wrote ${OUT}: ${merged.length} games ` +
-      `(${xbox.length} Xbox, ${steam.length} Steam before cap).`,
+      `(Xbox ${xbox.status}/${xbox.games.length}, Steam ${steam.status}/${steam.games.length} before cap).`,
   );
 }
 
