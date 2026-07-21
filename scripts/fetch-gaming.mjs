@@ -23,8 +23,10 @@ const LIMIT = 7;
 /**
  * Recently-played Steam games. Steam's endpoint gives playtime_2weeks but NO
  * last-played timestamp, so tiles carry lastPlayed: null and we sort by recent
- * playtime as a proxy. Cover art is the store header image, derived from appid.
- * Requires the profile + "game details" privacy to be Public, else returns [].
+ * playtime as a proxy. Cover art is the portrait library capsule (600×900,
+ * 2:3) derived from appid — closer to the site's square/portrait tiles than the
+ * wide header banner. Requires the profile + "game details" privacy to be
+ * Public, else returns [].
  */
 async function fetchSteam() {
   if (!STEAM_API_KEY || !STEAM_ID) {
@@ -45,7 +47,7 @@ async function fetchSteam() {
       .map((g) => ({
         title: g.name,
         platform: 'steam',
-        coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/header.jpg`,
+        coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
         lastPlayed: null,
         url: `https://store.steampowered.com/app/${g.appid}`,
         _recentMins: g.playtime_2weeks ?? 0,
