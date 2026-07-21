@@ -16,6 +16,12 @@ export type GameTile = {
 
 export type GamingData = {
   fetchedAt: string;
+  /** Per-source bake outcome — debugging only, not displayed. Optional so
+   * older bakes without it still type-check. */
+  sources?: {
+    steam: { status: 'ok' | 'error' | 'skipped'; count: number };
+    xbox: { status: 'ok' | 'error' | 'skipped'; count: number };
+  };
   games: GameTile[];
 };
 

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { VISUALIZERS, type VisualizerKind } from './visualizers-meta';
 
 type KnobControlProps = {
@@ -28,9 +28,19 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
   const lastY = useRef<number | null>(null);
   const accum = useRef(0);
 
+  // The current index as a ref so a single drag accumulating MULTIPLE steps
+  // chains them correctly — each step must start from where the previous one
+  // landed, not the render-closure `activeIndex` (which made extra steps of a
+  // fast drag silently retarget the same adjacent mode).
+  const indexRef = useRef(activeIndex);
+  useEffect(() => {
+    indexRef.current = activeIndex;
+  }, [activeIndex]);
+
   const setByIndex = (i: number) => {
     // Wrap so the knob is a continuous dial.
     const wrapped = ((i % VISUALIZERS.length) + VISUALIZERS.length) % VISUALIZERS.length;
+    indexRef.current = wrapped;
     const next = VISUALIZERS[wrapped];
     if (next.kind !== visualizer) onChange(next.kind);
   };
@@ -48,11 +58,11 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
     lastY.current = e.clientY;
     while (accum.current <= -DRAG_STEP) {
       accum.current += DRAG_STEP;
-      setByIndex(activeIndex - 1);
+      setByIndex(indexRef.current - 1);
     }
     while (accum.current >= DRAG_STEP) {
       accum.current -= DRAG_STEP;
-      setByIndex(activeIndex + 1);
+      setByIndex(indexRef.current + 1);
     }
   };
 
@@ -68,12 +78,12 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
       case 'ArrowUp':
       case 'ArrowLeft':
         e.preventDefault();
-        setByIndex(activeIndex - 1);
+        setByIndex(indexRef.current - 1);
         break;
       case 'ArrowDown':
       case 'ArrowRight':
         e.preventDefault();
-        setByIndex(activeIndex + 1);
+        setByIndex(indexRef.current + 1);
         break;
       case 'Home':
         e.preventDefault();

@@ -1,5 +1,9 @@
-import { useState } from 'react';
-import { useNowPlaying, usePlaybackPosition } from '../data/spotify';
+import { useEffect, useRef, useState } from 'react';
+import {
+  deriveTrackParams,
+  useNowPlaying,
+  usePlaybackPosition,
+} from '../data/spotify';
 import type { NowPlaying as NowPlayingData } from '../data/spotify';
 import { Visualizer } from './visualizers';
 import { type VisualizerKind } from './visualizers-meta';
@@ -15,11 +19,16 @@ function isVisualizerKind(v: string | null): v is VisualizerKind {
 
 function useVisualizer(): [VisualizerKind, (k: VisualizerKind) => void] {
   const [kind, setKind] = useState<VisualizerKind>(() => {
-    const saved =
-      typeof localStorage !== 'undefined'
-        ? localStorage.getItem(VISUALIZER_KEY)
-        : null;
-    return isVisualizerKind(saved) ? saved : 'spectrum';
+    try {
+      const saved =
+        typeof localStorage !== 'undefined'
+          ? localStorage.getItem(VISUALIZER_KEY)
+          : null;
+      return isVisualizerKind(saved) ? saved : 'spectrum';
+    } catch {
+      // Private-mode/storage-disabled failures — fall back to the default.
+      return 'spectrum';
+    }
   });
   const set = (k: VisualizerKind) => {
     setKind(k);
@@ -80,6 +89,62 @@ function Progress({
       }
     >
       <div className={fillClassName} style={{ width: `${progressPct}%` }} />
+    </div>
+  );
+}
+
+/**
+ * Readout line under the screen: a marquee of the track (title + artist)
+ * glowing in the accent. Only scrolls when the text actually overflows —
+ * short titles sit still. The single inner element is what scrolls; with the
+ * scroll padding being 100% of the outer width, overflow is detectable as
+ * `inner.scrollWidth - outer.clientWidth > outer.clientWidth`.
+ */
+function MarqueeReadout({ data }: { data: NowPlayingData }) {
+  const outerRef = useRef<HTMLSpanElement>(null);
+  const innerRef = useRef<HTMLSpanElement>(null);
+  const [scrolls, setScrolls] = useState(true);
+
+  useEffect(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer || !inner) return;
+    const check = () =>
+      setScrolls(inner.scrollWidth - outer.clientWidth > outer.clientWidth);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(outer);
+    return () => ro.disconnect();
+  }, [data.title, data.artist]);
+
+  return (
+    <div
+      className="deck-readout mt-3 font-mono text-xs"
+      style={{ paddingRight: 'var(--knob-clearance)' }}
+    >
+      <span
+        ref={outerRef}
+        className={`deck-lcd-text marquee block${scrolls ? '' : ' marquee--fits'}`}
+      >
+        <span ref={innerRef}>
+          {/* Padded right so the text clears the knob overhanging the LCD. */}
+          {data.url ? (
+            <a
+              href={data.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+            >
+              ▸ {data.title} — {data.artist}
+              <span className="sr-only"> (opens on Spotify in a new tab)</span>
+            </a>
+          ) : (
+            <span>
+              ▸ {data.title} — {data.artist}
+            </span>
+          )}
+        </span>
+      </span>
     </div>
   );
 }
@@ -156,31 +221,7 @@ function Deck({
         <KnobControl visualizer={visualizer} onChange={onVisualizerChange} />
       </div>
 
-      {/* Readout line under the screen: a marquee of the track (title + artist)
-          glowing in the accent. The single inner element is what scrolls.
-          Padded right so the text clears the knob overhanging from the LCD. */}
-      <div
-        className="deck-readout mt-3 font-mono text-xs"
-        style={{ paddingRight: 'var(--knob-clearance)' }}
-      >
-        <span className="deck-lcd-text marquee block">
-          {data.url ? (
-            <a
-              href={data.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-            >
-              ▸ {data.title} — {data.artist}
-              <span className="sr-only"> (opens on Spotify in a new tab)</span>
-            </a>
-          ) : (
-            <span>
-              ▸ {data.title} — {data.artist}
-            </span>
-          )}
-        </span>
-      </div>
+      <MarqueeReadout data={data} />
 
       {/* Progress bar. While playing it tracks position; when the track stops
           it drains to empty over ~3.5s so it comes to rest with the visualizer
@@ -238,9 +279,16 @@ export function NowPlaying() {
   // users hear updates without the visual bars/scrim.
   const announcement = !connected
     ? 'Spotify not connected.'
-    : hasTrack
-      ? `${playing ? 'Now playing' : 'Last played'}: ${data!.title} by ${data!.artist}.`
+    : data && hasTrack
+      ? `${playing ? 'Now playing' : 'Last played'}: ${data.title ?? 'Unknown track'} by ${data.artist ?? 'unknown artist'}.`
       : 'Nothing playing on Spotify.';
+
+  // Real audio-features when Spotify provides them; otherwise a deterministic
+  // per-track derivation so every track still moves differently (the endpoint
+  // is restricted for newer apps, so in practice this is the usual path).
+  const derived = data?.trackId
+    ? deriveTrackParams({ id: data.trackId, popularity: data.popularity })
+    : null;
 
   const deckProps: DeckProps | null = data
     ? {
@@ -248,8 +296,8 @@ export function NowPlaying() {
         spinning: timerRunning,
         position,
         duration,
-        tempo: features?.tempo,
-        energy: features?.energy,
+        tempo: features?.tempo ?? derived?.tempo,
+        energy: features?.energy ?? derived?.energy,
         progressPct,
         visualizer,
         onVisualizerChange: setVisualizer,

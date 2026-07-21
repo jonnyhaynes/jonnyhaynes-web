@@ -177,6 +177,30 @@ platform.
   confirm `public/data/gaming.json` is well-formed and the section renders;
   confirm the section hides when the file is missing/empty.
 
+## Addendum: OSD + bezel label tightening (2026-07-21)
+
+Post-implementation review tightened the TV + jewel cases:
+
+- **CRT OSD overlay.** The hero TV now shows title + platform/recency in a
+  heather, on-screen-display style overlay (top-left, mono, slight glow), like
+  an old channel/volume HUD. It fades after ~4 seconds and reappears on
+  hover/focus. Jewel cases show a matching mini OSD on hover/focus only.
+- **Honest bezel label.** The cabinet lip no longer hard-codes "Now playing".
+  With real Xbox timestamps it now says "Now playing" only when the hero was
+  played today, otherwise "Last played". Steam tiles (no timestamp) say
+  "Recently played".
+- **Token dedup.** The TV cabinet now reuses the same `--color-deck-panel-*`
+  tokens as the Now Playing deck; the Gaming.tsx classes are no longer
+  hard-coded gradients kept "in sync by comment".
+- **Xbox a11y.** Xbox tiles have no store URL, so they render as `div`s. The
+  `aria-label` now lands on those `div`s via `role="img"`, rather than only
+  being on linked Steam tiles.
+- **Bake source status.** `public/data/gaming.json` gains a `sources` object
+  (`steam`/`xbox` with `status` and `count`) so a platform silently absent from
+  the merged list is debuggable from the baked file; not shown in the UI.
+- **Plan doc drift resolved.** The implementation settled on 1 hero TV + 4
+  jewel cases (5 tiles), not the 6-tile 2×3 grid mentioned in the original plan.
+
 ## Open questions for approval
 
 1. **Xbox third-party dependency (OpenXBL): OK to proceed?** It's the only
