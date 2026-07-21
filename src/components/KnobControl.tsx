@@ -4,6 +4,7 @@ import { VISUALIZERS, type VisualizerKind } from './visualizers-meta';
 type KnobControlProps = {
   visualizer: VisualizerKind;
   onChange: (kind: VisualizerKind) => void;
+  disabled?: boolean;
 };
 
 // Vertical drag distance (px) that advances one mode. Dragging up = previous,
@@ -18,7 +19,7 @@ const DRAG_STEP = 30;
  * (`aria-hidden`) affordances — the face drags, the dots click. The indicator
  * rotates to the active mode's angle.
  */
-export function KnobControl({ visualizer, onChange }: KnobControlProps) {
+export function KnobControl({ visualizer, onChange, disabled }: KnobControlProps) {
   const index = VISUALIZERS.findIndex((v) => v.kind === visualizer);
   const activeIndex = index === -1 ? 0 : index;
   const angle = VISUALIZERS[activeIndex].angle;
@@ -96,17 +97,26 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
     }
   };
 
+  const handleClick = (kind: VisualizerKind) => {
+    if (!disabled) onChange(kind);
+  };
+
   return (
-    <div className="knob-control" role="radiogroup" aria-label="Visualizer style">
+    <div
+      className="knob-control"
+      role="radiogroup"
+      aria-label="Visualizer style"
+      aria-disabled={disabled ? true : undefined}
+    >
       {/* Knob face — drag to turn. The dots on the face are the accessible
           radios (roving tabindex + arrow keys); the metal/indicator/cap are
-          decorative. */}
+          decorative. In standby mode the knob is visible but non-interactive. */}
       <div
-        className="knob-face"
-        onPointerDown={startDrag}
-        onPointerMove={onDrag}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
+        className={`knob-face${disabled ? ' knob-face--disabled' : ''}`}
+        onPointerDown={disabled ? undefined : startDrag}
+        onPointerMove={disabled ? undefined : onDrag}
+        onPointerUp={disabled ? undefined : endDrag}
+        onPointerCancel={disabled ? undefined : endDrag}
       >
         <div className="knob-metal" aria-hidden="true" />
         <div className="knob-ridges" aria-hidden="true" />
@@ -127,13 +137,14 @@ export function KnobControl({ visualizer, onChange }: KnobControlProps) {
               role="radio"
               aria-checked={active}
               aria-label={opt.label}
-              tabIndex={active ? 0 : -1}
+              tabIndex={disabled ? -1 : active ? 0 : -1}
               className="knob-dot"
               data-active={active}
               style={{ '--dot-angle': `${opt.angle}deg` } as React.CSSProperties}
-              onClick={() => onChange(opt.kind)}
-              onKeyDown={handleKeyDown}
+              onClick={() => handleClick(opt.kind)}
+              onKeyDown={disabled ? undefined : handleKeyDown}
               onPointerDown={(e) => e.stopPropagation()}
+              disabled={disabled}
             />
           );
         })}

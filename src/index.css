@@ -59,6 +59,15 @@
    * faint dark fill on light — no hardcoded black/white that only works on one. */
   --color-control-recess: color-mix(in oklch, var(--color-foreground) 8%, transparent);
   --color-control-hover: color-mix(in oklch, var(--color-foreground) 12%, transparent);
+
+  /* Reading-section shelf shadows. Lightened in the light-theme block so the
+   * same physical cast doesn't look muddy on the chalk background. */
+  --color-shelf: color-mix(in oklch, black 25%, transparent);
+  --book-shadow-highlight: rgba(255, 255, 255, 0.18);
+  --book-shadow-page: rgba(0, 0, 0, 0.28);
+  --book-shadow-cast: rgba(0, 0, 0, 0.3);
+  --book-shadow-lift: rgba(0, 0, 0, 0.25);
+  --book-shadow-lift-sm: rgba(0, 0, 0, 0.2);
 }
 
 /* Light mode — Chalk / Deep Coal / Bright Heather. Overrides the tokens the
@@ -92,6 +101,14 @@
    * on the cabinet grey — the Gaming TV's bezel label uses the same token, so
    * text matches too. */
   --color-deck-panel-text: #4a5160;
+
+  /* Reading shelf on the chalk background: lighter shadows + shelf line. */
+  --color-shelf: color-mix(in oklch, black 12%, transparent);
+  --book-shadow-highlight: rgba(255, 255, 255, 0.32);
+  --book-shadow-page: rgba(0, 0, 0, 0.18);
+  --book-shadow-cast: rgba(0, 0, 0, 0.15);
+  --book-shadow-lift: rgba(0, 0, 0, 0.12);
+  --book-shadow-lift-sm: rgba(0, 0, 0, 0.08);
 }
 
 @layer base {
@@ -383,10 +400,11 @@
 }
 
 .crt-osd-line {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Titles can wrap instead of being cropped; the top scrim fades down to give
+     room for multi-line readouts over bright art. */
+  white-space: normal;
 }
+
 
 /* Hero TV: visible on load, fades away after a few seconds like a real OSD,
  * and reappears on hover/focus — restarting the auto-hide when you leave. */
@@ -611,12 +629,7 @@
   padding-left: 100%;
   animation: deck-marquee 12s linear infinite;
 }
-/* Text fits within the readout — no scroll, no entry padding (set by
-   MarqueeReadout after measuring overflow). */
-.deck-readout .marquee--fits > * {
-  padding-left: 0;
-  animation: none;
-}
+
 @keyframes deck-marquee {
   to {
     transform: translateX(-100%);
@@ -632,6 +645,40 @@
   .deck-readout .marquee > * {
     padding-left: 0;
     animation: none;
+  }
+}
+
+.knob-face--disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Standby screen for the Now Playing card when nothing is playing.
+   Uses the same LCD chrome as the active deck, with a subtle drifting line
+   and a "No signal" label. */
+.deck-standby-line {
+  width: 55%;
+  height: 1px;
+  background: color-mix(in oklch, var(--color-deck-panel-text) 60%, transparent);
+  animation: deck-standby-drift 3s ease-in-out infinite;
+}
+
+@keyframes deck-standby-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(3px);
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-standby-line {
+    animation: none;
+    opacity: 0.5;
   }
 }
 
@@ -857,7 +904,7 @@
  * can be constrained to a narrower max-width than the row of books above it
  * (matching the "What I'm playing" section width). */
 .book-shelf-line {
-  border-top: 10px solid var(--color-shelf, color-mix(in oklch, black 25%, transparent));
+  border-top: 10px solid var(--color-shelf);
 }
 
 /* A vertical spine standing on its end. `--lean` (deg) and `--spine-frac` are
@@ -886,9 +933,9 @@
   /* Page-block highlight down the leading edge + a soft cast so it reads as a
      three-dimensional book edge rather than a flat chip. */
   box-shadow:
-    inset 3px 0 0 rgba(255, 255, 255, 0.18),
-    inset -2px 0 3px rgba(0, 0, 0, 0.28),
-    0 4px 6px -3px rgba(0, 0, 0, 0.3);
+    inset 3px 0 0 var(--book-shadow-highlight),
+    inset -2px 0 3px var(--book-shadow-page),
+    0 4px 6px -3px var(--book-shadow-cast);
 }
 
 /* Title + author rotated to read bottom-to-top up the spine. Wraps into extra
@@ -912,13 +959,18 @@
   /* Straighten slightly and lift when picked out. */
   transform: rotate(calc(var(--lean, 0deg) * 0.4)) translateY(-4px);
   filter: brightness(1.06);
+  box-shadow:
+    inset 3px 0 0 var(--book-shadow-highlight),
+    inset -2px 0 3px var(--book-shadow-page),
+    0 10px 15px -3px var(--book-shadow-lift),
+    0 4px 6px -4px var(--book-shadow-lift-sm);
 }
 
 /* The upright centre display copy — a touch of lift to sit "in front". */
 .book-feature {
   box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.25),
-    0 4px 6px -4px rgba(0, 0, 0, 0.2);
+    0 10px 15px -3px var(--book-shadow-lift),
+    0 4px 6px -4px var(--book-shadow-lift-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -200,6 +200,11 @@ Post-implementation review tightened the TV + jewel cases:
   the merged list is debuggable from the baked file; not shown in the UI.
 - **Plan doc drift resolved.** The implementation settled on 1 hero TV + 4
   jewel cases (5 tiles), not the 6-tile 2×3 grid mentioned in the original plan.
+- **Channel dial interactivity (2026-07-21 follow-up).** The two decorative
+  bezel dials became real "previous / next" buttons that cycle which game is
+  shown in the hero TV. This mirrors the Now Playing visualizer knob's physical
+  switcher. The buttons sit outside the screen link so navigation and controls
+  don't collide, and each has an `aria-label` + visible focus ring.
 
 ## Open questions for approval
 
