@@ -1,6 +1,16 @@
 {
-  "fetchedAt": "2026-07-18T13:19:16.667Z",
+  "fetchedAt": "2026-07-21T09:27:21.434Z",
   "audiobooks": [
+    {
+      "title": "Careless People: The #1 Sunday Times bestselling memoir that Meta doesn't want you to read",
+      "authors": "Sarah Wynn-Williams",
+      "url": "https://open.spotify.com/show/6GislYNGnwprJRgN1x0aWA",
+      "cover": "https://i.scdn.co/image/ab676663000022a808f6e9afbfd6e2e1cff5ba1f",
+      "spine": {
+        "bg": "rgb(248 88 88)",
+        "ink": "#e8ddcb"
+      }
+    },
     {
       "title": "How Fascism Works: The Politics of Us and Them",
       "authors": "Jason Stanley",
@@ -58,16 +68,6 @@
       "cover": "https://i.scdn.co/image/ab676663000022a851c17d6c496eda09a3c85a55",
       "spine": {
         "bg": "rgb(248 248 232)",
-        "ink": "#1a1b1e"
-      }
-    },
-    {
-      "title": "Loose Head: Confessions of an (un)professional rugby player",
-      "authors": "Joe Marler",
-      "url": "https://open.spotify.com/show/3QqLZsHCTatrJLZRa1A7lG",
-      "cover": "https://i.scdn.co/image/ab676663000022a8088086492d1a798a5cd397eb",
-      "spine": {
-        "bg": "rgb(248 248 248)",
         "ink": "#1a1b1e"
       }
     }
