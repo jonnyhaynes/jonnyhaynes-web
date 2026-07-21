@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -28,6 +29,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+
+      # sharp (used to derive each audiobook cover's dominant colour for the
+      # bookshelf spines) is a real dependency, so the bake now needs an install.
+      - name: Install dependencies
+        run: npm ci
 
       - name: Fetch Spotify data
         env:
@@ -36,16 +43,35 @@ jobs:
           SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
         run: node scripts/fetch-spotify.mjs
 
-      - name: Commit if changed
+      # main is a protected branch (PR required + Vercel check), so we can't push
+      # to it directly. Instead push the refreshed data to a fixed branch, open a
+      # PR if one isn't already open, and enable auto-merge — since the branch
+      # rule requires 0 approvals, it merges itself once the Vercel check passes.
+      - name: Open/refresh data PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           files="public/data/spotify-top.json public/data/spotify-audiobooks.json"
           if git diff --quiet -- $files; then
             echo "No change in Spotify data — nothing to commit."
             exit 0
           fi
+
+          branch="bake/spotify-data"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
           git add $files
           git commit -m "Refresh Spotify data [skip ci]"
-          git push
+          # Force: this is a disposable, machine-owned data branch.
+          git push --force origin "$branch"
+
+          # Open the PR only if there isn't already an open one for this branch.
+          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr create \
+              --base main --head "$branch" \
+              --title "Refresh Spotify data" \
+              --body "Automated data bake (top artists/tracks + saved audiobooks). Auto-merges once the Vercel check passes."
+            gh pr merge "$branch" --auto --squash
+          fi

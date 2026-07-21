@@ -1,41 +1,75 @@
 {
-  "fetchedAt": "2026-07-12T14:03:27.543Z",
+  "fetchedAt": "2026-07-20T10:12:14.428Z",
   "audiobooks": [
     {
       "title": "How Fascism Works: The Politics of Us and Them",
       "authors": "Jason Stanley",
       "url": "https://open.spotify.com/show/5rchFuM1kWUtUc8pfjl8v5",
-      "cover": "https://i.scdn.co/image/ab6766630000703bdb7051063605da2e8b93d1c9"
+      "cover": "https://i.scdn.co/image/ab676663000022a8db7051063605da2e8b93d1c9",
+      "spine": {
+        "bg": "rgb(248 232 232)",
+        "ink": "#1a1b1e"
+      }
     },
     {
       "title": "If We Tolerate This: The rise of the far right  and what we can do to stop it",
       "authors": "Daniel Trilling",
       "url": "https://open.spotify.com/show/3emA2xRzpa27HKS9TtWq1n",
-      "cover": "https://i.scdn.co/image/ab6766630000703b40392ad8352c65f2adbac9d1"
+      "cover": "https://i.scdn.co/image/ab676663000022a840392ad8352c65f2adbac9d1",
+      "spine": {
+        "bg": "rgb(232 232 216)",
+        "ink": "#1a1b1e"
+      }
     },
     {
       "title": "There Is No Antimemetics Division: The thrilling new sci-fi horror novel, 'mind-bendingly brilliant' Guardian",
       "authors": "qntm",
       "url": "https://open.spotify.com/show/6Yg3i7lZEK8bDq01y04TQD",
-      "cover": "https://i.scdn.co/image/ab6766630000703b2678645afc594c701291c661"
+      "cover": "https://i.scdn.co/image/ab676663000022a82678645afc594c701291c661",
+      "spine": {
+        "bg": "rgb(184 232 8)",
+        "ink": "#1a1b1e"
+      }
     },
     {
       "title": "Before & Laughter",
       "authors": "Jimmy Carr",
       "url": "https://open.spotify.com/show/0kwSE1vUUrISTPcRIekY72",
-      "cover": "https://i.scdn.co/image/ab6766630000703b33844abc0d0808cf358ddba9"
+      "cover": "https://i.scdn.co/image/ab676663000022a833844abc0d0808cf358ddba9",
+      "spine": {
+        "bg": "rgb(232 88 40)",
+        "ink": "#e8ddcb"
+      }
     },
     {
       "title": "1984",
       "authors": "George Orwell",
       "url": "https://open.spotify.com/show/1yPC9bBMm1fixXasXnTRGH",
-      "cover": "https://i.scdn.co/image/ab6766630000703b51fff79636ab12e873af0de2"
+      "cover": "https://i.scdn.co/image/ab676663000022a851fff79636ab12e873af0de2",
+      "spine": {
+        "bg": "rgb(248 216 232)",
+        "ink": "#1a1b1e"
+      }
     },
     {
       "title": "Of Boys and Men",
       "authors": "Richard V. Reeves",
       "url": "https://open.spotify.com/show/0X8WLpK4Fl8krcuRUshuO9",
-      "cover": "https://i.scdn.co/image/ab6766630000703b51c17d6c496eda09a3c85a55"
+      "cover": "https://i.scdn.co/image/ab676663000022a851c17d6c496eda09a3c85a55",
+      "spine": {
+        "bg": "rgb(248 248 232)",
+        "ink": "#1a1b1e"
+      }
+    },
+    {
+      "title": "Loose Head: Confessions of an (un)professional rugby player",
+      "authors": "Joe Marler",
+      "url": "https://open.spotify.com/show/3QqLZsHCTatrJLZRa1A7lG",
+      "cover": "https://i.scdn.co/image/ab676663000022a8088086492d1a798a5cd397eb",
+      "spine": {
+        "bg": "rgb(248 248 248)",
+        "ink": "#1a1b1e"
+      }
     }
   ]
 }

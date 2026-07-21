@@ -1,81 +1,347 @@
-import { useNowPlaying } from '../data/spotify';
+import { useState } from 'react';
+import {
+  deriveTrackParams,
+  useNowPlaying,
+  usePlaybackPosition,
+} from '../data/spotify';
+import type { NowPlaying as NowPlayingData } from '../data/spotify';
+import { Visualizer } from './visualizers';
+import { type VisualizerKind } from './visualizers-meta';
+import { KnobControl } from './KnobControl';
 
-/** Three CSS equalizer bars; they bounce only when `playing` (spec §D). */
-function Equalizer({ playing }: { playing: boolean }) {
+// Persist the chosen visualizer the same way the theme toggle persists: an
+// explicit choice is written to localStorage; otherwise we default to spectrum.
+const VISUALIZER_KEY = 'now-playing-visualizer';
+
+function isVisualizerKind(v: string | null): v is VisualizerKind {
+  return v === 'spectrum' || v === 'scope' || v === 'plasma';
+}
+
+function useVisualizer(): [VisualizerKind, (k: VisualizerKind) => void] {
+  const [kind, setKind] = useState<VisualizerKind>(() => {
+    try {
+      const saved =
+        typeof localStorage !== 'undefined'
+          ? localStorage.getItem(VISUALIZER_KEY)
+          : null;
+      return isVisualizerKind(saved) ? saved : 'spectrum';
+    } catch {
+      // Private-mode/storage-disabled failures — fall back to the default.
+      return 'spectrum';
+    }
+  });
+  const set = (k: VisualizerKind) => {
+    setKind(k);
+    try {
+      localStorage.setItem(VISUALIZER_KEY, k);
+    } catch {
+      // Private-mode/quota failures are non-fatal — the choice just won't stick.
+    }
+  };
+  return [kind, set];
+}
+
+function formatTime(ms: number): string {
+  const total = Math.floor(ms / 1000);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+type DeckProps = {
+  data: NowPlayingData;
+  spinning: boolean;
+  position: number | null;
+  duration: number | null;
+  tempo?: number | null;
+  energy?: number | null;
+  progressPct: number | null;
+  visualizer: VisualizerKind;
+  onVisualizerChange: (k: VisualizerKind) => void;
+};
+
+/** Progressbar element shared across variants. */
+function Progress({
+  progressPct,
+  position,
+  duration,
+  className,
+  fillClassName,
+}: {
+  progressPct: number;
+  position: number | null;
+  duration: number | null;
+  className: string;
+  fillClassName: string;
+}) {
   return (
     <div
-      className={`flex h-5 items-end gap-0.5 ${playing ? 'is-playing' : ''}`}
-      aria-hidden="true"
+      className={className}
+      role="progressbar"
+      aria-label="Track progress"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(progressPct)}
+      aria-valuetext={
+        position != null && duration != null
+          ? `${formatTime(position)} of ${formatTime(duration)}`
+          : undefined
+      }
     >
-      <span className="eq-bar w-1 rounded-sm bg-accent-start" style={{ height: '100%' }} />
-      <span className="eq-bar w-1 rounded-sm bg-accent-start" style={{ height: '100%' }} />
-      <span className="eq-bar w-1 rounded-sm bg-accent-start" style={{ height: '100%' }} />
+      <div className={fillClassName} style={{ width: `${progressPct}%` }} />
+    </div>
+  );
+}
+
+/**
+ * Readout line under the screen: a marquee of the track (title + artist)
+ * glowing in the accent. Always scrolls — the motion is part of the hi-fi
+ * look, even when the text technically fits.
+ */
+function MarqueeReadout({ data }: { data: NowPlayingData }) {
+  return (
+    <div
+      className="deck-readout mt-3 font-mono text-xs"
+      style={{ paddingRight: 'var(--knob-clearance)' }}
+    >
+      <span className="deck-lcd-text marquee block">
+        {data.url ? (
+          <a
+            href={data.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+          >
+            ▸ {data.title} — {data.artist}
+            <span className="sr-only"> (opens on Spotify in a new tab)</span>
+          </a>
+        ) : (
+          <span>
+            ▸ {data.title} — {data.artist}
+          </span>
+        )}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Standby deck — the same hi-fi chrome as the active player, but with a "no
+ * signal" screen and a dim LED. This keeps the device metaphor consistent when
+ * Spotify is idle or disconnected, instead of dropping into a generic message
+ * box.
+ */
+function DeckStandby() {
+  return (
+    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
+      {/* Header strip: standby label + steady dim LED. */}
+      <div className="mb-3 flex items-center justify-between">
+        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
+          Standby
+        </p>
+        <span
+          aria-hidden="true"
+          className="size-2 rounded-full bg-[var(--color-deck-panel-text)] opacity-40"
+        />
+      </div>
+
+      <div className="deck-lcd-wrap relative">
+        <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+            <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--color-deck-panel-text)] opacity-90">
+              No signal
+            </span>
+            <span aria-hidden="true" className="deck-standby-line" />
+          </div>
+        </div>
+
+        {/* Knob is rendered for visual symmetry but disabled in standby. */}
+        <KnobControl visualizer="scope" onChange={() => {}} disabled />
+      </div>
+
+      <div
+        className="deck-readout mt-3 font-mono text-xs"
+        style={{ paddingRight: 'var(--knob-clearance)' }}
+      >
+        <span className="deck-lcd-text marquee block">
+          <span>▸ Currently enjoying the silence.</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The Now Playing card: a brushed-metal front panel with a switchable
+ * visualizer screen as the hero (spectrum / oscilloscope / plasma), a marquee
+ * readout of the track, and a progress bar.
+ */
+function Deck({
+  data,
+  spinning,
+  position,
+  duration,
+  tempo,
+  energy,
+  progressPct,
+  visualizer,
+  onVisualizerChange,
+}: DeckProps) {
+  return (
+    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
+      {/* Header strip: playing/last-played label + power light. */}
+      <div className="mb-3 flex items-center justify-between">
+        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
+          {data.isPlaying ? 'Now playing' : 'Last played'}
+        </p>
+        {/* Power LED — a glowing accent dot (as in the Gaming bezel). While the
+            track plays it breathes; when it stops it eases down to a steady dot
+            over the same duration as the visualizer collapse, rather than
+            snapping off. Paused under reduced motion. */}
+        <span
+          aria-hidden="true"
+          className={`size-2 rounded-full bg-accent-start shadow-[0_0_6px_1px_var(--color-accent-start)] ${
+            spinning ? 'deck-led' : 'deck-led-resting'
+          }`}
+        />
+      </div>
+
+      {/* Visualizer screen + knob. The LCD (deck-lcd) is a recessed display
+          with scanlines; a concave notch is masked out of its bottom-right
+          corner (see .deck-lcd in index.css) and the knob nests in it, on the
+          chrome — the knob never overlaps the live visualizer. The relative
+          wrapper is the knob's positioning context. The chosen visualizer
+          persists to localStorage like the site theme (see useVisualizer). */}
+      <div className="deck-lcd-wrap relative">
+        <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+          {/* Album art sits behind the visualizer, dimmed under a scrim so the
+              accent-coloured bars/wave/plasma stay legible over any cover. */}
+          {data.albumArt && (
+            <>
+              <img
+                src={data.albumArt}
+                alt=""
+                className="absolute inset-0 size-full object-cover opacity-40"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-[var(--color-lcd-scrim)]"
+              />
+            </>
+          )}
+          <div className="absolute inset-0 z-10">
+            <Visualizer
+              kind={visualizer}
+              active={spinning}
+              tempo={tempo}
+              energy={energy}
+            />
+          </div>
+        </div>
+
+        {/* Rotary switcher — nests in the LCD's notched corner. */}
+        <KnobControl visualizer={visualizer} onChange={onVisualizerChange} />
+      </div>
+
+      <MarqueeReadout data={data} />
+
+      {/* Progress bar. While playing it tracks position; when the track stops
+          it drains to empty over ~3.5s so it comes to rest with the visualizer
+          rather than freezing at its last width. */}
+      {duration != null && (
+        <div className="mt-2" style={{ paddingRight: 'var(--knob-clearance)' }}>
+          <Progress
+            progressPct={spinning ? (progressPct ?? 0) : 0}
+            position={position}
+            duration={duration}
+            className="h-1 overflow-hidden rounded-full bg-muted/25"
+            fillClassName={`h-full rounded-full bg-accent-start ease-linear motion-reduce:transition-none ${
+              spinning
+                ? 'transition-[width] duration-1000'
+                : 'transition-[width] duration-[3500ms]'
+            }`}
+          />
+        </div>
+      )}
     </div>
   );
 }
 
 export function NowPlaying() {
   const data = useNowPlaying();
+  const position = usePlaybackPosition(data);
+  const [visualizer, setVisualizer] = useVisualizer();
 
   // The hook returns null while loading and on failure/rate-limit; any object
   // (even isPlaying:false) means the API answered → "Connected".
   const connected = data !== null;
   const playing = data?.isPlaying ?? false;
+  const features = data?.audioFeatures ?? null;
+  const duration = data?.durationMs ?? null;
+
+  const hasTrack = Boolean(data && (playing || data.title));
+  // Computed whenever we have a position + duration (not gated on `playing`), so
+  // the bar stays mounted through the stop and can drain to empty instead of
+  // vanishing. The drain itself is driven by `spinning` in the Deck.
+  const progressPct =
+    position != null && duration && duration > 0
+      ? Math.min(100, (position / duration) * 100)
+      : null;
+
+  // The interpolated position clamps to duration and stops advancing once the
+  // track ends, but the next poll (and fresh track) can lag a couple of seconds
+  // behind. Freeze the equaliser/reels once the timer has stopped so nothing
+  // keeps moving over a finished track — motion resumes when the next track
+  // loads with a fresh position.
+  const timerRunning =
+    playing && position != null && duration != null && position < duration;
+
+  // Single spoken summary of the current state, announced politely when it
+  // changes (track change, play→pause, connect/disconnect) so screen-reader
+  // users hear updates without the visual bars/scrim.
+  const announcement = !connected
+    ? 'Spotify not connected.'
+    : data && hasTrack
+      ? `${playing ? 'Now playing' : 'Last played'}: ${data.title ?? 'Unknown track'} by ${data.artist ?? 'unknown artist'}.`
+      : 'Nothing playing on Spotify.';
+
+  // Real audio-features when Spotify provides them; otherwise a deterministic
+  // per-track derivation so every track still moves differently (the endpoint
+  // is restricted for newer apps, so in practice this is the usual path).
+  const derived = data?.trackId
+    ? deriveTrackParams({ id: data.trackId, popularity: data.popularity })
+    : null;
+
+  const deckProps: DeckProps | null = data
+    ? {
+        data,
+        spinning: timerRunning,
+        position,
+        duration,
+        tempo: features?.tempo ?? derived?.tempo,
+        energy: features?.energy ?? derived?.energy,
+        progressPct,
+        visualizer,
+        onVisualizerChange: setVisualizer,
+      }
+    : null;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm">
-      {/* API health indicator */}
-      <div className="flex items-center gap-2 font-mono text-xs">
-        <span
-          className={`inline-block size-2 rounded-full ${
-            connected ? 'bg-accent-start' : 'bg-muted'
-          } ${connected ? 'animate-pulse motion-reduce:animate-none' : ''}`}
-          aria-hidden="true"
-        />
-        <span className="text-muted">
-          Spotify API: {connected ? 'Connected' : 'Offline'}
-        </span>
-      </div>
+    <section
+      className="flex w-full flex-col gap-3"
+      aria-label="Now playing on Spotify"
+    >
+      {/* Politely announce state changes to assistive tech. */}
+      <p className="sr-only" aria-live="polite">
+        {announcement}
+      </p>
 
-      {/* Track, or the "enjoying the silence" fallback */}
-      {data && (playing || data.title) ? (
-        <div className="flex min-w-0 items-center gap-3">
-          {data.albumArt && (
-            <img
-              src={data.albumArt}
-              alt=""
-              className="size-14 rounded"
-              width={56}
-              height={56}
-            />
-          )}
-          <div className="min-w-0 flex-1">
-            <p className="truncate font-medium text-foreground">
-              {data.url ? (
-                <a
-                  href={data.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-                >
-                  {data.title}
-                </a>
-              ) : (
-                data.title
-              )}
-            </p>
-            <p className="truncate text-sm text-muted">{data.artist}</p>
-            <p className="mt-0.5 font-mono text-xs text-muted">
-              {playing ? 'Now playing' : 'Last played'}
-            </p>
-          </div>
-          <Equalizer playing={playing} />
-        </div>
+      {hasTrack && deckProps ? (
+        <Deck {...deckProps} />
       ) : (
-        <p className="font-mono text-sm text-muted">
-          // Currently enjoying the silence.
-        </p>
+        <DeckStandby />
       )}
-    </div>
+
+    </section>
   );
 }

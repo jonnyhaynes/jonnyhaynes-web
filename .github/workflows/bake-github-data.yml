@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -37,15 +38,34 @@ jobs:
           GITHUB_USER: jonnyhaynes
         run: node scripts/fetch-github.mjs
 
-      - name: Commit if changed
+      # main is a protected branch (PR required + Vercel check), so we can't push
+      # to it directly. Instead push the refreshed data to a fixed branch, open a
+      # PR if one isn't already open, and enable auto-merge — since the branch
+      # rule requires 0 approvals, it merges itself once the Vercel check passes.
+      - name: Open/refresh data PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           if git diff --quiet -- public/data/github.json; then
             echo "No change in github.json — nothing to commit."
             exit 0
           fi
+
+          branch="bake/github-data"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
           git add public/data/github.json
           git commit -m "Refresh GitHub data [skip ci]"
-          git push
+          # Force: this is a disposable, machine-owned data branch.
+          git push --force origin "$branch"
+
+          # Open the PR only if there isn't already an open one for this branch.
+          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr create \
+              --base main --head "$branch" \
+              --title "Refresh GitHub data" \
+              --body "Automated data bake (recent repos, languages, contributions). Auto-merges once the Vercel check passes."
+            gh pr merge "$branch" --auto --squash
+          fi

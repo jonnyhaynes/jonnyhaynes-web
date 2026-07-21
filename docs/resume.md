@@ -1,6 +1,6 @@
 # Jonny Haynes
 
-**Full-Stack Developer** | Specialising in React Native, TypeScript & AI Workflows | Colouring code & building award-winning apps
+**Full-Stack Developer** | Specialising in React, React Native, TypeScript & AI Workflows | Colouring code & building award-winning apps
 
 - **Phone:** 07460843016
 - **Email:** jonny.d.haynes@gmail.com
@@ -27,10 +27,10 @@ React Native · Expo · TypeScript · JavaScript · React · Next.js · HTML · 
 
 *May 2017 – Present • Barnsley*
 
-- **Cross-Platform Mobile Engineering:** Architect and scale high-performance iOS and Android applications utilizing React Native, Expo, and TypeScript.
+- **Cross-Platform Mobile Engineering:** Architect and scale high-performance iOS and Android applications utilising React Native, Expo, and TypeScript.
 - **Award-Winning Delivery:** Engineered the 'Calm Harm' mobile app using TypeScript/Redux, securing 1M+ global downloads and winning a prestigious DBA Gold award.
 - **Full-Stack Integration:** Collaborate across front-end layers to integrate bespoke JavaScript frameworks (Next.js, React) and PHP ecosystems (Laravel, Statamic, WordPress).
-- **Web Ecosystems:** Developed a highly customized, bespoke WordPress platform for 'DigiBete' supporting teenagers with T1 diabetes, winning awards for UI design and effectiveness.
+- **Web Ecosystems:** Developed a highly customised, bespoke WordPress platform for 'DigiBete' supporting teenagers with T1 diabetes, winning awards for UI design and effectiveness.
 - **Modern AI Workflows:** Integrated Claude Code to accelerate deployment times while boosting code quality and documentation standards.
 
 ### Off-Road Ride Leader & MTB Coach — Peaky Adventures

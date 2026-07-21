@@ -80,7 +80,7 @@ function CodingFuel() {
       <p className="font-mono text-xs uppercase tracking-wider text-muted">
         Coding fuel
       </p>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+      <div className="mt-3 grid gap-4">
         {cards.map((c) => (
           <a
             key={c.label}
@@ -128,10 +128,18 @@ export function Listening() {
         // What I listen to
       </h2>
 
-      <div className="mt-6 flex flex-col gap-8">
+      {/* Responsive layout:
+          - mobile (<md): single column, stacked full width.
+          - desktop (md+): 2-col grid — Now Playing gets a 50%-width column; the
+            rotation + fuel block fills the other half. Within that half the
+            Coding Fuel cards stack (single column) since 50% is too narrow to
+            sit them side by side comfortably. */}
+      <div className="mt-6 grid gap-8 md:grid-cols-2 md:items-start">
         <NowPlaying />
-        <HeavyRotation />
-        <CodingFuel />
+        <div className="flex flex-col gap-8">
+          <HeavyRotation />
+          <CodingFuel />
+        </div>
       </div>
     </section>
   );

@@ -25,6 +25,51 @@
   --color-accent-end: #7a4988;
 }
 
+/* The deck LCD screen inverts with the theme like the rest of the site:
+ * a dark screen in dark mode, a light screen in light mode. These tokens are the
+ * dark (default) values; the light block below flips them to the opposite end.
+ * The readout text keys off --color-accent-start (which itself flips per theme)
+ * and mixes toward the screen's opposite via --color-lcd-text-tint, so screen +
+ * text invert together and contrast is preserved by symmetry. Live outside
+ * @theme (not utility tokens). */
+:root {
+  --color-lcd-screen-top: oklch(0.16 0.02 300);
+  --color-lcd-screen-bottom: oklch(0.11 0.02 300);
+  --color-lcd-scanline: color-mix(in oklch, black 25%, transparent);
+  --color-lcd-inset: color-mix(in oklch, black 60%, transparent);
+  --color-lcd-inset-shadow: color-mix(in oklch, black 70%, transparent);
+  /* Readout text tint — nudge the accent toward white on the dark screen. */
+  --color-lcd-text-tint: white;
+  /* Scrim over album art inside the screen — dark on the dark screen. */
+  --color-lcd-scrim: color-mix(in oklch, black 55%, transparent);
+
+  /* Deck front panel — a plastic gradient + ring, dark plastic here, light grey
+   * in the light block. Shared by the Gaming TV cabinet (.tv-cabinet) so the
+   * two "devices" read as a set. */
+  --color-deck-panel-top: #2a2b30;
+  --color-deck-panel-bottom: #141519;
+  --color-deck-panel-ring: color-mix(in oklch, black 40%, transparent);
+  /* Secondary text on the panel (header + inactive switcher labels). On the dark
+   * cabinet the muted token already clears AA (7.2:1); the light block darkens it
+   * to match the TV label and clear 4.5:1 on the lighter cabinet grey. */
+  --color-deck-panel-text: var(--color-muted);
+
+  /* Recessed control surfaces (the switcher track + its hover). Foreground-based
+   * so they read as a subtle inset in both themes: a faint dark fill on dark, a
+   * faint dark fill on light — no hardcoded black/white that only works on one. */
+  --color-control-recess: color-mix(in oklch, var(--color-foreground) 8%, transparent);
+  --color-control-hover: color-mix(in oklch, var(--color-foreground) 12%, transparent);
+
+  /* Reading-section shelf shadows. Lightened in the light-theme block so the
+   * same physical cast doesn't look muddy on the chalk background. */
+  --color-shelf: color-mix(in oklch, black 25%, transparent);
+  --book-shadow-highlight: rgba(255, 255, 255, 0.18);
+  --book-shadow-page: rgba(0, 0, 0, 0.28);
+  --book-shadow-cast: rgba(0, 0, 0, 0.3);
+  --book-shadow-lift: rgba(0, 0, 0, 0.25);
+  --book-shadow-lift-sm: rgba(0, 0, 0, 0.2);
+}
+
 /* Light mode — Chalk / Deep Coal / Bright Heather. Overrides the tokens the
  * theme exposes so utilities like bg-background pick up the right value. */
 [data-theme='light'] {
@@ -34,6 +79,36 @@
   --color-muted: #61697a;
   --color-accent-start: #8b52a1;
   --color-accent-end: #673d7a;
+
+  /* LCD screen inverted to the opposite end — a light screen mirroring the dark
+   * values' lightness. Scanline/inset are softened so a light screen still reads
+   * recessed rather than like a hole. Readout text tints toward black on the
+   * light screen, and the album-art scrim goes light so the dark accent
+   * visualizer stays legible over any cover. */
+  --color-lcd-screen-top: oklch(0.95 0.01 300);
+  --color-lcd-screen-bottom: oklch(0.9 0.015 300);
+  --color-lcd-scanline: color-mix(in oklch, black 8%, transparent);
+  --color-lcd-inset: color-mix(in oklch, black 18%, transparent);
+  --color-lcd-inset-shadow: color-mix(in oklch, black 12%, transparent);
+  --color-lcd-text-tint: black;
+  --color-lcd-scrim: color-mix(in oklch, white 60%, transparent);
+
+  /* Panel — light grey plastic, matching the Gaming TV cabinet's light values. */
+  --color-deck-panel-top: #eceae4;
+  --color-deck-panel-bottom: #d8d4cb;
+  --color-deck-panel-ring: color-mix(in oklch, black 10%, transparent);
+  /* Darker than --color-muted so header + switcher labels clear WCAG AA (4.5:1)
+   * on the cabinet grey — the Gaming TV's bezel label uses the same token, so
+   * text matches too. */
+  --color-deck-panel-text: #4a5160;
+
+  /* Reading shelf on the chalk background: lighter shadows + shelf line. */
+  --color-shelf: color-mix(in oklch, black 12%, transparent);
+  --book-shadow-highlight: rgba(255, 255, 255, 0.32);
+  --book-shadow-page: rgba(0, 0, 0, 0.18);
+  --book-shadow-cast: rgba(0, 0, 0, 0.15);
+  --book-shadow-lift: rgba(0, 0, 0, 0.12);
+  --book-shadow-lift-sm: rgba(0, 0, 0, 0.08);
 }
 
 @layer base {
@@ -154,37 +229,758 @@
   }
 }
 
-/* Equalizer bars for the "now playing" widget (spec §D). Three bars bounce,
- * staggered, only while playing (the .is-playing modifier drives it). */
-@keyframes eq-bounce {
-  0%,
+/* Split-flap / airport-arrivals board in the hero headline. Each flapper
+ * (FlipWord) is a fixed grid of character slots (.flip-slot) in the site's
+ * monospace face; on a word change each slot riffles through glyphs and settles
+ * on its letter, staggered left-to-right — the arrivals-board tumble. The
+ * riffle itself is driven in JS (per-slot timing); this file styles the slots
+ * and gives each settling glyph a quick vertical "snap" so it reads mechanical.
+ *
+ * Decorative and aria-hidden — the readable role text is a single sr-only span
+ * in Hero, so screen readers get one clean name and none of this churn. Layout
+ * is stable: the slot count is fixed per flapper (longest word), and monospace
+ * slots are constant width, so the board never reflows. Reduced motion is
+ * honoured in FlipWord (no riffle; final letters appear at once). */
+.flip-word {
+  display: inline-flex;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+/* Wrapper around both flip words. The two words stack: word 1 flows inline
+ * after "I'm a"; word 2 is forced onto its own line, flush to the h1's left
+ * margin (see below). --slot-w is one cell's width, shared by the slots. */
+.flip-role {
+  display: inline;
+  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
+   * so the flip letters sit at the same rhythm as the static "I'm a". */
+  --slot-w: calc(1ch - 0.025em);
+}
+
+/* Word 2 drops to a new line, aligned to the left margin under "I'm a" (not
+ * indented under word 1). A block break with a negative margin isn't needed —
+ * as a block it starts at the h1's content edge, which is exactly the left
+ * margin. */
+.flip-role > .flip-word:nth-of-type(2) {
+  display: flex;
+}
+
+/* One character cell. Fixed width keeps the grid rigid whatever glyph is
+ * showing (monospace), and matches the static text's rhythm via --slot-w. */
+.flip-slot {
+  display: inline-block;
+  width: var(--slot-w);
+  text-align: center;
+  will-change: opacity, filter;
+}
+
+/* Size each slot's gradient to its word's width and slide it left by this
+ * slot's column, so the colour runs unbroken across the word's letters (a
+ * single background-clip:text span can't span the independent inline-block
+ * slots). --role-slots and --slot-i are set per-word / per-slot in FlipWord. */
+.flip-role .flip-slot.animate-gradient {
+  background-size: calc(var(--slot-w) * var(--role-slots)) 100%;
+  background-position-x: calc(var(--slot-w) * var(--slot-i, 0) * -1);
+  background-repeat: no-repeat;
+}
+
+/* While a slot is mid-riffle: a brief per-glyph flicker (no vertical movement —
+ * the glyphs stay locked in their cell and cycle in place, like a slot reel).
+ * Each glyph change re-triggers this via the React re-render, so it reads as
+ * continuous rolling without letters jumping out of line. */
+.flip-slot--rolling {
+  animation: flip-slot-roll 90ms ease-out;
+}
+
+@keyframes flip-slot-roll {
+  0% {
+    opacity: 0.35;
+    filter: blur(0.5px);
+  }
   100% {
-    transform: scaleY(0.3);
-  }
-  50% {
-    transform: scaleY(1);
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
-.eq-bar {
-  transform-origin: bottom;
-  transform: scaleY(0.4);
+/* Reduced motion: FlipWord already skips the riffle, but belt-and-braces —
+ * never animate the slot roll. Consistent with the rest of this file. */
+@media (prefers-reduced-motion: reduce) {
+  .flip-slot--rolling {
+    animation: none;
+  }
 }
 
-.is-playing .eq-bar {
-  animation: eq-bounce 0.9s ease-in-out infinite;
+/* CRT "TV screen" treatment for the gaming hero (the most-recent game). The
+ * cover art fills the screen inside a bezel; these overlays give it a subtle
+ * living-tube feel without tipping into kitsch:
+ *   .crt-scanlines — faint horizontal lines that drift slowly downward
+ *   .crt-glow      — soft accent bloom around the screen edge (site palette)
+ * Both sit above the cover as pointer-events:none overlays. Motion is gated on
+ * prefers-reduced-motion; the static lines/glow remain so it still reads as a TV. */
+@keyframes crt-scan {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    /* Travel exactly one line-pair so the loop is seamless. */
+    background-position-y: 4px;
+  }
 }
 
-.is-playing .eq-bar:nth-child(2) {
-  animation-delay: -0.3s;
+.crt-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.16) 0,
+    rgba(0, 0, 0, 0.16) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  animation: crt-scan 0.5s steps(4) infinite;
+  will-change: background-position;
 }
 
-.is-playing .eq-bar:nth-child(3) {
-  animation-delay: -0.6s;
+.crt-glow {
+  /* Accent bloom drawn inward from the edges, plus a soft top sheen — the tube
+   * catching light. Hues drift via the same registered @property colours as the
+   * hero headline so the whole page's accent breathes in sync. */
+  box-shadow:
+    inset 0 0 24px 2px color-mix(in oklch, var(--grad-1) 45%, transparent),
+    inset 0 0 8px 1px color-mix(in oklch, var(--grad-2) 35%, transparent);
+  animation: gradient-drift 6s linear infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .is-playing .eq-bar {
+  .crt-scanlines {
     animation: none;
+  }
+  .crt-glow {
+    animation: none;
+  }
+}
+
+/* TV cabinet — the same plastic gradient + ring as the Now Playing deck panel
+ * (.deck-panel), via the shared --color-deck-panel-* tokens, so the two
+ * "devices" read as a set in both themes. */
+.tv-cabinet {
+  background: linear-gradient(
+    180deg,
+    var(--color-deck-panel-top) 0%,
+    var(--color-deck-panel-bottom) 100%
+  );
+  box-shadow:
+    0 0 0 1px var(--color-deck-panel-ring),
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* CRT OSD — the TV's on-screen display: title + platform/recency in Moorland
+ * Heather, like an old channel/volume HUD. The CRT screen is always black, so
+ * the colours are theme-independent; a top scrim (the same idiom as the deck's
+ * LCD scrim) keeps the text legible over bright cover art. */
+.crt-osd {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.625rem 0.75rem 1.5rem;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0.55) 0%, transparent 100%);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--color-accent-start) 82%, white);
+  text-shadow:
+    0 0 4px color-mix(in oklch, var(--color-accent-start) 70%, transparent),
+    0 0 10px color-mix(in oklch, var(--color-accent-start) 45%, transparent),
+    0 1px 2px rgb(0 0 0 / 0.9);
+  pointer-events: none;
+}
+
+.crt-osd-line {
+  /* Titles can wrap instead of being cropped; the top scrim fades down to give
+     room for multi-line readouts over bright art. */
+  white-space: normal;
+}
+
+
+/* Hero TV: visible on load, fades away after a few seconds like a real OSD,
+ * and reappears on hover/focus — restarting the auto-hide when you leave. */
+.crt-osd--auto-hide {
+  animation: crt-osd-hide 0.8s ease 4s forwards;
+}
+.group:hover .crt-osd--auto-hide,
+.group:focus-within .crt-osd--auto-hide {
+  animation: none;
+  opacity: 1;
+}
+@keyframes crt-osd-hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Jewel-cases: smaller readout, hidden until hover/focus — permanent text
+ * would crush the small art. */
+.crt-osd--case {
+  font-size: 0.625rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.group\/case:hover .crt-osd--case,
+.group\/case:focus-within .crt-osd--case {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-osd--auto-hide {
+    animation: none;
+  }
+  .crt-osd--case {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Now Playing — a hi-fi deck front panel with a recessed visualizer screen as
+ * the hero, a glowing accent marquee readout, and a progress bar. The
+ * visualizer graphics themselves are canvas-drawn (see visualizers.tsx);
+ * everything here is the surrounding chrome. Honest, non-audio motion.
+ * ------------------------------------------------------------------------- */
+
+/* Deck front panel — a plastic cabinet matching the Gaming TV (Gaming.tsx): a
+ * vertical plastic gradient with a hairline ring and a soft drop shadow, so the
+ * player and the TV read as the same family of "device". Light grey plastic in
+ * light mode, dark plastic in dark mode, via the --color-deck-panel-* tokens. */
+.deck-panel {
+  background: linear-gradient(
+    180deg,
+    var(--color-deck-panel-top) 0%,
+    var(--color-deck-panel-bottom) 100%
+  );
+  box-shadow:
+    0 0 0 1px var(--color-deck-panel-ring),
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Container for the knob's responsive sizing. The panel's content width ≈
+     the LCD width (both full-width inside the same padding), so `cqw` here
+     tracks the LCD. Tokens live here — not on .deck-lcd-wrap — so the readout +
+     progress (siblings of the LCD, not children) can also read
+     --knob-clearance. */
+  container-type: inline-size;
+  /* Knob diameter, ~44% of the LCD width, clamped so it stays usable at the
+     card's min/max. Everything else (notch, dots, indicator) derives from it. */
+  --knob-size: clamp(52px, 44cqw, 92px);
+  /* Gap between the knob edge and the notch rim. */
+  --knob-gap: calc(var(--knob-size) * 0.14);
+  /* Horizontal space the knob claims on the right (diameter + breathing room).
+     The readout + progress pad right by this so text/fill never runs under
+     the knob. */
+  --knob-clearance: calc(var(--knob-size) + 8px);
+
+  /* The knob hangs 0.62·size below the LCD bottom. The readout+progress stack
+     below the LCD is ~40px tall, so at larger knob sizes the knob juts past it
+     and would sit flush with (or below) the panel floor. Reserve extra bottom
+     padding on top of Tailwind's p-4 so there's always a visible gap of chrome
+     beneath the knob. The max() falls back to the normal 1rem when the content
+     stack already clears the knob (small sizes). */
+  padding-bottom: max(1rem, calc(var(--knob-size) * 0.62 - 26px));
+}
+
+/* LCD readout — a recessed screen that inverts with the theme (dark in dark
+ * mode, light in light mode) via the --color-lcd-* tokens. The track/artist glow
+ * in the accent (heather), with faint horizontal scanlines and an inset shadow
+ * so it reads like a lit hi-fi display set into the metal panel. */
+.deck-lcd {
+  background:
+    /* scanlines */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      var(--color-lcd-scanline) 2px,
+      var(--color-lcd-scanline) 3px
+    ),
+    /* screen base */
+    linear-gradient(
+      180deg,
+      var(--color-lcd-screen-top) 0%,
+      var(--color-lcd-screen-bottom) 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px var(--color-lcd-inset),
+    inset 0 2px 6px var(--color-lcd-inset-shadow);
+
+  /* Concave notch — a circular bite scooped from the bottom-right corner so
+     the visualizer switcher knob (.knob-control) can nest in it, on the
+     chrome, without ever overlapping the live screen. The mask cuts the
+     screen layers (scanlines + gradient) and, because the visualizer's
+     inset-0 layer lives inside this box, clips that too. Centre + radius are
+     derived from --knob-size so the notch scales with the knob. */
+  --notch-r: calc(var(--knob-size) / 2 + var(--knob-gap));
+  --notch-cx: calc(100% - var(--knob-size) / 2 - 2px);
+  --notch-cy: calc(100% + var(--knob-size) * 0.12);
+  -webkit-mask: radial-gradient(
+    circle var(--notch-r) at var(--notch-cx) var(--notch-cy),
+    transparent 0 var(--notch-r),
+    black calc(var(--notch-r) + 0.5px)
+  );
+  mask: radial-gradient(
+    circle var(--notch-r) at var(--notch-cx) var(--notch-cy),
+    transparent 0 var(--notch-r),
+    black calc(var(--notch-r) + 0.5px)
+  );
+}
+
+/* Power LED — a glowing accent dot that breathes (opacity + accent bloom).
+ * Shared by the Now Playing header and the Gaming bezel so both "now playing"
+ * indicators pulse identically. Held steady under reduced motion. */
+.deck-led {
+  animation: deck-led-pulse 1.8s ease-in-out infinite;
+}
+@keyframes deck-led-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 6px 1px var(--color-accent-start);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 3px 0 var(--color-accent-start);
+  }
+}
+
+/* Wind-down — when the track stops, the pulse slows and shallows over a few
+ * cycles, then holds steady (forwards). Mirrors the visualizer's ~3.5s ease to
+ * rest so the whole card settles together rather than the LED snapping off. */
+.deck-led-resting {
+  animation: deck-led-winddown 3.5s ease-out forwards;
+}
+@keyframes deck-led-winddown {
+  0% {
+    opacity: 0.55;
+    box-shadow: 0 0 3px 0 var(--color-accent-start);
+  }
+  30% {
+    opacity: 1;
+    box-shadow: 0 0 6px 1px var(--color-accent-start);
+  }
+  55% {
+    opacity: 0.72;
+  }
+  78% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 6px 1px var(--color-accent-start);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-led,
+  .deck-led-resting {
+    animation: none;
+  }
+}
+
+/* Readout text keys off --color-accent-start (which flips per theme) and tints
+ * toward the screen's opposite (--color-lcd-text-tint: white on the dark screen,
+ * black on the light screen), so screen + text invert together. */
+.deck-lcd-text {
+  color: color-mix(in oklch, var(--color-accent-start) 88%, var(--color-lcd-text-tint));
+  text-shadow:
+    0 0 4px color-mix(in oklch, var(--color-accent-start) 70%, transparent),
+    0 0 10px color-mix(in oklch, var(--color-accent-start) 45%, transparent);
+}
+
+/* Marquee readout — the track scrolls right-to-left, masked at both edges so it
+ * fades in/out rather than clipping hard. Under reduced motion it holds still
+ * and truncates with an ellipsis instead. */
+.deck-readout .marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+.deck-readout .marquee > * {
+  display: inline-block;
+  padding-left: 100%;
+  animation: deck-marquee 12s linear infinite;
+}
+
+@keyframes deck-marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-readout .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+    text-overflow: ellipsis;
+  }
+  .deck-readout .marquee > * {
+    padding-left: 0;
+    animation: none;
+  }
+}
+
+.knob-face--disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Standby screen for the Now Playing card when nothing is playing.
+   Uses the same LCD chrome as the active deck, with a subtle drifting line
+   and a "No signal" label. */
+.deck-standby-line {
+  width: 55%;
+  height: 1px;
+  background: color-mix(in oklch, var(--color-deck-panel-text) 60%, transparent);
+  animation: deck-standby-drift 3s ease-in-out infinite;
+}
+
+@keyframes deck-standby-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(3px);
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-standby-line {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Knob Control — brushed-metal rotary knob for the visualizer switcher.
+ * Nests in the concave notch cut from the LCD's bottom-right corner (see
+ * .deck-lcd above), sitting on the deck-panel chrome — it does NOT overlap
+ * the live visualizer. The metal is theme-aware via --knob-* tokens.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --knob-metal-hi: #4a4d55;
+  --knob-metal-mid: #2e3038;
+  --knob-metal-lo: #1e2025;
+  --knob-metal-edge: #18191d;
+  --knob-cap-hi: #3a3c44;
+  --knob-cap-lo: #22242a;
+  /* Outline ring + drop shadow around the disc. Near-black is right on the
+     dark metal but reads as a harsh dark outline on light aluminium, so these
+     are theme-aware (see the light-theme block). */
+  --knob-ring: rgba(0, 0, 0, 0.5);
+  --knob-drop: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='light'] {
+  /* Brighter, warmer brushed aluminium so the knob doesn't read as a dark
+     foreign object on the light-theme LCD/chrome. */
+  --knob-metal-hi: #f2f0ea;
+  --knob-metal-mid: #cfccc3;
+  --knob-metal-lo: #aaa69c;
+  --knob-metal-edge: #8f8b81;
+  --knob-cap-hi: #e6e3db;
+  --knob-cap-lo: #bcb8ae;
+  /* Soft mid-grey edge + lighter drop, so the disc has a gentle rim rather
+     than the near-black outline the dark-theme values gave. */
+  --knob-ring: rgba(90, 84, 74, 0.35);
+  --knob-drop: rgba(90, 84, 74, 0.22);
+}
+
+.knob-control {
+  position: absolute;
+  /* Sits IN the notch, on the chrome. The knob CENTRE must coincide with the
+     notch centre, which is 0.12·size BELOW the LCD bottom edge. `bottom`
+     positions the knob's bottom edge; for the centre to sit 0.12·size below
+     the LCD bottom, the bottom edge is (0.12·size + size/2) below it. */
+  bottom: calc(var(--knob-size) * -0.62);
+  right: 2px;
+  z-index: 20;
+  width: var(--knob-size);
+  height: var(--knob-size);
+}
+
+/* Knob face — the physical rotary knob. Fills the control; everything inside
+   scales with --knob-size. */
+.knob-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  cursor: ns-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Dots — arced on the knob face at each mode's angle (--dot-angle), so the
+   indicator line points at the active dot. They ARE the accessible radios. */
+.knob-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--knob-size) * 0.11);
+  height: calc(var(--knob-size) * 0.11);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  /* Rotate to the mode's angle, then push out along that radius so the dot
+     lands near the face's edge; the negative half-size re-centres it. */
+  transform: translate(-50%, -50%)
+    rotate(var(--dot-angle))
+    translateY(calc(var(--knob-size) * -0.32))
+    rotate(calc(-1 * var(--dot-angle)));
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+[data-theme='light'] .knob-dot {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.knob-dot[data-active='true'] {
+  background: var(--color-accent-start);
+  box-shadow: 0 0 5px var(--color-accent-start);
+}
+
+.knob-dot:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 2px;
+}
+
+/* Brushed metal disc — theme-aware via --knob-metal-* tokens */
+.knob-metal {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 35%,
+    var(--knob-metal-hi) 0%,
+    var(--knob-metal-mid) 35%,
+    var(--knob-metal-lo) 70%,
+    var(--knob-metal-edge) 100%
+  );
+  box-shadow:
+    0 0 0 1px var(--knob-ring),
+    0 2px 4px var(--knob-drop),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Grip ring — conic ridges every 12 degrees */
+.knob-ridges {
+  position: absolute;
+  inset: calc(var(--knob-size) * 0.075);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.knob-ridges::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 6deg at 50% 50%,
+    rgba(255, 255, 255, 0.03) 0deg,
+    transparent 1deg,
+    transparent 11deg,
+    rgba(255, 255, 255, 0.03) 12deg
+  );
+  mask: radial-gradient(
+    circle,
+    transparent 44%,
+    black 44.5%,
+    black 49%,
+    transparent 49.5%
+  );
+  -webkit-mask: radial-gradient(
+    circle,
+    transparent 44%,
+    black 44.5%,
+    black 49%,
+    transparent 49.5%
+  );
+}
+
+/* Indicator line — points at the active dot */
+.knob-indicator {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 2px;
+  height: calc(var(--knob-size) * 0.35);
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--color-accent-start);
+  box-shadow: 0 0 4px var(--color-accent-start);
+  transform-origin: bottom center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knob-indicator {
+    transition: none;
+  }
+}
+
+/* Center cap */
+.knob-cap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--knob-size) * 0.25);
+  height: calc(var(--knob-size) * 0.25);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    var(--knob-cap-hi),
+    var(--knob-cap-lo)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ---------------------------------------------------------------------------
+ * Reading — a bookshelf. On desktop the most-recent audiobook stands face-out
+ * in the centre as a large square cover (the "display copy"); the other six
+ * stand on their ends as tall vertical spines — two on the left leaning right
+ * into the cover, four on the right leaning left into it. Title + author run up
+ * each spine (rotated 90°), the real-shelf way. Colours come from each cover's
+ * baked dominant tone (.spine).
+ *
+ * Mobile keeps the simpler stacked layout (cover on top, horizontal bars below);
+ * the leaning shelf is a desktop-only enhancement.
+ * ------------------------------------------------------------------------- */
+
+/* The shelf row: every book rests its bottom edge on a common baseline (the
+ * shelf), so leaning spines pivot from the bottom like real books. Desktop only
+ * — below md the component falls back to a plain vertical flow. */
+.bookshelf {
+  align-items: flex-end;
+  /* Container so spine heights can scale off the row width (and thus off the
+     centre cover, which is 1/3 of the row). */
+  container-type: inline-size;
+  /* The face-out cover is 1/3 of the row and square, so its rendered height ≈
+     a third of the row width. Spines are sized as fractions of this. */
+  --cover-h: 33.33cqw;
+}
+
+/* The shelf line the books stand on. A separate element from .bookshelf so it
+ * can be constrained to a narrower max-width than the row of books above it
+ * (matching the "What I'm playing" section width). */
+.book-shelf-line {
+  border-top: 10px solid var(--color-shelf);
+}
+
+/* A vertical spine standing on its end. `--lean` (deg) and `--spine-frac` are
+ * set per-book inline so the shelf looks like a real mix of book sizes rather
+ * than six identical bars. Height is `--spine-frac` (0–1) of the centre cover's
+ * height, landing each spine around half to two-thirds of the display copy. The
+ * title runs up the spine and wraps into extra columns when long, so the spine
+ * widens (never truncates) to hold the full title — a thick book vs a thin one,
+ * like a real shelf. transform-origin bottom so it pivots off the shelf. */
+.book-spine {
+  height: calc(var(--cover-h, 15rem) * var(--spine-frac, 0.6));
+  /* Never collapse below a readable minimum on narrow desktop widths. */
+  min-height: 11rem;
+  /* Comfortable minimum thickness; grows wider as the title wraps. */
+  min-width: 2.75rem;
+  max-width: 5.5rem;
+  /* Pivot on the bottom corner that rests on the shelf (bottom-left for a
+     right-leaning book, bottom-right for a left-leaning one — set per book via
+     --pivot-x), so the base stays flush on the baseline instead of the far
+     corner swinging below it. */
+  transform-origin: var(--pivot-x, center) bottom;
+  transform: rotate(var(--lean, 0deg));
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+  /* Page-block highlight down the leading edge + a soft cast so it reads as a
+     three-dimensional book edge rather than a flat chip. */
+  box-shadow:
+    inset 3px 0 0 var(--book-shadow-highlight),
+    inset -2px 0 3px var(--book-shadow-page),
+    0 4px 6px -3px var(--book-shadow-cast);
+}
+
+/* Title + author rotated to read bottom-to-top up the spine. Wraps into extra
+ * columns (spreading across the spine's thickness) when the text is longer than
+ * the spine is tall, so the full title always shows. */
+.book-spine-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  /* Bounded to the spine height so the block wraps instead of overflowing the
+     bottom edge; clearance matches .book-spine's py-5 (1.25rem each end). Uses
+     the same fraction-of-cover height as .book-spine, floored at its min. */
+  max-height: calc(
+    max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
+  );
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.book-spine:hover {
+  /* Straighten slightly and lift when picked out. */
+  transform: rotate(calc(var(--lean, 0deg) * 0.4)) translateY(-4px);
+  filter: brightness(1.06);
+  box-shadow:
+    inset 3px 0 0 var(--book-shadow-highlight),
+    inset -2px 0 3px var(--book-shadow-page),
+    0 10px 15px -3px var(--book-shadow-lift),
+    0 4px 6px -4px var(--book-shadow-lift-sm);
+}
+
+/* The upright centre display copy — a touch of lift to sit "in front". */
+.book-feature {
+  box-shadow:
+    0 10px 15px -3px var(--book-shadow-lift),
+    0 4px 6px -4px var(--book-shadow-lift-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-spine {
+    /* No lean, no motion — the books stand straight. */
+    transform: none;
+    transition: none;
+  }
+  .book-spine:hover {
+    transform: none;
+    filter: none;
   }
 }
