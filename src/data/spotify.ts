@@ -54,9 +54,36 @@ export type NowPlaying = {
   /** Playback position at fetch time (ms); interpolated client-side thereafter. */
   progressMs?: number | null;
   durationMs?: number | null;
+  /** Spotify popularity (0–100); feeds deriveTrackParams when audio-features is unavailable. */
+  popularity?: number | null;
   /** Present only for the actively-playing track; null on API failure. */
   audioFeatures?: SpotifyAudioFeatures | null;
 };
+
+/**
+ * Deterministic per-track tempo/energy for when the audio-features endpoint is
+ * unavailable (Spotify restricted it for apps registered after Nov 2024, so in
+ * practice it usually is). NOT audio analysis: a stable hash of the track id
+ * picks a plausible tempo, and Spotify's popularity stands in for energy — so
+ * every track moves differently, but the same track always moves the same way.
+ */
+export function deriveTrackParams(track: {
+  id: string;
+  popularity?: number | null;
+}): { tempo: number; energy: number } {
+  // djb2 string hash — stable across sessions for the same id.
+  let h = 5381;
+  for (let i = 0; i < track.id.length; i++) {
+    h = ((h << 5) + h + track.id.charCodeAt(i)) | 0;
+  }
+  const u = Math.abs(h);
+  const tempo = 80 + (u % 90); // 80–170 BPM, a plausible musical range.
+  const energy =
+    track.popularity != null
+      ? 0.35 + (Math.min(100, Math.max(0, track.popularity)) / 100) * 0.5
+      : 0.35 + (((u >> 8) % 50) / 100); // 0.35–0.85 either way.
+  return { tempo, energy };
+}
 
 export type SpotifyAudiobook = {
   title: string;
