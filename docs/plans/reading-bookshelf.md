@@ -101,3 +101,56 @@ accent-palette bars until then, so this isn't blocking for merge.
   runs on ≤7 images twice a day.
 - Spine legibility depends on the ink-contrast calc; verified across light, dark and
   saturated dominant colours.
+
+---
+
+## Addendum: vertical leaning-shelf rework
+
+The horizontal-bar layout above shipped, but read more like a captioned list than a
+shelf. This follow-up reworks **only the presentation** (`Reading.tsx` + `index.css` +
+the section width in `Home.tsx`) — no data, script, CI, or dependency changes. The
+bake pipeline and the `spine: { bg, ink }` contract are untouched.
+
+Design (desktop), iterated live with the owner:
+
+- The most-recent book stands **face-out in the centre** as a large square cover, sized
+  to **a third of the row width** (`w-1/3`).
+- The other six stand **on their ends as tall vertical spines** — two on the left
+  leaning right into the cover, four on the right leaning left into it. Title + author
+  run **up the spine** (`writing-mode: vertical-rl`), wrapping into extra columns so the
+  **full title always shows** (a long title makes a thicker book; width is
+  `min/max`-bounded, never truncated).
+- Spine **heights vary** (`SPINE_FRACTIONS`, ~0.78–0.98 of the cover height) so the shelf
+  reads as a real mix of book sizes; heights scale off the cover via a container query
+  (`container-type: inline-size`, `--cover-h: 33.33cqw`).
+- Each spine **pivots on the bottom corner it rests on** (`transform-origin` set per lean
+  direction via `--pivot-x`) so every base sits **flush on the baseline** — verified: all
+  spine + cover bottoms share one Y.
+- The **section wrapper stays `max-w-4xl px-6`** (identical to the "What I'm playing"
+  Gaming section), so the **title and shelf line match that section's width and left edge
+  at every breakpoint with no special classes** — they simply live in the wrapper. Only
+  the **books row breaks out wider** (`relative left-1/2 -translate-x-1/2
+  w-[min(72rem,100vw-3rem)] max-w-none`), centred on the viewport up to `6xl` and capped
+  to the viewport so it never causes horizontal scroll. (An earlier attempt put the
+  wrapper at `6xl` and re-approximated a `4xl` box for the title/line inside it; that
+  drifted out of alignment on tablet, so the wrapper-matches-Gaming approach replaced it.)
+- **Mobile** keeps the simpler stacked fallback (cover on top, horizontal bars below).
+- `prefers-reduced-motion`: spines stand straight, no lean or hover motion.
+
+### Files touched (rework)
+
+1. `src/components/Reading.tsx` — vertical-spine shelf; `FeatureCover` extracted;
+   `SpineBar` gains `lean` / `heightFrac` / `horizontal`; separate shelf-line element.
+2. `src/index.css` — `.bookshelf`, `.book-spine`, `.book-spine-text`, `.book-shelf-line`,
+   `.book-feature` blocks with the reduced-motion guard.
+3. `src/pages/Home.tsx` — Reading wrapper widened to `max-w-6xl`.
+
+### Verification (rework)
+
+- `npm run build` (tsc) + `npm run lint` — pass.
+- Layout measured via headless Chrome (CDP): shelf line + title text align pixel-exactly
+  with the "What I'm playing" section (216→1064 line; title text 216→389, identical to
+  "What I'm playing"); all spine + cover bottoms flush at one baseline.
+- **Caveat:** a true rendered screenshot wasn't possible in the sandbox (Spotify cover
+  CDN is blocked headless); geometry is verified, final visual eyeball pending on a real
+  browser.
