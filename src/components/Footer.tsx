@@ -20,10 +20,6 @@ export function Footer() {
         ,{' '}
         <a href="https://vite.dev/" className={LINK}>
           Vite
-        </a>{' '}
-        &amp;{' '}
-        <a href="https://claude.com/claude-code" className={LINK}>
-          AI
         </a>
         . &copy; 1985&ndash;{year}.{' '}
         <Link to="/privacy" className={LINK}>
