@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import type { VisualizerKind } from './visualizers-meta';
 
 /**
@@ -8,9 +8,11 @@ import type { VisualizerKind } from './visualizers-meta';
  * IMPORTANT: like the rest of the section, this is *honest, non-audio* motion.
  * The browser never receives Spotify's audio stream, so nothing here reacts to
  * real sound — every visualizer is parametrised by the track's tempo (speed)
- * and energy (amplitude) from the audio-features lookup, falling back to
- * sensible defaults. All three:
- *   - read the live --color-accent-* tokens so they track the light/dark theme,
+ * and energy (amplitude): real values from the audio-features lookup when
+ * Spotify provides them, otherwise deterministic per-track values derived from
+ * the track's metadata (see deriveTrackParams in data/spotify). All three:
+ *   - read the live --color-accent-* tokens so they track the light/dark theme
+ *     (cached, and re-read when the theme attribute flips),
  *   - freeze to a single representative frame under prefers-reduced-motion,
  *   - pause the RAF loop when not `active` (playback stopped) to save cycles.
  */
@@ -19,25 +21,29 @@ type VisualizerProps = {
   active: boolean;
   tempo?: number | null;
   energy?: number | null;
-  // Paint a single representative mid-motion frame and skip the RAF loop —
-  // regardless of `active`. Used by the inactive switcher chips, which show a
-  // full, still miniature of their visualizer (shape visible, but not moving)
-  // while only the selected chip animates. Reduced motion forces this too.
-  staticFrame?: boolean;
 };
 
-// A representative static frame time for reduced-motion / paused states.
+// A representative static frame time for reduced-motion states.
 const STILL_T = 0.8;
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+/** Live prefers-reduced-motion — re-runs the canvas effect when the OS
+ * setting toggles, rather than only sampling it on mount. */
+function usePrefersReducedMotion(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    },
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => false,
+  );
+}
 
 // --- colour helpers -------------------------------------------------------
 // Resolve a CSS custom property from the given element's computed style, so a
-// local override set on an ancestor (e.g. the selected switcher chip, which
-// re-points the accent tokens at a dark colour) cascades in. Falls back to
-// document root when no element is passed.
+// local override set on an ancestor (e.g. a re-pointed accent token) cascades
+// in. Falls back to document root when no element is passed.
 function readToken(name: string, fallback: string, el?: Element | null): string {
   if (typeof window === 'undefined') return fallback;
   const v = getComputedStyle(el ?? document.documentElement)
@@ -45,38 +51,44 @@ function readToken(name: string, fallback: string, el?: Element | null): string 
     .trim();
   return v || fallback;
 }
-function toRgb(hex: string): [number, number, number] {
-  const h = hex.replace('#', '');
-  return [
-    parseInt(h.slice(0, 2), 16),
-    parseInt(h.slice(2, 4), 16),
-    parseInt(h.slice(4, 6), 16),
-  ];
+
+type Rgb = [number, number, number];
+const FALLBACK_A: Rgb = [168, 119, 191]; // --color-accent-start, dark theme
+const FALLBACK_A2: Rgb = [122, 73, 136]; // --color-accent-end, dark theme
+
+// Normalise any CSS colour (hex, rgb, oklch(), color-mix()) to an [r,g,b]
+// triple by round-tripping through a canvas fillStyle — the 2D context
+// serialises accepted colours as #rrggbb/rgba(), so we never parse modern
+// colour syntaxes ourselves. An unaccepted value leaves the sentinel in place.
+let colorCtx: CanvasRenderingContext2D | null = null;
+const SENTINEL = '#010203';
+function resolveColor(value: string, fallback: Rgb): Rgb {
+  if (typeof document === 'undefined') return fallback;
+  colorCtx ??= document.createElement('canvas').getContext('2d');
+  if (!colorCtx) return fallback;
+  colorCtx.fillStyle = SENTINEL;
+  colorCtx.fillStyle = value;
+  const v = colorCtx.fillStyle;
+  if (v === SENTINEL && value.trim().toLowerCase() !== SENTINEL) return fallback;
+  if (v.startsWith('#')) {
+    return [
+      parseInt(v.slice(1, 3), 16),
+      parseInt(v.slice(3, 5), 16),
+      parseInt(v.slice(5, 7), 16),
+    ];
+  }
+  const m = v.match(/[\d.]+/g);
+  return m && m.length >= 3 ? [+m[0], +m[1], +m[2]] : fallback;
 }
-function mix(
-  a: [number, number, number],
-  b: [number, number, number],
-  t: number,
-): [number, number, number] {
+
+function mix(a: Rgb, b: Rgb, t: number): Rgb {
   return [
     Math.round(a[0] + (b[0] - a[0]) * t),
     Math.round(a[1] + (b[1] - a[1]) * t),
     Math.round(a[2] + (b[2] - a[2]) * t),
   ];
 }
-const rgba = (c: [number, number, number], alpha: number) =>
-  `rgba(${c[0]},${c[1]},${c[2]},${alpha})`;
-
-// Fit the canvas backing store to its CSS box at device resolution.
-function fit(canvas: HTMLCanvasElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const r = canvas.getBoundingClientRect();
-  canvas.width = Math.max(1, Math.round(r.width * dpr));
-  canvas.height = Math.max(1, Math.round(r.height * dpr));
-  const ctx = canvas.getContext('2d');
-  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  return { ctx, w: r.width, h: r.height };
-}
+const rgba = (c: Rgb, alpha: number) => `rgba(${c[0]},${c[1]},${c[2]},${alpha})`;
 
 type DrawFn = (
   ctx: CanvasRenderingContext2D,
@@ -91,8 +103,8 @@ type DrawFn = (
     liveAmp: number;
     // Collapse progress: 0 while playing, ramps to 1 once the track has ended.
     rest: number;
-    a: [number, number, number];
-    a2: [number, number, number];
+    a: Rgb;
+    a2: Rgb;
   },
 ) => void;
 
@@ -116,13 +128,17 @@ const easeInOut = (x: number) =>
  * accelerate + swell on play, rather than snapping either way. Under reduced
  * motion it paints a static frame (mid-motion while playing, at rest when
  * stopped).
+ *
+ * Frame cost is kept off the layout path: the canvas size is measured once and
+ * on ResizeObserver (never per frame), and the accent colours are read once
+ * and re-read only when the theme attribute flips (MutationObserver).
  */
 function useCanvas(
   active: boolean,
   tempo: number | null | undefined,
   energy: number | null | undefined,
   draw: DrawFn,
-  staticFrame = false,
+  reducedMotion: boolean,
 ) {
   const ref = useRef<HTMLCanvasElement>(null);
   // Persist the animation clock across active/paused transitions so the ease
@@ -142,25 +158,88 @@ function useCanvas(
     const beat = tempo && tempo > 0 ? tempo / 60 : 116 / 60; // beats/sec
     const amp = 0.35 + (typeof energy === 'number' ? energy : 0.62) * 0.6;
 
+    // Sizing, measured on init + resize only. Backing store is only touched
+    // when the size actually changes (resizing reallocates + clears it).
+    let w = 0;
+    let h = 0;
+    let ctx: CanvasRenderingContext2D | null = null;
+    const measure = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const r = canvas.getBoundingClientRect();
+      w = r.width;
+      h = r.height;
+      const bw = Math.max(1, Math.round(w * dpr));
+      const bh = Math.max(1, Math.round(h * dpr));
+      if (canvas.width !== bw || canvas.height !== bh) {
+        canvas.width = bw;
+        canvas.height = bh;
+      }
+      ctx = canvas.getContext('2d');
+      // A resize resets the context state, so (re)apply the DPR transform.
+      if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    // Theme colours, cached until the theme attribute flips.
+    let colors: { a: Rgb; a2: Rgb } | null = null;
+    const readColors = () => {
+      colors ??= {
+        a: resolveColor(
+          readToken('--color-accent-start', '#a877bf', canvas),
+          FALLBACK_A,
+        ),
+        a2: resolveColor(
+          readToken('--color-accent-end', '#7a4988', canvas),
+          FALLBACK_A2,
+        ),
+      };
+      return colors;
+    };
+
     const paint = (t: number, rest: number) => {
-      const { ctx, w, h } = fit(canvas);
-      if (!ctx) return;
+      if (!ctx || w <= 0 || h <= 0) return;
       ctx.clearRect(0, 0, w, h);
-      const a = toRgb(readToken('--color-accent-start', '#a877bf', canvas));
-      const a2 = toRgb(readToken('--color-accent-end', '#7a4988', canvas));
+      const { a, a2 } = readColors();
       draw(ctx, w, h, t, { beat, amp, liveAmp: amp * (1 - rest), rest, a, a2 });
     };
 
-    // A single representative frame, no RAF: forced for staticFrame chips (the
-    // inactive switcher chips) and under reduced motion. Painted at STILL_T with
-    // rest=0 so the visualizer shows its full shape — just held still — rather
-    // than the collapsed baseline.
-    if (staticFrame || prefersReducedMotion()) {
-      const paintStatic = () => paint(STILL_T, 0);
-      paintStatic();
-      window.addEventListener('resize', paintStatic);
-      return () => window.removeEventListener('resize', paintStatic);
+    // A single representative frame, no RAF: painted at STILL_T with rest=0 so
+    // the visualizer shows its full shape — just held still — rather than the
+    // collapsed baseline. Repainted on resize + theme change.
+    if (reducedMotion) {
+      measure();
+      const repaint = () => paint(STILL_T, 0);
+      repaint();
+      const ro = new ResizeObserver(() => {
+        measure();
+        repaint();
+      });
+      ro.observe(canvas);
+      const mo = new MutationObserver(() => {
+        colors = null;
+        repaint();
+      });
+      mo.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+      return () => {
+        ro.disconnect();
+        mo.disconnect();
+      };
     }
+
+    measure();
+    // Live loop: size/theme changes are picked up by the next frame, so these
+    // observers only update the caches.
+    const ro = new ResizeObserver(measure);
+    ro.observe(canvas);
+    const mo = new MutationObserver(() => {
+      colors = null;
+    });
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
 
     let raf = 0;
     let prev: number | null = null;
@@ -200,8 +279,12 @@ function useCanvas(
       }
     };
     raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [active, tempo, energy, draw, staticFrame]);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      mo.disconnect();
+    };
+  }, [active, tempo, energy, draw, reducedMotion]);
 
   return ref;
 }
@@ -212,6 +295,12 @@ const drawSpectrum: DrawFn = (ctx, w, h, t, { beat, liveAmp, a, a2 }) => {
   const N = 28;
   const gap = 2;
   const bw = (w - gap * (N - 1)) / N;
+  // One full-height gradient shared by every bar (was one allocation per bar
+  // per frame). Bars sample it by height, so taller bars reach the bright end —
+  // like the colour zones on a hardware analyser.
+  const g = ctx.createLinearGradient(0, h, 0, 0);
+  g.addColorStop(0, rgba(a2, 0.9));
+  g.addColorStop(1, rgba(a, 1));
   for (let i = 0; i < N; i++) {
     const phase = t * beat * 1.4 + i * 0.55;
     const wobble = 0.5 + 0.5 * Math.sin(phase) * Math.sin(phase * 0.37 + i);
@@ -220,9 +309,6 @@ const drawSpectrum: DrawFn = (ctx, w, h, t, { beat, liveAmp, a, a2 }) => {
     const bh = level * (h - 6);
     const x = i * (bw + gap);
     const top = h - bh;
-    const g = ctx.createLinearGradient(0, h, 0, top);
-    g.addColorStop(0, rgba(a2, 0.9));
-    g.addColorStop(1, rgba(a, 1));
     ctx.fillStyle = g;
     ctx.fillRect(x, top, bw, Math.max(1, bh));
     // Peak cap — a bright tick a little above the bar; fades out as it collapses.
@@ -274,16 +360,19 @@ const drawPlasma: DrawFn = (ctx, w, h, t, { beat, liveAmp, rest, a, a2 }) => {
 
 // --- components -----------------------------------------------------------
 
-function Spectrum({ active, tempo, energy, staticFrame }: VisualizerProps) {
-  const ref = useCanvas(active, tempo, energy, drawSpectrum, staticFrame);
+function Spectrum({ active, tempo, energy }: VisualizerProps) {
+  const reducedMotion = usePrefersReducedMotion();
+  const ref = useCanvas(active, tempo, energy, drawSpectrum, reducedMotion);
   return <canvas ref={ref} className="block size-full" aria-hidden="true" />;
 }
-function Oscilloscope({ active, tempo, energy, staticFrame }: VisualizerProps) {
-  const ref = useCanvas(active, tempo, energy, drawScope, staticFrame);
+function Oscilloscope({ active, tempo, energy }: VisualizerProps) {
+  const reducedMotion = usePrefersReducedMotion();
+  const ref = useCanvas(active, tempo, energy, drawScope, reducedMotion);
   return <canvas ref={ref} className="block size-full" aria-hidden="true" />;
 }
-function Plasma({ active, tempo, energy, staticFrame }: VisualizerProps) {
-  const ref = useCanvas(active, tempo, energy, drawPlasma, staticFrame);
+function Plasma({ active, tempo, energy }: VisualizerProps) {
+  const reducedMotion = usePrefersReducedMotion();
+  const ref = useCanvas(active, tempo, energy, drawPlasma, reducedMotion);
   return <canvas ref={ref} className="block size-full" aria-hidden="true" />;
 }
 
