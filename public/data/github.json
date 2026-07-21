@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-20T19:49:40.950Z",
+  "fetchedAt": "2026-07-21T19:39:45.411Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,13 +16,34 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-20T17:22:58Z",
+      "pushedAt": "2026-07-21T16:49:21Z",
       "lastCommit": {
-        "message": "[ai-assisted] Hero: mechanical arrivals-board role headline (#130)",
-        "committedAt": "2026-07-20T17:22:37Z"
+        "message": "Restore Spotify data lost during merge (#141)",
+        "committedAt": "2026-07-21T15:15:50Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-21T08:42:24Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Drive /rides header and meta from Sanity (#70)",
+        "committedAt": "2026-07-21T08:42:24Z"
+      },
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "colouringcode-web",
@@ -43,27 +64,6 @@
       },
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-20T14:52:50Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Fix critical accessibility blockers across the site (#68)",
-        "committedAt": "2026-07-20T14:52:50Z"
-      },
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "rovrum.town",
@@ -132,8 +132,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "[ai-assisted] Hero: mechanical arrivals-board role headline (#130)",
-    "committedAt": "2026-07-20T17:22:37Z"
+    "message": "Restore Spotify data lost during merge (#141)",
+    "committedAt": "2026-07-21T15:15:50Z"
   },
   "languages": [
     {
@@ -153,5 +153,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 763
+  "totalContributions": 776
 }
