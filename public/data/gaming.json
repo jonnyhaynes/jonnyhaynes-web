@@ -1,5 +1,15 @@
 {
-  "fetchedAt": "2026-07-20T11:49:15.560Z",
+  "fetchedAt": "2026-07-21T22:06:26.747Z",
+  "sources": {
+    "steam": {
+      "status": "ok",
+      "count": 0
+    },
+    "xbox": {
+      "status": "ok",
+      "count": 12
+    }
+  },
   "games": [
     {
       "title": "Clair Obscur: Expedition 33",
