@@ -125,7 +125,7 @@ export function Listening() {
   return (
     <section id="listening" className="scroll-mt-16 py-16">
       <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // What I listen to
+        // On the digital turntable
       </h2>
 
       {/* Responsive layout:

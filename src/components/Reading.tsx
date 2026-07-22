@@ -39,7 +39,7 @@ export function Reading() {
           line match its width and left edge at every screen size with no extra
           classes. Only the books row (below) breaks out wider. */}
       <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // What I’m reading
+        // My bookshelf
       </h2>
 
       {/* Mobile only: stacked cover + horizontal bars. The leaning shelf takes
