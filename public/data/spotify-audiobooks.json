@@ -1,6 +1,36 @@
 {
-  "fetchedAt": "2026-07-21T20:19:14.862Z",
+  "fetchedAt": "2026-07-22T09:27:06.521Z",
   "audiobooks": [
+    {
+      "title": "The Book of Trespass: Crossing the Lines that Divide Us",
+      "authors": "Nick Hayes",
+      "url": "https://open.spotify.com/show/3iVirNcAg2gvU8CPVFT1IN",
+      "cover": "https://i.scdn.co/image/ab676663000022a8a25357d4e330ef9eae542513",
+      "spine": {
+        "bg": "rgb(56 88 88)",
+        "ink": "#e8ddcb"
+      }
+    },
+    {
+      "title": "The Man In The High Castle",
+      "authors": "Philip K. Dick",
+      "url": "https://open.spotify.com/show/1T4G3Iq6mULPw5Pc1JORVO",
+      "cover": "https://i.scdn.co/image/ab676663000022a8a32f84858b39ea5c3bb13265",
+      "spine": {
+        "bg": "rgb(248 248 248)",
+        "ink": "#1a1b1e"
+      }
+    },
+    {
+      "title": "Enshittification: Why Everything Suddenly Got Worse and What to Do About It",
+      "authors": "Cory Doctorow",
+      "url": "https://open.spotify.com/show/2qKIyXIhP9RnENcWZ1NIWJ",
+      "cover": "https://i.scdn.co/image/ab676663000022a8fcf76b45b5258d5a759992f7",
+      "spine": {
+        "bg": "rgb(8 8 8)",
+        "ink": "#e8ddcb"
+      }
+    },
     {
       "title": "Careless People: The #1 Sunday Times bestselling memoir that Meta doesn't want you to read",
       "authors": "Sarah Wynn-Williams",
@@ -38,36 +68,6 @@
       "cover": "https://i.scdn.co/image/ab676663000022a82678645afc594c701291c661",
       "spine": {
         "bg": "rgb(184 232 8)",
-        "ink": "#1a1b1e"
-      }
-    },
-    {
-      "title": "Before & Laughter",
-      "authors": "Jimmy Carr",
-      "url": "https://open.spotify.com/show/0kwSE1vUUrISTPcRIekY72",
-      "cover": "https://i.scdn.co/image/ab676663000022a833844abc0d0808cf358ddba9",
-      "spine": {
-        "bg": "rgb(232 88 40)",
-        "ink": "#e8ddcb"
-      }
-    },
-    {
-      "title": "1984",
-      "authors": "George Orwell",
-      "url": "https://open.spotify.com/show/1yPC9bBMm1fixXasXnTRGH",
-      "cover": "https://i.scdn.co/image/ab676663000022a851fff79636ab12e873af0de2",
-      "spine": {
-        "bg": "rgb(248 216 232)",
-        "ink": "#1a1b1e"
-      }
-    },
-    {
-      "title": "Of Boys and Men",
-      "authors": "Richard V. Reeves",
-      "url": "https://open.spotify.com/show/0X8WLpK4Fl8krcuRUshuO9",
-      "cover": "https://i.scdn.co/image/ab676663000022a851c17d6c496eda09a3c85a55",
-      "spine": {
-        "bg": "rgb(248 248 232)",
         "ink": "#1a1b1e"
       }
     }
