@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-21T19:39:45.411Z",
+  "fetchedAt": "2026-07-22T08:37:14.612Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-21T16:49:21Z",
+      "pushedAt": "2026-07-21T22:06:50Z",
       "lastCommit": {
-        "message": "Restore Spotify data lost during merge (#141)",
-        "committedAt": "2026-07-21T15:15:50Z"
+        "message": "Refresh gaming data [skip ci] (#144)",
+        "committedAt": "2026-07-21T22:06:49Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -132,8 +132,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Restore Spotify data lost during merge (#141)",
-    "committedAt": "2026-07-21T15:15:50Z"
+    "message": "Refresh gaming data [skip ci] (#144)",
+    "committedAt": "2026-07-21T22:06:49Z"
   },
   "languages": [
     {
