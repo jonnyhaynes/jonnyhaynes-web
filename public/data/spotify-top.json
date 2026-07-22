@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-21T20:19:14.861Z",
+  "fetchedAt": "2026-07-22T09:27:06.520Z",
   "timeRange": "short_term",
   "topGenre": "rock",
   "artists": [
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     },
     {
+      "name": "The King Blues",
+      "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
+      "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
+    },
+    {
       "name": "Slipknot",
       "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
       "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
-    },
-    {
-      "name": "Metallica",
-      "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
-      "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
     }
   ],
   "tracks": [
