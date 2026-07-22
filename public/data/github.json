@@ -1,7 +1,29 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-22T08:37:14.612Z",
+  "fetchedAt": "2026-07-22T19:34:58.256Z",
   "projects": [
+    {
+      "name": "rovrum.town",
+      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
+      "url": "https://github.com/jonnyhaynes/rovrum.town",
+      "homepageUrl": "https://www.rovrum.town",
+      "language": "HTML",
+      "languages": [
+        "HTML",
+        "TypeScript",
+        "Astro",
+        "JavaScript",
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-07-22T15:46:15Z",
+      "lastCommit": {
+        "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
+        "committedAt": "2026-07-22T15:46:15Z"
+      },
+      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
+      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -16,10 +38,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-21T22:06:50Z",
+      "pushedAt": "2026-07-22T11:12:38Z",
       "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#144)",
-        "committedAt": "2026-07-21T22:06:49Z"
+        "message": "Refresh gaming data [skip ci] (#148)",
+        "committedAt": "2026-07-22T11:12:38Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -66,28 +88,6 @@
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     },
     {
-      "name": "rovrum.town",
-      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
-      "url": "https://github.com/jonnyhaynes/rovrum.town",
-      "homepageUrl": "https://www.rovrum.town",
-      "language": "HTML",
-      "languages": [
-        "HTML",
-        "TypeScript",
-        "Astro",
-        "JavaScript",
-        "Shell"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-15T10:51:14Z",
-      "lastCommit": {
-        "message": "Merge pull request #36 from jonnyhaynes/docs/readme-license-badge",
-        "committedAt": "2026-07-15T10:51:13Z"
-      },
-      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
-      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
-    },
-    {
       "name": "skillswap",
       "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
       "url": "https://github.com/jonnyhaynes/skillswap",
@@ -130,10 +130,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh gaming data [skip ci] (#144)",
-    "committedAt": "2026-07-21T22:06:49Z"
+    "repo": "rovrum.town",
+    "url": "https://github.com/jonnyhaynes/rovrum.town",
+    "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
+    "committedAt": "2026-07-22T15:46:15Z"
   },
   "languages": [
     {
@@ -145,13 +145,13 @@
       "count": 3
     },
     {
-      "name": "Astro",
+      "name": "HTML",
       "count": 1
     },
     {
-      "name": "HTML",
+      "name": "Astro",
       "count": 1
     }
   ],
-  "totalContributions": 776
+  "totalContributions": 796
 }
