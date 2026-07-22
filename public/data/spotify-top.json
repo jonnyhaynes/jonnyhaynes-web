@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-07-22T09:27:06.520Z",
+  "fetchedAt": "2026-07-22T20:16:59.689Z",
   "timeRange": "short_term",
-  "topGenre": "rock",
+  "topGenre": null,
   "artists": [
     {
       "name": "Green Day",
@@ -29,19 +29,19 @@
       "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
     },
     {
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+    },
+    {
       "name": "Frank Turner",
       "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
       "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     },
     {
-      "name": "The King Blues",
-      "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
-      "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
-    },
-    {
-      "name": "Slipknot",
-      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
-      "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
+      "name": "Metallica",
+      "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
+      "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
     }
   ],
   "tracks": [
@@ -82,16 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
     },
     {
-      "title": "Lachryma",
-      "artist": "Ghost",
-      "url": "https://open.spotify.com/track/4TjCaQsPQhGZUk0Hls4O3Y",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
-    },
-    {
       "title": "Ace of Spades",
       "artist": "Motörhead",
       "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
+    },
+    {
+      "title": "Lachryma",
+      "artist": "Ghost",
+      "url": "https://open.spotify.com/track/4TjCaQsPQhGZUk0Hls4O3Y",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
     }
   ],
   "playlists": [
