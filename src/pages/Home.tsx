@@ -46,9 +46,7 @@ export function Home() {
         <div className="mx-auto max-w-4xl px-6">
           <Gaming />
         </div>
-        <div className="mx-auto max-w-4xl px-6">
-          <Health />
-        </div>
+
         <div className="mx-auto max-w-4xl px-6">
           <Contact />
         </div>
