@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-23T09:25:07.930Z",
+  "fetchedAt": "2026-07-23T20:13:15.407Z",
   "timeRange": "short_term",
   "topGenre": "rock",
   "artists": [
@@ -24,11 +24,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f1782d972470f1f8110be7c07017"
     },
     {
-      "name": "Michael Jackson",
-      "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
-      "image": "https://i.scdn.co/image/ab6761610000f178997cc9a4aec335d46c9481fd"
-    },
-    {
       "name": "Rammstein",
       "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
@@ -42,14 +37,19 @@
       "name": "Metallica",
       "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
       "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
+    },
+    {
+      "name": "The King Blues",
+      "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
+      "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
     }
   ],
   "tracks": [
     {
-      "title": "Enter Sandman - Remastered 2021",
-      "artist": "Metallica",
-      "url": "https://open.spotify.com/track/3DwQ7AH3xGD9h65ezslm6q",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
+      "title": "Boulevard of Broken Dreams",
+      "artist": "Green Day",
+      "url": "https://open.spotify.com/track/5cbTCQ14BC974Zsx6OlXF8",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
     },
     {
       "title": "The Dark Forest",
@@ -58,10 +58,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     },
     {
-      "title": "I Want You Back",
-      "artist": "The Jackson 5",
-      "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485116aaf05fe82237576a7d0e38"
+      "title": "Enter Sandman - Remastered 2021",
+      "artist": "Metallica",
+      "url": "https://open.spotify.com/track/3DwQ7AH3xGD9h65ezslm6q",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34"
     },
     {
       "title": "Master Of Puppets",
@@ -70,28 +70,28 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851668e3aca3167e6e569a9aa20"
     },
     {
-      "title": "Boulevard of Broken Dreams",
-      "artist": "Green Day",
-      "url": "https://open.spotify.com/track/5cbTCQ14BC974Zsx6OlXF8",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
-    },
-    {
-      "title": "Billie Jean",
-      "artist": "Michael Jackson",
-      "url": "https://open.spotify.com/track/7J1uxwnxfQLu4APicE5Rnj",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5"
-    },
-    {
-      "title": "Ace of Spades",
-      "artist": "Motörhead",
-      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
-    },
-    {
       "title": "Lachryma",
       "artist": "Ghost",
       "url": "https://open.spotify.com/track/4TjCaQsPQhGZUk0Hls4O3Y",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
+    },
+    {
+      "title": "Somebody To Love - Remastered 2011",
+      "artist": "Queen",
+      "url": "https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485195313a5eee00d9bdf37883e2"
+    },
+    {
+      "title": "Satanized",
+      "artist": "Ghost",
+      "url": "https://open.spotify.com/track/6RLM1w82rrT9tKsQVEa5Yr",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
+    },
+    {
+      "title": "Wait and Bleed",
+      "artist": "Slipknot",
+      "url": "https://open.spotify.com/track/15DLl1r2zi07Ssq5RT1yT0",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485181e0d9617e70d75e7ae11fa6"
     }
   ],
   "playlists": [
