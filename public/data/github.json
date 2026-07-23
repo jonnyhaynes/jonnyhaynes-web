@@ -1,7 +1,29 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-22T19:34:58.256Z",
+  "fetchedAt": "2026-07-23T08:38:59.236Z",
   "projects": [
+    {
+      "name": "jonnyhaynes-web",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "homepageUrl": "https://www.jonnyhaynes.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "HTML",
+        "Shell"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-22T22:07:50Z",
+      "lastCommit": {
+        "message": "Refresh gaming data [skip ci] (#151)",
+        "committedAt": "2026-07-22T22:07:49Z"
+      },
+      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
+      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
     {
       "name": "rovrum.town",
       "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
@@ -23,28 +45,6 @@
       },
       "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
       "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
-    },
-    {
-      "name": "jonnyhaynes-web",
-      "description": "My personal website — a static site built with React, Vite & TypeScript.",
-      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-      "homepageUrl": "https://www.jonnyhaynes.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript",
-        "CSS",
-        "HTML",
-        "Shell"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-22T11:12:38Z",
-      "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#148)",
-        "committedAt": "2026-07-22T11:12:38Z"
-      },
-      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
-      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
     },
     {
       "name": "sitwellcc-web",
@@ -130,10 +130,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "rovrum.town",
-    "url": "https://github.com/jonnyhaynes/rovrum.town",
-    "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
-    "committedAt": "2026-07-22T15:46:15Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh gaming data [skip ci] (#151)",
+    "committedAt": "2026-07-22T22:07:49Z"
   },
   "languages": [
     {
