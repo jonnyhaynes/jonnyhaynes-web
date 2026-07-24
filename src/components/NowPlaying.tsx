@@ -48,6 +48,51 @@ function formatTime(ms: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
+/**
+ * A tiny analogue VU meter for the deck header — an output readout, not a
+ * control (hence aria-hidden and no button). A quarter-arc face with a needle
+ * that pivots from the bottom-centre: while a track plays the needle jitters
+ * around the upper-mid of the scale like a real amp meter reacting to audio
+ * (.vu-needle-active); when idle it rests pinned low-left. The bounce is paused
+ * under prefers-reduced-motion (see .vu-needle in index.css), holding a steady
+ * mid reading. Replaces the old status dot/power symbol so the LED metaphor
+ * doesn't collide with the Gaming TV's pressable power button.
+ */
+function VuMeter({ active }: { active: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 16"
+      className="h-4 w-6 overflow-visible text-[var(--color-deck-panel-text)]"
+      fill="none"
+    >
+      {/* Arc face — the scale the needle sweeps across. */}
+      <path
+        d="M3 14 A 9 9 0 0 1 21 14"
+        stroke="currentColor"
+        strokeOpacity="0.35"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+      {/* Needle — pivots about (12,14). Resting angle points low-left; the
+          active class animates it swinging through the upper range. */}
+      <line
+        x1="12"
+        y1="14"
+        x2="12"
+        y2="4"
+        className={active ? 'vu-needle vu-needle-active' : 'vu-needle'}
+        stroke={active ? 'var(--color-accent-start)' : 'currentColor'}
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        transform={active ? undefined : 'rotate(-55 12 14)'}
+      />
+      {/* Pivot cap. */}
+      <circle cx="12" cy="14" r="1.2" fill="currentColor" fillOpacity="0.6" />
+    </svg>
+  );
+}
+
 type DeckProps = {
   data: NowPlayingData;
   spinning: boolean;
@@ -139,10 +184,9 @@ function DeckStandby() {
         <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
           Standby
         </p>
-        <span
-          aria-hidden="true"
-          className="size-2 rounded-full bg-[var(--color-deck-panel-text)] opacity-40"
-        />
+        {/* Standby VU meter — the same meter as the active deck, needle resting
+            pinned low (no audio to move it). */}
+        <VuMeter active={false} />
       </div>
 
       <div className="deck-lcd-wrap relative">
@@ -194,16 +238,9 @@ function Deck({
         <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
           {data.isPlaying ? 'Now playing' : 'Last played'}
         </p>
-        {/* Power LED — a glowing accent dot (as in the Gaming bezel). While the
-            track plays it breathes; when it stops it eases down to a steady dot
-            over the same duration as the visualizer collapse, rather than
-            snapping off. Paused under reduced motion. */}
-        <span
-          aria-hidden="true"
-          className={`size-2 rounded-full bg-accent-start shadow-[0_0_6px_1px_var(--color-accent-start)] ${
-            spinning ? 'deck-led' : 'deck-led-resting'
-          }`}
-        />
+        {/* VU meter — the deck's output readout. Needle jitters while the track
+            plays and rests low when stopped. */}
+        <VuMeter active={spinning} />
       </div>
 
       {/* Visualizer screen + knob. The LCD (deck-lcd) is a recessed display
