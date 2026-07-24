@@ -576,6 +576,11 @@
   transform-box: view-box;
   transform-origin: 12px 14px;
 }
+/* Resting — needle held at the low (left) end of the scale. Same CSS transform
+ * mechanism as the active state so both rotate about the identical origin. */
+.vu-needle-rest {
+  transform: rotate(-42deg);
+}
 .vu-needle-active {
   filter: drop-shadow(0 0 2px var(--color-accent-start));
   animation: vu-swing 1.1s ease-in-out infinite;
