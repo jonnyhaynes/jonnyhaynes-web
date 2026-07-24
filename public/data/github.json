@@ -1,7 +1,28 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-23T19:26:49.858Z",
+  "fetchedAt": "2026-07-24T08:34:52.743Z",
   "projects": [
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-07-24T01:49:17Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Drive /rides header and meta from Sanity (#70)",
+        "committedAt": "2026-07-21T08:42:24Z"
+      },
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -16,10 +37,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-23T17:11:48Z",
+      "pushedAt": "2026-07-23T22:08:24Z",
       "lastCommit": {
-        "message": "Align meta & OG copy to site subheadline (#155)",
-        "committedAt": "2026-07-23T17:11:48Z"
+        "message": "Refresh gaming data [skip ci] (#158)",
+        "committedAt": "2026-07-23T22:08:24Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -45,27 +66,6 @@
       },
       "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
       "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
-    },
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-21T08:42:24Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Drive /rides header and meta from Sanity (#70)",
-        "committedAt": "2026-07-21T08:42:24Z"
-      },
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "colouringcode-web",
@@ -130,10 +130,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Align meta & OG copy to site subheadline (#155)",
-    "committedAt": "2026-07-23T17:11:48Z"
+    "repo": "sitwellcc-web",
+    "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+    "message": "[ai-assisted] Drive /rides header and meta from Sanity (#70)",
+    "committedAt": "2026-07-21T08:42:24Z"
   },
   "languages": [
     {
@@ -145,11 +145,11 @@
       "count": 3
     },
     {
-      "name": "HTML",
+      "name": "Astro",
       "count": 1
     },
     {
-      "name": "Astro",
+      "name": "HTML",
       "count": 1
     }
   ],
