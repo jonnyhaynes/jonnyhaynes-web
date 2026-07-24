@@ -63,7 +63,7 @@ function VuMeter({ active }: { active: boolean }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 16"
-      className="h-4 w-6 overflow-visible text-[var(--color-deck-panel-text)]"
+      className="h-6 w-9 overflow-visible text-[var(--color-deck-panel-text)]"
       fill="none"
     >
       {/* Arc face — the scale the needle sweeps across. */}
