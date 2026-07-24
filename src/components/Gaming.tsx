@@ -90,10 +90,14 @@ function GameLink({
  */
 function TvHero({
   game,
+  powered,
+  onTogglePower,
   onPrev,
   onNext,
 }: {
   game: GameTile;
+  powered: boolean;
+  onTogglePower: () => void;
   onPrev: () => void;
   onNext: () => void;
 }) {
@@ -110,48 +114,82 @@ function TvHero({
           className="block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start"
         >
           {/* Screen: cover art behind scanline + glow overlays. Square so it
-              lines up with the jewel-case grid beside it. */}
-          <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-black">
-            {game.coverUrl ? (
-              <img
-                src={game.coverUrl}
-                alt=""
-                className="absolute inset-0 h-full w-full object-contain"
-              />
-            ) : (
-              <span className="absolute inset-0 flex items-center justify-center font-mono text-5xl text-muted">
-                🎮
-              </span>
+              lines up with the jewel-case grid beside it. When the bezel power
+              button is off, the tube goes dark (.crt-off) and the overlays are
+              suppressed. */}
+          <div
+            className={`relative aspect-square w-full overflow-hidden rounded-lg bg-black ${
+              powered ? '' : 'crt-off'
+            }`}
+          >
+            {powered &&
+              (game.coverUrl ? (
+                <img
+                  src={game.coverUrl}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-contain"
+                />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-5xl text-muted">
+                  🎮
+                </span>
+              ))}
+            {/* CRT overlays — decorative, never intercept clicks. Hidden when
+                the tube is off. */}
+            {powered && (
+              <>
+                <span
+                  aria-hidden="true"
+                  className="crt-scanlines pointer-events-none absolute inset-0"
+                />
+                <span
+                  aria-hidden="true"
+                  className="crt-glow pointer-events-none absolute inset-0 rounded-lg"
+                />
+                {/* OSD readout — title + platform/recency in heather, fading
+                    away seconds after load like a real TV's channel display. */}
+                <span aria-hidden="true" className="crt-osd crt-osd--auto-hide">
+                  <span className="crt-osd-line">AV1 · {game.title}</span>
+                  <span className="crt-osd-line">{meta}</span>
+                </span>
+              </>
             )}
-            {/* CRT overlays — decorative, never intercept clicks. */}
-            <span
-              aria-hidden="true"
-              className="crt-scanlines pointer-events-none absolute inset-0"
-            />
-            <span
-              aria-hidden="true"
-              className="crt-glow pointer-events-none absolute inset-0 rounded-lg"
-            />
-            {/* OSD readout — title + platform/recency in heather, fading away
-                seconds after load like a real TV's channel display. */}
-            <span aria-hidden="true" className="crt-osd crt-osd--auto-hide">
-              <span className="crt-osd-line">AV1 · {game.title}</span>
-              <span className="crt-osd-line">{meta}</span>
-            </span>
           </div>
         </GameLink>
 
-        {/* Bezel lip: power LED (accent) + label + two dials. The dials are
-            now real channel controls (previous / next game). */}
+        {/* Bezel lip: IR receiver window + label + power button and two channel
+            dials (previous / next game). */}
         <div className="mt-3 flex items-center gap-3 px-1">
-          <span
-            aria-hidden="true"
-            className="deck-led h-2 w-2 rounded-full bg-accent-start shadow-[0_0_6px_1px_var(--color-accent-start)]"
-          />
+          <span aria-hidden="true" className="crt-ir-window" />
           <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--color-deck-panel-text)]">
-            {bezelLabel(game)}
+            {powered ? bezelLabel(game) : 'Standby'}
           </span>
           <div className="ml-auto flex gap-2">
+            <button
+              type="button"
+              aria-label={powered ? 'Turn screen off' : 'Turn screen on'}
+              aria-pressed={powered}
+              onClick={onTogglePower}
+              className="flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+            >
+              {/* Power symbol — glows accent when on, dim when off. */}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className={`h-3.5 w-3.5 ${
+                  powered
+                    ? 'text-accent-start [filter:drop-shadow(0_0_3px_var(--color-accent-start))]'
+                    : 'text-[var(--color-deck-panel-text)] opacity-50'
+                }`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              >
+                <path d="M12 3v9" />
+                <path d="M6.6 6.6a8 8 0 1 0 10.8 0" />
+              </svg>
+            </button>
             <button
               type="button"
               aria-label="Previous game"
@@ -253,6 +291,7 @@ export function Gaming() {
   // games like switching inputs on the visualizer knob.
   const games = recentGames(useGamingData(), 5);
   const [heroIndex, setHeroIndex] = useState(0);
+  const [powered, setPowered] = useState(true);
   if (!games.length) return null;
 
   const hero = games[heroIndex];
@@ -273,7 +312,13 @@ export function Gaming() {
           width, the cases fall into two columns beneath. */}
       <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
         <div className="min-w-0 md:w-1/2">
-          <TvHero game={hero} onPrev={prevHero} onNext={nextHero} />
+          <TvHero
+            game={hero}
+            powered={powered}
+            onTogglePower={() => setPowered((on) => !on)}
+            onPrev={prevHero}
+            onNext={nextHero}
+          />
         </div>
         {rest.length > 0 && (
           <ul className="grid grid-cols-2 items-start gap-6 md:w-1/2 md:gap-8">

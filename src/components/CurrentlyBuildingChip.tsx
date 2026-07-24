@@ -20,9 +20,11 @@ export function CurrentlyBuildingChip() {
       title={activity.message ?? undefined}
       className="group inline-flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
     >
-      <span className="relative flex size-2">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-start opacity-70 motion-reduce:animate-none" />
-        <span className="relative inline-flex size-2 rounded-full bg-accent-start" />
+      <span
+        aria-hidden="true"
+        className="animate-pulse font-mono text-accent-start motion-reduce:animate-none"
+      >
+        _
       </span>
       <span className="text-muted">building</span>
       <span className="text-foreground group-hover:text-accent-start">
