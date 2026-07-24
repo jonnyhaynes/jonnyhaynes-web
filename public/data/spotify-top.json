@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-24T09:22:25.694Z",
+  "fetchedAt": "2026-07-24T20:20:31.929Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -14,14 +14,14 @@
       "image": "https://i.scdn.co/image/ab67726900008f7447488c35a509d42072c23976"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
       "name": "Ghost",
       "url": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
       "image": "https://i.scdn.co/image/ab6761610000f1782d972470f1f8110be7c07017"
+    },
+    {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Rammstein",
@@ -52,12 +52,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
     },
     {
-      "title": "The Dark Forest",
-      "artist": "Muse",
-      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
-    },
-    {
       "title": "Enter Sandman - Remastered 2021",
       "artist": "Metallica",
       "url": "https://open.spotify.com/track/3DwQ7AH3xGD9h65ezslm6q",
@@ -76,10 +70,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
     },
     {
-      "title": "Somebody To Love - Remastered 2011",
-      "artist": "Queen",
-      "url": "https://open.spotify.com/track/6cFZ4PLC19taNlpl9pbGMf",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485195313a5eee00d9bdf37883e2"
+      "title": "Girls Just Want to Have Fun",
+      "artist": "Cyndi Lauper",
+      "url": "https://open.spotify.com/track/4y1LsJpmMti1PfRQV9AWWe",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
+    },
+    {
+      "title": "I Want You Back",
+      "artist": "The Jackson 5",
+      "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485116aaf05fe82237576a7d0e38"
     },
     {
       "title": "Satanized",
