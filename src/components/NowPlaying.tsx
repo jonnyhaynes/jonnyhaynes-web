@@ -74,18 +74,20 @@ function VuMeter({ active }: { active: boolean }) {
         strokeWidth="1"
         strokeLinecap="round"
       />
-      {/* Needle — pivots about (12,14). Resting angle points low-left; the
-          active class animates it swinging through the upper range. */}
+      {/* Needle — points straight up in its own coordinates; the rotation is
+          applied via CSS (transform-origin pinned to the 12,14 pivot) in both
+          states, so resting and active share one rotation origin. Resting sits
+          at the low (left) end of the scale; active swings through the upper
+          range. */}
       <line
         x1="12"
         y1="14"
         x2="12"
         y2="4"
-        className={active ? 'vu-needle vu-needle-active' : 'vu-needle'}
+        className={active ? 'vu-needle vu-needle-active' : 'vu-needle vu-needle-rest'}
         stroke={active ? 'var(--color-accent-start)' : 'currentColor'}
         strokeWidth="1.4"
         strokeLinecap="round"
-        transform={active ? undefined : 'rotate(-55 12 14)'}
       />
       {/* Pivot cap. */}
       <circle cx="12" cy="14" r="1.2" fill="currentColor" fillOpacity="0.6" />
