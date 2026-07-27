@@ -62,12 +62,14 @@ function nextDayUTC(ymd) {
 }
 
 /**
- * AIP-160 filter for a day of an interval-based type. The field MUST be
- * prefixed with the data-type name and use snake_case, per the API's filter
- * grammar, e.g. `steps.interval.civil_start_time >= "2026-07-27T00:00:00"`.
+ * AIP-160 filter for a day of an interval-based type. NOTE the field prefix is
+ * the type's camelCase UNION-field name (e.g. `steps`, `sleep`), which differs
+ * from the kebab-case PATH segment (e.g. `active-minutes`). `member` is the
+ * interval field to bound on — `civil_start_time` for most, but sleep sessions
+ * only support filtering by `civil_end_time`.
  */
-function intervalDayFilter(dataType, date, nextDate) {
-  const field = `${dataType}.interval.civil_start_time`;
+function intervalDayFilter(unionField, date, nextDate, member = 'civil_start_time') {
+  const field = `${unionField}.interval.${member}`;
   return `${field} >= "${date}T00:00:00" AND ${field} < "${nextDate}T00:00:00"`;
 }
 
@@ -133,41 +135,49 @@ async function main() {
   console.log(`Fetching Google Health data for ${date}…`);
 
   const [steps, activeMinutes, sleepHours, restingHeartRate] = await Promise.all([
-    // Steps: sum `count` across interval data points for the day.
+    // Steps: sum `count` across interval data points. The count lives under the
+    // camelCase union field on each point (p.steps.count), not at top level.
     safeMetric('steps', async () => {
       const filter = intervalDayFilter('steps', date, nextDate);
       const pts = await listDataPoints(token, 'steps', filter);
-      return sumInts(pts.map((p) => p.count));
+      if (pts[0]) console.log(`  steps[0] shape: ${JSON.stringify(pts[0])}`);
+      return sumInts(pts.map((p) => p.steps?.count ?? p.count));
     }),
 
-    // Active minutes: sum minutes across all activity levels, all intervals —
-    // mirrors Fitbit's fairly+very-active sum closely enough for the tile.
+    // Active minutes: PATH segment is kebab-case (active-minutes); the union
+    // field / filter prefix is camelCase (activeMinutes). Sum minutes across
+    // all activity levels — mirrors Fitbit's fairly+very-active sum.
     safeMetric('activeMinutes', async () => {
       const filter = intervalDayFilter('activeMinutes', date, nextDate);
-      const pts = await listDataPoints(token, 'activeMinutes', filter);
-      const mins = pts.flatMap((p) =>
-        (p.activeMinutesByActivityLevel ?? []).map((a) => a.minutes),
-      );
+      const pts = await listDataPoints(token, 'active-minutes', filter);
+      if (pts[0]) console.log(`  active-minutes[0] shape: ${JSON.stringify(pts[0])}`);
+      const mins = pts.flatMap((p) => {
+        const am = p.activeMinutes ?? p;
+        return (am.activeMinutesByActivityLevel ?? []).map((a) => a.minutes);
+      });
       return sumInts(mins);
     }),
 
     // Sleep: total minutesAsleep across sessions → hours, 0.1 precision.
-    // Sleep/exercise cap pageSize at 25 per the docs.
+    // Sleep sessions only support filtering by civil_end_time. pageSize max 25.
     safeMetric('sleep', async () => {
-      const filter = intervalDayFilter('sleep', date, nextDate);
+      const filter = intervalDayFilter('sleep', date, nextDate, 'civil_end_time');
       const pts = await listDataPoints(token, 'sleep', filter, 25);
-      const minutes = sumInts(pts.map((p) => p.summary?.minutesAsleep));
+      if (pts[0]) console.log(`  sleep[0] shape: ${JSON.stringify(pts[0])}`);
+      const minutes = sumInts(pts.map((p) => (p.sleep ?? p).summary?.minutesAsleep));
       return minutes != null ? Math.round((minutes / 60) * 10) / 10 : null;
     }),
 
-    // Resting HR: a daily record keyed by `.date` (no interval). Filter on the
-    // type-prefixed date field per the API's daily-summary filter grammar.
+    // Resting HR: daily record keyed by `.date`. PATH is kebab-case
+    // (daily-resting-heart-rate); filter prefix is the camelCase union field.
     safeMetric('restingHeartRate', async () => {
       const filter =
         `dailyRestingHeartRate.date >= "${date}" AND ` +
         `dailyRestingHeartRate.date < "${nextDate}"`;
-      const pts = await listDataPoints(token, 'dailyRestingHeartRate', filter, 30);
-      const bpm = Number(pts[0]?.beatsPerMinute);
+      const pts = await listDataPoints(token, 'daily-resting-heart-rate', filter, 30);
+      if (pts[0]) console.log(`  daily-resting-heart-rate[0] shape: ${JSON.stringify(pts[0])}`);
+      const rec = pts[0]?.dailyRestingHeartRate ?? pts[0];
+      const bpm = Number(rec?.beatsPerMinute);
       return Number.isFinite(bpm) ? bpm : null;
     }),
   ]);
