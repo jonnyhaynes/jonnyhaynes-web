@@ -79,9 +79,10 @@ function intervalDayFilter(unionField, date, nextDate, member = 'civil_start_tim
  * `restingHeartRate` is a daily record keyed by `date` (no interval), so it is
  * fetched without a filter and the matching day is picked by the caller.
  */
-async function listDataPoints(token, dataType, filter, pageSize = 1000) {
+async function listDataPoints(token, dataType, filter, pageSize = 1000, maxPages = Infinity) {
   const points = [];
   let pageToken;
+  let pages = 0;
   do {
     const params = new URLSearchParams({ pageSize: String(pageSize) });
     if (filter) params.set('filter', filter);
@@ -101,7 +102,7 @@ async function listDataPoints(token, dataType, filter, pageSize = 1000) {
     const json = await res.json();
     points.push(...(json.dataPoints ?? []));
     pageToken = json.nextPageToken;
-  } while (pageToken);
+  } while (pageToken && ++pages < maxPages);
   console.log(`  ${dataType}: ${points.length} data point(s)`);
   return points;
 }
@@ -150,23 +151,25 @@ async function main() {
     safeMetric('steps', async () => {
       const filter = intervalDayFilter('steps', date, nextDate);
       const pts = await listDataPoints(token, 'steps', filter);
-      if (pts[0]) console.log(`  steps[0] shape: ${JSON.stringify(pts[0])}`);
       return sumInts(pts.map((p) => p.steps?.count ?? p.count));
     }),
 
     // Active minutes: this type rejects the interval filter
-    // (INVALID_DATA_POINT_FILTER_DATA_TYPE_RESTRICTION), so fetch a recent
-    // unfiltered page (points come back newest-first) and keep only intervals
-    // whose civil start date is today. Sum minutes across all activity levels —
-    // mirrors Fitbit's fairly+very-active sum.
+    // (INVALID_DATA_POINT_FILTER_DATA_TYPE_RESTRICTION) and is minute-granular
+    // (tens of thousands of points), so fetch one large page (newest-first) and
+    // keep only intervals whose civil start date is today. Count only MODERATE
+    // and VIGOROUS levels — mirrors Fitbit's fairly+very-active, excluding
+    // LIGHT/SEDENTARY. Minutes live under `activeMinutes` on each level entry.
     safeMetric('activeMinutes', async () => {
-      const pts = await listDataPoints(token, 'active-minutes', undefined, 200);
-      if (pts[0]) console.log(`  active-minutes[0] shape: ${JSON.stringify(pts[0])}`);
+      const ACTIVE = new Set(['MODERATELY_ACTIVE', 'VERY_ACTIVE', 'MODERATE', 'VIGOROUS']);
+      const pts = await listDataPoints(token, 'active-minutes', undefined, 10000, 1);
       const today = pts.filter((p) => civilStartDate(p.activeMinutes ?? p) === date);
-      const mins = today.flatMap((p) =>
-        ((p.activeMinutes ?? p).activeMinutesByActivityLevel ?? []).map((a) => a.minutes),
+      const levels = today.flatMap((p) =>
+        ((p.activeMinutes ?? p).activeMinutesByActivityLevel ?? []),
       );
-      return sumInts(mins);
+      // One-run diagnostic: confirm which activity-level strings appear today.
+      console.log(`  active-minutes today levels: ${JSON.stringify([...new Set(levels.map((a) => a.activityLevel))])}`);
+      return sumInts(levels.filter((a) => ACTIVE.has(a.activityLevel)).map((a) => a.activeMinutes));
     }),
 
     // Sleep: total minutesAsleep across sessions → hours, 0.1 precision.
@@ -174,7 +177,6 @@ async function main() {
     safeMetric('sleep', async () => {
       const filter = intervalDayFilter('sleep', date, nextDate, 'civil_end_time');
       const pts = await listDataPoints(token, 'sleep', filter, 25);
-      if (pts[0]) console.log(`  sleep[0] shape: ${JSON.stringify(pts[0])}`);
       const minutes = sumInts(pts.map((p) => (p.sleep ?? p).summary?.minutesAsleep));
       return minutes != null ? Math.round((minutes / 60) * 10) / 10 : null;
     }),
@@ -183,7 +185,6 @@ async function main() {
     // recent unfiltered page and pick today's record (points are newest-first).
     safeMetric('restingHeartRate', async () => {
       const pts = await listDataPoints(token, 'daily-resting-heart-rate', undefined, 30);
-      if (pts[0]) console.log(`  daily-resting-heart-rate[0] shape: ${JSON.stringify(pts[0])}`);
       const [y, m, d] = date.split('-').map(Number);
       const match = pts
         .map((p) => p.dailyRestingHeartRate ?? p)
