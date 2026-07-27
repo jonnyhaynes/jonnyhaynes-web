@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-07-27T10:43:34.612Z",
+  "fetchedAt": "2026-07-27T20:23:21.853Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "metal",
   "artists": [
     {
       "name": "Green Day",
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
+      "name": "Slipknot",
+      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
+      "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
     }
   ],
   "tracks": [
@@ -50,6 +50,12 @@
       "artist": "Green Day",
       "url": "https://open.spotify.com/track/5cbTCQ14BC974Zsx6OlXF8",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
+    },
+    {
+      "title": "Girls Just Want to Have Fun",
+      "artist": "Cyndi Lauper",
+      "url": "https://open.spotify.com/track/4y1LsJpmMti1PfRQV9AWWe",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
     },
     {
       "title": "Enter Sandman - Remastered 2021",
@@ -68,12 +74,6 @@
       "artist": "Ghost",
       "url": "https://open.spotify.com/track/4TjCaQsPQhGZUk0Hls4O3Y",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
-    },
-    {
-      "title": "Girls Just Want to Have Fun",
-      "artist": "Cyndi Lauper",
-      "url": "https://open.spotify.com/track/4y1LsJpmMti1PfRQV9AWWe",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
     },
     {
       "title": "I Want You Back",
