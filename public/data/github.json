@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-27T10:07:36.546Z",
+  "fetchedAt": "2026-07-27T19:43:19.120Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,13 +16,35 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-26T22:02:01Z",
+      "pushedAt": "2026-07-27T18:59:03Z",
       "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#177)",
-        "committedAt": "2026-07-26T22:02:01Z"
+        "message": "Refresh health data [skip ci] (#190)",
+        "committedAt": "2026-07-27T18:59:03Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "rovrum.town",
+      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
+      "url": "https://github.com/jonnyhaynes/rovrum.town",
+      "homepageUrl": "https://www.rovrum.town",
+      "language": "HTML",
+      "languages": [
+        "HTML",
+        "TypeScript",
+        "Astro",
+        "JavaScript",
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-07-27T16:11:51Z",
+      "lastCommit": {
+        "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
+        "committedAt": "2026-07-22T15:46:15Z"
+      },
+      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
+      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
     },
     {
       "name": "sitwellcc-web",
@@ -44,28 +66,6 @@
       },
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
-    {
-      "name": "rovrum.town",
-      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
-      "url": "https://github.com/jonnyhaynes/rovrum.town",
-      "homepageUrl": "https://www.rovrum.town",
-      "language": "HTML",
-      "languages": [
-        "HTML",
-        "TypeScript",
-        "Astro",
-        "JavaScript",
-        "Shell"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-22T15:46:15Z",
-      "lastCommit": {
-        "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
-        "committedAt": "2026-07-22T15:46:15Z"
-      },
-      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
-      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
     },
     {
       "name": "colouringcode-web",
@@ -132,8 +132,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh gaming data [skip ci] (#177)",
-    "committedAt": "2026-07-26T22:02:01Z"
+    "message": "Refresh health data [skip ci] (#190)",
+    "committedAt": "2026-07-27T18:59:03Z"
   },
   "languages": [
     {
@@ -145,13 +145,13 @@
       "count": 3
     },
     {
-      "name": "Astro",
+      "name": "HTML",
       "count": 1
     },
     {
-      "name": "HTML",
+      "name": "Astro",
       "count": 1
     }
   ],
-  "totalContributions": 804
+  "totalContributions": 813
 }
