@@ -28,7 +28,7 @@ framework.
 
 These shape the code. Don't change them without a deliberate, flagged decision.
 
-- **Secrets stay server-side.** API tokens (GitHub, Spotify, Fitbit) live in Vercel
+- **Secrets stay server-side.** API tokens (GitHub, Spotify, Google Health) live in Vercel
   env vars / GitHub Actions secrets and never reach the client bundle. Live data is
   fetched via server functions; most data is baked to static JSON by a scheduled job.
   See `docs/about-page-plan.md`.
@@ -71,7 +71,7 @@ Source of truth lives in `/docs`. Read the relevant doc before responding:
 
 - `docs/dev-workflow.md` -- how we build (the loop + standing conventions)
 - `docs/about-page-plan.md` -- implementation plan for the living About page
-  (CV / GitHub / Spotify / Fitbit integrations); current in-flight work
+  (CV / GitHub / Spotify / Google Health integrations); current in-flight work
 - `docs/plans/` -- per-ticket implementation plans (plan-first)
 
 ## Working style

@@ -1,4 +1,4 @@
-import { useFitbitData } from '../data/fitbit';
+import { useHealthData } from '../data/health';
 
 /** One stat tile. Renders a muted em-dash when the metric is missing. */
 function Stat({
@@ -24,12 +24,12 @@ function Stat({
 }
 
 /**
- * Health section — a light-touch personality widget backed by the baked Fitbit
+ * Health section — a light-touch personality widget backed by the baked health
  * snapshot (kept beyond the spec). Renders nothing until data loads, so a
  * missing/stale JSON just hides the section (graceful degradation).
  */
 export function Health() {
-  const data = useFitbitData();
+  const data = useHealthData();
   if (!data) return null;
 
   // Each metric can be null independently; show a dash rather than "0".
@@ -43,7 +43,7 @@ export function Health() {
       </h2>
 
       <p className="mt-4 max-w-xl text-muted">
-        A day away from the compiler, more or less — pulled from my Fitbit.
+        A day away from the compiler, more or less — pulled from my wearable.
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
