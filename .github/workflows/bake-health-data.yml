@@ -1,0 +1,54 @@
+name: Bake health data
+
+# Fetches steps + active minutes + sleep + resting heart rate from the Google
+# Health API and commits the refreshed public/data/health.json to main. Runs
+# twice daily plus on demand.
+#
+# No token rotation: Google does not rotate the refresh token on a normal
+# refresh, so — unlike the old Fitbit bake — there is no persist-token step and
+# no secrets-write PAT. The built-in GITHUB_TOKEN with contents:write is enough.
+on:
+  schedule:
+    # 08:00 and 20:00 UTC (offset from the GitHub/Spotify bakes to spread load).
+    - cron: '0 8,20 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: bake-health-data
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch Google Health data
+        env:
+          GOOGLE_HEALTH_CLIENT_ID: ${{ secrets.GOOGLE_HEALTH_CLIENT_ID }}
+          GOOGLE_HEALTH_CLIENT_SECRET: ${{ secrets.GOOGLE_HEALTH_CLIENT_SECRET }}
+          GOOGLE_HEALTH_REFRESH_TOKEN: ${{ secrets.GOOGLE_HEALTH_REFRESH_TOKEN }}
+        run: node scripts/fetch-health.mjs
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- public/data/health.json; then
+            echo "No change in health.json — nothing to commit."
+            exit 0
+          fi
+          git add public/data/health.json
+          git commit -m "Refresh health data [skip ci]"
+          git push

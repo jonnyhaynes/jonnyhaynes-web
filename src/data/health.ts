@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export type FitbitData = {
+export type HealthData = {
   fetchedAt: string;
   date: string;
   steps: number | null;
@@ -10,21 +10,21 @@ export type FitbitData = {
 };
 
 /**
- * Loads the baked Fitbit snapshot from public/data/fitbit.json.
+ * Loads the baked health snapshot from public/data/health.json.
  *
  * Returns `null` while loading and on any failure — the health section is
  * built to degrade gracefully, so a failed fetch (or missing file before the
  * first bake) just shows the section's rest-day fallback.
  */
-export function useFitbitData(): FitbitData | null {
-  const [data, setData] = useState<FitbitData | null>(null);
+export function useHealthData(): HealthData | null {
+  const [data, setData] = useState<HealthData | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/data/fitbit.json')
+    fetch('/data/health.json')
       .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: FitbitData) => {
+      .then((json: HealthData) => {
         if (!cancelled) setData(json);
       })
       .catch(() => {

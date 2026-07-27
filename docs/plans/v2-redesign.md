@@ -61,11 +61,11 @@ files, not the branch. The genuinely valuable, reusable pieces:
 | --- | --- | --- |
 | Spotify data hooks | `src/data/spotify.ts` (`useSpotifyTop`, `useNowPlaying`) | **Reuse as-is** — clean, typed, graceful-degrading |
 | GitHub data hook | `src/data/github.ts` (`useGitHubData`) | **Reuse as-is** |
-| Fitbit data hook | `src/data/fitbit.ts` | **Reuse as-is** |
+| Health data hook | `src/data/health.ts` (`useHealthData`) | **Reuse as-is** |
 | Live now-playing endpoint | `api/now-playing.js` (Vercel fn) | **Reuse as-is** — token refresh server-side, 30s cache |
 | Fetch + OAuth scripts | `scripts/fetch-*.mjs`, `scripts/*-auth.mjs` | **Reuse as-is** |
 | Bake workflows | `.github/workflows/bake-*.yml` (twice daily) | **Reuse as-is** |
-| Baked data | `public/data/{github,spotify-top,fitbit}.json` | **Reuse** (regenerates on schedule) |
+| Baked data | `public/data/{github,spotify-top,health}.json` | **Reuse** (regenerates on schedule) |
 | `vercel.json` | routing for `/api` | **Reuse** |
 | Old UI (Home/About/Privacy, app.css, Footer) | `src/pages/*`, `src/app.css` | **Do NOT reuse** — rebuilt for V2 |
 | Old plan doc | `docs/about-page-plan.md` | Superseded by this doc |
@@ -175,7 +175,7 @@ current `main` (React 19), WITHOUT the old UI:
   hasn't happened yet.
 
 ### Phase 6 — Fitbit extra + Resume/Contact + Footer (`feature/v2-close`)
-- Fitbit personality widget (kept as extra; light touch, using `useFitbitData`).
+- Health personality widget (kept as extra; light touch, using `useHealthData`).
 - Resume: "Download Resume" (PDF — Jonny to provide the file), `mailto:` link.
 - Footer: "Forged in Yorkshire using React & Vite." Fold `/privacy` back in.
 

@@ -6,7 +6,7 @@ name: Bake gaming data
 on:
   schedule:
     # 09:00 and 21:00 UTC (a free slot: GitHub is 06/18, Spotify 07/19,
-    # Fitbit 08/20 — offset to spread API load).
+    # health 08/20 — offset to spread API load).
     - cron: '0 9,21 * * *'
   workflow_dispatch: {}
 
