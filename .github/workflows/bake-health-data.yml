@@ -24,10 +24,13 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Checkout main
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main
+          # Use the dispatched ref (defaults to main on schedule) so a manual
+          # workflow_dispatch from a branch runs THAT branch's fetch script —
+          # essential for debugging without merging to main first.
+          ref: ${{ github.ref_name }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
