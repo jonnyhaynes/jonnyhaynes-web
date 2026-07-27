@@ -84,16 +84,23 @@ async function listDataPoints(token, dataType, filter, pageSize = 1000) {
     const params = new URLSearchParams({ pageSize: String(pageSize) });
     if (filter) params.set('filter', filter);
     if (pageToken) params.set('pageToken', pageToken);
-    const res = await fetch(`${BASE}/${dataType}/dataPoints?${params}`, {
+    const url = `${BASE}/${dataType}/dataPoints?${params}`;
+    const res = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
-      throw new Error(`GET ${dataType} failed: ${res.status} ${res.statusText}`);
+      // Surface Google's actual error message (e.g. invalid filter field or
+      // unknown data type) — status text alone ("Bad Request") is useless.
+      const body = await res.text();
+      throw new Error(
+        `GET ${dataType} failed: ${res.status} — ${body.slice(0, 400)}`,
+      );
     }
     const json = await res.json();
     points.push(...(json.dataPoints ?? []));
     pageToken = json.nextPageToken;
   } while (pageToken);
+  console.log(`  ${dataType}: ${points.length} data point(s)`);
   return points;
 }
 
