@@ -164,12 +164,12 @@ async function main() {
       const ACTIVE = new Set(['MODERATELY_ACTIVE', 'VERY_ACTIVE', 'MODERATE', 'VIGOROUS']);
       const pts = await listDataPoints(token, 'active-minutes', undefined, 10000, 1);
       const today = pts.filter((p) => civilStartDate(p.activeMinutes ?? p) === date);
-      const levels = today.flatMap((p) =>
-        ((p.activeMinutes ?? p).activeMinutesByActivityLevel ?? []),
+      const levels = today.flatMap(
+        (p) => (p.activeMinutes ?? p).activeMinutesByActivityLevel ?? [],
       );
-      // One-run diagnostic: confirm which activity-level strings appear today.
-      console.log(`  active-minutes today levels: ${JSON.stringify([...new Set(levels.map((a) => a.activityLevel))])}`);
-      return sumInts(levels.filter((a) => ACTIVE.has(a.activityLevel)).map((a) => a.activeMinutes));
+      return sumInts(
+        levels.filter((a) => ACTIVE.has(a.activityLevel)).map((a) => a.activeMinutes),
+      );
     }),
 
     // Sleep: total minutesAsleep across sessions → hours, 0.1 precision.
@@ -206,7 +206,7 @@ async function main() {
   await mkdir(dirname(OUT), { recursive: true });
   await writeFile(OUT, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(
-    `Wrote ${OUT}: ${payload.steps ?? '—'} steps, ${payload.sleepHours ?? '—'}h sleep, ${payload.restingHeartRate ?? '—'} bpm`,
+    `Wrote ${OUT}: ${payload.steps ?? '—'} steps, ${payload.activeMinutes ?? '—'} active min, ${payload.sleepHours ?? '—'}h sleep, ${payload.restingHeartRate ?? '—'} bpm`,
   );
 }
 
