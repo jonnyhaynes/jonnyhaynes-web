@@ -54,6 +54,23 @@ function todayUTC() {
   return new Date().toISOString().slice(0, 10);
 }
 
+/** The day after `ymd` (YYYY-MM-DD), UTC — used as an exclusive upper bound. */
+function nextDayUTC(ymd) {
+  const d = new Date(`${ymd}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * AIP-160 filter for a day of an interval-based type. The field MUST be
+ * prefixed with the data-type name and use snake_case, per the API's filter
+ * grammar, e.g. `steps.interval.civil_start_time >= "2026-07-27T00:00:00"`.
+ */
+function intervalDayFilter(dataType, date, nextDate) {
+  const field = `${dataType}.interval.civil_start_time`;
+  return `${field} >= "${date}T00:00:00" AND ${field} < "${nextDate}T00:00:00"`;
+}
+
 /**
  * List all data points of `dataType` whose civil start time falls within the
  * given UTC day, following pagination. AIP-160 filter per the Health API docs.
@@ -105,23 +122,22 @@ async function main() {
   const token = await refresh();
 
   const date = todayUTC();
-  // Civil-time window covering the whole target day.
-  const dayFilter =
-    `interval.civilStartTime >= "${date}T00:00:00" AND ` +
-    `interval.civilStartTime < "${date}T23:59:59"`;
+  const nextDate = nextDayUTC(date);
   console.log(`Fetching Google Health data for ${date}…`);
 
   const [steps, activeMinutes, sleepHours, restingHeartRate] = await Promise.all([
     // Steps: sum `count` across interval data points for the day.
     safeMetric('steps', async () => {
-      const pts = await listDataPoints(token, 'steps', dayFilter);
+      const filter = intervalDayFilter('steps', date, nextDate);
+      const pts = await listDataPoints(token, 'steps', filter);
       return sumInts(pts.map((p) => p.count));
     }),
 
     // Active minutes: sum minutes across all activity levels, all intervals —
     // mirrors Fitbit's fairly+very-active sum closely enough for the tile.
     safeMetric('activeMinutes', async () => {
-      const pts = await listDataPoints(token, 'activeMinutes', dayFilter);
+      const filter = intervalDayFilter('activeMinutes', date, nextDate);
+      const pts = await listDataPoints(token, 'activeMinutes', filter);
       const mins = pts.flatMap((p) =>
         (p.activeMinutesByActivityLevel ?? []).map((a) => a.minutes),
       );
@@ -131,20 +147,20 @@ async function main() {
     // Sleep: total minutesAsleep across sessions → hours, 0.1 precision.
     // Sleep/exercise cap pageSize at 25 per the docs.
     safeMetric('sleep', async () => {
-      const pts = await listDataPoints(token, 'sleep', dayFilter, 25);
+      const filter = intervalDayFilter('sleep', date, nextDate);
+      const pts = await listDataPoints(token, 'sleep', filter, 25);
       const minutes = sumInts(pts.map((p) => p.summary?.minutesAsleep));
       return minutes != null ? Math.round((minutes / 60) * 10) / 10 : null;
     }),
 
-    // Resting HR: a daily record keyed by `date` (no interval, so no filter).
-    // Pull the recent page and pick the record matching today's UTC date.
+    // Resting HR: a daily record keyed by `.date` (no interval). Filter on the
+    // type-prefixed date field per the API's daily-summary filter grammar.
     safeMetric('restingHeartRate', async () => {
-      const pts = await listDataPoints(token, 'dailyRestingHeartRate', undefined, 30);
-      const [y, m, d] = date.split('-').map(Number);
-      const match = pts.find(
-        (p) => p.date?.year === y && p.date?.month === m && p.date?.day === d,
-      );
-      const bpm = Number(match?.beatsPerMinute);
+      const filter =
+        `dailyRestingHeartRate.date >= "${date}" AND ` +
+        `dailyRestingHeartRate.date < "${nextDate}"`;
+      const pts = await listDataPoints(token, 'dailyRestingHeartRate', filter, 30);
+      const bpm = Number(pts[0]?.beatsPerMinute);
       return Number.isFinite(bpm) ? bpm : null;
     }),
   ]);
