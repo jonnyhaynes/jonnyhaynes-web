@@ -106,6 +106,16 @@ async function listDataPoints(token, dataType, filter, pageSize = 1000) {
   return points;
 }
 
+/** YYYY-MM-DD of a value's interval civil start date, or null. The civil date
+ *  is a structured {year, month, day} on `interval.civilStartTime.date`. */
+function civilStartDate(value) {
+  const d = value?.interval?.civilStartTime?.date;
+  if (!d) return null;
+  const mm = String(d.month).padStart(2, '0');
+  const dd = String(d.day).padStart(2, '0');
+  return `${d.year}-${mm}-${dd}`;
+}
+
 /** Sum a list of stringy integers safely; returns null if the list is empty. */
 function sumInts(values) {
   const nums = values.map((v) => Number(v)).filter((n) => Number.isFinite(n));
@@ -144,17 +154,18 @@ async function main() {
       return sumInts(pts.map((p) => p.steps?.count ?? p.count));
     }),
 
-    // Active minutes: PATH segment is kebab-case (active-minutes); the union
-    // field / filter prefix is camelCase (activeMinutes). Sum minutes across
-    // all activity levels — mirrors Fitbit's fairly+very-active sum.
+    // Active minutes: this type rejects the interval filter
+    // (INVALID_DATA_POINT_FILTER_DATA_TYPE_RESTRICTION), so fetch a recent
+    // unfiltered page (points come back newest-first) and keep only intervals
+    // whose civil start date is today. Sum minutes across all activity levels —
+    // mirrors Fitbit's fairly+very-active sum.
     safeMetric('activeMinutes', async () => {
-      const filter = intervalDayFilter('activeMinutes', date, nextDate);
-      const pts = await listDataPoints(token, 'active-minutes', filter);
+      const pts = await listDataPoints(token, 'active-minutes', undefined, 200);
       if (pts[0]) console.log(`  active-minutes[0] shape: ${JSON.stringify(pts[0])}`);
-      const mins = pts.flatMap((p) => {
-        const am = p.activeMinutes ?? p;
-        return (am.activeMinutesByActivityLevel ?? []).map((a) => a.minutes);
-      });
+      const today = pts.filter((p) => civilStartDate(p.activeMinutes ?? p) === date);
+      const mins = today.flatMap((p) =>
+        ((p.activeMinutes ?? p).activeMinutesByActivityLevel ?? []).map((a) => a.minutes),
+      );
       return sumInts(mins);
     }),
 
@@ -168,16 +179,16 @@ async function main() {
       return minutes != null ? Math.round((minutes / 60) * 10) / 10 : null;
     }),
 
-    // Resting HR: daily record keyed by `.date`. PATH is kebab-case
-    // (daily-resting-heart-rate); filter prefix is the camelCase union field.
+    // Resting HR: daily record that also rejects the .date filter, so fetch a
+    // recent unfiltered page and pick today's record (points are newest-first).
     safeMetric('restingHeartRate', async () => {
-      const filter =
-        `dailyRestingHeartRate.date >= "${date}" AND ` +
-        `dailyRestingHeartRate.date < "${nextDate}"`;
-      const pts = await listDataPoints(token, 'daily-resting-heart-rate', filter, 30);
+      const pts = await listDataPoints(token, 'daily-resting-heart-rate', undefined, 30);
       if (pts[0]) console.log(`  daily-resting-heart-rate[0] shape: ${JSON.stringify(pts[0])}`);
-      const rec = pts[0]?.dailyRestingHeartRate ?? pts[0];
-      const bpm = Number(rec?.beatsPerMinute);
+      const [y, m, d] = date.split('-').map(Number);
+      const match = pts
+        .map((p) => p.dailyRestingHeartRate ?? p)
+        .find((r) => r.date?.year === y && r.date?.month === m && r.date?.day === d);
+      const bpm = Number(match?.beatsPerMinute);
       return Number.isFinite(bpm) ? bpm : null;
     }),
   ]);
