@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-07-27T20:23:21.853Z",
+  "fetchedAt": "2026-07-28T09:37:07.061Z",
   "timeRange": "short_term",
-  "topGenre": "metal",
+  "topGenre": null,
   "artists": [
     {
       "name": "Green Day",
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
     },
     {
-      "name": "Slipknot",
-      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
-      "image": "https://i.scdn.co/image/ab6761610000f178d0cdb283a7384a0edb665182"
+      "name": "Bring Me The Horizon",
+      "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
+      "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
     }
   ],
   "tracks": [
