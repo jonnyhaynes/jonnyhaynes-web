@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-27T19:43:19.120Z",
+  "fetchedAt": "2026-07-28T08:44:37.223Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-27T18:59:03Z",
+      "pushedAt": "2026-07-27T22:11:18Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#190)",
-        "committedAt": "2026-07-27T18:59:03Z"
+        "message": "Refresh gaming data [skip ci] (#194)",
+        "committedAt": "2026-07-27T22:11:17Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -132,8 +132,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#190)",
-    "committedAt": "2026-07-27T18:59:03Z"
+    "message": "Refresh gaming data [skip ci] (#194)",
+    "committedAt": "2026-07-27T22:11:17Z"
   },
   "languages": [
     {
