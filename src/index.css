@@ -1159,6 +1159,12 @@
 }
 .watch-heart-path {
   fill: var(--color-accent-start);
+}
+/* Glow lives on a separate heart-shaped path behind the masked one, so the
+ * drop-shadow follows the heart outline instead of lighting the mask's
+ * bounding box (which showed as a rectangular heather halo). */
+.watch-heart-glow {
+  fill: var(--color-accent-start);
   filter: drop-shadow(
       0 0 4px color-mix(in oklch, var(--color-accent-start) 60%, transparent)
     )
@@ -1257,8 +1263,9 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #6bbf8a;
-  box-shadow: 0 0 5px #6bbf8a;
+  background: var(--color-accent-start);
+  box-shadow: 0 0 5px
+    color-mix(in oklch, var(--color-accent-start) 70%, transparent);
 }
 
 /* Small screens: shrink the whole watch so the corner complications keep clear

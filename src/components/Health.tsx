@@ -24,6 +24,20 @@ function fmt(n: number | null, digits = 0): string {
     : n.toLocaleString('en-GB', { maximumFractionDigits: digits });
 }
 
+/**
+ * Steps formatting for the (small) complication slot: em-dash when missing,
+ * comma-grouped up to 9,999, then compact "23k" once it hits five digits so a
+ * big day doesn't overflow the corner. Rounds to one decimal in the compact
+ * range only when it isn't a whole thousand (12.3k, but 23k not 23.0k).
+ */
+function fmtSteps(n: number | null): string {
+  if (n === null) return '—';
+  if (n < 10_000) return n.toLocaleString('en-GB');
+  const k = n / 1000;
+  const rounded = Math.round(k * 10) / 10;
+  return `${Number.isInteger(rounded) ? rounded : rounded.toFixed(1)}k`;
+}
+
 /** Fraction 0–1 of a value toward its goal; 0 when the value is missing. */
 function fill(value: number | null, goal: number): number {
   if (value === null) return 0;
@@ -248,7 +262,7 @@ export function Health() {
                   icon={StepsIcon}
                   label={`Steps: ${fmt(data.steps)}`}
                 >
-                  {fmt(data.steps)}
+                  {fmtSteps(data.steps)}
                 </Complication>
                 <Complication
                   className="watch-comp--tr"
@@ -319,7 +333,14 @@ export function Health() {
                       >
                         <defs>
                           <mask id="watch-hr-knockout">
-                            <rect width="32" height="29" fill="white" />
+                            {/* Mask the number out of the heart. The mask region
+                                is clipped to the heart path itself (not the full
+                                SVG rect) so no rectangular halo can leak from the
+                                glow below. */}
+                            <path
+                              d="M16 28.5C16 28.5 2 20.4 2 10.2 2 5.1 5.9 1.5 10.3 1.5 12.9 1.5 15 3 16 5.1 17 3 19.1 1.5 21.7 1.5 26.1 1.5 30 5.1 30 10.2 30 20.4 16 28.5 16 28.5Z"
+                              fill="white"
+                            />
                             <text
                               x="16"
                               y="18.6"
@@ -332,6 +353,17 @@ export function Health() {
                             </text>
                           </mask>
                         </defs>
+                        {/* Glow layer: a heart behind the masked one carrying
+                            the drop-shadow, itself masked with the SAME knockout
+                            so the number-shaped hole shows the dark screen (not
+                            solid heart) through both layers. Keeping the glow off
+                            the top path stops the filter from lighting the mask's
+                            bounding box (the old "heather box"). */}
+                        <path
+                          className="watch-heart-glow"
+                          mask="url(#watch-hr-knockout)"
+                          d="M16 28.5C16 28.5 2 20.4 2 10.2 2 5.1 5.9 1.5 10.3 1.5 12.9 1.5 15 3 16 5.1 17 3 19.1 1.5 21.7 1.5 26.1 1.5 30 5.1 30 10.2 30 20.4 16 28.5 16 28.5Z"
+                        />
                         <path
                           className="watch-heart-path"
                           mask="url(#watch-hr-knockout)"
