@@ -1,4 +1,5 @@
 import { type CSSProperties, useEffect, useState } from 'react';
+import { useReducedMotion } from '../lib/useReducedMotion';
 
 /**
  * A mechanical split-flap / airport-arrivals board for one word position in the
@@ -13,7 +14,7 @@ import { type CSSProperties, useEffect, useState } from 'react';
  * never announces its churn. Layout is stable — the slot count is fixed, so the
  * board reserves a constant width; shorter words settle trailing slots to
  * blank. Reduced motion is honoured: no riffle, the final letters appear at
- * once (see useReducedMotion below).
+ * once (see useReducedMotion in ../lib).
  */
 
 // Glyphs a slot rolls through while settling. Upper-case + a few symbols; the
@@ -25,20 +26,6 @@ const RIFFLE_GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-#*'.split('');
 const RIFFLE_STEP = 45;
 const SLOT_STAGGER = 55;
 const RIFFLE_STEPS = 8;
-
-function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(
-    () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false,
-  );
-  useEffect(() => {
-    const mq = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    if (!mq) return;
-    const onChange = () => setReduced(mq.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-  return reduced;
-}
 
 export function FlipWord({
   words,
