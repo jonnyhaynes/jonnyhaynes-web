@@ -1178,19 +1178,20 @@
   color: var(--color-muted);
 }
 
-/* systole contraction then slower diastole recovery, one per beat */
+/* systole contraction then slower diastole recovery, one per beat — kept
+ * subtle (peak ~6%) so it reads as a gentle pulse, not a throb. */
 @keyframes watch-beat {
   0% {
     transform: scale(1);
   }
   12% {
-    transform: scale(1.14);
+    transform: scale(1.06);
   }
   24% {
-    transform: scale(0.98);
+    transform: scale(0.99);
   }
   38% {
-    transform: scale(1.05);
+    transform: scale(1.025);
   }
   52% {
     transform: scale(1);
