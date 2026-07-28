@@ -59,12 +59,14 @@ function Ring({
   track,
   filled,
   play,
+  dim,
 }: {
   r: number;
   colour: string;
   track: string;
   filled: number;
   play: boolean;
+  dim: boolean;
 }) {
   const len = circumference(r);
   return (
@@ -78,7 +80,7 @@ function Ring({
         stroke={colour}
         strokeWidth="11"
         strokeLinecap="round"
-        className="watch-ring"
+        className={`watch-ring${dim ? ' watch-ring--dim' : ''}`}
         style={{
           strokeDasharray: len,
           // Start empty, then reveal to the fill once `play` flips true so the
@@ -96,17 +98,19 @@ function Complication({
   colour,
   icon,
   label,
+  featured,
   children,
 }: {
   className: string;
   colour: string;
   icon: React.ReactNode;
   label: string;
+  featured: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div
-      className={`watch-comp ${className}`}
+      className={`watch-comp ${className}${featured ? ' watch-comp--featured' : ''}`}
       style={{ color: colour } as CSSProperties}
       aria-label={label}
     >
@@ -162,6 +166,26 @@ const SleepIcon = (
   </svg>
 );
 
+const HEART_PATH =
+  'M16 28.5C16 28.5 2 20.4 2 10.2 2 5.1 5.9 1.5 10.3 1.5 12.9 1.5 15 3 16 5.1 17 3 19.1 1.5 21.7 1.5 26.1 1.5 30 5.1 30 10.2 30 20.4 16 28.5 16 28.5Z';
+
+/**
+ * The four things the watch can feature in the centre of the rings. Tapping the
+ * screen advances through them; `hr` shows the pulsing heart, the others show a
+ * big value + its goal and emphasise their own ring. `ring` names which ring to
+ * keep lit (null = all lit, for HR).
+ */
+type FeatureKey = 'hr' | 'steps' | 'active' | 'sleep';
+const FEATURES: readonly {
+  key: FeatureKey;
+  ring: 'steps' | 'active' | 'sleep' | null;
+}[] = [
+  { key: 'hr', ring: null },
+  { key: 'steps', ring: 'steps' },
+  { key: 'active', ring: 'active' },
+  { key: 'sleep', ring: 'sleep' },
+];
+
 /**
  * Health section — a light-touch personality widget backed by the baked health
  * snapshot. The four daily metrics are dressed as a fitness watch to match the
@@ -170,10 +194,17 @@ const SleepIcon = (
  * heart pulses at the resting rate in the centre with its BPM knocked out of the
  * heart shape.
  *
+ * Interaction (mirrors Gaming's TV power + the Now Playing knob): the crown is a
+ * real power button that turns the screen off/on; tapping the screen cycles which
+ * metric is featured in the centre. Both are ordinary buttons — click, Enter and
+ * Space all work — and each change is announced via a polite live region, so the
+ * whole thing is keyboard- and screen-reader-navigable (no timing gestures).
+ *
  * Graceful degradation: renders nothing if the fetch failed (data null). If the
  * data loaded but every metric is null (no successful bake), shows a quiet
- * rest-day state — empty rings, no pulse — rather than a broken/blank section.
- * Individual null metrics show an em-dash and an unfilled ring.
+ * rest-day state — empty rings, no pulse, no controls — rather than a
+ * broken/blank section. Individual null metrics show an em-dash and an unfilled
+ * ring.
  */
 export function Health() {
   const data = useHealthData();
@@ -194,6 +225,10 @@ export function Health() {
     };
   }, [reduced]);
 
+  // Which metric is featured in the centre, and whether the screen is powered.
+  const [featureIndex, setFeatureIndex] = useState(0);
+  const [powered, setPowered] = useState(true);
+
   if (!data) return null;
 
   const hasAny =
@@ -207,6 +242,60 @@ export function Health() {
   const beat = bpm && bpm > 0 ? `${(60 / bpm).toFixed(3)}s` : undefined;
   const synced = syncedAt(data.fetchedAt);
 
+  const feature = FEATURES[featureIndex];
+  const nextFeature = () =>
+    setFeatureIndex((i) => (i + 1) % FEATURES.length);
+
+  // Human-readable value + goal per feature, for the centre readout and the
+  // live-region announcement.
+  const readout: Record<
+    FeatureKey,
+    { label: string; value: string; unit?: string; goal: string; announce: string }
+  > = {
+    hr: {
+      label: 'Resting HR',
+      value: fmt(bpm),
+      unit: 'bpm',
+      goal: '',
+      announce:
+        bpm === null
+          ? 'Resting heart rate unavailable'
+          : `Resting heart rate ${bpm} bpm`,
+    },
+    steps: {
+      label: 'Steps',
+      value: fmt(data.steps),
+      goal: `of ${GOALS.steps.toLocaleString('en-GB')} goal`,
+      announce:
+        data.steps === null
+          ? 'Steps unavailable'
+          : `Steps, ${fmt(data.steps)} of ${GOALS.steps.toLocaleString('en-GB')} goal`,
+    },
+    active: {
+      label: 'Active',
+      value: fmt(data.activeMinutes),
+      unit: 'min',
+      goal: `of ${GOALS.activeMinutes} min goal`,
+      announce:
+        data.activeMinutes === null
+          ? 'Active minutes unavailable'
+          : `Active, ${fmt(data.activeMinutes)} of ${GOALS.activeMinutes} minute goal`,
+    },
+    sleep: {
+      label: 'Sleep',
+      value: fmt(data.sleepHours, 1),
+      unit: 'hrs',
+      goal: `of ${GOALS.sleepHours} hr goal`,
+      announce:
+        data.sleepHours === null
+          ? 'Sleep unavailable'
+          : `Sleep, ${fmt(data.sleepHours, 1)} of ${GOALS.sleepHours} hour goal`,
+    },
+  };
+
+  // The polite live-region text: what's featured now, or the screen state.
+  const liveText = !powered ? 'Screen off' : readout[feature.key].announce;
+
   return (
     <section id="health" className="scroll-mt-16 py-16">
       <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
@@ -217,12 +306,12 @@ export function Health() {
       </p>
 
       {!hasAny ? (
-        // Rest-day fallback: empty watch + a line. No pulse, no numbers.
+        // Rest-day fallback: empty watch + a line. No pulse, no controls.
         <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
           <div className="watch" aria-hidden="true">
             <span className="watch-strap watch-strap--top" />
             <div className="watch-case">
-              <span className="watch-crown" />
+              <span className="watch-crown-static" />
               <div className="watch-face">
                 <div className="watch-dial">
                   <svg viewBox="0 0 194 194" className="watch-rings-svg">
@@ -254,133 +343,176 @@ export function Health() {
           <div className="watch">
             <span className="watch-strap watch-strap--top" />
             <div className="watch-case">
-              <span className="watch-crown" aria-hidden="true" />
-              <div className="watch-face">
-                <Complication
-                  className="watch-comp--tl"
-                  colour="#a877bf"
-                  icon={StepsIcon}
-                  label={`Steps: ${fmt(data.steps)}`}
-                >
-                  {fmtSteps(data.steps)}
-                </Complication>
-                <Complication
-                  className="watch-comp--tr"
-                  colour="#c79ad6"
-                  icon={ActiveIcon}
-                  label={`Active: ${fmt(data.activeMinutes)} minutes`}
-                >
-                  {fmt(data.activeMinutes)}
-                  <span className="watch-comp-u">m</span>
-                </Complication>
-                <Complication
-                  className="watch-comp--bl"
-                  colour="#7a4988"
-                  icon={SleepIcon}
-                  label={`Sleep: ${fmt(data.sleepHours, 1)} hours`}
-                >
-                  {fmt(data.sleepHours, 1)}
-                  <span className="watch-comp-u">h</span>
-                </Complication>
+              {/* Crown — a real power button (like Gaming's TV power). */}
+              <button
+                type="button"
+                className="watch-crown"
+                aria-pressed={powered}
+                aria-label={powered ? 'Turn watch screen off' : 'Turn watch screen on'}
+                onClick={() => setPowered((on) => !on)}
+              />
 
-                {synced && (
-                  <span className="watch-synced" aria-label={`Synced ${synced}`}>
-                    <span className="watch-synced-dot" aria-hidden="true" />
-                    <span aria-hidden="true">
-                      Synced
-                      <br />
-                      {synced}
-                    </span>
+              {/* Screen — a button that cycles the featured metric on tap. Only
+                  interactive while powered; when off it shows Standby. */}
+              <button
+                type="button"
+                className={`watch-face watch-face--btn${powered ? '' : ' watch-face--off'}`}
+                aria-label={
+                  powered
+                    ? 'Watch screen — show the next metric'
+                    : 'Watch screen is off'
+                }
+                onClick={powered ? nextFeature : undefined}
+              >
+                {!powered && (
+                  <span className="watch-standby" aria-hidden="true">
+                    Standby
                   </span>
                 )}
 
-                <div className="watch-dial">
-                  <svg
-                    viewBox="0 0 194 194"
-                    className="watch-rings-svg"
-                    aria-hidden="true"
+                <span className="watch-screen">
+                  <Complication
+                    className="watch-comp--tl"
+                    colour="#a877bf"
+                    icon={StepsIcon}
+                    label={`Steps: ${fmt(data.steps)}`}
+                    featured={feature.key === 'steps'}
                   >
-                    {RINGS.map((ring) => (
-                      <Ring
-                        key={ring.key}
-                        r={ring.r}
-                        colour={ring.colour}
-                        track={ring.track}
-                        filled={
-                          ring.key === 'steps'
-                            ? fill(data.steps, GOALS.steps)
-                            : ring.key === 'active'
-                              ? fill(data.activeMinutes, GOALS.activeMinutes)
-                              : fill(data.sleepHours, GOALS.sleepHours)
-                        }
-                        play={play}
-                      />
-                    ))}
-                  </svg>
+                    {fmtSteps(data.steps)}
+                  </Complication>
+                  <Complication
+                    className="watch-comp--tr"
+                    colour="#c79ad6"
+                    icon={ActiveIcon}
+                    label={`Active: ${fmt(data.activeMinutes)} minutes`}
+                    featured={feature.key === 'active'}
+                  >
+                    {fmt(data.activeMinutes)}
+                    <span className="watch-comp-u">m</span>
+                  </Complication>
+                  <Complication
+                    className="watch-comp--bl"
+                    colour="#7a4988"
+                    icon={SleepIcon}
+                    label={`Sleep: ${fmt(data.sleepHours, 1)} hours`}
+                    featured={feature.key === 'sleep'}
+                  >
+                    {fmt(data.sleepHours, 1)}
+                    <span className="watch-comp-u">h</span>
+                  </Complication>
 
-                  <div className="watch-heart-holder">
-                    {bpm !== null ? (
-                      <svg
-                        viewBox="0 0 32 29"
-                        className="watch-heart"
-                        role="img"
-                        aria-label={`Resting heart rate ${bpm} bpm`}
-                        style={
-                          !reduced && beat
-                            ? ({ '--beat': beat } as CSSProperties)
-                            : undefined
-                        }
-                      >
-                        <defs>
-                          <mask id="watch-hr-knockout">
-                            {/* Mask the number out of the heart. The mask region
-                                is clipped to the heart path itself (not the full
-                                SVG rect) so no rectangular halo can leak from the
-                                glow below. */}
-                            <path
-                              d="M16 28.5C16 28.5 2 20.4 2 10.2 2 5.1 5.9 1.5 10.3 1.5 12.9 1.5 15 3 16 5.1 17 3 19.1 1.5 21.7 1.5 26.1 1.5 30 5.1 30 10.2 30 20.4 16 28.5 16 28.5Z"
-                              fill="white"
-                            />
-                            <text
-                              x="16"
-                              y="18.6"
-                              textAnchor="middle"
-                              fill="black"
-                              fontSize="11"
-                              fontWeight="800"
-                            >
-                              {bpm}
-                            </text>
-                          </mask>
-                        </defs>
-                        {/* Glow layer: a heart behind the masked one carrying
-                            the drop-shadow, itself masked with the SAME knockout
-                            so the number-shaped hole shows the dark screen (not
-                            solid heart) through both layers. Keeping the glow off
-                            the top path stops the filter from lighting the mask's
-                            bounding box (the old "heather box"). */}
-                        <path
-                          className="watch-heart-glow"
-                          mask="url(#watch-hr-knockout)"
-                          d="M16 28.5C16 28.5 2 20.4 2 10.2 2 5.1 5.9 1.5 10.3 1.5 12.9 1.5 15 3 16 5.1 17 3 19.1 1.5 21.7 1.5 26.1 1.5 30 5.1 30 10.2 30 20.4 16 28.5 16 28.5Z"
-                        />
-                        <path
-                          className="watch-heart-path"
-                          mask="url(#watch-hr-knockout)"
-                          d="M16 28.5C16 28.5 2 20.4 2 10.2 2 5.1 5.9 1.5 10.3 1.5 12.9 1.5 15 3 16 5.1 17 3 19.1 1.5 21.7 1.5 26.1 1.5 30 5.1 30 10.2 30 20.4 16 28.5 16 28.5Z"
-                        />
-                      </svg>
-                    ) : (
-                      <span className="watch-hr-missing" aria-label="Resting heart rate unavailable">
-                        —
+                  {synced && (
+                    <span className="watch-synced" aria-hidden="true">
+                      <span className="watch-synced-dot" />
+                      <span>
+                        Synced
+                        <br />
+                        {synced}
                       </span>
-                    )}
+                    </span>
+                  )}
+
+                  <div className="watch-dial">
+                    <svg
+                      viewBox="0 0 194 194"
+                      className="watch-rings-svg"
+                      aria-hidden="true"
+                    >
+                      {RINGS.map((ring) => (
+                        <Ring
+                          key={ring.key}
+                          r={ring.r}
+                          colour={ring.colour}
+                          track={ring.track}
+                          dim={feature.ring !== null && feature.ring !== ring.key}
+                          filled={
+                            ring.key === 'steps'
+                              ? fill(data.steps, GOALS.steps)
+                              : ring.key === 'active'
+                                ? fill(data.activeMinutes, GOALS.activeMinutes)
+                                : fill(data.sleepHours, GOALS.sleepHours)
+                          }
+                          play={play}
+                        />
+                      ))}
+                    </svg>
+
+                    <div className="watch-centre">
+                      {feature.key === 'hr' ? (
+                        bpm !== null ? (
+                          <svg
+                            viewBox="0 0 32 29"
+                            className="watch-heart"
+                            role="img"
+                            aria-hidden="true"
+                            style={
+                              !reduced && beat
+                                ? ({ '--beat': beat } as CSSProperties)
+                                : undefined
+                            }
+                          >
+                            <defs>
+                              <mask id="watch-hr-knockout">
+                                <path d={HEART_PATH} fill="white" />
+                                <text
+                                  x="16"
+                                  y="18.6"
+                                  textAnchor="middle"
+                                  fill="black"
+                                  fontSize="11"
+                                  fontWeight="800"
+                                >
+                                  {bpm}
+                                </text>
+                              </mask>
+                            </defs>
+                            <path
+                              className="watch-heart-glow"
+                              mask="url(#watch-hr-knockout)"
+                              d={HEART_PATH}
+                            />
+                            <path
+                              className="watch-heart-path"
+                              mask="url(#watch-hr-knockout)"
+                              d={HEART_PATH}
+                            />
+                          </svg>
+                        ) : (
+                          <span className="watch-hr-missing" aria-hidden="true">
+                            —
+                          </span>
+                        )
+                      ) : (
+                        <span className="watch-metric" aria-hidden="true">
+                          <span className="watch-metric-v">
+                            {readout[feature.key].value}
+                            {readout[feature.key].unit && (
+                              <span className="watch-metric-u">
+                                {readout[feature.key].unit}
+                              </span>
+                            )}
+                          </span>
+                          <span className="watch-metric-cap">
+                            {readout[feature.key].label}
+                          </span>
+                          <span className="watch-metric-goal">
+                            {readout[feature.key].goal}
+                          </span>
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>
+                </span>
+              </button>
             </div>
             <span className="watch-strap watch-strap--bot" />
           </div>
+
+          {/* Polite live region so screen-reader users hear what's featured (or
+              that the screen is off) after each control press. */}
+          <p className="sr-only" role="status" aria-live="polite">
+            {liveText}
+          </p>
         </div>
       )}
     </section>

@@ -111,6 +111,28 @@ doesn't render the "rest-day fallback" its own data-layer comment promises.
   check light + dark themes; check mobile (watch scales down, corners don't
   collide); keyboard focus + screen-reader labels read sensibly.
 
+## Interaction (added after initial build)
+
+The other sections all have a real control (Gaming's channel dials, Listening's
+knob), so the watch got two, both watch-native and both ordinary buttons (no
+timing/path gestures — see the accessibility note):
+
+- **Crown = power.** A real `<button aria-pressed>` that turns the screen off/on,
+  mirroring Gaming's TV-power button. Off = darkened screen showing "Standby".
+- **Screen tap = cycle the featured metric.** The screen is a `<button>`; each
+  tap advances the centre through Resting HR → Steps → Active → Sleep. The
+  featured metric's ring stays lit (others dim), its corner complication gets a
+  soft outline, and the centre shows the big value + goal (the heart shows only
+  when HR is featured).
+
+**Accessibility (verified in the live a11y tree):** both are real buttons (click
+/ Enter / Space); a `role="status" aria-live="polite"` region announces the
+featured metric ("Steps, 8,432 of 10,000 goal") or "Screen off" after each press.
+**Long-press was explicitly rejected** — timing gestures fail WCAG 2.5.1 and
+break for keyboard/screen-reader users (a VoiceOver double-tap can't "hold"). All
+interaction motion (heartbeat, ring sweep, metric fade, screen fade) is disabled
+under `prefers-reduced-motion`.
+
 ## Reviewer decisions (resolved)
 
 - **Sparse rings on a low-activity day are fine** (Jonny) — a nearly-empty steps

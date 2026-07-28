@@ -1101,15 +1101,50 @@
   z-index: 1;
 }
 
-.watch-crown {
+/* Crown — a real power button. Shares its look with the static (rest-day)
+ * crown below; only the button carries interaction + focus states. */
+.watch-crown,
+.watch-crown-static {
   position: absolute;
   right: -6px;
   top: 120px;
-  width: 10px;
-  height: 44px;
+  width: 12px;
+  height: 46px;
   border-radius: 3px;
   background: linear-gradient(90deg, #3a3b41, #202126);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.watch-crown {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+/* the ridged grip on the crown */
+.watch-crown::after {
+  content: '';
+  position: absolute;
+  inset: 2px 3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    rgba(0, 0, 0, 0.35) 2px 3px
+  );
+}
+.watch-crown:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 0 8px color-mix(in oklch, var(--color-accent-start) 55%, transparent);
+}
+.watch-crown:active {
+  transform: translateX(2px) scaleX(0.9);
+}
+.watch-crown:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 2px;
 }
 
 /* squircle screen echoing the case corners, not a circle */
@@ -1120,6 +1155,46 @@
   border-radius: 60px;
   background: radial-gradient(circle at 50% 36%, #121319, #050506);
   box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9);
+}
+/* the screen is also a button (tap → next metric); strip the native chrome */
+.watch-face--btn {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  color: inherit;
+  font-family: inherit;
+}
+.watch-face--btn:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 3px;
+}
+/* powered off: screen darkens, contents fade to Standby */
+.watch-face--off {
+  cursor: default;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in oklch, var(--color-muted) 8%, #000) 0%,
+    #000 70%
+  );
+}
+.watch-screen {
+  transition: opacity 0.35s ease;
+}
+.watch-face--off .watch-screen {
+  opacity: 0;
+  pointer-events: none;
+}
+.watch-standby {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--color-muted) 55%, transparent);
 }
 
 /* central dial: rings + heart */
@@ -1138,15 +1213,66 @@
   transform: rotate(-90deg);
 }
 .watch-ring {
-  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+/* rings that aren't the featured metric dim back so the chosen one stands out */
+.watch-ring--dim {
+  opacity: 0.32;
 }
 
-.watch-heart-holder {
+.watch-centre {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+/* centre readout when a non-HR metric is featured: big value + label + goal */
+.watch-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: watch-centre-fade 0.28s ease;
+}
+.watch-metric-v {
+  font-size: 2.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: color-mix(in oklch, var(--color-accent-start) 82%, white);
+  text-shadow: 0 0 4px
+    color-mix(in oklch, var(--color-accent-start) 60%, transparent);
+}
+.watch-metric-u {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  text-shadow: none;
+  margin-left: 2px;
+}
+.watch-metric-cap {
+  margin-top: 3px;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.watch-metric-goal {
+  margin-top: 5px;
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  color: color-mix(in oklch, var(--color-muted) 75%, transparent);
+}
+@keyframes watch-centre-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .watch-heart {
   display: block;
@@ -1243,6 +1369,14 @@
   bottom: 34px;
   left: 34px;
 }
+/* the complication whose metric is currently featured gets a soft outline */
+.watch-comp--featured::after {
+  content: '';
+  position: absolute;
+  inset: -6px -8px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in oklch, currentColor 55%, transparent);
+}
 
 /* synced tag, bottom-right corner */
 .watch-synced {
@@ -1283,5 +1417,12 @@
   }
   .watch-heart {
     animation: none;
+  }
+  /* instant metric swap — no fade-in when cycling the centre */
+  .watch-metric {
+    animation: none;
+  }
+  .watch-screen {
+    transition: none;
   }
 }
