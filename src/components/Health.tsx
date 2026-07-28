@@ -10,9 +10,9 @@ const GOALS = { steps: 10_000, activeMinutes: 60, sleepHours: 8 } as const;
 
 /** Ring geometry (SVG user units), outermost → innermost. */
 const RINGS = [
-  { key: 'steps', r: 86, colour: '#a877bf', track: 'rgba(168,119,191,0.15)' },
-  { key: 'active', r: 68, colour: '#c79ad6', track: 'rgba(199,154,214,0.15)' },
-  { key: 'sleep', r: 50, colour: '#7a4988', track: 'rgba(122,73,136,0.18)' },
+  { key: 'steps', r: 86, colour: '#a877bf' },
+  { key: 'active', r: 68, colour: '#c79ad6' },
+  { key: 'sleep', r: 50, colour: '#7a4988' },
 ] as const;
 
 const circumference = (r: number) => 2 * Math.PI * r;
@@ -56,14 +56,12 @@ function syncedAt(iso: string | undefined): string | null {
 function Ring({
   r,
   colour,
-  track,
   filled,
   play,
   dim,
 }: {
   r: number;
   colour: string;
-  track: string;
   filled: number;
   play: boolean;
   dim: boolean;
@@ -71,7 +69,17 @@ function Ring({
   const len = circumference(r);
   return (
     <>
-      <circle cx="97" cy="97" r={r} fill="none" stroke={track} strokeWidth="11" />
+      {/* Track: the ring's own hue, dimmed via a theme-aware opacity token so it
+          stays visible on both the dark OLED and the pale light-theme face. */}
+      <circle
+        className="watch-ring-track"
+        cx="97"
+        cy="97"
+        r={r}
+        fill="none"
+        stroke={colour}
+        strokeWidth="11"
+      />
       <circle
         cx="97"
         cy="97"
@@ -318,11 +326,12 @@ export function Health() {
                     {RINGS.map((ring) => (
                       <circle
                         key={ring.key}
+                        className="watch-ring-track"
                         cx="97"
                         cy="97"
                         r={ring.r}
                         fill="none"
-                        stroke={ring.track}
+                        stroke={ring.colour}
                         strokeWidth="11"
                       />
                     ))}
@@ -423,7 +432,6 @@ export function Health() {
                           key={ring.key}
                           r={ring.r}
                           colour={ring.colour}
-                          track={ring.track}
                           dim={feature.ring !== null && feature.ring !== ring.key}
                           filled={
                             ring.key === 'steps'

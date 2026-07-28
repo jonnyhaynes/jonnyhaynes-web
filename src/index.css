@@ -54,6 +54,20 @@
    * to match the TV label and clear 4.5:1 on the lighter cabinet grey. */
   --color-deck-panel-text: var(--color-muted);
 
+  /* Health watch — case (brushed body) + face (screen). Flipped per theme: a
+   * dark titanium case + near-black OLED face on dark; a light steel case + a
+   * pale screen on light. Kept as their own tokens (not the deck panel) so the
+   * watch reads as a distinct device and the face contrast can be tuned. */
+  --color-watch-case-top: #34353b;
+  --color-watch-case-bottom: #17181c;
+  --color-watch-crown-top: #3a3b41;
+  --color-watch-crown-bottom: #202126;
+  --color-watch-face-top: #121319;
+  --color-watch-face-bottom: #050506;
+  /* unfilled ring track opacity — low on the dark face where faint heather still
+   * reads; bumped in the light block so tracks don't vanish on the pale face */
+  --watch-ring-track-opacity: 0.15;
+
   /* Recessed control surfaces (the switcher track + its hover). Foreground-based
    * so they read as a subtle inset in both themes: a faint dark fill on dark, a
    * faint dark fill on light — no hardcoded black/white that only works on one. */
@@ -101,6 +115,17 @@
    * on the cabinet grey — the Gaming TV's bezel label uses the same token, so
    * text matches too. */
   --color-deck-panel-text: #4a5160;
+
+  /* Health watch — light steel case + a pale screen (flipped from the dark
+   * block's titanium/OLED). The face stays a touch tinted (not pure white) so
+   * the heather rings, glowing heart, and knocked-out BPM keep their contrast. */
+  --color-watch-case-top: #e6e3dc;
+  --color-watch-case-bottom: #c4bfb4;
+  --color-watch-crown-top: #d8d4ca;
+  --color-watch-crown-bottom: #b3ada1;
+  --color-watch-face-top: #f0eee9;
+  --color-watch-face-bottom: #ddd9d0;
+  --watch-ring-track-opacity: 0.3;
 
   /* Reading shelf on the chalk background: lighter shadows + shelf line. */
   --color-shelf: color-mix(in oklch, black 12%, transparent);
@@ -1090,7 +1115,11 @@
   width: 300px;
   height: 360px;
   border-radius: 74px;
-  background: linear-gradient(145deg, #34353b, #17181c);
+  background: linear-gradient(
+    145deg,
+    var(--color-watch-case-top),
+    var(--color-watch-case-bottom)
+  );
   box-shadow:
     inset 0 0 0 2px rgba(0, 0, 0, 0.5),
     inset 0 2px 6px rgba(255, 255, 255, 0.06),
@@ -1111,7 +1140,11 @@
   width: 12px;
   height: 46px;
   border-radius: 3px;
-  background: linear-gradient(90deg, #3a3b41, #202126);
+  background: linear-gradient(
+    90deg,
+    var(--color-watch-crown-top),
+    var(--color-watch-crown-bottom)
+  );
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
 }
 .watch-crown {
@@ -1153,8 +1186,14 @@
   width: 272px;
   height: 302px;
   border-radius: 60px;
-  background: radial-gradient(circle at 50% 36%, #121319, #050506);
-  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9);
+  background: radial-gradient(
+    circle at 50% 36%,
+    var(--color-watch-face-top),
+    var(--color-watch-face-bottom)
+  );
+  /* inner vignette — kept subtle so it reads as recessed glass on the dark OLED
+   * face without becoming a heavy dark ring on the pale light-theme face */
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.35);
 }
 /* the screen is also a button (tap → next metric); strip the native chrome */
 .watch-face--btn {
@@ -1211,6 +1250,9 @@
   inset: 0;
   /* 12 o'clock start */
   transform: rotate(-90deg);
+}
+.watch-ring-track {
+  opacity: var(--watch-ring-track-opacity);
 }
 .watch-ring {
   transition:
