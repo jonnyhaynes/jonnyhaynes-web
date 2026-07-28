@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-28T09:37:07.061Z",
+  "fetchedAt": "2026-07-28T20:16:15.619Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -11,7 +11,7 @@
     {
       "name": "Queen",
       "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-      "image": "https://i.scdn.co/image/ab67726900008f7447488c35a509d42072c23976"
+      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
     },
     {
       "name": "Ghost",
@@ -29,6 +29,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     },
     {
+      "name": "Bring Me The Horizon",
+      "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
+      "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
+    },
+    {
       "name": "Metallica",
       "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
       "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
@@ -37,11 +42,6 @@
       "name": "The King Blues",
       "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
       "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
-    },
-    {
-      "name": "Bring Me The Horizon",
-      "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
-      "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
     }
   ],
   "tracks": [
