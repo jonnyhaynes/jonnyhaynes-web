@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-29T09:37:51.845Z",
+  "fetchedAt": "2026-07-29T20:13:04.298Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -17,6 +17,11 @@
       "name": "Ghost",
       "url": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
       "image": "https://i.scdn.co/image/ab6761610000f1782d972470f1f8110be7c07017"
+    },
+    {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Rammstein",
@@ -37,11 +42,6 @@
       "name": "Metallica",
       "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
       "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
-    },
-    {
-      "name": "The King Blues",
-      "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
-      "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
     }
   ],
   "tracks": [
