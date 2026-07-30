@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-29T20:13:04.298Z",
+  "fetchedAt": "2026-07-30T09:31:15.619Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,6 +24,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
+      "name": "The King Blues",
+      "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
+      "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
+    },
+    {
       "name": "Rammstein",
       "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
@@ -37,11 +42,6 @@
       "name": "Bring Me The Horizon",
       "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
       "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
-    },
-    {
-      "name": "Metallica",
-      "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
-      "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
     }
   ],
   "tracks": [
