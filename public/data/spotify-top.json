@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-30T09:31:15.619Z",
+  "fetchedAt": "2026-07-30T20:15:05.644Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -19,24 +19,24 @@
       "image": "https://i.scdn.co/image/ab6761610000f1782d972470f1f8110be7c07017"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
       "name": "The King Blues",
       "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
       "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
     },
     {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Frank Turner",
       "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
       "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
+    },
+    {
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
       "name": "Bring Me The Horizon",
