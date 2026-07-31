@@ -1,8 +1,8 @@
 {
-  "fetchedAt": "2026-07-31T10:25:31.905Z",
+  "fetchedAt": "2026-07-31T20:50:14.228Z",
   "date": "2026-07-31",
-  "steps": 584,
-  "activeMinutes": null,
+  "steps": 10599,
+  "activeMinutes": 60,
   "sleepHours": 8.5,
   "restingHeartRate": 65
 }
