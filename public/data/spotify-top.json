@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-07-31T09:45:27.297Z",
+  "fetchedAt": "2026-07-31T20:21:15.444Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "rock",
   "artists": [
     {
       "name": "Green Day",
@@ -29,11 +29,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
-      "name": "Frank Turner",
-      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
-      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
-    },
-    {
       "name": "Rammstein",
       "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
@@ -42,6 +37,11 @@
       "name": "Bring Me The Horizon",
       "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
       "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
+    },
+    {
+      "name": "Frank Turner",
+      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
+      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     }
   ],
   "tracks": [
