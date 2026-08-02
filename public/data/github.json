@@ -1,7 +1,29 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-08-01T19:17:41.035Z",
+  "fetchedAt": "2026-08-02T08:31:20.535Z",
   "projects": [
+    {
+      "name": "jonnyhaynes-web",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "homepageUrl": "https://www.jonnyhaynes.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "HTML",
+        "Shell"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-08-01T21:59:50Z",
+      "lastCommit": {
+        "message": "Refresh gaming data [skip ci] (#241)",
+        "committedAt": "2026-08-01T21:59:50Z"
+      },
+      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
+      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
     {
       "name": "sitwellcc-web",
       "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
@@ -22,28 +44,6 @@
       },
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
-    {
-      "name": "jonnyhaynes-web",
-      "description": "My personal website — a static site built with React, Vite & TypeScript.",
-      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-      "homepageUrl": "https://www.jonnyhaynes.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript",
-        "CSS",
-        "HTML",
-        "Shell"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-08-01T10:44:00Z",
-      "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#237)",
-        "committedAt": "2026-08-01T10:44:00Z"
-      },
-      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
-      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
     },
     {
       "name": "skillswap",
@@ -131,10 +131,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "sitwellcc-web",
-    "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-    "message": "[ai-assisted] Add Open Graph tags and a CMS sharing image (#81)",
-    "committedAt": "2026-08-01T09:05:19Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh gaming data [skip ci] (#241)",
+    "committedAt": "2026-08-01T21:59:50Z"
   },
   "languages": [
     {
