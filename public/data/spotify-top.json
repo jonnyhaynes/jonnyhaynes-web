@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-02T20:10:55.955Z",
+  "fetchedAt": "2026-08-03T10:43:04.046Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -52,6 +52,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
     },
     {
+      "title": "I'm Out and I Wanna Go Home",
+      "artist": "Daði Freyr",
+      "url": "https://open.spotify.com/track/1hiwr6Ps0GihMMP573L5Jv",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
       "title": "Boulevard of Broken Dreams",
       "artist": "Green Day",
       "url": "https://open.spotify.com/track/5cbTCQ14BC974Zsx6OlXF8",
@@ -86,12 +92,6 @@
       "artist": "Slipknot",
       "url": "https://open.spotify.com/track/15DLl1r2zi07Ssq5RT1yT0",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485181e0d9617e70d75e7ae11fa6"
-    },
-    {
-      "title": "The Dark Forest",
-      "artist": "Muse",
-      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     }
   ],
   "playlists": [
