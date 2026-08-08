@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-07T08:14:44.822Z",
+  "fetchedAt": "2026-08-08T07:50:25.872Z",
   "timeRange": "short_term",
   "topGenre": "metal",
   "artists": [
@@ -29,14 +29,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
-      "name": "Bring Me The Horizon",
-      "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
-      "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
-    },
-    {
       "name": "Frank Turner",
       "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
       "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
+    },
+    {
+      "name": "Bring Me The Horizon",
+      "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
+      "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
     },
     {
       "name": "Metallica",
