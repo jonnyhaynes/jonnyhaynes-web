@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-08-08T07:50:25.872Z",
+  "fetchedAt": "2026-08-08T19:30:31.321Z",
   "timeRange": "short_term",
-  "topGenre": "metal",
+  "topGenre": null,
   "artists": [
     {
       "name": "Green Day",
@@ -9,14 +9,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     },
     {
-      "name": "Queen",
-      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
-    },
-    {
       "name": "Ghost",
       "url": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
       "image": "https://i.scdn.co/image/ab6761610000f1782d972470f1f8110be7c07017"
+    },
+    {
+      "name": "Queen",
+      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
+      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
     },
     {
       "name": "The King Blues",
@@ -29,11 +29,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
-      "name": "Frank Turner",
-      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
-      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
-    },
-    {
       "name": "Bring Me The Horizon",
       "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
       "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
@@ -42,6 +37,11 @@
       "name": "Metallica",
       "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
       "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
+    },
+    {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     }
   ],
   "tracks": [
