@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-09T07:54:10.369Z",
+  "fetchedAt": "2026-08-09T19:33:24.906Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
     },
     {
+      "name": "In Flames",
+      "url": "https://open.spotify.com/artist/57ylwQTnFnIhJh4nu4rxCs",
+      "image": "https://i.scdn.co/image/ab6761610000f1785c3bd919d1344a738af14136"
+    },
+    {
       "name": "Metallica",
       "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
       "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
-    },
-    {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     }
   ],
   "tracks": [
