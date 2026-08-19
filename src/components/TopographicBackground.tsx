@@ -29,6 +29,38 @@ const SPOTLIGHT_RADIUS = 300;
 
 type Grid = { cols: number; rows: number; data: Uint8Array };
 
+/** Mirror (ping-pong) an index into [0, n-1] so the field tiles seamlessly:
+ * ...0 1 2 3 3 2 1 0 0 1 2 3... — reflecting at each edge means no hard seam
+ * where the grid wraps, however far the drift pushes the sample. */
+function mirror(i: number, n: number): number {
+  const period = 2 * n;
+  let m = ((i % period) + period) % period;
+  if (m >= n) m = period - 1 - m;
+  return m;
+}
+
+/** Bilinearly sample the height field at continuous grid coords (gx, gy),
+ * returning 0..1. Interpolating between the four surrounding cells (instead of
+ * snapping to the nearest) makes the drift flow as a smooth gradient rather than
+ * stepping cell-by-cell. Out-of-range coords mirror in via mirror(). */
+function sampleHeight(grid: Grid, gx: number, gy: number): number {
+  const x0 = Math.floor(gx);
+  const y0 = Math.floor(gy);
+  const fx = gx - x0;
+  const fy = gy - y0;
+  const cx0 = mirror(x0, grid.cols);
+  const cx1 = mirror(x0 + 1, grid.cols);
+  const cy0 = mirror(y0, grid.rows);
+  const cy1 = mirror(y0 + 1, grid.rows);
+  const h00 = grid.data[cy0 * grid.cols + cx0];
+  const h10 = grid.data[cy0 * grid.cols + cx1];
+  const h01 = grid.data[cy1 * grid.cols + cx0];
+  const h11 = grid.data[cy1 * grid.cols + cx1];
+  const top = h00 + (h10 - h00) * fx;
+  const bottom = h01 + (h11 - h01) * fx;
+  return (top + (bottom - top) * fy) / 255;
+}
+
 /** Decode the baked base64 byte grid into a typed array. */
 function decodeGrid(json: {
   cols: number;
@@ -147,28 +179,44 @@ export function TopographicBackground() {
       window.addEventListener('pointermove', onMove, { passive: true });
     }
 
+    let lastT = 0;
+
     const draw = (t: number) => {
+      // Frame delta in seconds, clamped so a long pause (tab refocus) can't
+      // teleport the cursor or lurch the drift.
+      const dt = lastT ? Math.min((t - lastT) / 1000, 0.05) : 0;
+      lastT = t;
+
       ctx.clearRect(0, 0, cw, ch);
 
-      // ease the smoothed cursor toward the pointer target
+      // Ease the smoothed cursor toward the pointer target with a
+      // framerate-independent exponential (same feel at 30 or 144fps).
       if (curX < -9998) {
         curX = targetX;
         curY = targetY;
       } else {
-        curX += (targetX - curX) * 0.15;
-        curY += (targetY - curY) * 0.15;
+        const k = 1 - Math.exp(-dt * 12); // ~time constant, fps-independent
+        curX += (targetX - curX) * k;
+        curY += (targetY - curY) * k;
       }
 
-      // slow diagonal drift (disabled for reduced motion)
-      const dx = interactive ? t * 0.000012 : 0;
-      const dy = interactive ? t * 0.000009 : 0;
+      // Slow diagonal drift, expressed in GRID CELLS and driven by real elapsed
+      // time so the velocity is constant regardless of framerate. Because the
+      // height is now bilinearly sampled, this sub-cell offset makes the whole
+      // field flow smoothly rather than stepping. Disabled for reduced motion.
+      const driftX = interactive ? (t / 1000) * 0.9 : 0; // cells/sec
+      const driftY = interactive ? (t / 1000) * 0.65 : 0;
+
+      const sxScale = grid.cols / cols;
+      const syScale = grid.rows / rows;
 
       for (let ry = 0; ry < rows; ry++) {
         for (let rx = 0; rx < cols; rx++) {
-          // sample the height grid, wrapping, with the drift offset
-          const gx = Math.floor(((rx / cols + dx) % 1) * grid.cols);
-          const gy = Math.floor(((ry / rows + dy) % 1) * grid.rows);
-          const h = grid.data[gy * grid.cols + gx] / 255;
+          // Continuous grid coords + drift; sampleHeight mirrors + interpolates,
+          // so there's no hard wrap seam and the transition is smooth.
+          const gx = rx * sxScale + driftX;
+          const gy = ry * syScale + driftY;
+          const h = sampleHeight(grid, gx, gy);
           const ci = Math.min(RAMP.length - 1, Math.floor(h * RAMP.length));
           const glyph = RAMP[ci];
           if (glyph === ' ') continue;
