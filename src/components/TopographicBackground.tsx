@@ -155,8 +155,16 @@ export function TopographicBackground() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       cw = window.innerWidth;
       ch = window.innerHeight;
+      // Backing store is CSS size × dpr for crisp retina text…
       canvas.width = Math.round(cw * dpr);
       canvas.height = Math.round(ch * dpr);
+      // …but the *displayed* size must stay the CSS viewport, or the width
+      // attribute becomes the element's intrinsic CSS size (e.g. 2766px in a
+      // 1383px viewport on retina) and the whole field renders ~dpr× too big
+      // and clipped. Pin CSS size explicitly; the transform below maps CSS px
+      // → device px.
+      canvas.style.width = `${cw}px`;
+      canvas.style.height = `${ch}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       cols = Math.ceil(cw / CELL);
       rows = Math.ceil(ch / CELL);
