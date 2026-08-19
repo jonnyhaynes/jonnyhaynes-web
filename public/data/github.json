@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-07-28T08:44:37.223Z",
+  "fetchedAt": "2026-08-19T06:53:08.709Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,13 +16,57 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-07-27T22:11:18Z",
+      "pushedAt": "2026-08-18T21:28:30Z",
       "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#194)",
-        "committedAt": "2026-07-27T22:11:17Z"
+        "message": "Refresh gaming data [skip ci] (#362)",
+        "committedAt": "2026-08-18T21:28:29Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-08-18T10:52:17Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Read kit items off the kit page; drop event category (#90)",
+        "committedAt": "2026-08-18T10:52:17Z"
+      },
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
+    },
+    {
+      "name": "skillswap",
+      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
+      "url": "https://github.com/jonnyhaynes/skillswap",
+      "homepageUrl": "https://skillswap.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "PLpgSQL",
+        "JavaScript",
+        "CSS",
+        "HTML",
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-08-01T09:03:31Z",
+      "lastCommit": {
+        "message": "fix(build): install Chromium system libs so prerendering works on Ver…",
+        "committedAt": "2026-08-01T09:03:31Z"
+      },
+      "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
+      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
       "name": "rovrum.town",
@@ -47,27 +91,6 @@
       "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
     },
     {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-07-25T21:35:08Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Point Apollo ride links at Discord server invite (#72)",
-        "committedAt": "2026-07-24T09:12:42Z"
-      },
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
-    {
       "name": "colouringcode-web",
       "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
       "url": "https://github.com/jonnyhaynes/colouringcode-web",
@@ -86,28 +109,6 @@
       },
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "skillswap",
-      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
-      "url": "https://github.com/jonnyhaynes/skillswap",
-      "homepageUrl": "https://skillswap-rho-ten.vercel.app",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "PLpgSQL",
-        "CSS",
-        "HTML",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-13T19:34:09Z",
-      "lastCommit": {
-        "message": "fix: stop requesting last_seen_at on profiles as anon (#9)",
-        "committedAt": "2026-07-13T19:34:06Z"
-      },
-      "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
-      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
       "name": "freestyle-libre-mcp-server",
@@ -132,8 +133,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh gaming data [skip ci] (#194)",
-    "committedAt": "2026-07-27T22:11:17Z"
+    "message": "Refresh gaming data [skip ci] (#362)",
+    "committedAt": "2026-08-18T21:28:29Z"
   },
   "languages": [
     {
@@ -145,13 +146,13 @@
       "count": 3
     },
     {
-      "name": "HTML",
+      "name": "Astro",
       "count": 1
     },
     {
-      "name": "Astro",
+      "name": "HTML",
       "count": 1
     }
   ],
-  "totalContributions": 813
+  "totalContributions": 872
 }

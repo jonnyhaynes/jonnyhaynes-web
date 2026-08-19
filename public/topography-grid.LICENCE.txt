@@ -1,0 +1,3 @@
+topography-grid.json is derived from Ordnance Survey OS Terrain 50.
+Contains OS data © Crown copyright and database right.
+Licensed under the Open Government Licence v3.0.

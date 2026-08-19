@@ -54,6 +54,20 @@
    * to match the TV label and clear 4.5:1 on the lighter cabinet grey. */
   --color-deck-panel-text: var(--color-muted);
 
+  /* Health watch — case (brushed body) + face (screen). Flipped per theme: a
+   * dark titanium case + near-black OLED face on dark; a light steel case + a
+   * pale screen on light. Kept as their own tokens (not the deck panel) so the
+   * watch reads as a distinct device and the face contrast can be tuned. */
+  --color-watch-case-top: #34353b;
+  --color-watch-case-bottom: #17181c;
+  --color-watch-crown-top: #3a3b41;
+  --color-watch-crown-bottom: #202126;
+  --color-watch-face-top: #121319;
+  --color-watch-face-bottom: #050506;
+  /* unfilled ring track opacity — low on the dark face where faint heather still
+   * reads; bumped in the light block so tracks don't vanish on the pale face */
+  --watch-ring-track-opacity: 0.15;
+
   /* Recessed control surfaces (the switcher track + its hover). Foreground-based
    * so they read as a subtle inset in both themes: a faint dark fill on dark, a
    * faint dark fill on light — no hardcoded black/white that only works on one. */
@@ -101,6 +115,17 @@
    * on the cabinet grey — the Gaming TV's bezel label uses the same token, so
    * text matches too. */
   --color-deck-panel-text: #4a5160;
+
+  /* Health watch — light steel case + a pale screen (flipped from the dark
+   * block's titanium/OLED). The face stays a touch tinted (not pure white) so
+   * the heather rings, glowing heart, and knocked-out BPM keep their contrast. */
+  --color-watch-case-top: #e6e3dc;
+  --color-watch-case-bottom: #c4bfb4;
+  --color-watch-crown-top: #d8d4ca;
+  --color-watch-crown-bottom: #b3ada1;
+  --color-watch-face-top: #f0eee9;
+  --color-watch-face-bottom: #ddd9d0;
+  --watch-ring-track-opacity: 0.3;
 
   /* Reading shelf on the chalk background: lighter shadows + shelf line. */
   --color-shelf: color-mix(in oklch, black 12%, transparent);
@@ -1030,5 +1055,416 @@
   .book-spine:hover {
     transform: none;
     filter: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Health — fitness-watch face
+ *
+ * The Health section's four daily metrics dressed as a wearable, matching the
+ * page's other physical-object sections. A generous plastic case holds a
+ * squircle screen; three concentric activity rings + a pulsing heart (resting
+ * HR knocked out of the heart via SVG mask) sit centred in the dial, and the
+ * three activity metrics read out as icon complications in the face corners.
+ *
+ * Surfaces reuse the shared --color-deck-panel-* plastic tokens (see the Gaming
+ * TV cabinet / Now Playing deck). Motion — the ring sweep and the heartbeat —
+ * is disabled under prefers-reduced-motion at the foot of this block.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+.watch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.watch-strap {
+  width: 100px;
+  background: linear-gradient(
+    var(--color-deck-panel-top),
+    var(--color-deck-panel-bottom)
+  );
+  box-shadow: inset 0 0 0 1px var(--color-deck-panel-ring);
+}
+.watch-strap::after {
+  content: '';
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  /* ribbed sport-band texture */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 9px,
+    color-mix(in oklch, black 22%, transparent) 9px 10px
+  );
+}
+.watch-strap--top {
+  height: 56px;
+  border-radius: 13px 13px 5px 5px;
+  margin-bottom: -10px;
+}
+.watch-strap--bot {
+  height: 56px;
+  border-radius: 5px 5px 13px 13px;
+  margin-top: -10px;
+}
+
+.watch-case {
+  position: relative;
+  width: 300px;
+  height: 360px;
+  border-radius: 74px;
+  background: linear-gradient(
+    145deg,
+    var(--color-watch-case-top),
+    var(--color-watch-case-bottom)
+  );
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.5),
+    inset 0 2px 6px rgba(255, 255, 255, 0.06),
+    0 14px 34px rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Crown — a real power button. Shares its look with the static (rest-day)
+ * crown below; only the button carries interaction + focus states. */
+.watch-crown,
+.watch-crown-static {
+  position: absolute;
+  right: -6px;
+  top: 120px;
+  width: 12px;
+  height: 46px;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-watch-crown-top),
+    var(--color-watch-crown-bottom)
+  );
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.watch-crown {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+/* the ridged grip on the crown */
+.watch-crown::after {
+  content: '';
+  position: absolute;
+  inset: 2px 3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    rgba(0, 0, 0, 0.35) 2px 3px
+  );
+}
+.watch-crown:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 0 8px color-mix(in oklch, var(--color-accent-start) 55%, transparent);
+}
+.watch-crown:active {
+  transform: translateX(2px) scaleX(0.9);
+}
+.watch-crown:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 2px;
+}
+
+/* squircle screen echoing the case corners, not a circle */
+.watch-face {
+  position: relative;
+  width: 272px;
+  height: 302px;
+  border-radius: 60px;
+  background: radial-gradient(
+    circle at 50% 36%,
+    var(--color-watch-face-top),
+    var(--color-watch-face-bottom)
+  );
+  /* inner vignette — kept subtle so it reads as recessed glass on the dark OLED
+   * face without becoming a heavy dark ring on the pale light-theme face */
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.35);
+}
+/* the screen is also a button (tap → next metric); strip the native chrome */
+.watch-face--btn {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  color: inherit;
+  font-family: inherit;
+}
+.watch-face--btn:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 3px;
+}
+/* powered off: screen darkens, contents fade to Standby */
+.watch-face--off {
+  cursor: default;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in oklch, var(--color-muted) 8%, #000) 0%,
+    #000 70%
+  );
+}
+.watch-screen {
+  transition: opacity 0.35s ease;
+}
+.watch-face--off .watch-screen {
+  opacity: 0;
+  pointer-events: none;
+}
+.watch-standby {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--color-muted) 55%, transparent);
+}
+
+/* central dial: rings + heart */
+.watch-dial {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 194px;
+  height: 194px;
+}
+.watch-rings-svg {
+  position: absolute;
+  inset: 0;
+  /* 12 o'clock start */
+  transform: rotate(-90deg);
+}
+.watch-ring-track {
+  opacity: var(--watch-ring-track-opacity);
+}
+.watch-ring {
+  transition:
+    stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+/* rings that aren't the featured metric dim back so the chosen one stands out */
+.watch-ring--dim {
+  opacity: 0.32;
+}
+
+.watch-centre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* centre readout when a non-HR metric is featured: big value + label + goal */
+.watch-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: watch-centre-fade 0.28s ease;
+}
+.watch-metric-v {
+  font-size: 2.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: color-mix(in oklch, var(--color-accent-start) 82%, white);
+  text-shadow: 0 0 4px
+    color-mix(in oklch, var(--color-accent-start) 60%, transparent);
+}
+.watch-metric-u {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  text-shadow: none;
+  margin-left: 2px;
+}
+.watch-metric-cap {
+  margin-top: 3px;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.watch-metric-goal {
+  margin-top: 5px;
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  color: color-mix(in oklch, var(--color-muted) 75%, transparent);
+}
+@keyframes watch-centre-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.watch-heart {
+  display: block;
+  overflow: visible;
+  width: 74px;
+  height: 67px;
+  transform-origin: center;
+  /* --beat (seconds per beat = 60 / bpm) is set inline from the resting rate */
+  animation: watch-beat var(--beat, 0.83s) ease-in-out infinite;
+}
+.watch-heart-path {
+  fill: var(--color-accent-start);
+}
+/* Glow lives on a separate heart-shaped path behind the masked one, so the
+ * drop-shadow follows the heart outline instead of lighting the mask's
+ * bounding box (which showed as a rectangular heather halo). */
+.watch-heart-glow {
+  fill: var(--color-accent-start);
+  filter: drop-shadow(
+      0 0 4px color-mix(in oklch, var(--color-accent-start) 60%, transparent)
+    )
+    drop-shadow(
+      0 0 11px color-mix(in oklch, var(--color-accent-start) 38%, transparent)
+    );
+}
+.watch-hr-missing {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  color: var(--color-muted);
+}
+
+/* systole contraction then slower diastole recovery, one per beat — kept
+ * subtle (peak ~6%) so it reads as a gentle pulse, not a throb. */
+@keyframes watch-beat {
+  0% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(1.06);
+  }
+  24% {
+    transform: scale(0.99);
+  }
+  38% {
+    transform: scale(1.025);
+  }
+  52% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* corner complications: icon + value, colour-keyed to their ring, no words */
+.watch-comp {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.watch-comp-ic {
+  width: 20px;
+  height: 20px;
+}
+.watch-comp-ic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.watch-comp-v {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-foreground);
+}
+.watch-comp-u {
+  font-size: 0.6rem;
+  color: var(--color-muted);
+  margin-left: 1px;
+}
+.watch-comp--tl {
+  top: 30px;
+  left: 34px;
+}
+.watch-comp--tr {
+  top: 30px;
+  right: 34px;
+}
+.watch-comp--bl {
+  bottom: 34px;
+  left: 34px;
+}
+/* the complication whose metric is currently featured gets a soft outline */
+.watch-comp--featured::after {
+  content: '';
+  position: absolute;
+  inset: -6px -8px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in oklch, currentColor 55%, transparent);
+}
+
+/* synced tag, bottom-right corner */
+.watch-synced {
+  position: absolute;
+  bottom: 38px;
+  right: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--color-muted) 82%, transparent);
+}
+.watch-synced-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent-start);
+  box-shadow: 0 0 5px
+    color-mix(in oklch, var(--color-accent-start) 70%, transparent);
+}
+
+/* Small screens: shrink the whole watch so the corner complications keep clear
+ * of the enlarged rings and the case fits the column. */
+@media (max-width: 400px) {
+  .watch-case {
+    transform: scale(0.82);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watch-ring {
+    transition: none;
+  }
+  .watch-heart {
+    animation: none;
+  }
+  /* instant metric swap — no fade-in when cycling the centre */
+  .watch-metric {
+    animation: none;
+  }
+  .watch-screen {
+    transition: none;
   }
 }
