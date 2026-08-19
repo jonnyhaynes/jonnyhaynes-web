@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-09T07:54:10.369Z",
+  "fetchedAt": "2026-08-10T19:55:10.839Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -34,9 +34,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
     },
     {
-      "name": "Metallica",
-      "url": "https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB",
-      "image": "https://i.scdn.co/image/ab6761610000f17869ca98dd3083f1082d740e44"
+      "name": "In Flames",
+      "url": "https://open.spotify.com/artist/57ylwQTnFnIhJh4nu4rxCs",
+      "image": "https://i.scdn.co/image/ab6761610000f1785c3bd919d1344a738af14136"
     },
     {
       "name": "Muse",
@@ -70,12 +70,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
     },
     {
-      "title": "Master Of Puppets",
-      "artist": "Metallica",
-      "url": "https://open.spotify.com/track/2MuWTIM3b0YEAskbeeFE1i",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851668e3aca3167e6e569a9aa20"
-    },
-    {
       "title": "I Want You Back",
       "artist": "The Jackson 5",
       "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
@@ -92,6 +86,12 @@
       "artist": "Slipknot",
       "url": "https://open.spotify.com/track/15DLl1r2zi07Ssq5RT1yT0",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485181e0d9617e70d75e7ae11fa6"
+    },
+    {
+      "title": "Guiding Lights",
+      "artist": "Ghost",
+      "url": "https://open.spotify.com/track/314wHzW2tMlNIc4Wvguu8w",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
     }
   ],
   "playlists": [
