@@ -117,13 +117,19 @@ No change to `App.tsx` — same component name, same mount point, same props (no
 | `scripts/build-topography.mjs` | **keep** for reference; delete in the real-bake follow-up |
 | `package.json` | no new deps (`sharp` unused here; plain fs parse) |
 
-### Follow-up (separate PR): run the real bake
+### Follow-up (separate PR): run the real bake — DONE
 
 This PR ships the renderer against a **procedural placeholder** so it can be
-reviewed independently. A follow-up runs `build-topography-grid.mjs` against real
-OS Terrain 50 SK tiles, replaces the placeholder JSON, writes the LICENCE sidecar,
-and deletes the old SVG + `build-topography.mjs`. Owner supplies/points at the
-extracted `.asc` tile directory.
+reviewed independently. The follow-up (branch `ascii-topo-real-data-366`, stacked
+on this one) runs `build-topography-grid.mjs` against real OS Terrain 50 SK tiles
+and replaces the placeholder JSON + writes the LICENCE sidecar.
+
+**Correction to the original plan:** the old SVG (`topography-south-yorkshire.svg`)
+and its generator (`build-topography.mjs`) are **NOT deleted** — the résumé PDF
+builder (`scripts/resume/build-resume.mjs`) inlines that SVG as a decorative
+background and needs its vector paths (the height-grid JSON can't substitute).
+The old contour art now lives on as a résumé asset; only the web background moved
+to Canvas ASCII.
 
 **Note:** `motion` is now unused anywhere in the codebase (this was its only
 consumer). Removing the dependency is a tidy bundle win but is left as its own
