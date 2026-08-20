@@ -1,7 +1,29 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-08-20T06:54:28.944Z",
+  "fetchedAt": "2026-08-20T18:48:06.743Z",
   "projects": [
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-08-20T15:07:57Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Live coach count in footer stat (#96)",
+        "committedAt": "2026-08-20T15:07:57Z"
+      },
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -16,34 +38,13 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-08-19T21:28:49Z",
+      "pushedAt": "2026-08-20T09:38:27Z",
       "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#373)",
-        "committedAt": "2026-08-19T21:28:48Z"
+        "message": "Refresh gaming data [skip ci] (#377)",
+        "committedAt": "2026-08-20T09:38:27Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
-    },
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-08-18T10:52:17Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Read kit items off the kit page; drop event category (#90)",
-        "committedAt": "2026-08-18T10:52:17Z"
-      },
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "skillswap",
@@ -131,10 +132,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh gaming data [skip ci] (#373)",
-    "committedAt": "2026-08-19T21:28:48Z"
+    "repo": "sitwellcc-web",
+    "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+    "message": "[ai-assisted] Live coach count in footer stat (#96)",
+    "committedAt": "2026-08-20T15:07:57Z"
   },
   "languages": [
     {
@@ -154,5 +155,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 883
+  "totalContributions": 911
 }
