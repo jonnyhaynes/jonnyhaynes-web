@@ -1,32 +1,22 @@
 {
-  "fetchedAt": "2026-08-10T19:55:10.839Z",
+  "fetchedAt": "2026-08-21T07:42:48.376Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "metal",
   "artists": [
     {
-      "name": "Green Day",
-      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
-      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
+      "name": "Frank Turner",
+      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
+      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     },
     {
-      "name": "Ghost",
-      "url": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
-      "image": "https://i.scdn.co/image/ab6761610000f1782d972470f1f8110be7c07017"
+      "name": "Carpenter Brut",
+      "url": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP",
+      "image": "https://i.scdn.co/image/ab6761610000f178ac2f9a19a87d094626992c94"
     },
     {
-      "name": "Queen",
-      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
-    },
-    {
-      "name": "The King Blues",
-      "url": "https://open.spotify.com/artist/1FUntRydO9F2wnbLblF3Q5",
-      "image": "https://i.scdn.co/image/ab6761610000f1781c7384f52ec914f92cb585a2"
-    },
-    {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+      "name": "Clutch",
+      "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
+      "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
     },
     {
       "name": "Bring Me The Horizon",
@@ -34,23 +24,27 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
     },
     {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
+    },
+    {
       "name": "In Flames",
       "url": "https://open.spotify.com/artist/57ylwQTnFnIhJh4nu4rxCs",
       "image": "https://i.scdn.co/image/ab6761610000f1785c3bd919d1344a738af14136"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
+      "name": "Biffy Clyro",
+      "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
+      "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
+    },
+    {
+      "name": "DOWN",
+      "url": "https://open.spotify.com/artist/1m0B9ak05G0jqDY4ACLhQu",
+      "image": "https://i.scdn.co/image/ab67726900008f74e0d7af0376c6285910b1cc1a"
     }
   ],
   "tracks": [
-    {
-      "title": "Girls Just Want to Have Fun",
-      "artist": "Cyndi Lauper",
-      "url": "https://open.spotify.com/track/4y1LsJpmMti1PfRQV9AWWe",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
-    },
     {
       "title": "I'm Out and I Wanna Go Home",
       "artist": "Daði Freyr",
@@ -58,40 +52,46 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
-      "title": "Boulevard of Broken Dreams",
-      "artist": "Green Day",
-      "url": "https://open.spotify.com/track/5cbTCQ14BC974Zsx6OlXF8",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851459936b6756db7e04eef6074"
+      "title": "Girls Just Want to Have Fun",
+      "artist": "Cyndi Lauper",
+      "url": "https://open.spotify.com/track/4y1LsJpmMti1PfRQV9AWWe",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
     },
     {
-      "title": "Lachryma",
-      "artist": "Ghost",
-      "url": "https://open.spotify.com/track/4TjCaQsPQhGZUk0Hls4O3Y",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
+      "title": "The Captain",
+      "artist": "Biffy Clyro",
+      "url": "https://open.spotify.com/track/1louej4PYOVIVbagP1taO0",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851d387edace199b4e1a49f2344"
     },
     {
-      "title": "I Want You Back",
-      "artist": "The Jackson 5",
-      "url": "https://open.spotify.com/track/5LxvwujISqiB8vpRYv887S",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485116aaf05fe82237576a7d0e38"
+      "title": "Cherub Rock",
+      "artist": "Carpenter Brut",
+      "url": "https://open.spotify.com/track/4swRl0jjjvKuw8r57lVTXw",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048512d0353781d09e828063be480"
     },
     {
-      "title": "Satanized",
-      "artist": "Ghost",
-      "url": "https://open.spotify.com/track/6RLM1w82rrT9tKsQVEa5Yr",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
+      "title": "Maniac - From \"Flashdance\"",
+      "artist": "Michael Sembello",
+      "url": "https://open.spotify.com/track/6kk07URPWTiRzULynSOVrs",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048510946d11271fa6083bc8ea769"
     },
     {
-      "title": "Wait and Bleed",
-      "artist": "Slipknot",
-      "url": "https://open.spotify.com/track/15DLl1r2zi07Ssq5RT1yT0",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485181e0d9617e70d75e7ae11fa6"
+      "title": "Your Ghost Again",
+      "artist": "Mastodon",
+      "url": "https://open.spotify.com/track/0DR0WsV57b7ZyiHCEBvKQY",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048519750bd941daa9c28dcbfd9a7"
     },
     {
-      "title": "Guiding Lights",
-      "artist": "Ghost",
-      "url": "https://open.spotify.com/track/314wHzW2tMlNIc4Wvguu8w",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485137b6696c5c5a40ce24b76e1c"
+      "title": "What's My Age Again?",
+      "artist": "blink-182",
+      "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
+    },
+    {
+      "title": "WHERE IS MY HUSBAND!",
+      "artist": "RAYE",
+      "url": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90"
     }
   ],
   "playlists": [
