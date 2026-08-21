@@ -28,7 +28,7 @@ export function Home() {
       <main id="main">
         {/* Hero and prose sections stay at the narrower reading width; the
             Projects grid manages its own wider container. */}
-        <div className="mx-auto max-w-4xl px-6">
+        <div className="mx-auto max-w-6xl px-6">
           <Hero />
         </div>
         <div className="mx-auto max-w-6xl px-6">
