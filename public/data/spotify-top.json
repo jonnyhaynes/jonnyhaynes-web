@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-22T07:32:00.149Z",
+  "fetchedAt": "2026-08-22T19:22:30.862Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -52,16 +52,34 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
-      "title": "The Captain",
-      "artist": "Biffy Clyro",
-      "url": "https://open.spotify.com/track/1louej4PYOVIVbagP1taO0",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851d387edace199b4e1a49f2344"
-    },
-    {
       "title": "Cherub Rock",
       "artist": "Carpenter Brut",
       "url": "https://open.spotify.com/track/4swRl0jjjvKuw8r57lVTXw",
       "albumArt": "https://i.scdn.co/image/ab67616d000048512d0353781d09e828063be480"
+    },
+    {
+      "title": "It's A Sin",
+      "artist": "Ghost",
+      "url": "https://open.spotify.com/track/3JnsVuLgoMJEcn0slGZjuN",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048515deeeb5b1d590c9eff4b0fd7"
+    },
+    {
+      "title": "Four Simple Words",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/6aW2iwJxBurjRMkbcKuSRi",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
+    },
+    {
+      "title": "There She Is",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
+    },
+    {
+      "title": "The Captain",
+      "artist": "Biffy Clyro",
+      "url": "https://open.spotify.com/track/1louej4PYOVIVbagP1taO0",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851d387edace199b4e1a49f2344"
     },
     {
       "title": "Maniac - From \"Flashdance\"",
@@ -74,24 +92,6 @@
       "artist": "Mastodon",
       "url": "https://open.spotify.com/track/0DR0WsV57b7ZyiHCEBvKQY",
       "albumArt": "https://i.scdn.co/image/ab67616d000048519750bd941daa9c28dcbfd9a7"
-    },
-    {
-      "title": "What's My Age Again?",
-      "artist": "blink-182",
-      "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
-    },
-    {
-      "title": "WHERE IS MY HUSBAND!",
-      "artist": "RAYE",
-      "url": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90"
-    },
-    {
-      "title": "The Dark Forest",
-      "artist": "Muse",
-      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     }
   ],
   "playlists": [
