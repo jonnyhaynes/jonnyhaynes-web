@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-21T19:26:11.813Z",
+  "fetchedAt": "2026-08-22T07:32:00.149Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -52,12 +52,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
-      "title": "Girls Just Want to Have Fun",
-      "artist": "Cyndi Lauper",
-      "url": "https://open.spotify.com/track/4y1LsJpmMti1PfRQV9AWWe",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ce023ce7dfdd5199bcdfd5a1"
-    },
-    {
       "title": "The Captain",
       "artist": "Biffy Clyro",
       "url": "https://open.spotify.com/track/1louej4PYOVIVbagP1taO0",
@@ -92,6 +86,12 @@
       "artist": "RAYE",
       "url": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90"
+    },
+    {
+      "title": "The Dark Forest",
+      "artist": "Muse",
+      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     }
   ],
   "playlists": [
