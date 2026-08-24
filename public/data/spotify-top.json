@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-24T07:58:08.083Z",
+  "fetchedAt": "2026-08-24T19:29:48.920Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -17,6 +17,11 @@
       "name": "Clutch",
       "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
       "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
+    },
+    {
+      "name": "Five Finger Death Punch",
+      "url": "https://open.spotify.com/artist/5t28BP42x2axFnqOOMg3CM",
+      "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
     },
     {
       "name": "Bring Me The Horizon",
@@ -37,11 +42,6 @@
       "name": "Biffy Clyro",
       "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
       "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
-    },
-    {
-      "name": "DOWN",
-      "url": "https://open.spotify.com/artist/1m0B9ak05G0jqDY4ACLhQu",
-      "image": "https://i.scdn.co/image/ab67726900008f74e0d7af0376c6285910b1cc1a"
     }
   ],
   "tracks": [
@@ -82,16 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851d387edace199b4e1a49f2344"
     },
     {
-      "title": "Maniac - From \"Flashdance\"",
-      "artist": "Michael Sembello",
-      "url": "https://open.spotify.com/track/6kk07URPWTiRzULynSOVrs",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048510946d11271fa6083bc8ea769"
-    },
-    {
       "title": "Your Ghost Again",
       "artist": "Mastodon",
       "url": "https://open.spotify.com/track/0DR0WsV57b7ZyiHCEBvKQY",
       "albumArt": "https://i.scdn.co/image/ab67616d000048519750bd941daa9c28dcbfd9a7"
+    },
+    {
+      "title": "Maniac - From \"Flashdance\"",
+      "artist": "Michael Sembello",
+      "url": "https://open.spotify.com/track/6kk07URPWTiRzULynSOVrs",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048510946d11271fa6083bc8ea769"
     }
   ],
   "playlists": [
