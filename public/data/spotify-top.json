@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-08-25T07:43:35.886Z",
+  "fetchedAt": "2026-08-25T19:32:16.349Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "metal",
   "artists": [
     {
       "name": "Frank Turner",
@@ -24,11 +24,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
     },
     {
-      "name": "Bring Me The Horizon",
-      "url": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
-      "image": "https://i.scdn.co/image/ab6761610000f178ca0355e5fc475d2520f0d967"
-    },
-    {
       "name": "Muse",
       "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
@@ -42,6 +37,11 @@
       "name": "Biffy Clyro",
       "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
       "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
+    },
+    {
+      "name": "M83",
+      "url": "https://open.spotify.com/artist/63MQldklfxkjYDoUE4Tppz",
+      "image": "https://i.scdn.co/image/ab6761610000f178961ef259d6d8101edd2f80c0"
     }
   ],
   "tracks": [
@@ -82,16 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851d387edace199b4e1a49f2344"
     },
     {
-      "title": "Your Ghost Again",
-      "artist": "Mastodon",
-      "url": "https://open.spotify.com/track/0DR0WsV57b7ZyiHCEBvKQY",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048519750bd941daa9c28dcbfd9a7"
-    },
-    {
       "title": "Maniac - From \"Flashdance\"",
       "artist": "Michael Sembello",
       "url": "https://open.spotify.com/track/6kk07URPWTiRzULynSOVrs",
       "albumArt": "https://i.scdn.co/image/ab67616d000048510946d11271fa6083bc8ea769"
+    },
+    {
+      "title": "WHERE IS MY HUSBAND!",
+      "artist": "RAYE",
+      "url": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90"
     }
   ],
   "playlists": [
