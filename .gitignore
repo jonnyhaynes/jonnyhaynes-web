@@ -31,3 +31,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 .env*
+
+# Local Garmin token-capture helper (handles credentials; never commit)
+capture-garth.py

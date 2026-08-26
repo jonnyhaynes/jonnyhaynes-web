@@ -1,8 +1,9 @@
 name: Bake health data
 
-# Fetches steps + active minutes + sleep + resting heart rate from Garmin
-# Connect and commits the refreshed public/data/health.json to main. Runs twice
-# daily plus on demand.
+# Fetches steps + active minutes + resting heart rate + calories (and 3-day
+# histories) from Garmin Connect, plus weather + sun times from Open-Meteo, and
+# commits the refreshed public/data/health.json to main. Runs every 6 hours plus
+# on demand.
 #
 # TOKEN ROTATION: unlike the Google Health bake, Garmin's short-lived oauth2
 # token is refreshed from the long-lived oauth1 token during the run, so the
@@ -12,8 +13,9 @@ name: Bake health data
 # docs/plans/migrate-google-health-to-garmin.md.
 on:
   schedule:
-    # 08:00 and 20:00 UTC (offset from the GitHub/Spotify bakes to spread load).
-    - cron: '0 8,20 * * *'
+    # Every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC. (UTC-only cron, so in UK
+    # summer/BST these land an hour later locally — fine for slow-moving data.)
+    - cron: '0 0,6,12,18 * * *'
   workflow_dispatch: {}
 
 concurrency:
