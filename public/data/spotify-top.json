@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-26T07:46:59.582Z",
+  "fetchedAt": "2026-08-26T21:41:37.066Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,14 +24,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
       "name": "Biffy Clyro",
       "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
       "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
+    },
+    {
+      "name": "Trivium",
+      "url": "https://open.spotify.com/artist/278ZYwGhdK6QTzE3MFePnP",
+      "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
     },
     {
       "name": "M83",
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f178961ef259d6d8101edd2f80c0"
     },
     {
-      "name": "DOWN",
-      "url": "https://open.spotify.com/artist/1m0B9ak05G0jqDY4ACLhQu",
-      "image": "https://i.scdn.co/image/ab67726900008f74e0d7af0376c6285910b1cc1a"
+      "name": "Marilyn Manson",
+      "url": "https://open.spotify.com/artist/2VYQTNDsvvKN9wmU5W7xpj",
+      "image": "https://i.scdn.co/image/ab6761610000f178df97decd4f8f568310bd0031"
     }
   ],
   "tracks": [
