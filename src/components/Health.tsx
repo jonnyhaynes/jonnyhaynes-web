@@ -4,7 +4,7 @@ import { useReducedMotion } from '../lib/useReducedMotion';
 
 /**
  * Daily goals the activity rings fill against. These are personal targets, not
- * from the Google Health API — a full ring means the goal was met for the day.
+ * from Garmin Connect — a full ring means the goal was met for the day.
  */
 const GOALS = { steps: 10_000, activeMinutes: 60, sleepHours: 8 } as const;
 
