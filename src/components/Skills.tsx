@@ -1,15 +1,14 @@
 import { useGitHubData } from '../data/github';
 import { SKILL_GROUPS } from '../content/skills';
 import { LanguageBar } from './LanguageBar';
+import { SectionHeading } from './SectionHeading';
 
 export function Skills() {
   const data = useGitHubData();
 
   return (
     <section id="skills" className="scroll-mt-16 py-16">
-      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // Skills
-      </h2>
+      <SectionHeading section="skills" />
 
       {/* Data-backed language breakdown, above the hand-picked skills. */}
       {data?.languages?.length ? (

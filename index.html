@@ -22,8 +22,19 @@
                 ? 'light'
                 : 'dark';
           document.documentElement.setAttribute('data-theme', t);
+
+          // Palette (colour flavour) is independent of light/dark. Stored choice
+          // wins; no OS signal, so first visit is the heather default. Mirrors
+          // initialPalette() in ThemeContext. Set before paint to avoid a flash
+          // of the wrong accent.
+          var p = localStorage.getItem('palette');
+          document.documentElement.setAttribute(
+            'data-palette',
+            p === 'yorkshire' ? 'yorkshire' : 'default',
+          );
         } catch (e) {
           document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-palette', 'default');
         }
       })();
     </script>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
 import { Footer } from '../components/Footer';
+import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
 const LINK =
@@ -48,7 +49,10 @@ export function Privacy() {
         >
           &larr; Back to home
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <PaletteToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       <main id="main" className="mx-auto max-w-4xl px-6 py-8">

@@ -1,5 +1,7 @@
 import { currentlyBuilding, useGitHubData } from '../data/github';
 import { relativeTime } from '../lib/relativeTime';
+import { copy } from '../theme/copy';
+import { useTheme } from '../theme/useTheme';
 
 /**
  * Compact "currently building" chip for the header — a live activity signal
@@ -8,6 +10,7 @@ import { relativeTime } from '../lib/relativeTime';
  */
 export function CurrentlyBuildingChip() {
   const activity = currentlyBuilding(useGitHubData());
+  const { palette } = useTheme();
   if (!activity) return null;
 
   const when = relativeTime(activity.committedAt);
@@ -26,7 +29,7 @@ export function CurrentlyBuildingChip() {
       >
         _
       </span>
-      <span className="text-muted">building</span>
+      <span className="text-muted">{copy(palette).chip.building}</span>
       <span className="text-foreground group-hover:text-accent-start">
         {activity.repo}
       </span>

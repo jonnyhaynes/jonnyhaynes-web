@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useSpotifyAudiobooks } from '../data/spotify';
 import type { SpotifyAudiobook } from '../data/spotify';
+import { SectionHeading } from './SectionHeading';
 
 /**
  * Reading section — saved audiobooks from Spotify, rendered as a bookshelf.
@@ -38,9 +39,7 @@ export function Reading() {
           identical to the "What I'm playing" section — so the title and shelf
           line match its width and left edge at every screen size with no extra
           classes. Only the books row (below) breaks out wider. */}
-      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // My bookshelf
-      </h2>
+      <SectionHeading section="reading" />
 
       {/* Mobile only: stacked cover + horizontal bars. The leaning shelf takes
           over at `md` (tablet and up). */}

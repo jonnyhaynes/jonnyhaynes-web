@@ -1,5 +1,6 @@
 import { useGitHubData, featuredProjects } from '../data/github';
 import { ProjectCard } from './ProjectCard';
+import { SectionHeading } from './SectionHeading';
 
 export function Projects() {
   const data = useGitHubData();
@@ -13,9 +14,7 @@ export function Projects() {
     // The parent (App) gives this a max-w-6xl container, wider than the
     // max-w-4xl reading width used elsewhere, so the grid feels substantial.
     <section id="projects" className="scroll-mt-16 py-16">
-      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // Projects
-      </h2>
+      <SectionHeading section="projects" />
 
       {featured.length > 0 ? (
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

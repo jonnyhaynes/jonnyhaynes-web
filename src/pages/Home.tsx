@@ -8,6 +8,7 @@ import { Listening } from '../components/Listening';
 import { Projects } from '../components/Projects';
 import { Reading } from '../components/Reading';
 import { Skills } from '../components/Skills';
+import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
 export function Home() {
@@ -22,7 +23,10 @@ export function Home() {
           toggle. */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <CurrentlyBuildingChip />
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <PaletteToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       <main id="main">
