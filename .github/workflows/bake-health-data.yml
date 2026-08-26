@@ -1,16 +1,21 @@
 name: Bake health data
 
-# Fetches steps + active minutes + sleep + resting heart rate from the Google
-# Health API and commits the refreshed public/data/health.json to main. Runs
-# twice daily plus on demand.
+# Fetches steps + active minutes + resting heart rate + calories (and 3-day
+# histories) from Garmin Connect, plus weather + sun times from Open-Meteo, and
+# commits the refreshed public/data/health.json to main. Runs every 6 hours plus
+# on demand.
 #
-# No token rotation: Google does not rotate the refresh token on a normal
-# refresh, so — unlike the old Fitbit bake — there is no persist-token step and
-# no secrets-write PAT. The built-in GITHUB_TOKEN with contents:write is enough.
+# TOKEN ROTATION: unlike the Google Health bake, Garmin's short-lived oauth2
+# token is refreshed from the long-lived oauth1 token during the run, so the
+# fetch script prints the refreshed bundle and we persist it back to the
+# GARMIN_TOKEN_BUNDLE secret. Updating a secret needs a PAT with secrets:write
+# (GARMIN_TOKEN_PAT) — the built-in GITHUB_TOKEN cannot. See
+# docs/plans/migrate-google-health-to-garmin.md.
 on:
   schedule:
-    # 08:00 and 20:00 UTC (offset from the GitHub/Spotify bakes to spread load).
-    - cron: '0 8,20 * * *'
+    # Every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC. (UTC-only cron, so in UK
+    # summer/BST these land an hour later locally — fine for slow-moving data.)
+    - cron: '0 0,6,12,18 * * *'
   workflow_dispatch: {}
 
 concurrency:
@@ -37,12 +42,38 @@ jobs:
         with:
           node-version: 22
 
-      - name: Fetch Google Health data
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch Garmin health data
+        id: fetch
         env:
-          GOOGLE_HEALTH_CLIENT_ID: ${{ secrets.GOOGLE_HEALTH_CLIENT_ID }}
-          GOOGLE_HEALTH_CLIENT_SECRET: ${{ secrets.GOOGLE_HEALTH_CLIENT_SECRET }}
-          GOOGLE_HEALTH_REFRESH_TOKEN: ${{ secrets.GOOGLE_HEALTH_REFRESH_TOKEN }}
-        run: node scripts/fetch-health.mjs
+          GARMIN_TOKEN_BUNDLE: ${{ secrets.GARMIN_TOKEN_BUNDLE }}
+        run: |
+          set -euo pipefail
+          # Tee stdout so we can both show logs and capture the refreshed bundle.
+          node scripts/fetch-health.mjs | tee fetch.log
+          # Extract the refreshed bundle line (GARMIN_TOKEN_BUNDLE={...}) if present.
+          bundle="$(grep -m1 '^GARMIN_TOKEN_BUNDLE=' fetch.log | sed 's/^GARMIN_TOKEN_BUNDLE=//' || true)"
+          if [ -n "$bundle" ]; then
+            # Stash to a file (avoids putting the token in step outputs/logs).
+            printf '%s' "$bundle" > refreshed-bundle.json
+            echo "has_bundle=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_bundle=false" >> "$GITHUB_OUTPUT"
+          fi
+          rm -f fetch.log
+
+      - name: Persist refreshed token bundle
+        # Garmin rotates the oauth2 token during the run; write it back so the
+        # next bake starts fresh. Skipped if the script emitted no bundle.
+        if: steps.fetch.outputs.has_bundle == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GARMIN_TOKEN_PAT }}
+        run: |
+          set -euo pipefail
+          gh secret set GARMIN_TOKEN_BUNDLE --body "$(cat refreshed-bundle.json)"
+          rm -f refreshed-bundle.json
 
       # main is a protected branch (PR required + Vercel check), so we can't push
       # to it directly. Push the refreshed data to a fixed branch, open a PR if
@@ -73,6 +104,6 @@ jobs:
             gh pr create \
               --base main --head "$branch" \
               --title "Refresh health data" \
-              --body "Automated data bake (steps, active minutes, sleep, resting HR from Google Health). Auto-merges once the Vercel check passes."
+              --body "Automated data bake (steps, active minutes, sleep, resting HR from Garmin Connect). Auto-merges once the Vercel check passes."
             gh pr merge "$branch" --auto --squash
           fi

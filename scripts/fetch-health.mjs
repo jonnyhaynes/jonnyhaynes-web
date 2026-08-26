@@ -1,213 +1,282 @@
-// Fetches steps + active minutes + sleep + resting heart rate from the Google
-// Health API and writes public/data/health.json.
+// Fetches steps + active minutes + resting heart rate + calories from Garmin
+// Connect (plus 3-day histories), and weather + sun times from Open-Meteo, then
+// writes public/data/health.json.
 //
 // Run:
-//   GOOGLE_HEALTH_CLIENT_ID=xxx GOOGLE_HEALTH_CLIENT_SECRET=yyy \
-//     GOOGLE_HEALTH_REFRESH_TOKEN=zzz node scripts/fetch-health.mjs
+//   GARMIN_TOKEN_BUNDLE='{"oauth1":{...},"oauth2":{...}}' node scripts/fetch-health.mjs
 //
-// NO TOKEN ROTATION: unlike Fitbit, Google does not rotate the refresh token on
-// a normal refresh, so there is nothing to persist back to a secret — the token
-// lasts until explicitly revoked or ~6 months unused (Production OAuth apps).
+// AUTH (Garmin only): we never send a username/password here. A one-time local
+// login (scripts/garmin-auth.mjs) captures an OAuth token bundle; this job loads
+// that bundle via GarminConnect.loadToken(). Garmin's short-lived oauth2 token
+// is refreshed from the long-lived oauth1 token during the run, so after
+// fetching we print the (possibly refreshed) bundle for the workflow to persist
+// back to the GARMIN_TOKEN_BUNDLE secret — see
+// docs/plans/migrate-google-health-to-garmin.md.
 //
-// Google returns GRANULAR data points, not pre-summarised daily totals, so this
-// script aggregates per day. Every field is independently nullable; the Health
-// component renders an em-dash for nulls, so a missing metric (or a rest/no-sync
-// day) degrades gracefully rather than crashing the bake.
+// Open-Meteo needs no key. Weather/sun degrade to null on any failure.
+//
+// Every field is independently nullable; the Health component renders an em-dash
+// (or hides a zone/glance) for nulls, so a missing metric (or a rest/no-sync
+// day, or a weather-API hiccup) degrades gracefully rather than crashing the bake.
 
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
+// garmin-connect is CommonJS; import the default and destructure (Node ESM
+// interop doesn't reliably expose named CJS exports).
+import garminConnect from 'garmin-connect';
+const { GarminConnect } = garminConnect;
 
-const CLIENT_ID = process.env.GOOGLE_HEALTH_CLIENT_ID;
-const CLIENT_SECRET = process.env.GOOGLE_HEALTH_CLIENT_SECRET;
-const REFRESH_TOKEN = process.env.GOOGLE_HEALTH_REFRESH_TOKEN;
 const OUT = 'public/data/health.json';
-const BASE = 'https://health.googleapis.com/v4/users/me/dataTypes';
+const TOKEN_BUNDLE = process.env.GARMIN_TOKEN_BUNDLE;
 
-if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
+// Rotherham, UK — weather + sun times location. Approximate town coords; lives
+// in a public file by design (see docs/plans/health-watch-face-v2.md).
+const LAT = 53.43;
+const LON = -1.36;
+const TZ = 'Europe/London';
+
+// How many days of history the drill-down graphs show (today + 2 prior).
+const HISTORY_DAYS = 3;
+
+// Marker the workflow greps stdout for to capture the refreshed bundle. Keeping
+// the whole bundle on one line after the marker makes the workflow-side parse a
+// single `grep | sed`.
+const BUNDLE_MARKER = 'GARMIN_TOKEN_BUNDLE=';
+
+if (!TOKEN_BUNDLE) {
   console.error(
-    'Missing env vars: GOOGLE_HEALTH_CLIENT_ID, GOOGLE_HEALTH_CLIENT_SECRET, GOOGLE_HEALTH_REFRESH_TOKEN',
+    'Missing env var GARMIN_TOKEN_BUNDLE (JSON with {oauth1, oauth2}). ' +
+      'Capture one locally with: node scripts/garmin-auth.mjs',
   );
   process.exit(1);
 }
 
-/** Exchange the (non-rotating) refresh token for a fresh access token. */
-async function refresh() {
-  const res = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'refresh_token',
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      refresh_token: REFRESH_TOKEN,
-    }).toString(),
-  });
-  const json = await res.json();
-  if (!res.ok) {
-    throw new Error(`Token refresh failed: ${res.status} ${JSON.stringify(json)}`);
+let bundle;
+try {
+  bundle = JSON.parse(TOKEN_BUNDLE);
+  if (!bundle?.oauth1 || !bundle?.oauth2) throw new Error('missing oauth1/oauth2');
+} catch (err) {
+  console.error(`GARMIN_TOKEN_BUNDLE is not valid JSON with oauth1+oauth2: ${err.message}`);
+  process.exit(1);
+}
+
+/** YYYY-MM-DD for a Date at UTC. */
+function ymdOf(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+/** The last N calendar days ending today (UTC), oldest first: [{ymd, date}]. */
+function recentDays(n) {
+  const todayMs = Date.parse(`${new Date().toISOString().slice(0, 10)}T00:00:00Z`);
+  const out = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const date = new Date(todayMs - i * 86_400_000);
+    out.push({ ymd: ymdOf(date), date });
   }
-  return json.access_token;
-}
-
-/** Today in YYYY-MM-DD, UTC — the day we aggregate and stamp on the payload. */
-function todayUTC() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-/** The day after `ymd` (YYYY-MM-DD), UTC — used as an exclusive upper bound. */
-function nextDayUTC(ymd) {
-  const d = new Date(`${ymd}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + 1);
-  return d.toISOString().slice(0, 10);
+  return out;
 }
 
 /**
- * AIP-160 filter for a day of an interval-based type. NOTE the field prefix is
- * the type's camelCase UNION-field name (e.g. `steps`, `sleep`), which differs
- * from the kebab-case PATH segment (e.g. `active-minutes`). `member` is the
- * interval field to bound on — `civil_start_time` for most, but sleep sessions
- * only support filtering by `civil_end_time`.
- */
-function intervalDayFilter(unionField, date, nextDate, member = 'civil_start_time') {
-  const field = `${unionField}.interval.${member}`;
-  return `${field} >= "${date}T00:00:00" AND ${field} < "${nextDate}T00:00:00"`;
-}
-
-/**
- * List all data points of `dataType` whose civil start time falls within the
- * given UTC day, following pagination. AIP-160 filter per the Health API docs.
- * `restingHeartRate` is a daily record keyed by `date` (no interval), so it is
- * fetched without a filter and the matching day is picked by the caller.
- */
-async function listDataPoints(token, dataType, filter, pageSize = 1000, maxPages = Infinity) {
-  const points = [];
-  let pageToken;
-  let pages = 0;
-  do {
-    const params = new URLSearchParams({ pageSize: String(pageSize) });
-    if (filter) params.set('filter', filter);
-    if (pageToken) params.set('pageToken', pageToken);
-    const url = `${BASE}/${dataType}/dataPoints?${params}`;
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) {
-      // Surface Google's actual error message (e.g. invalid filter field or
-      // unknown data type) — status text alone ("Bad Request") is useless.
-      const body = await res.text();
-      throw new Error(
-        `GET ${dataType} failed: ${res.status} — ${body.slice(0, 400)}`,
-      );
-    }
-    const json = await res.json();
-    points.push(...(json.dataPoints ?? []));
-    pageToken = json.nextPageToken;
-  } while (pageToken && ++pages < maxPages);
-  console.log(`  ${dataType}: ${points.length} data point(s)`);
-  return points;
-}
-
-/** YYYY-MM-DD of a value's interval civil start date, or null. The civil date
- *  is a structured {year, month, day} on `interval.civilStartTime.date`. */
-function civilStartDate(value) {
-  const d = value?.interval?.civilStartTime?.date;
-  if (!d) return null;
-  const mm = String(d.month).padStart(2, '0');
-  const dd = String(d.day).padStart(2, '0');
-  return `${d.year}-${mm}-${dd}`;
-}
-
-/** Sum a list of stringy integers safely; returns null if the list is empty. */
-function sumInts(values) {
-  const nums = values.map((v) => Number(v)).filter((n) => Number.isFinite(n));
-  return nums.length ? nums.reduce((a, b) => a + b, 0) : null;
-}
-
-/**
- * Fetch one data type and reduce it to a single number for `date`. Any failure
- * (network, auth on a single scope, unexpected shape) is caught and logged, and
- * the field falls back to null so one bad metric never fails the whole bake.
+ * Fetch one metric and reduce it to a single number. Any failure (network, a
+ * single unavailable endpoint, unexpected shape) is caught and logged, and the
+ * field falls back to null so one bad metric never fails the whole bake.
  */
 async function safeMetric(label, fn) {
   try {
-    return await fn();
+    const v = await fn();
+    return Number.isFinite(v) ? v : null;
   } catch (err) {
     console.warn(`⚠️  ${label} unavailable: ${err.message}`);
     return null;
   }
 }
 
+/**
+ * The Garmin daily user-summary blob for a date. The library has no typed
+ * method for most of these fields (intensity minutes, calories), so we hit the
+ * daily user-summary endpoint directly via the generic get(). Cached per-date
+ * within a run so steps/active/calories don't each re-request it.
+ */
+const summaryCache = new Map();
+async function dailySummary(client, displayName, ymd) {
+  if (summaryCache.has(ymd)) return summaryCache.get(ymd);
+  const url =
+    `/usersummary-service/usersummary/daily/${displayName}` +
+    `?calendarDate=${ymd}`;
+  const p = client.get(url);
+  summaryCache.set(ymd, p);
+  return p;
+}
+
+/**
+ * Intensity ("active") minutes for a day = moderate + vigorous intensity
+ * minutes — Garmin's analogue of the old "active minutes" tile. Returns null if
+ * neither field is present (vs a genuine recorded 0, which we keep).
+ */
+async function fetchActiveMinutes(summary) {
+  const moderate = Number(summary?.moderateIntensityMinutes) || 0;
+  const vigorous = Number(summary?.vigorousIntensityMinutes) || 0;
+  if (
+    summary?.moderateIntensityMinutes == null &&
+    summary?.vigorousIntensityMinutes == null
+  ) {
+    throw new Error('no intensity-minutes fields in daily summary');
+  }
+  return moderate + vigorous;
+}
+
+/**
+ * Calories for a day. The watch's 🔥 figure is total kilocalories; fall back to
+ * active if total is absent. Returned rounded to a whole kcal.
+ */
+function fetchCalories(summary) {
+  const total = Number(summary?.totalKilocalories);
+  if (Number.isFinite(total)) return Math.round(total);
+  const active = Number(summary?.activeKilocalories);
+  if (Number.isFinite(active)) return Math.round(active);
+  throw new Error('no kilocalories fields in daily summary');
+}
+
+/** Resting HR for a day (field on the daily heart-rate payload). */
+async function fetchRestingHr(client, date) {
+  const hr = await client.getHeartRate(date);
+  return hr?.restingHeartRate;
+}
+
+/**
+ * Weather + sun times from Open-Meteo (no API key). Returns { weather, sun } or
+ * { weather: null, sun: null } on any failure. sunrise/sunset stored as local
+ * HH:MM; sunriseTomorrow lets the client show tomorrow's sunrise after tonight's
+ * sunset without waiting for the next bake.
+ */
+async function fetchWeather() {
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}` +
+    `&current=temperature_2m,weather_code` +
+    `&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset` +
+    `&forecast_days=3&timezone=${encodeURIComponent(TZ)}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const j = await res.json();
+
+    // "2026-08-26T20:12" (local) → "20:12".
+    const hhmm = (iso) =>
+      typeof iso === 'string' && iso.includes('T') ? iso.slice(11, 16) : null;
+
+    const d = j.daily ?? {};
+    const forecast = (d.time ?? []).map((date, i) => ({
+      date,
+      hiC: round(d.temperature_2m_max?.[i]),
+      loC: round(d.temperature_2m_min?.[i]),
+      code: intOrNull(d.weather_code?.[i]),
+    }));
+
+    const weather = {
+      tempC: round(j.current?.temperature_2m),
+      code: intOrNull(j.current?.weather_code),
+      forecast,
+    };
+    const sun = {
+      sunrise: hhmm(d.sunrise?.[0]),
+      sunset: hhmm(d.sunset?.[0]),
+      sunriseTomorrow: hhmm(d.sunrise?.[1]),
+    };
+    return { weather, sun };
+  } catch (err) {
+    console.warn(`⚠️  weather/sun unavailable: ${err.message}`);
+    return { weather: null, sun: null };
+  }
+}
+
+const round = (n) => (Number.isFinite(Number(n)) ? Math.round(Number(n)) : null);
+const intOrNull = (n) => (Number.isFinite(Number(n)) ? Math.trunc(Number(n)) : null);
+
 async function main() {
-  console.log('Refreshing Google Health token…');
-  const token = await refresh();
+  const days = recentDays(HISTORY_DAYS);
+  const today = days[days.length - 1];
 
-  const date = todayUTC();
-  const nextDate = nextDayUTC(date);
-  console.log(`Fetching Google Health data for ${date}…`);
+  console.log('Loading Garmin token bundle…');
+  // The constructor requires a truthy credentials object even for token-only
+  // use (it throws "Missing credentials" otherwise). loadToken() never reads
+  // these fields, so an empty placeholder is enough — no real password in CI.
+  const client = new GarminConnect({ username: '', password: '' });
+  client.loadToken(bundle.oauth1, bundle.oauth2);
 
-  const [steps, activeMinutes, sleepHours, restingHeartRate] = await Promise.all([
-    // Steps: sum `count` across interval data points. The count lives under the
-    // camelCase union field on each point (p.steps.count), not at top level.
-    safeMetric('steps', async () => {
-      const filter = intervalDayFilter('steps', date, nextDate);
-      const pts = await listDataPoints(token, 'steps', filter);
-      return sumInts(pts.map((p) => p.steps?.count ?? p.count));
-    }),
+  const profile = await client.getUserProfile();
+  const displayName = profile?.displayName;
+  if (!displayName) throw new Error('no displayName on user profile');
 
-    // Active minutes: this type rejects the interval filter
-    // (INVALID_DATA_POINT_FILTER_DATA_TYPE_RESTRICTION) and is minute-granular
-    // (tens of thousands of points), so fetch one large page (newest-first) and
-    // keep only intervals whose civil start date is today. Count only MODERATE
-    // and VIGOROUS levels — mirrors Fitbit's fairly+very-active, excluding
-    // LIGHT/SEDENTARY. Minutes live under `activeMinutes` on each level entry.
-    safeMetric('activeMinutes', async () => {
-      const ACTIVE = new Set(['MODERATELY_ACTIVE', 'VERY_ACTIVE', 'MODERATE', 'VIGOROUS']);
-      const pts = await listDataPoints(token, 'active-minutes', undefined, 10000, 1);
-      const today = pts.filter((p) => civilStartDate(p.activeMinutes ?? p) === date);
-      const levels = today.flatMap(
-        (p) => (p.activeMinutes ?? p).activeMinutesByActivityLevel ?? [],
-      );
-      return sumInts(
-        levels.filter((a) => ACTIVE.has(a.activityLevel)).map((a) => a.activeMinutes),
-      );
-    }),
+  console.log(
+    `Fetching Garmin data for ${days.map((d) => d.ymd).join(', ')} + weather…`,
+  );
 
-    // Sleep: total minutesAsleep across sessions → hours, 0.1 precision.
-    // Sleep sessions only support filtering by civil_end_time. pageSize max 25.
-    safeMetric('sleep', async () => {
-      const filter = intervalDayFilter('sleep', date, nextDate, 'civil_end_time');
-      const pts = await listDataPoints(token, 'sleep', filter, 25);
-      const minutes = sumInts(pts.map((p) => (p.sleep ?? p).summary?.minutesAsleep));
-      return minutes != null ? Math.round((minutes / 60) * 10) / 10 : null;
-    }),
-
-    // Resting HR: daily record that also rejects the .date filter, so fetch a
-    // recent unfiltered page and pick today's record (points are newest-first).
-    safeMetric('restingHeartRate', async () => {
-      const pts = await listDataPoints(token, 'daily-resting-heart-rate', undefined, 30);
-      const [y, m, d] = date.split('-').map(Number);
-      const match = pts
-        .map((p) => p.dailyRestingHeartRate ?? p)
-        .find((r) => r.date?.year === y && r.date?.month === m && r.date?.day === d);
-      const bpm = Number(match?.beatsPerMinute);
-      return Number.isFinite(bpm) ? bpm : null;
-    }),
+  // Per-day metrics for the whole history window, plus weather, all in parallel.
+  const [perDay, { weather, sun }] = await Promise.all([
+    Promise.all(
+      days.map(async ({ ymd, date }) => {
+        const summary = await safeMetric('daily summary', () =>
+          dailySummary(client, displayName, ymd),
+        );
+        const [steps, activeMinutes, calories, restingHeartRate] =
+          await Promise.all([
+            safeMetric(`steps ${ymd}`, () => client.getSteps(date)),
+            safeMetric(`activeMinutes ${ymd}`, () =>
+              fetchActiveMinutes(summary),
+            ),
+            safeMetric(`calories ${ymd}`, () => fetchCalories(summary)),
+            safeMetric(`restingHeartRate ${ymd}`, () =>
+              fetchRestingHr(client, date),
+            ),
+          ]);
+        return { date: ymd, steps, activeMinutes, calories, restingHeartRate };
+      }),
+    ),
+    fetchWeather(),
   ]);
+
+  const todayMetrics = perDay[perDay.length - 1];
+
+  // 3-day histories as {date, value} for the drill-down graphs (oldest first).
+  const history = {
+    steps: perDay.map((d) => ({ date: d.date, value: d.steps })),
+    calories: perDay.map((d) => ({ date: d.date, value: d.calories })),
+    restingHeartRate: perDay.map((d) => ({
+      date: d.date,
+      value: d.restingHeartRate,
+    })),
+  };
 
   const payload = {
     fetchedAt: new Date().toISOString(),
-    date,
-    steps,
-    activeMinutes,
-    sleepHours,
-    restingHeartRate,
+    date: today.ymd,
+    steps: todayMetrics.steps,
+    activeMinutes: todayMetrics.activeMinutes,
+    restingHeartRate: todayMetrics.restingHeartRate,
+    calories: todayMetrics.calories,
+    history,
+    weather,
+    sun,
   };
 
   await mkdir(dirname(OUT), { recursive: true });
   await writeFile(OUT, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(
-    `Wrote ${OUT}: ${payload.steps ?? '—'} steps, ${payload.activeMinutes ?? '—'} active min, ${payload.sleepHours ?? '—'}h sleep, ${payload.restingHeartRate ?? '—'} bpm`,
+    `Wrote ${OUT}: ${payload.steps ?? '—'} steps, ${payload.activeMinutes ?? '—'} active min, ` +
+      `${payload.calories ?? '—'} kcal, ${payload.restingHeartRate ?? '—'} bpm, ` +
+      `weather ${weather?.tempC ?? '—'}°`,
   );
+
+  // Emit the (possibly refreshed) token bundle so the workflow can persist it
+  // back to the secret. oauth2 is short-lived and gets refreshed from oauth1
+  // during the run; persisting keeps the next bake from starting on a stale one.
+  try {
+    const refreshed = client.exportToken();
+    const out = { oauth1: refreshed.oauth1, oauth2: refreshed.oauth2 };
+    console.log(`${BUNDLE_MARKER}${JSON.stringify(out)}`);
+  } catch (err) {
+    console.warn(`⚠️  Could not export refreshed token bundle: ${err.message}`);
+  }
 }
 
 main().catch((err) => {

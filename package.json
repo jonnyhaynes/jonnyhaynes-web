@@ -14,6 +14,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
+    "garmin-connect": "^1.6.2",
     "motion": "^12.42.2",
     "react": "19.2.7",
     "react-dom": "19.2.7",

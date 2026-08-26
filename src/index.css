@@ -64,6 +64,13 @@
   --color-watch-crown-bottom: #202126;
   --color-watch-face-top: #121319;
   --color-watch-face-bottom: #050506;
+  /* Bezel ring + face vignette + drop shadow. These were hardcoded dark, which
+   * showed as an ugly dark band around the pale light-theme face; tokenised so
+   * they soften on light. On dark: a crisp black bezel + deep recessed-glass
+   * vignette read correctly against the near-black OLED. */
+  --watch-bezel-ring: rgba(0, 0, 0, 0.5);
+  --watch-face-vignette: rgba(0, 0, 0, 0.4);
+  --watch-drop-shadow: rgba(0, 0, 0, 0.55);
   /* unfilled ring track opacity — low on the dark face where faint heather still
    * reads; bumped in the light block so tracks don't vanish on the pale face */
   --watch-ring-track-opacity: 0.15;
@@ -125,6 +132,12 @@
   --color-watch-crown-bottom: #b3ada1;
   --color-watch-face-top: #f0eee9;
   --color-watch-face-bottom: #ddd9d0;
+  /* Light bezel/vignette: a soft warm-grey ring instead of hard black, and a
+   * very light vignette so the pale face reads as gently recessed glass rather
+   * than getting a dark band around its edge. */
+  --watch-bezel-ring: rgba(120, 110, 95, 0.35);
+  --watch-face-vignette: rgba(90, 80, 65, 0.14);
+  --watch-drop-shadow: rgba(80, 72, 60, 0.28);
   --watch-ring-track-opacity: 0.3;
 
   /* Reading shelf on the chalk background: lighter shadows + shelf line. */
@@ -1146,17 +1159,19 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Health — fitness-watch face
+ * Health — fitness-watch face (v2)
  *
- * The Health section's four daily metrics dressed as a wearable, matching the
- * page's other physical-object sections. A generous plastic case holds a
- * squircle screen; three concentric activity rings + a pulsing heart (resting
- * HR knocked out of the heart via SVG mask) sit centred in the dial, and the
- * three activity metrics read out as icon complications in the face corners.
+ * Jonny's real Garmin fēnix face mimicked as a physical-object section, matching
+ * the page's other tactile widgets (Gaming's CRT, Reading's bookshelf). A
+ * plastic case holds a squircle screen; the screen shows a digital home face
+ * (date · weather · sun · time · calories · steps · resting HR) whose zones are
+ * buttons. Clicking a zone morphs the face into an in-face "glance" — a 3-day
+ * forecast, both sun times on a day-arc, an analog clock, or a 3-day mini graph.
  *
- * Surfaces reuse the shared --color-deck-panel-* plastic tokens (see the Gaming
- * TV cabinet / Now Playing deck). Motion — the ring sweep and the heartbeat —
- * is disabled under prefers-reduced-motion at the foot of this block.
+ * Case/crown/strap reuse the shared --color-watch-* / --color-deck-panel-*
+ * tokens (flipped per theme). Motion (the HR heart pulse, glance transitions,
+ * the clock's second hand) is disabled under prefers-reduced-motion at the foot
+ * of this block. See docs/plans/health-watch-face-v2.md.
  * ───────────────────────────────────────────────────────────────────────── */
 
 .watch {
@@ -1179,7 +1194,6 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  /* ribbed sport-band texture */
   background-image: repeating-linear-gradient(
     90deg,
     transparent 0 9px,
@@ -1199,18 +1213,19 @@
 
 .watch-case {
   position: relative;
-  width: 300px;
-  height: 360px;
-  border-radius: 74px;
+  /* Round watch body — a circular fēnix, not a squircle. */
+  width: 330px;
+  height: 330px;
+  border-radius: 50%;
   background: linear-gradient(
     145deg,
     var(--color-watch-case-top),
     var(--color-watch-case-bottom)
   );
   box-shadow:
-    inset 0 0 0 2px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 2px var(--watch-bezel-ring),
     inset 0 2px 6px rgba(255, 255, 255, 0.06),
-    0 14px 34px rgba(0, 0, 0, 0.55);
+    0 14px 34px var(--watch-drop-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1218,12 +1233,12 @@
 }
 
 /* Crown — a real power button. Shares its look with the static (rest-day)
- * crown below; only the button carries interaction + focus states. */
+ * crown; only the button carries interaction + focus states. */
 .watch-crown,
 .watch-crown-static {
   position: absolute;
-  right: -6px;
-  top: 120px;
+  right: -5px;
+  top: 132px;
   width: 12px;
   height: 46px;
   border-radius: 3px;
@@ -1232,7 +1247,7 @@
     var(--color-watch-crown-top),
     var(--color-watch-crown-bottom)
   );
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 0 1px var(--watch-bezel-ring);
 }
 .watch-crown {
   border: 0;
@@ -1242,7 +1257,6 @@
     transform 0.12s ease,
     box-shadow 0.12s ease;
 }
-/* the ridged grip on the crown */
 .watch-crown::after {
   content: '';
   position: absolute;
@@ -1267,37 +1281,22 @@
   outline-offset: 2px;
 }
 
-/* squircle screen echoing the case corners, not a circle */
+/* round screen (circular OLED), inset inside the case bezel */
 .watch-face {
   position: relative;
-  width: 272px;
-  height: 302px;
-  border-radius: 60px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
   background: radial-gradient(
-    circle at 50% 36%,
+    circle at 50% 40%,
     var(--color-watch-face-top),
     var(--color-watch-face-bottom)
   );
-  /* inner vignette — kept subtle so it reads as recessed glass on the dark OLED
-   * face without becoming a heavy dark ring on the pale light-theme face */
-  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.35);
-}
-/* the screen is also a button (tap → next metric); strip the native chrome */
-.watch-face--btn {
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  overflow: hidden;
-  color: inherit;
-  font-family: inherit;
-}
-.watch-face--btn:focus-visible {
-  outline: 2px solid var(--color-accent-start);
-  outline-offset: 3px;
+  box-shadow: inset 0 0 18px var(--watch-face-vignette);
 }
 /* powered off: screen darkens, contents fade to Standby */
 .watch-face--off {
-  cursor: default;
   background: radial-gradient(
     ellipse at center,
     color-mix(in oklch, var(--color-muted) 8%, #000) 0%,
@@ -1305,6 +1304,8 @@
   );
 }
 .watch-screen {
+  position: absolute;
+  inset: 0;
   transition: opacity 0.35s ease;
 }
 .watch-face--off .watch-screen {
@@ -1322,119 +1323,242 @@
   text-transform: uppercase;
   color: color-mix(in oklch, var(--color-muted) 55%, transparent);
 }
-
-/* central dial: rings + heart */
-.watch-dial {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 194px;
-  height: 194px;
-}
-.watch-rings-svg {
-  position: absolute;
-  inset: 0;
-  /* 12 o'clock start */
-  transform: rotate(-90deg);
-}
-.watch-ring-track {
-  opacity: var(--watch-ring-track-opacity);
-}
-.watch-ring {
-  transition:
-    stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.3s ease;
-}
-/* rings that aren't the featured metric dim back so the chosen one stands out */
-.watch-ring--dim {
-  opacity: 0.32;
-}
-
-.watch-centre {
+/* rest-day: three faint idle dots instead of a face */
+.wf-off-dots {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 }
-/* centre readout when a non-HR metric is featured: big value + label + goal */
-.watch-metric {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: watch-centre-fade 0.28s ease;
-}
-.watch-metric-v {
-  font-size: 2.4rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  color: color-mix(in oklch, var(--color-accent-start) 82%, white);
-  text-shadow: 0 0 4px
-    color-mix(in oklch, var(--color-accent-start) 60%, transparent);
-}
-.watch-metric-u {
-  font-size: 0.9rem;
-  color: var(--color-muted);
-  text-shadow: none;
-  margin-left: 2px;
-}
-.watch-metric-cap {
-  margin-top: 3px;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-.watch-metric-goal {
-  margin-top: 5px;
-  font-size: 0.55rem;
-  letter-spacing: 0.06em;
-  color: color-mix(in oklch, var(--color-muted) 75%, transparent);
-}
-@keyframes watch-centre-fade {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-.watch-heart {
-  display: block;
-  overflow: visible;
-  width: 74px;
-  height: 67px;
-  transform-origin: center;
-  /* --beat (seconds per beat = 60 / bpm) is set inline from the resting rate */
-  animation: watch-beat var(--beat, 0.83s) ease-in-out infinite;
-}
-.watch-heart-path {
-  fill: var(--color-accent-start);
-}
-/* Glow lives on a separate heart-shaped path behind the masked one, so the
- * drop-shadow follows the heart outline instead of lighting the mask's
- * bounding box (which showed as a rectangular heather halo). */
-.watch-heart-glow {
-  fill: var(--color-accent-start);
-  filter: drop-shadow(
-      0 0 4px color-mix(in oklch, var(--color-accent-start) 60%, transparent)
-    )
-    drop-shadow(
-      0 0 11px color-mix(in oklch, var(--color-accent-start) 38%, transparent)
-    );
-}
-.watch-hr-missing {
-  font-family: var(--font-mono);
-  font-size: 1.75rem;
-  color: var(--color-muted);
+.wf-off-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--color-muted) 40%, transparent);
 }
 
-/* systole contraction then slower diastole recovery, one per beat — kept
- * subtle (peak ~6%) so it reads as a gentle pulse, not a throb. */
+/* ── Home face: full-height stack of divider-separated bands ─────────────── */
+/* The round screen is filled edge-to-edge by 5 horizontal bands (date /
+ * weather+sun / time / calories+steps / HR), each separated by a hairline rule
+ * like the real fēnix. The time band flexes to take the extra room so nothing
+ * feels squished into the middle. Side padding is generous so text clears the
+ * circular edge. */
+.wf-home {
+  position: absolute;
+  inset: 0;
+  /* Fixed 5-row grid whose row-lines land exactly where the SVG chord dividers
+   * are drawn (at face-px 72 / 116 / 184 / 228 of 300). Row heights below are
+   * those bands as fractions of 300 so the bands butt right up against their
+   * rules. */
+  display: grid;
+  grid-template-rows: 58fr 48fr 88fr 48fr 58fr;
+  font-variant-numeric: tabular-nums;
+  animation: wf-fade 0.3s ease;
+}
+
+/* SVG overlay holding the chord divider lines; sits behind the bands */
+.wf-dividers {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.wf-divider {
+  stroke: color-mix(in oklch, var(--color-muted) 30%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* one horizontal band, centred in its grid row. Horizontal padding keeps
+ * content off the round chord — more on the top/bottom rows (narrower circle),
+ * less on the wide middle. */
+.wf-band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0 26px;
+}
+/* date + HR are the outer bands; centre both in their (equal-height) rows so
+ * each is the same distance from its divider — symmetric top/bottom. */
+.wf-band--date,
+.wf-band--hr {
+  align-items: center;
+}
+.wf-band--wx,
+.wf-band--stats {
+  /* these rows sit where the circle is narrowing — pull content in a bit */
+  padding: 0 34px;
+}
+.wf-band--time {
+  padding: 0 20px;
+}
+
+.wf-date {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-foreground);
+}
+
+/* thin vertical rule splitting a two-zone band (weather|sun, cal|steps) —
+ * short, centred, doesn't reach the divider chords above/below */
+.wf-vrule {
+  width: 1px;
+  align-self: center;
+  height: 22px;
+  background: color-mix(in oklch, var(--color-muted) 22%, transparent);
+}
+
+/* every interactive zone is a chromeless button that lights on hover/focus.
+ * flex:1 so the two halves of a split band share the width evenly. */
+.wf-zone {
+  border: 0;
+  background: transparent;
+  padding: 5px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition:
+    background 0.15s ease,
+    transform 0.12s ease;
+}
+.wf-band--wx .wf-zone,
+.wf-band--stats .wf-zone {
+  flex: 1 1 0;
+}
+.wf-zone:hover {
+  background: color-mix(in oklch, var(--color-accent-start) 14%, transparent);
+}
+.wf-zone:active {
+  transform: scale(0.96);
+}
+.wf-zone:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 1px;
+}
+/* a zone whose data is missing: no pointer, dimmed, not really tappable */
+.wf-zone--dead {
+  cursor: default;
+  opacity: 0.5;
+}
+.wf-zone--dead:hover {
+  background: transparent;
+}
+
+.wf-wx-ic {
+  width: 20px;
+  height: 20px;
+}
+.wf-wx-ic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wf-wx-t {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+.wf-zone--sun {
+  /* match the icon↔value spacing used by the weather / calorie / step zones so
+   * the sun arrow doesn't crowd its time */
+  gap: 7px;
+}
+.wf-sun-t {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+.wf-sun-arrow {
+  font-size: 1.05rem;
+  color: var(--color-accent-start);
+}
+
+/* the big central time — the hero of the face */
+.wf-time {
+  padding: 2px 10px;
+}
+.wf-time-v {
+  position: relative;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-foreground);
+}
+.wf-time-colon {
+  color: color-mix(in oklch, var(--color-foreground) 60%, transparent);
+  margin: 0 -2px;
+}
+/* the minute digits pick up the accent, echoing the red minutes on the real face */
+.wf-time-min {
+  color: color-mix(in oklch, var(--color-accent-start) 88%, var(--color-foreground));
+}
+/* small ticking seconds sitting on the baseline to the right (like the fēnix's
+ * "17"): baseline-aligned, not superscript. */
+.wf-time-sec {
+  font-size: 1.7rem;
+  font-weight: 600;
+  vertical-align: baseline;
+  margin-left: 5px;
+  color: color-mix(in oklch, var(--color-accent-start) 80%, var(--color-foreground));
+  font-variant-numeric: tabular-nums;
+}
+
+.wf-mini-ic {
+  width: 19px;
+  height: 19px;
+}
+.wf-mini-ic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wf-mini-v {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+/* bottom resting-HR zone */
+.wf-hr {
+  gap: 7px;
+}
+.wf-hr-heart {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent-start);
+  transform-origin: center;
+  animation: watch-beat var(--beat, 0.83s) ease-in-out infinite;
+  filter: drop-shadow(
+    0 0 4px color-mix(in oklch, var(--color-accent-start) 55%, transparent)
+  );
+}
+.wf-hr-heart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wf-hr-v {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+/* systole then diastole, one per beat — subtle (peak ~6%) */
 @keyframes watch-beat {
   0% {
     transform: scale(1);
@@ -1456,102 +1580,367 @@
   }
 }
 
-/* corner complications: icon + value, colour-keyed to their ring, no words */
-.watch-comp {
-  position: absolute;
+/* synced caption below the whole watch (declutters the round face) */
+.wf-synced {
+  margin-top: 12px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
-}
-.watch-comp-ic {
-  width: 20px;
-  height: 20px;
-}
-.watch-comp-ic svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.watch-comp-v {
+  gap: 5px;
   font-family: var(--font-mono);
-  font-size: 1.05rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  color: var(--color-foreground);
-}
-.watch-comp-u {
   font-size: 0.6rem;
-  color: var(--color-muted);
-  margin-left: 1px;
-}
-.watch-comp--tl {
-  top: 30px;
-  left: 34px;
-}
-.watch-comp--tr {
-  top: 30px;
-  right: 34px;
-}
-.watch-comp--bl {
-  bottom: 34px;
-  left: 34px;
-}
-/* the complication whose metric is currently featured gets a soft outline */
-.watch-comp--featured::after {
-  content: '';
-  position: absolute;
-  inset: -6px -8px;
-  border-radius: 8px;
-  border: 1px solid color-mix(in oklch, currentColor 55%, transparent);
-}
-
-/* synced tag, bottom-right corner */
-.watch-synced {
-  position: absolute;
-  bottom: 38px;
-  right: 34px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--color-muted) 82%, transparent);
+  color: color-mix(in oklch, var(--color-muted) 90%, transparent);
 }
-.watch-synced-dot {
-  width: 5px;
-  height: 5px;
+.wf-synced-dot {
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--color-accent-start);
   box-shadow: 0 0 5px
     color-mix(in oklch, var(--color-accent-start) 70%, transparent);
 }
 
-/* Small screens: shrink the whole watch so the corner complications keep clear
- * of the enlarged rings and the case fits the column. */
+/* ── Glance: an in-face detail that replaces the home layout ──────────────── */
+.wf-glance {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px 26px;
+  animation: wf-glance-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.wf-glance:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: -3px;
+  border-radius: 50%;
+}
+.wf-glance-head {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.wf-back {
+  position: absolute;
+  left: 34px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: color-mix(in oklch, var(--color-accent-start) 90%, var(--color-foreground));
+}
+.wf-glance-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* forecast: three day columns */
+/* forecast — day columns, sized to fill the round face, hairline-separated */
+.wf-forecast {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+}
+.wf-fc-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+/* divider between columns (like the home face's band rules) */
+.wf-fc-day + .wf-fc-day::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: color-mix(in oklch, var(--color-muted) 22%, transparent);
+}
+.wf-fc-d {
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.wf-fc-ic {
+  width: 34px;
+  height: 34px;
+}
+.wf-fc-ic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wf-fc-t {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.wf-fc-t b {
+  font-size: 1.35rem;
+  color: var(--color-foreground);
+}
+.wf-fc-t em {
+  font-style: normal;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+/* sun glance (A1): large gradient day-arc + glowing sun + times */
+.wf-sun {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.wf-sun-svg {
+  width: 214px;
+  height: 120px;
+}
+.wf-sun-arc {
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+/* gradient: night at the horizon ends → warm gold at midday peak */
+.wf-sun-grad-edge {
+  stop-color: color-mix(in oklch, var(--color-accent-end) 60%, #23112e);
+}
+.wf-sun-grad-peak {
+  stop-color: #e6b95c;
+}
+.wf-sun-horizon {
+  stroke: color-mix(in oklch, var(--color-muted) 40%, transparent);
+  stroke-width: 1;
+}
+.wf-sun-dot {
+  fill: #e6b95c;
+  filter: drop-shadow(0 0 7px #e6b95c);
+}
+.wf-sun-times {
+  display: flex;
+  gap: 34px;
+}
+.wf-sun-times span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.wf-sun-times b {
+  font-size: 1.05rem;
+  color: var(--color-foreground);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 2px;
+}
+
+/* analog clock — no title, fills the round face */
+.wf-clock {
+  width: 250px;
+  height: 250px;
+}
+.wf-clock-face {
+  fill: color-mix(in oklch, var(--color-watch-face-top) 60%, transparent);
+  stroke: color-mix(in oklch, var(--color-muted) 30%, transparent);
+  stroke-width: 1;
+}
+.wf-tick {
+  stroke: color-mix(in oklch, var(--color-muted) 55%, transparent);
+  stroke-width: 1;
+}
+.wf-tick--major {
+  stroke: color-mix(in oklch, var(--color-foreground) 70%, transparent);
+  stroke-width: 2;
+}
+.wf-hand {
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+}
+.wf-hand--hour {
+  stroke: var(--color-foreground);
+  stroke-width: 3.4;
+}
+.wf-hand--min {
+  stroke: var(--color-foreground);
+  stroke-width: 2.4;
+}
+.wf-hand--sec {
+  stroke: var(--color-accent-start);
+  stroke-width: 1.2;
+}
+.wf-clock-pin {
+  fill: var(--color-accent-start);
+}
+
+/* bar chart (steps / calories) — sized to fill the round face */
+.wf-bars {
+  display: flex;
+  gap: 26px;
+  align-items: flex-end;
+  height: 172px;
+  margin-top: 14px;
+}
+.wf-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.wf-bar-track {
+  width: 30px;
+  height: 118px;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 7px;
+  background: color-mix(in oklch, var(--color-muted) 16%, transparent);
+  overflow: hidden;
+}
+.wf-bar-fill {
+  width: 100%;
+  border-radius: 7px 7px 0 0;
+  min-height: 4px;
+  transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.wf-bar-v {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.wf-bar-d {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+/* resting-HR glance (A): big current BPM + area-filled 3-day line */
+.wf-hrg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+.wf-hrg-cur {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+.wf-hrg-heart {
+  width: 17px;
+  height: 17px;
+  color: var(--color-accent-start);
+  align-self: center;
+}
+.wf-hrg-heart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wf-hrg-cur b {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.wf-hrg-u {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+.wf-hrg-svg {
+  width: 212px;
+  height: 68px;
+}
+.wf-hrg-area {
+  fill: color-mix(in oklch, var(--color-accent-start) 20%, transparent);
+  stroke: none;
+}
+.wf-hrg-line {
+  fill: none;
+  stroke: var(--color-accent-start);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wf-hrg-pt {
+  fill: var(--color-accent-start);
+}
+.wf-hrg-labels {
+  display: flex;
+  gap: 44px;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+@keyframes wf-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes wf-glance-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Small screens: shrink the whole watch to fit the column. */
 @media (max-width: 400px) {
   .watch-case {
-    transform: scale(0.82);
+    transform: scale(0.78);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .watch-ring {
+  .wf-hr-heart {
+    animation: none;
+  }
+  .wf-home,
+  .wf-glance {
+    animation: none;
+  }
+  .wf-bar-fill {
     transition: none;
-  }
-  .watch-heart {
-    animation: none;
-  }
-  /* instant metric swap — no fade-in when cycling the centre */
-  .watch-metric {
-    animation: none;
   }
   .watch-screen {
     transition: none;
   }
 }
+
