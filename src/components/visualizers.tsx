@@ -179,7 +179,7 @@ function useCanvas(
       if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    // Theme colours, cached until the theme attribute flips.
+    // Theme colours, cached until the theme or palette attribute flips.
     let colors: { a: Rgb; a2: Rgb } | null = null;
     const readColors = () => {
       colors ??= {
@@ -220,7 +220,7 @@ function useCanvas(
       });
       mo.observe(document.documentElement, {
         attributes: true,
-        attributeFilter: ['data-theme'],
+        attributeFilter: ['data-theme', 'data-palette'],
       });
       return () => {
         ro.disconnect();
@@ -238,7 +238,7 @@ function useCanvas(
     });
     mo.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme'],
+      attributeFilter: ['data-theme', 'data-palette'],
     });
 
     let raf = 0;

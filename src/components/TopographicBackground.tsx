@@ -97,7 +97,7 @@ function parseColor(raw: string): [number, number, number] {
 }
 
 export function TopographicBackground() {
-  const { theme } = useTheme();
+  const { theme, palette } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [grid, setGrid] = useState<Grid | null>(null);
 
@@ -140,11 +140,21 @@ export function TopographicBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Pull the live theme colours; re-read whenever `theme` changes (this effect
-    // re-runs on flip because `theme` is a dependency).
-    const styles = getComputedStyle(canvas);
-    const base = parseColor(styles.getPropertyValue('--color-muted'));
-    const accent = parseColor(styles.getPropertyValue('--color-accent-start'));
+    // Live theme colours. The effect re-runs whenever `theme` OR `palette`
+    // changes, but the attribute that drives those tokens (data-theme /
+    // data-palette) is written in ThemeProvider's OWN effect — which may commit
+    // AFTER this one. Reading getComputedStyle synchronously here can therefore
+    // return the PREVIOUS palette's accent (the canvas lagging one toggle
+    // behind). So colours are mutable and (re)read via readColors(), invoked
+    // from a rAF below — by the next frame the attribute is committed and styles
+    // recomputed, so the read is always current.
+    let base: ReturnType<typeof parseColor> = [156, 163, 175];
+    let accent: ReturnType<typeof parseColor> = [168, 119, 191];
+    const readColors = () => {
+      const styles = getComputedStyle(canvas);
+      base = parseColor(styles.getPropertyValue('--color-muted'));
+      accent = parseColor(styles.getPropertyValue('--color-accent-start'));
+    };
 
     let cw = 0;
     let ch = 0;
@@ -258,11 +268,20 @@ export function TopographicBackground() {
       raf = requestAnimationFrame(loop);
     };
 
-    // Static devices (touch / reduced motion) draw one frame and stop.
+    // Read colours on the next frame — by then the theme/palette attribute set
+    // in ThemeProvider's effect has committed and styles recomputed, so we never
+    // pick up the previous palette's accent (see readColors above).
     if (interactive) {
-      raf = requestAnimationFrame(loop);
+      raf = requestAnimationFrame((t) => {
+        readColors();
+        loop(t);
+      });
     } else {
-      draw(0);
+      // Static devices (touch / reduced motion) draw one frame and stop.
+      raf = requestAnimationFrame(() => {
+        readColors();
+        draw(0);
+      });
     }
 
     // Pause the loop when the tab is hidden so idle drift costs nothing.
@@ -296,7 +315,7 @@ export function TopographicBackground() {
       document.removeEventListener('visibilitychange', onVisibility);
       if (interactive) window.removeEventListener('pointermove', onMove);
     };
-  }, [grid, interactive, theme]);
+  }, [grid, interactive, theme, palette]);
 
   return (
     <canvas

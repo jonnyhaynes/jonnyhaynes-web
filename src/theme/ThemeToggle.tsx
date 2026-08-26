@@ -45,16 +45,17 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={toggleTitle}
-      className="group inline-flex items-center rounded-full border border-muted/30 bg-background/70 p-1 text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+      className="group relative inline-flex items-center rounded-full border border-muted/30 bg-background/70 p-1 text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
     >
-      {/* Yorkshire prompt — collapsed by default (zero width + no spacing),
-          reveals on hover/focus. The left padding and gap live *inside* the
-          label so they collapse with it, leaving a clean circular button when
-          idle. aria-hidden: the button already carries the label via
-          aria-label. motion-reduce: instant swap for reduced-motion users. */}
+      {/* Yorkshire prompt — reveals on hover/focus. Positioned ABSOLUTELY to the
+          left of the icon (right-full) so it floats OVER whatever sits beside the
+          button (the palette rose) instead of pushing it sideways. Its own pill
+          bg + blur keeps it legible over the rose. Slides in from the right +
+          fades. aria-hidden: the button already carries the label via aria-label.
+          motion-reduce: instant swap. */}
       <span
         aria-hidden="true"
-        className="max-w-0 overflow-hidden whitespace-nowrap font-mono text-sm opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:pr-2 group-hover:pl-2 group-hover:opacity-100 group-focus-visible:max-w-40 group-focus-visible:pr-2 group-focus-visible:pl-2 group-focus-visible:opacity-100 motion-reduce:transition-none"
+        className="pointer-events-none absolute right-full mr-1 whitespace-nowrap rounded-full border border-muted/30 bg-background/90 px-3 py-1 font-mono text-sm opacity-0 backdrop-blur-sm transition-all duration-300 translate-x-1 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none"
       >
         {toggleTitle}
       </span>

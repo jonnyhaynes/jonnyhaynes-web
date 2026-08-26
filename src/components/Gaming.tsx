@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { GameTile } from '../data/gaming';
 import { recentGames, useGamingData } from '../data/gaming';
+import { SectionHeading } from './SectionHeading';
 
 /**
  * Relative "last played" for Xbox tiles (Steam carries no timestamp). Coarse by
@@ -303,9 +304,7 @@ export function Gaming() {
 
   return (
     <section id="gaming" className="scroll-mt-16 py-16">
-      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // What I’m playing
-      </h2>
+      <SectionHeading section="gaming" />
 
       {/* Desktop: hero TV and the jewel-cases split the row 50/50. The four
           cases sit in a 2×2 grid in the right half. Mobile: the TV spans full

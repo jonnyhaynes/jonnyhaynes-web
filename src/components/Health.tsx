@@ -2,6 +2,9 @@ import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { useHealthData } from '../data/health';
 import type { HistoryPoint } from '../data/health';
 import { useReducedMotion } from '../lib/useReducedMotion';
+import { copy } from '../theme/copy';
+import { useTheme } from '../theme/useTheme';
+import { SectionHeading } from './SectionHeading';
 
 /* ───────────────────────────────────────────────────────────────────────────
  * Health — a light-touch personality widget dressed as Jonny's real Garmin
@@ -342,6 +345,7 @@ function AnalogClock({ reduced }: { reduced: boolean }) {
 export function Health() {
   const data = useHealthData();
   const reduced = useReducedMotion();
+  const { palette } = useTheme();
 
   const [powered, setPowered] = useState(true);
   const [glance, setGlance] = useState<Glance>(null);
@@ -401,15 +405,12 @@ export function Health() {
 
   const accent = 'var(--color-accent-start)';
   const accentDim = 'var(--color-accent-end)';
+  const c = copy(palette).health;
 
   return (
     <section id="health" className="scroll-mt-16 py-16">
-      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // Life beyond the keyboard
-      </h2>
-      <p className="mt-4 max-w-xl text-muted">
-        A day away from the compiler, more or less — pulled from my watch.
-      </p>
+      <SectionHeading section="health" />
+      <p className="mt-4 max-w-xl text-muted">{c.lead}</p>
 
       {!hasAny ? (
         <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
@@ -429,8 +430,8 @@ export function Health() {
           </div>
           <p className="max-w-sm text-muted">
             <span className="font-medium text-foreground">Rest day.</span> The
-            watch is off the charger and there&rsquo;s nothing to report — which
-            is rather the point of a day beyond the keyboard.
+            watch is off the charger and there&rsquo;s nothing to report — which{' '}
+            {c.restDay}
           </p>
         </div>
       ) : (

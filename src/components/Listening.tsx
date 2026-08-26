@@ -1,6 +1,7 @@
 import { useSpotifyTop } from '../data/spotify';
 import { CODING_PLAYLISTS } from '../content/spotify';
 import { NowPlaying } from './NowPlaying';
+import { SectionHeading } from './SectionHeading';
 
 /** Top 3 artists (circular avatars) + the "Current Vibe" genre string. */
 function HeavyRotation() {
@@ -124,9 +125,7 @@ function CodingFuel() {
 export function Listening() {
   return (
     <section id="listening" className="scroll-mt-16 py-16">
-      <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-        // On the digital turntable
-      </h2>
+      <SectionHeading section="listening" />
 
       {/* Responsive layout:
           - mobile (<md): single column, stacked full width.

@@ -1,4 +1,6 @@
 import { Link } from 'react-router';
+import { copy } from '../theme/copy';
+import { useTheme } from '../theme/useTheme';
 import { YorkshireRose } from './YorkshireRose';
 
 const LINK =
@@ -7,13 +9,15 @@ const LINK =
 /** Site-wide footer. Shared by every page so it stays a single source of truth. */
 export function Footer() {
   const year = new Date().getFullYear();
+  const { palette } = useTheme();
+  const c = copy(palette).footer;
 
   return (
     <footer className="mx-auto max-w-4xl px-6 py-10 text-sm text-muted">
       <p>
         Forged in Yorkshire
         <YorkshireRose className="mx-1 inline-block size-4 -translate-y-px align-middle" />
-        using{' '}
+        {c.using}{' '}
         <a href="https://react.dev/" className={LINK}>
           React
         </a>
@@ -21,7 +25,7 @@ export function Footer() {
         <a href="https://vite.dev/" className={LINK}>
           Vite
         </a>{' '}
-        &amp; AI. &copy; 1985&ndash;{year}.{' '}
+        {c.andAi}. &copy; 1985&ndash;{year}.{' '}
         <Link to="/privacy" className={LINK}>
           Privacy
         </Link>

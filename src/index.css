@@ -149,6 +149,42 @@
   --book-shadow-lift-sm: rgba(0, 0, 0, 0.08);
 }
 
+/*
+ * Yorkshire palette — the flag's "Broad Acres" blue, an independent axis from
+ * light/dark. All blue: accent-start is the flag blue, accent-end a deeper blue
+ * partner for the gradients/hovers (no gold — the site's yellow lives only in
+ * the static hero screenprint PNG, untouched by tokens). These blocks override
+ * ONLY the accent tokens; background/foreground/muted and every device token
+ * inherit the light/dark base above, so the whole site recolours from here.
+ *
+ * SOURCE ORDER IS LOAD-BEARING. `[data-palette='yorkshire']` and
+ * `[data-theme='light']` are equal specificity (one attribute each), so whichever
+ * comes last wins where they set the same token — the Yorkshire dark block MUST
+ * stay below the light block so it correctly recolours the dark base. The
+ * combined `[data-theme='light'][data-palette='yorkshire']` selector (two
+ * attributes) outranks both and pins Yorkshire-light exactly. Do not reorder.
+ *
+ * accent-start is AA-verified (4.5:1) as body/link text and as the "View My
+ * Work" button. accent-end is only ever a hover/gradient partner — its lightness
+ * direction (darker than start) matches the default heather theme, whose dark
+ * button-hover sits at the same transient contrast.
+ */
+[data-palette='yorkshire'] {
+  /* Yorkshire dark — flag blue, all blue. accent-end is a DEEPER blue partner
+   * (not gold): the gradients/hovers that pair start+end stay in one hue family,
+   * mirroring how the default theme pairs two heathers. The site's yellow lives
+   * only in the static hero screenprint (a PNG), which this doesn't touch. The
+   * end↔start lightness direction (end darker) matches the default theme. */
+  --color-accent-start: #5b9dd6; /* 5.94:1 on #1a1b1e */
+  --color-accent-end: #3f7cb8; /* deeper blue; gradient/hover partner */
+}
+
+[data-theme='light'][data-palette='yorkshire'] {
+  /* Yorkshire light — deep flag blue + a still-deeper blue partner. */
+  --color-accent-start: #1f6fb2; /* 4.76:1 on #f4f3f0 */
+  --color-accent-end: #12456f; /* deeper blue; chalk text on it = 8.98:1 */
+}
+
 @layer base {
   html {
     color-scheme: dark;
@@ -249,6 +285,23 @@
   }
 }
 
+/* Yorkshire flavour: the headline gradient drifts through a family of BLUES
+ * (all blue, no gold) — the flag-blue analogue of the default's heather→indigo
+ * drift. Two nearby blue hues (~255 azure ↔ ~215 cyan-blue) living-drift into
+ * each other. Same lightness discipline (>= 0.6) so large-text AA holds across
+ * the whole animation. A separate keyframe + scoped override is needed because
+ * registered custom properties can't be re-tweened by attribute alone. */
+@keyframes gradient-drift-yorkshire {
+  from {
+    --grad-1: oklch(0.66 0.15 255); /* azure */
+    --grad-2: oklch(0.62 0.13 230); /* mid blue */
+  }
+  to {
+    --grad-1: oklch(0.7 0.14 235); /* lighter blue */
+    --grad-2: oklch(0.6 0.15 215); /* cyan-blue */
+  }
+}
+
 .animate-gradient {
   background-image: linear-gradient(
     to right in oklch,
@@ -261,9 +314,32 @@
   animation: gradient-drift 6s linear infinite alternate;
 }
 
+[data-palette='yorkshire'] .animate-gradient {
+  animation-name: gradient-drift-yorkshire;
+  /* Pin a blue BASE value for the stops. The @property initial-values are
+   * heather (hue 320/300) and can't be redeclared per-palette; without this, any
+   * moment the drift animation isn't actively holding a keyframe — a fresh mount,
+   * or a slot mid-riffle when the re-render restarts the animation — falls back
+   * to that heather initial and the rolling glyphs flash purple. These blue
+   * bases match the keyframe `from` so there's no jump when the drift takes
+   * over. */
+  --grad-1: oklch(0.66 0.15 255);
+  --grad-2: oklch(0.62 0.13 230);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-gradient {
     animation: none;
+  }
+}
+
+/* With the animation off, the drift never runs so --grad-1/2 keep their
+ * heather initial-values even under Yorkshire. Pin them to the blue stops so the
+ * static headline is still all-blue for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  [data-palette='yorkshire'] .animate-gradient {
+    --grad-1: oklch(0.66 0.15 255);
+    --grad-2: oklch(0.62 0.13 230);
   }
 }
 
