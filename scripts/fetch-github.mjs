@@ -127,6 +127,27 @@ async function fetchViaGraphQL() {
             }
           }
         }
+        repositoriesContributedTo(
+          first: 100
+          includeUserRepositories: false
+          privacy: PUBLIC
+          orderBy: { field: PUSHED_AT, direction: DESC }
+        ) {
+          nodes {
+            name
+            url
+            pushedAt
+            defaultBranchRef {
+              target {
+                ... on Commit {
+                  history(first: 1) {
+                    nodes { messageHeadline committedDate }
+                  }
+                }
+              }
+            }
+          }
+        }
         contributionsCollection {
           contributionCalendar { totalContributions }
         }
@@ -154,23 +175,47 @@ async function fetchViaGraphQL() {
 
   const user = json.data.user;
   const allRepos = user.repositories.nodes;
+  const contributedRepos = user.repositoriesContributedTo.nodes;
 
   // Projects: the most-recently-PUSHED public repos (active work, not pinned).
   // allRepos is already PUSHED_AT-desc, so slice from the top.
   const projects = allRepos.slice(0, 6).map(mapProjectNode);
   await enrichWithPortfolioMeta(projects);
 
-  // "Currently building": the single most-recently-pushed repo + its last commit.
-  const top = projects[0] ?? null;
-  const lastActivity =
-    top && top.lastCommit
-      ? {
-          repo: top.name,
-          url: top.url,
-          message: top.lastCommit.message,
-          committedAt: top.lastCommit.committedAt,
-        }
-      : null;
+  // "Currently building": the single most-recently-pushed repo across own repos,
+  // forks, and repos contributed to, so the chip reflects all visible activity.
+  const activityRepos = [
+    ...allRepos.map((r) => ({
+      repo: r.name,
+      url: r.url,
+      pushedAt: r.pushedAt,
+      message: r.defaultBranchRef?.target?.history?.nodes?.[0]?.messageHeadline ?? null,
+      committedAt:
+        r.defaultBranchRef?.target?.history?.nodes?.[0]?.committedDate ?? null,
+    })),
+    ...contributedRepos.map((r) => ({
+      repo: r.name,
+      url: r.url,
+      pushedAt: r.pushedAt,
+      message: r.defaultBranchRef?.target?.history?.nodes?.[0]?.messageHeadline ?? null,
+      committedAt:
+        r.defaultBranchRef?.target?.history?.nodes?.[0]?.committedDate ?? null,
+    })),
+  ].sort(
+    (a, b) =>
+      new Date(b.committedAt ?? b.pushedAt ?? 0).getTime() -
+      new Date(a.committedAt ?? a.pushedAt ?? 0).getTime(),
+  );
+
+  const top = activityRepos[0] ?? null;
+  const lastActivity = top
+    ? {
+        repo: top.repo,
+        url: top.url,
+        message: top.message,
+        committedAt: top.committedAt ?? top.pushedAt,
+      }
+    : null;
 
   return {
     projects,
