@@ -109,16 +109,6 @@ async function dailySummary(client, displayName, ymd) {
     `?calendarDate=${ymd}`;
   const p = client.get(url);
   summaryCache.set(ymd, p);
-  // One-shot debug: dump the returned keys (+ any *alorie*/*ntensity* fields)
-  // so we can see the real field names. Enable with HEALTH_DEBUG=1.
-  if (process.env.HEALTH_DEBUG) {
-    p.then((s) => {
-      const keys = s && typeof s === 'object' ? Object.keys(s) : [];
-      console.error(`DEBUG summary ${ymd} keys: ${JSON.stringify(keys)}`);
-      const hits = keys.filter((k) => /alorie|ntensity|active/i.test(k));
-      console.error(`DEBUG summary ${ymd} cal/intensity keys: ${JSON.stringify(hits)}`);
-    }).catch(() => {});
-  }
   return p;
 }
 
@@ -229,9 +219,16 @@ async function main() {
   const [perDay, { weather, sun }] = await Promise.all([
     Promise.all(
       days.map(async ({ ymd, date }) => {
-        const summary = await safeMetric('daily summary', () =>
-          dailySummary(client, displayName, ymd),
-        );
+        // NB: fetch the summary directly, NOT via safeMetric — safeMetric
+        // reduces its result to a number (Number.isFinite(v) ? v : null), so
+        // wrapping the summary OBJECT in it always yields null (which then
+        // nulls activeMinutes + calories). Catch here and degrade to {}.
+        let summary = {};
+        try {
+          summary = (await dailySummary(client, displayName, ymd)) ?? {};
+        } catch (err) {
+          console.warn(`⚠️  daily summary ${ymd} unavailable: ${err.message}`);
+        }
         const [steps, activeMinutes, calories, restingHeartRate] =
           await Promise.all([
             safeMetric(`steps ${ymd}`, () => client.getSteps(date)),

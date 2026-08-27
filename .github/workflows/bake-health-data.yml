@@ -49,7 +49,6 @@ jobs:
         id: fetch
         env:
           GARMIN_TOKEN_BUNDLE: ${{ secrets.GARMIN_TOKEN_BUNDLE }}
-          HEALTH_DEBUG: '1'
         run: |
           set -euo pipefail
           # Tee stdout so we can both show logs and capture the refreshed bundle.
