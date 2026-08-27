@@ -67,11 +67,20 @@ jobs:
       - name: Persist refreshed token bundle
         # Garmin rotates the oauth2 token during the run; write it back so the
         # next bake starts fresh. Skipped if the script emitted no bundle.
+        # Requires GARMIN_TOKEN_PAT (Actions secrets:write) — the built-in
+        # GITHUB_TOKEN can't update secrets. If the PAT is absent we warn and
+        # skip rather than fail the whole bake: the data PR still lands, and the
+        # bundle just isn't rotated (fine until the oauth2 token nears expiry).
         if: steps.fetch.outputs.has_bundle == 'true'
         env:
           GH_TOKEN: ${{ secrets.GARMIN_TOKEN_PAT }}
         run: |
           set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::warning::GARMIN_TOKEN_PAT not set — skipping token rotation persist-back."
+            rm -f refreshed-bundle.json
+            exit 0
+          fi
           gh secret set GARMIN_TOKEN_BUNDLE --body "$(cat refreshed-bundle.json)"
           rm -f refreshed-bundle.json
 

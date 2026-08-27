@@ -97,11 +97,15 @@ async function safeMetric(label, fn) {
  * daily user-summary endpoint directly via the generic get(). Cached per-date
  * within a run so steps/active/calories don't each re-request it.
  */
+// connectapi host — the library's typed methods (getSteps/getHeartRate) hit
+// this via its UrlClass (GC_API); the generic client.get() has no baseURL, so a
+// relative path throws "Invalid URL". Prepend the host explicitly.
+const GC_API = 'https://connectapi.garmin.com';
 const summaryCache = new Map();
 async function dailySummary(client, displayName, ymd) {
   if (summaryCache.has(ymd)) return summaryCache.get(ymd);
   const url =
-    `/usersummary-service/usersummary/daily/${displayName}` +
+    `${GC_API}/usersummary-service/usersummary/daily/${displayName}` +
     `?calendarDate=${ymd}`;
   const p = client.get(url);
   summaryCache.set(ymd, p);
@@ -215,9 +219,16 @@ async function main() {
   const [perDay, { weather, sun }] = await Promise.all([
     Promise.all(
       days.map(async ({ ymd, date }) => {
-        const summary = await safeMetric('daily summary', () =>
-          dailySummary(client, displayName, ymd),
-        );
+        // NB: fetch the summary directly, NOT via safeMetric — safeMetric
+        // reduces its result to a number (Number.isFinite(v) ? v : null), so
+        // wrapping the summary OBJECT in it always yields null (which then
+        // nulls activeMinutes + calories). Catch here and degrade to {}.
+        let summary = {};
+        try {
+          summary = (await dailySummary(client, displayName, ymd)) ?? {};
+        } catch (err) {
+          console.warn(`⚠️  daily summary ${ymd} unavailable: ${err.message}`);
+        }
         const [steps, activeMinutes, calories, restingHeartRate] =
           await Promise.all([
             safeMetric(`steps ${ymd}`, () => client.getSteps(date)),
