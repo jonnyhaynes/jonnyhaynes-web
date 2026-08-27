@@ -219,9 +219,16 @@ async function main() {
   const [perDay, { weather, sun }] = await Promise.all([
     Promise.all(
       days.map(async ({ ymd, date }) => {
-        const summary = await safeMetric('daily summary', () =>
-          dailySummary(client, displayName, ymd),
-        );
+        // NB: fetch the summary directly, NOT via safeMetric — safeMetric
+        // reduces its result to a number (Number.isFinite(v) ? v : null), so
+        // wrapping the summary OBJECT in it always yields null (which then
+        // nulls activeMinutes + calories). Catch here and degrade to {}.
+        let summary = {};
+        try {
+          summary = (await dailySummary(client, displayName, ymd)) ?? {};
+        } catch (err) {
+          console.warn(`⚠️  daily summary ${ymd} unavailable: ${err.message}`);
+        }
         const [steps, activeMinutes, calories, restingHeartRate] =
           await Promise.all([
             safeMetric(`steps ${ymd}`, () => client.getSteps(date)),
