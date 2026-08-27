@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-08-26T06:57:46.529Z",
+  "fetchedAt": "2026-08-26T19:52:55.957Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-08-25T21:32:34Z",
+      "pushedAt": "2026-08-26T17:57:27Z",
       "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#423)",
-        "committedAt": "2026-08-25T21:32:34Z"
+        "message": "[ai-assisted] Add Yorkshire palette switcher (blue flavour + dialect …",
+        "committedAt": "2026-08-26T17:57:04Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -134,8 +134,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh gaming data [skip ci] (#423)",
-    "committedAt": "2026-08-25T21:32:34Z"
+    "message": "[ai-assisted] Add Yorkshire palette switcher (blue flavour + dialect …",
+    "committedAt": "2026-08-26T17:57:04Z"
   },
   "languages": [
     {
@@ -155,5 +155,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 920
+  "totalContributions": 926
 }
