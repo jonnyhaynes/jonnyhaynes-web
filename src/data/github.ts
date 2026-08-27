@@ -101,15 +101,23 @@ export function featuredProjects(
 
 /**
  * The repo to show in the "currently building" chip: the most-recently-pushed
- * project that isn't excluded (so the portfolio doesn't point at itself).
- * Derived from `projects` (pushedAt-desc); falls back to the baked
- * `lastActivity` if projects are absent. Returns null when nothing qualifies.
+ * repo that isn't excluded (so the portfolio doesn't point at itself).
+ * Prefers the baked `lastActivity` (which includes owned repos, forks, and
+ * repos contributed to), falling back to the newest owned `project`.
  */
 export function currentlyBuilding(
   data: GitHubData | null,
 ): GitHubLastActivity | null {
   if (!data) return null;
 
+  // `lastActivity` is already the most-recently-pushed repo across owned repos,
+  // forks, and repos contributed to (when baked via GraphQL). Prefer it so the
+  // chip reflects that wider activity instead of only owned work.
+  if (data.lastActivity && !SELF_EXCLUDE.has(data.lastActivity.repo)) {
+    return data.lastActivity;
+  }
+
+  // Fall back to the newest owned project (e.g. tokenless REST bake).
   const pick = data.projects.find((p) => !SELF_EXCLUDE.has(p.name));
   if (pick) {
     return {
@@ -120,9 +128,5 @@ export function currentlyBuilding(
     };
   }
 
-  // No usable project — fall back to lastActivity unless it's the excluded repo.
-  if (data.lastActivity && !SELF_EXCLUDE.has(data.lastActivity.repo)) {
-    return data.lastActivity;
-  }
   return null;
 }
