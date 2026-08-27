@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-08-26T21:41:37.066Z",
+  "fetchedAt": "2026-08-27T18:07:22.198Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "metal",
   "artists": [
     {
       "name": "Frank Turner",
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
     },
     {
+      "name": "Dead Air",
+      "url": "https://open.spotify.com/artist/5YljAyfTzlQolEBfXewEq7",
+      "image": "https://i.scdn.co/image/ab6761610000f1781a4b9d7a4f0e294e0d85d637"
+    },
+    {
       "name": "M83",
       "url": "https://open.spotify.com/artist/63MQldklfxkjYDoUE4Tppz",
       "image": "https://i.scdn.co/image/ab6761610000f178961ef259d6d8101edd2f80c0"
-    },
-    {
-      "name": "Marilyn Manson",
-      "url": "https://open.spotify.com/artist/2VYQTNDsvvKN9wmU5W7xpj",
-      "image": "https://i.scdn.co/image/ab6761610000f178df97decd4f8f568310bd0031"
     }
   ],
   "tracks": [
@@ -70,6 +70,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
     },
     {
+      "title": "Teeth Grinder",
+      "artist": "Dead Air",
+      "url": "https://open.spotify.com/track/0R5g0gq13DtyjMjAq8ikKS",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485141acf116f24e7270d8d4e522"
+    },
+    {
       "title": "There She Is",
       "artist": "Frank Turner",
       "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
@@ -86,12 +92,6 @@
       "artist": "Michael Sembello",
       "url": "https://open.spotify.com/track/6kk07URPWTiRzULynSOVrs",
       "albumArt": "https://i.scdn.co/image/ab67616d000048510946d11271fa6083bc8ea769"
-    },
-    {
-      "title": "WHERE IS MY HUSBAND!",
-      "artist": "RAYE",
-      "url": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90"
     }
   ],
   "playlists": [
