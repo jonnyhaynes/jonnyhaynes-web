@@ -109,6 +109,16 @@ async function dailySummary(client, displayName, ymd) {
     `?calendarDate=${ymd}`;
   const p = client.get(url);
   summaryCache.set(ymd, p);
+  // One-shot debug: dump the returned keys (+ any *alorie*/*ntensity* fields)
+  // so we can see the real field names. Enable with HEALTH_DEBUG=1.
+  if (process.env.HEALTH_DEBUG) {
+    p.then((s) => {
+      const keys = s && typeof s === 'object' ? Object.keys(s) : [];
+      console.error(`DEBUG summary ${ymd} keys: ${JSON.stringify(keys)}`);
+      const hits = keys.filter((k) => /alorie|ntensity|active/i.test(k));
+      console.error(`DEBUG summary ${ymd} cal/intensity keys: ${JSON.stringify(hits)}`);
+    }).catch(() => {});
+  }
   return p;
 }
 
