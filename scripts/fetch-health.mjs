@@ -97,11 +97,15 @@ async function safeMetric(label, fn) {
  * daily user-summary endpoint directly via the generic get(). Cached per-date
  * within a run so steps/active/calories don't each re-request it.
  */
+// connectapi host — the library's typed methods (getSteps/getHeartRate) hit
+// this via its UrlClass (GC_API); the generic client.get() has no baseURL, so a
+// relative path throws "Invalid URL". Prepend the host explicitly.
+const GC_API = 'https://connectapi.garmin.com';
 const summaryCache = new Map();
 async function dailySummary(client, displayName, ymd) {
   if (summaryCache.has(ymd)) return summaryCache.get(ymd);
   const url =
-    `/usersummary-service/usersummary/daily/${displayName}` +
+    `${GC_API}/usersummary-service/usersummary/daily/${displayName}` +
     `?calendarDate=${ymd}`;
   const p = client.get(url);
   summaryCache.set(ymd, p);
