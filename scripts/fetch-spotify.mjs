@@ -79,13 +79,43 @@ function linearise(channel) {
   return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 }
 
+/** WCAG relative luminance of an sRGB colour as [r, g, b] (0–255). */
+function relativeLuminance([r, g, b]) {
+  return 0.2126 * linearise(r) + 0.7152 * linearise(g) + 0.0722 * linearise(b);
+}
+
+/** WCAG contrast ratio between two [r, g, b] colours. */
+function contrastRatio(a, b) {
+  const la = relativeLuminance(a);
+  const lb = relativeLuminance(b);
+  const hi = Math.max(la, lb);
+  const lo = Math.min(la, lb);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+/** Site foreground tokens, as [r, g, b]. */
+const INK_DARK = [26, 27, 30]; // --color-background (dark) / near-black on light spines
+const INK_LIGHT = [232, 221, 203]; // --color-foreground (dark) / cream on dark spines
+
+/**
+ * Picks the site foreground token that clears WCAG AA (4.5:1) against a spine's
+ * dominant colour, preferring the higher-contrast token when both pass. Replaces
+ * the old single `luminance > 0.4` threshold, which let mid-brightness spines
+ * (e.g. a red cover) pair with an ink that failed AA.
+ */
+function legibleInk(bg) {
+  const dark = contrastRatio(INK_DARK, bg);
+  const light = contrastRatio(INK_LIGHT, bg);
+  if (dark >= light) return '#1a1b1e';
+  return '#e8ddcb';
+}
+
 /**
  * Dominant colour of a cover, for synthesising a book "spine" in the reading
  * section (Spotify gives covers but no spine images). Downloads the cover,
- * asks sharp for its dominant RGB, and pairs it with a legible ink colour
- * (WCAG relative luminance → dark ink on light spines, light ink on dark ones,
- * using the site's own foreground tokens). Returns null on any failure so a
- * single bad cover never fails the bake — same tolerance as the 403 path.
+ * asks sharp for its dominant RGB, and pairs it with a legible ink colour that
+ * clears WCAG AA. Returns null on any failure so a single bad cover never
+ * fails the bake — same tolerance as the 403 path.
  */
 async function dominantColor(imageUrl) {
   if (!imageUrl) return null;
@@ -93,11 +123,8 @@ async function dominantColor(imageUrl) {
     const buf = Buffer.from(await (await fetch(imageUrl)).arrayBuffer());
     const { dominant } = await sharp(buf).stats();
     const { r, g, b } = dominant;
-    const luminance =
-      0.2126 * linearise(r) + 0.7152 * linearise(g) + 0.0722 * linearise(b);
-    // Site foreground tokens: light cream on dark spines, near-black on light.
-    const ink = luminance > 0.4 ? '#1a1b1e' : '#e8ddcb';
-    return { bg: `rgb(${r} ${g} ${b})`, ink };
+    const bg = [r, g, b];
+    return { bg: `rgb(${r} ${g} ${b})`, ink: legibleInk(bg) };
   } catch (err) {
     console.warn(`Spine colour failed for ${imageUrl}: ${err.message}`);
     return null;

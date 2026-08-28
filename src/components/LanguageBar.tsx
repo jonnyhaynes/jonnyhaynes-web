@@ -42,7 +42,7 @@ export function LanguageBar({ languages }: { languages: GitHubLanguage[] }) {
               aria-hidden="true"
             />
             {l.name}
-            <span className="text-muted/70">{Math.round(l.pct)}%</span>
+            <span className="text-muted">{Math.round(l.pct)}%</span>
           </li>
         ))}
       </ul>

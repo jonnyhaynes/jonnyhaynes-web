@@ -189,7 +189,7 @@ function SpineBar({
           <span className="text-sm font-medium leading-tight tracking-tight">
             {book.title}
           </span>
-          <span className="text-xs leading-tight opacity-70">
+          <span className="text-xs leading-tight">
             {book.authors}
           </span>
         </a>
@@ -228,7 +228,7 @@ function SpineBar({
           <span className="text-sm font-medium leading-tight tracking-tight">
             {book.title}
           </span>
-          <span className="shrink-0 text-xs leading-tight opacity-70">
+          <span className="shrink-0 text-xs leading-tight">
             {book.authors}
           </span>
         </span>
