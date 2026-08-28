@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-08-27T18:07:22.198Z",
+  "fetchedAt": "2026-08-28T02:25:53.302Z",
   "timeRange": "short_term",
-  "topGenre": "metal",
+  "topGenre": null,
   "artists": [
     {
       "name": "Frank Turner",
@@ -53,7 +53,7 @@
     },
     {
       "title": "Cherub Rock",
-      "artist": "Carpenter Brut",
+      "artist": "Carpenter Brut, Watertank",
       "url": "https://open.spotify.com/track/4swRl0jjjvKuw8r57lVTXw",
       "albumArt": "https://i.scdn.co/image/ab67616d000048512d0353781d09e828063be480"
     },
