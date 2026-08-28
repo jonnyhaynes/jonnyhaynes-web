@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-08-28T02:25:53.302Z",
+  "fetchedAt": "2026-08-28T19:17:25.941Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "metal",
   "artists": [
     {
       "name": "Frank Turner",
@@ -24,6 +24,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
     },
     {
+      "name": "blink-182",
+      "url": "https://open.spotify.com/artist/6FBDaR13swtiWwGhX1WQsP",
+      "image": "https://i.scdn.co/image/ab6761610000f1785da36f8b98dd965336a1507a"
+    },
+    {
       "name": "Biffy Clyro",
       "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
       "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
@@ -37,11 +42,6 @@
       "name": "Dead Air",
       "url": "https://open.spotify.com/artist/5YljAyfTzlQolEBfXewEq7",
       "image": "https://i.scdn.co/image/ab6761610000f1781a4b9d7a4f0e294e0d85d637"
-    },
-    {
-      "name": "M83",
-      "url": "https://open.spotify.com/artist/63MQldklfxkjYDoUE4Tppz",
-      "image": "https://i.scdn.co/image/ab6761610000f178961ef259d6d8101edd2f80c0"
     }
   ],
   "tracks": [
@@ -50,6 +50,18 @@
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/1hiwr6Ps0GihMMP573L5Jv",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "Be More Kind",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
+    },
+    {
+      "title": "Don't Worry",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/2P8vJYOVOJ6Elg38SXOhZ6",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
       "title": "Cherub Rock",
@@ -64,34 +76,22 @@
       "albumArt": "https://i.scdn.co/image/ab67616d000048515deeeb5b1d590c9eff4b0fd7"
     },
     {
-      "title": "Four Simple Words",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/6aW2iwJxBurjRMkbcKuSRi",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
-    },
-    {
-      "title": "Teeth Grinder",
-      "artist": "Dead Air",
-      "url": "https://open.spotify.com/track/0R5g0gq13DtyjMjAq8ikKS",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485141acf116f24e7270d8d4e522"
-    },
-    {
       "title": "There She Is",
       "artist": "Frank Turner",
       "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
-      "title": "The Captain",
-      "artist": "Biffy Clyro",
-      "url": "https://open.spotify.com/track/1louej4PYOVIVbagP1taO0",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851d387edace199b4e1a49f2344"
+      "title": "Four Simple Words",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/6aW2iwJxBurjRMkbcKuSRi",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
     },
     {
-      "title": "Maniac - From \"Flashdance\"",
-      "artist": "Michael Sembello",
-      "url": "https://open.spotify.com/track/6kk07URPWTiRzULynSOVrs",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048510946d11271fa6083bc8ea769"
+      "title": "What's My Age Again?",
+      "artist": "blink-182",
+      "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
     }
   ],
   "playlists": [
