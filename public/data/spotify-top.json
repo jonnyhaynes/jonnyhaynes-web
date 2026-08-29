@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-28T19:17:25.941Z",
+  "fetchedAt": "2026-08-29T12:59:04.370Z",
   "timeRange": "short_term",
   "topGenre": "metal",
   "artists": [
@@ -17,6 +17,11 @@
       "name": "Clutch",
       "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
       "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
+    },
+    {
+      "name": "Curry Quiche",
+      "url": "https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD",
+      "image": "https://i.scdn.co/image/ab67616d00004851d17c5bfb9a29465f6bd1a17e"
     },
     {
       "name": "Five Finger Death Punch",
@@ -37,11 +42,6 @@
       "name": "Trivium",
       "url": "https://open.spotify.com/artist/278ZYwGhdK6QTzE3MFePnP",
       "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
-    },
-    {
-      "name": "Dead Air",
-      "url": "https://open.spotify.com/artist/5YljAyfTzlQolEBfXewEq7",
-      "image": "https://i.scdn.co/image/ab6761610000f1781a4b9d7a4f0e294e0d85d637"
     }
   ],
   "tracks": [
