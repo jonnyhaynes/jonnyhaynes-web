@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-08-29T12:59:04.370Z",
+  "fetchedAt": "2026-08-29T21:31:50.627Z",
   "timeRange": "short_term",
-  "topGenre": "metal",
+  "topGenre": null,
   "artists": [
     {
       "name": "Frank Turner",
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
     },
     {
-      "name": "Trivium",
-      "url": "https://open.spotify.com/artist/278ZYwGhdK6QTzE3MFePnP",
-      "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
+      "name": "Spencer Sutherland",
+      "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
+      "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
     }
   ],
   "tracks": [
@@ -52,28 +52,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
-      "title": "Be More Kind",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
-    {
       "title": "Don't Worry",
       "artist": "Frank Turner",
       "url": "https://open.spotify.com/track/2P8vJYOVOJ6Elg38SXOhZ6",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
-      "title": "Cherub Rock",
-      "artist": "Carpenter Brut, Watertank",
-      "url": "https://open.spotify.com/track/4swRl0jjjvKuw8r57lVTXw",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048512d0353781d09e828063be480"
-    },
-    {
-      "title": "It's A Sin",
-      "artist": "Ghost",
-      "url": "https://open.spotify.com/track/3JnsVuLgoMJEcn0slGZjuN",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048515deeeb5b1d590c9eff4b0fd7"
+      "title": "Be More Kind",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
       "title": "There She Is",
@@ -82,16 +70,28 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
+      "title": "Recovery",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/49ccDOSipaIJ4PcmovJy4h",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
+    },
+    {
       "title": "Four Simple Words",
       "artist": "Frank Turner",
       "url": "https://open.spotify.com/track/6aW2iwJxBurjRMkbcKuSRi",
       "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
     },
     {
-      "title": "What's My Age Again?",
-      "artist": "blink-182",
-      "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
+      "title": "I Write Sins Not Tragedies",
+      "artist": "Panic! At The Disco",
+      "url": "https://open.spotify.com/track/4bPQs0PHn4xbipzdPfn6du",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048513ab3ff3559d2664560e1fdb4"
+    },
+    {
+      "title": "Cherub Rock",
+      "artist": "Carpenter Brut, Watertank",
+      "url": "https://open.spotify.com/track/4swRl0jjjvKuw8r57lVTXw",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048512d0353781d09e828063be480"
     }
   ],
   "playlists": [
