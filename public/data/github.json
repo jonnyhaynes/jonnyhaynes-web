@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-08-30T20:50:43.398Z",
+  "fetchedAt": "2026-08-31T13:16:59.957Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-08-30T18:56:32Z",
+      "pushedAt": "2026-08-31T10:16:59Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#472)",
-        "committedAt": "2026-08-30T18:56:31Z"
+        "message": "Refresh health data [skip ci] (#478)",
+        "committedAt": "2026-08-31T10:16:59Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -132,10 +132,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#472)",
-    "committedAt": "2026-08-30T18:56:31Z"
+    "repo": "cmux-sentinel",
+    "url": "https://github.com/oliver-kriska/cmux-sentinel",
+    "message": "Give the detached ❓ notifier 20s, not 5, before calling it a failure",
+    "committedAt": "2026-08-31T11:37:57Z"
   },
   "languages": [
     {
