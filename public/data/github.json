@@ -1,7 +1,26 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-02T10:59:59.994Z",
+  "fetchedAt": "2026-09-02T17:30:02.199Z",
   "projects": [
+    {
+      "name": "app-live",
+      "description": "Build an Expo app locally with EAS and install it on the device you ask for — a connected device or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
+      "url": "https://github.com/jonnyhaynes/app-live",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-02T17:29:08Z",
+      "lastCommit": {
+        "message": "Add CI status badge to README (#3)",
+        "committedAt": "2026-09-02T17:28:03Z"
+      },
+      "pitch": "app-live builds an Expo app locally with EAS and installs it onto whichever device you name — a physical device on your machine or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
+      "challenge": "Making device routing invisible: one build_and_install call detects whether the named device is local — picking the right installer (devicectl / simctl / adb) — or falls back to BrowserStack, without the caller knowing where the device lives."
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -16,10 +35,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-09-02T10:52:53Z",
+      "pushedAt": "2026-09-02T15:38:58Z",
       "lastCommit": {
-        "message": "Rework resume summary and drop topo background (#500)",
-        "committedAt": "2026-09-02T10:52:53Z"
+        "message": "Refresh health data [skip ci] (#507)",
+        "committedAt": "2026-09-02T15:38:58Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -37,7 +56,7 @@
         "JavaScript",
         "HTML"
       ],
-      "stars": 1,
+      "stars": 0,
       "pushedAt": "2026-09-02T09:15:17Z",
       "lastCommit": {
         "message": "Bump astro, @astrojs/vercel and transitive security patches (#98)",
@@ -110,37 +129,18 @@
       },
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "freestyle-libre-mcp-server",
-      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
-      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript"
-      ],
-      "stars": 2,
-      "pushedAt": "2026-07-10T14:49:52Z",
-      "lastCommit": {
-        "message": "Update .portfolio.json with structured data",
-        "committedAt": "2026-07-10T14:49:51Z"
-      },
-      "pitch": "An MCP server giving Claude access to Freestyle Libre glucose data.",
-      "challenge": "Reaching glucose data through LibreLinkUp's unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Rework resume summary and drop topo background (#500)",
-    "committedAt": "2026-09-02T10:52:53Z"
+    "repo": "app-live",
+    "url": "https://github.com/jonnyhaynes/app-live",
+    "message": "Add CI status badge to README (#3)",
+    "committedAt": "2026-09-02T17:28:03Z"
   },
   "languages": [
     {
       "name": "TypeScript",
-      "count": 6
+      "count": 7
     },
     {
       "name": "JavaScript",
@@ -155,5 +155,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 1021
+  "totalContributions": 1039
 }
