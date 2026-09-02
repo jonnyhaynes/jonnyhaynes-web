@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-02T11:58:53.445Z",
+  "fetchedAt": "2026-09-02T21:37:11.424Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -19,14 +19,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ac2f9a19a87d094626992c94"
     },
     {
-      "name": "Spencer Sutherland",
-      "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
-      "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
-    },
-    {
       "name": "Clutch",
       "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
       "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
+    },
+    {
+      "name": "Spencer Sutherland",
+      "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
+      "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
     },
     {
       "name": "Curry Quiche",
