@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-01T20:52:34.907Z",
+  "fetchedAt": "2026-09-02T10:59:59.994Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-09-01T19:00:46Z",
+      "pushedAt": "2026-09-02T10:52:53Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#493)",
-        "committedAt": "2026-09-01T19:00:46Z"
+        "message": "Rework resume summary and drop topo background (#500)",
+        "committedAt": "2026-09-02T10:52:53Z"
       },
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
@@ -38,10 +38,10 @@
         "HTML"
       ],
       "stars": 1,
-      "pushedAt": "2026-08-20T15:07:57Z",
+      "pushedAt": "2026-09-02T09:15:17Z",
       "lastCommit": {
-        "message": "[ai-assisted] Live coach count in footer stat (#96)",
-        "committedAt": "2026-08-20T15:07:57Z"
+        "message": "Bump astro, @astrojs/vercel and transitive security patches (#98)",
+        "committedAt": "2026-09-02T09:13:55Z"
       },
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
@@ -134,8 +134,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#493)",
-    "committedAt": "2026-09-01T19:00:46Z"
+    "message": "Rework resume summary and drop topo background (#500)",
+    "committedAt": "2026-09-02T10:52:53Z"
   },
   "languages": [
     {
@@ -155,5 +155,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 1014
+  "totalContributions": 1021
 }
