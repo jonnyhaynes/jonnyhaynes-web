@@ -1,7 +1,23 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-02T10:59:59.994Z",
+  "fetchedAt": "2026-09-02T17:39:58.162Z",
   "projects": [
+    {
+      "name": "cmux-sentinel",
+      "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
+      "url": "https://github.com/jonnyhaynes/cmux-sentinel",
+      "homepageUrl": null,
+      "language": "Shell",
+      "languages": [
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-02T17:38:18Z",
+      "lastCommit": null,
+      "isFork": true,
+      "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
+      "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -9,20 +25,30 @@
       "homepageUrl": "https://www.jonnyhaynes.com",
       "language": "TypeScript",
       "languages": [
-        "TypeScript",
-        "JavaScript",
-        "CSS",
-        "HTML",
-        "Shell"
+        "TypeScript"
       ],
       "stars": 1,
-      "pushedAt": "2026-09-02T10:52:53Z",
-      "lastCommit": {
-        "message": "Rework resume summary and drop topo background (#500)",
-        "committedAt": "2026-09-02T10:52:53Z"
-      },
+      "pushedAt": "2026-09-02T17:31:22Z",
+      "lastCommit": null,
+      "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "app-live",
+      "description": "Build an Expo app locally with EAS and install it on the device you ask for — a connected device or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
+      "url": "https://github.com/jonnyhaynes/app-live",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-02T17:29:08Z",
+      "lastCommit": null,
+      "isFork": false,
+      "pitch": "app-live builds an Expo app locally with EAS and installs it onto whichever device you name — a physical device on your machine or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
+      "challenge": "Making device routing invisible: one build_and_install call detects whether the named device is local — picking the right installer (devicectl / simctl / adb) — or falls back to BrowserStack, without the caller knowing where the device lives."
     },
     {
       "name": "sitwellcc-web",
@@ -31,18 +57,12 @@
       "homepageUrl": "https://www.sitwell.cc",
       "language": "Astro",
       "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript",
-        "HTML"
+        "Astro"
       ],
-      "stars": 1,
+      "stars": 0,
       "pushedAt": "2026-09-02T09:15:17Z",
-      "lastCommit": {
-        "message": "Bump astro, @astrojs/vercel and transitive security patches (#98)",
-        "committedAt": "2026-09-02T09:13:55Z"
-      },
+      "lastCommit": null,
+      "isFork": false,
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
@@ -53,94 +73,42 @@
       "homepageUrl": "https://skillswap.colouringcode.com",
       "language": "TypeScript",
       "languages": [
-        "TypeScript",
-        "PLpgSQL",
-        "JavaScript",
-        "CSS",
-        "HTML",
-        "Shell"
+        "TypeScript"
       ],
       "stars": 0,
       "pushedAt": "2026-08-01T09:03:31Z",
-      "lastCommit": {
-        "message": "fix(build): install Chromium system libs so prerendering works on Ver…",
-        "committedAt": "2026-08-01T09:03:31Z"
-      },
+      "lastCommit": null,
+      "isFork": false,
       "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
       "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
-      "name": "rovrum.town",
-      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
-      "url": "https://github.com/jonnyhaynes/rovrum.town",
-      "homepageUrl": "https://www.rovrum.town",
-      "language": "HTML",
-      "languages": [
-        "HTML",
-        "TypeScript",
-        "Astro",
-        "JavaScript",
-        "Shell"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-27T16:11:51Z",
-      "lastCommit": {
-        "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
-        "committedAt": "2026-07-22T15:46:15Z"
-      },
-      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
-      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
-    },
-    {
-      "name": "colouringcode-web",
-      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
-      "url": "https://github.com/jonnyhaynes/colouringcode-web",
-      "homepageUrl": "https://www.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-20T15:05:02Z",
-      "lastCommit": {
-        "message": "Merge pull request #5 from jonnyhaynes/feature/design-refine-checkup",
-        "committedAt": "2026-07-20T15:05:02Z"
-      },
-      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
-      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "freestyle-libre-mcp-server",
-      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
-      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
+      "name": "apollo-events-bridge",
+      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
+      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
       "homepageUrl": null,
-      "language": "TypeScript",
+      "language": "JavaScript",
       "languages": [
-        "TypeScript",
         "JavaScript"
       ],
-      "stars": 2,
-      "pushedAt": "2026-07-10T14:49:52Z",
-      "lastCommit": {
-        "message": "Update .portfolio.json with structured data",
-        "committedAt": "2026-07-10T14:49:51Z"
-      },
-      "pitch": "An MCP server giving Claude access to Freestyle Libre glucose data.",
-      "challenge": "Reaching glucose data through LibreLinkUp's unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
+      "stars": 0,
+      "pushedAt": "2026-07-10T14:49:28Z",
+      "lastCommit": null,
+      "isFork": false,
+      "pitch": "Reads Apollo's Discord event embeds and serves them as JSON for a website.",
+      "challenge": "Parsing Apollo's undocumented Discord event embeds — via a bot with Message Content Intent — so the format can be re-derived when Apollo changes it."
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Rework resume summary and drop topo background (#500)",
-    "committedAt": "2026-09-02T10:52:53Z"
+    "repo": "cmux-sentinel",
+    "url": "https://github.com/jonnyhaynes/cmux-sentinel",
+    "message": null,
+    "committedAt": "2026-09-02T17:38:18Z"
   },
   "languages": [
     {
       "name": "TypeScript",
-      "count": 6
+      "count": 7
     },
     {
       "name": "JavaScript",
@@ -155,5 +123,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 1021
+  "totalContributions": null
 }
