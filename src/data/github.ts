@@ -21,6 +21,8 @@ export type GitHubProject = {
   languages: string[];
   stars: number;
   pushedAt: string | null;
+  /** True when this is a fork we opted in via its .portfolio.json. */
+  isFork: boolean;
   lastCommit: GitHubLastCommit | null;
   /** Optional pitch override from the repo's .portfolio.json. */
   pitch: string | null;
@@ -85,17 +87,22 @@ export function useGitHubData(): GitHubData | null {
 export const SELF_EXCLUDE = new Set(['jonnyhaynes-web']);
 
 /**
- * The featured projects for the Projects grid: the most-recently-pushed repos
- * (baked data is already pushedAt-desc), excluding the portfolio itself. Returns
- * an empty array when data is absent so the section degrades gracefully.
+ * The featured projects for the Projects grid: up to six repos sorted
+ * alphabetically (case-insensitive), excluding the portfolio itself. The bake
+ * stores seven so a full six survive SELF_EXCLUDE; the front end never shows
+ * more than `limit`. Returns an empty array when data is absent so the section
+ * degrades gracefully.
  */
 export function featuredProjects(
   data: GitHubData | null,
-  limit = 3,
+  limit = 6,
 ): GitHubProject[] {
   if (!data) return [];
   return data.projects
     .filter((p) => !SELF_EXCLUDE.has(p.name))
+    .sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
+    )
     .slice(0, limit);
 }
 

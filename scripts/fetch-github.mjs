@@ -201,17 +201,19 @@ async function fetchViaGraphQL() {
   const keptForks = forkCandidates.filter((p) => p.pitch != null || p.challenge != null);
 
   // Projects: the most-recently-PUSHED public repos (active work, not pinned),
-  // plus any opted-in forks — all competing on recency for the top 6 slots.
+  // plus any opted-in forks — all competing on recency for the top 7 slots.
+  // We bake 7 (not 6) so a full six survive the front end's SELF_EXCLUDE, which
+  // drops the portfolio repo itself; the UI then shows six, alphabetical.
   // Merge and sort by recency BEFORE enriching, so we only fetch .portfolio.json
   // for the handful that actually make the cut (allRepos is PUSHED_AT-desc; a
-  // small owned slice is more than enough candidates to fill 6 alongside forks).
-  const ownedCandidates = allRepos.slice(0, 6).map((r) => mapProjectNode(r));
+  // small owned slice is more than enough candidates to fill 7 alongside forks).
+  const ownedCandidates = allRepos.slice(0, 7).map((r) => mapProjectNode(r));
   const projects = [...ownedCandidates, ...keptForks]
     .sort(
       (a, b) =>
         new Date(b.pushedAt ?? 0).getTime() - new Date(a.pushedAt ?? 0).getTime(),
     )
-    .slice(0, 6);
+    .slice(0, 7);
   // keptForks are already enriched; enrich the owned ones that made the cut.
   await enrichWithPortfolioMeta(projects.filter((p) => !p.isFork));
 
@@ -300,14 +302,15 @@ async function fetchViaREST() {
   await enrichWithPortfolioMeta(forkCandidates);
   const keptForks = forkCandidates.filter((p) => p.pitch != null || p.challenge != null);
 
-  // Merge owned + opted-in forks, compete on recency for the top 6.
-  const ownedCandidates = sourceRepos.slice(0, 6).map((r) => toProject(r, false));
+  // Merge owned + opted-in forks, compete on recency for the top 7. We bake 7
+  // (not 6) so six survive the front end's SELF_EXCLUDE; the UI shows six A–Z.
+  const ownedCandidates = sourceRepos.slice(0, 7).map((r) => toProject(r, false));
   const projects = [...ownedCandidates, ...keptForks]
     .sort(
       (a, b) =>
         new Date(b.pushedAt ?? 0).getTime() - new Date(a.pushedAt ?? 0).getTime(),
     )
-    .slice(0, 6);
+    .slice(0, 7);
   // keptForks already enriched; enrich the owned ones that made the cut.
   await enrichWithPortfolioMeta(projects.filter((p) => !p.isFork));
 
