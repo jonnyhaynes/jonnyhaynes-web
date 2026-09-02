@@ -41,6 +41,19 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
 
+    <!-- Preload the hero portrait (the LCP element) so the browser fetches it
+         before it has parsed the JS/CSS that renders it. Mirrors the <picture>
+         srcSet/sizes in PortraitFigure so the right variant is chosen. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/images/portrait-cutout-960.webp"
+      imagesrcset="/images/portrait-cutout-480.webp 480w, /images/portrait-cutout-960.webp 960w"
+      imagesizes="(min-width: 1024px) 30vw, 70vw"
+      fetchpriority="high"
+    />
+
     <title>Jonny Haynes - Est. 1985</title>
     <meta
       name="description"

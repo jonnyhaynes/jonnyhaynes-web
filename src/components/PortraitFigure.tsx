@@ -8,10 +8,12 @@ export function PortraitFigure() {
           sizes="(min-width: 1024px) 30vw, 70vw"
         />
         <img
-          src="/images/portrait-cutout-960.png"
+          src="/images/portrait-cutout-960.webp"
           width="960"
           height="1129"
           alt="Jonny Haynes wearing glasses and an Ey Up cycling cap"
+          fetchPriority="high"
+          decoding="async"
         />
       </picture>
     </figure>
