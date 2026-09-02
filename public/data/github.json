@@ -1,7 +1,23 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-02T17:39:58.162Z",
+  "fetchedAt": "2026-09-02T18:11:25.568Z",
   "projects": [
+    {
+      "name": "app-live",
+      "description": "Build an Expo app locally with EAS and install it on the device you ask for — a connected device or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
+      "url": "https://github.com/jonnyhaynes/app-live",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-02T18:09:31Z",
+      "lastCommit": null,
+      "isFork": false,
+      "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
+      "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
+    },
     {
       "name": "cmux-sentinel",
       "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
@@ -12,7 +28,7 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-02T17:38:18Z",
+      "pushedAt": "2026-09-02T17:50:50Z",
       "lastCommit": null,
       "isFork": true,
       "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
@@ -28,27 +44,11 @@
         "TypeScript"
       ],
       "stars": 1,
-      "pushedAt": "2026-09-02T17:31:22Z",
+      "pushedAt": "2026-09-02T17:43:27Z",
       "lastCommit": null,
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
-    },
-    {
-      "name": "app-live",
-      "description": "Build an Expo app locally with EAS and install it on the device you ask for — a connected device or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
-      "url": "https://github.com/jonnyhaynes/app-live",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-02T17:29:08Z",
-      "lastCommit": null,
-      "isFork": false,
-      "pitch": "app-live builds an Expo app locally with EAS and installs it onto whichever device you name — a physical device on your machine or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
-      "challenge": "Making device routing invisible: one build_and_install call detects whether the named device is local — picking the right installer (devicectl / simctl / adb) — or falls back to BrowserStack, without the caller knowing where the device lives."
     },
     {
       "name": "sitwellcc-web",
@@ -83,6 +83,22 @@
       "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     },
     {
+      "name": "rovrum.town",
+      "description": "The place for everything Rotherham — news, sports, events & jobs, aggregated in one place. Alpha.",
+      "url": "https://github.com/jonnyhaynes/rovrum.town",
+      "homepageUrl": "https://www.rovrum.town",
+      "language": "HTML",
+      "languages": [
+        "HTML"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-07-27T16:11:51Z",
+      "lastCommit": null,
+      "isFork": false,
+      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
+      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
+    },
+    {
       "name": "apollo-events-bridge",
       "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
       "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
@@ -100,10 +116,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "cmux-sentinel",
-    "url": "https://github.com/jonnyhaynes/cmux-sentinel",
+    "repo": "app-live",
+    "url": "https://github.com/jonnyhaynes/app-live",
     "message": null,
-    "committedAt": "2026-09-02T17:38:18Z"
+    "committedAt": "2026-09-02T18:09:31Z"
   },
   "languages": [
     {

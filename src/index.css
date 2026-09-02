@@ -89,6 +89,25 @@
   --book-shadow-cast: rgba(0, 0, 0, 0.3);
   --book-shadow-lift: rgba(0, 0, 0, 0.25);
   --book-shadow-lift-sm: rgba(0, 0, 0, 0.2);
+
+  /* Projects terminal — a "screen" device like the LCD readout: dark chrome
+   * here, flipped to a light screen in the light block. The runnable/output
+   * text keys off --color-accent-start (below and in the component), so the
+   * Yorkshire palette — which only overrides accent tokens — recolours the
+   * terminal for free. Traffic-light dots stay literal red/amber/green. */
+  --term-screen-top: oklch(0.17 0.015 300);
+  --term-screen-bottom: oklch(0.12 0.015 300);
+  --term-border: color-mix(in oklch, black 55%, var(--color-muted) 12%);
+  /* Body/output text: accent nudged toward the foreground so it reads on the
+   * dark screen without being pure accent. */
+  --term-text: color-mix(in oklch, var(--color-foreground) 90%, var(--color-accent-start));
+  --term-dim: color-mix(in oklch, var(--color-muted) 88%, transparent);
+  --term-title: color-mix(in oklch, var(--color-muted) 80%, transparent);
+  --term-dot-r: #e06c75;
+  --term-dot-y: #e5c07b;
+  --term-dot-g: #98c379;
+  /* Drop shadow lifting the terminal off the page — deep on the dark ground. */
+  --term-shadow: 0 20px 50px -20px color-mix(in oklch, black 70%, transparent);
 }
 
 /* Light mode — Chalk / Deep Coal / Bright Heather. Overrides the tokens the
@@ -147,6 +166,18 @@
   --book-shadow-cast: rgba(0, 0, 0, 0.15);
   --book-shadow-lift: rgba(0, 0, 0, 0.12);
   --book-shadow-lift-sm: rgba(0, 0, 0, 0.08);
+
+  /* Projects terminal flipped to a light "warm paper" screen: cream face + a
+   * warm brown border so it sits with the chalk theme (reads as paper, not a
+   * hole). Text stays accent-biased so it recolours for Yorkshire via accent. */
+  --term-screen-top: #f0ede6;
+  --term-screen-bottom: #fbfaf7;
+  --term-border: color-mix(in oklch, #8b6f47 40%, transparent);
+  --term-text: color-mix(in oklch, var(--color-foreground) 88%, var(--color-accent-start));
+  --term-dim: #6f6a60;
+  --term-title: #8a8172;
+  /* Much lighter on the chalk ground — a soft warm lift, not a heavy cast. */
+  --term-shadow: 0 8px 22px -14px color-mix(in oklch, #8b6f47 45%, transparent);
 }
 
 /*
