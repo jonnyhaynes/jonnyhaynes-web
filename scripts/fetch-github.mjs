@@ -32,7 +32,7 @@ function languageBreakdown(languages) {
  * Map a GraphQL repo node to the richer "project" shape used by the V2 projects
  * section: adds pushedAt, the per-repo language list, and the last commit.
  */
-function mapProjectNode(r) {
+function mapProjectNode(r, { isFork = false } = {}) {
   const lastCommit = r.defaultBranchRef?.target?.history?.nodes?.[0] ?? null;
   return {
     name: r.name,
@@ -47,6 +47,9 @@ function mapProjectNode(r) {
     lastCommit: lastCommit
       ? { message: lastCommit.messageHeadline, committedAt: lastCommit.committedDate }
       : null,
+    // Forks are only ever included when they carry a .portfolio.json (see
+    // fetchViaGraphQL / fetchViaREST). The flag lets the UI badge them later.
+    isFork,
     // Filled from the repo's own .portfolio.json, if present (see below).
     pitch: null,
     challenge: null,
@@ -95,6 +98,29 @@ async function enrichWithPortfolioMeta(projects) {
 }
 
 async function fetchViaGraphQL() {
+  // Shared node selection so owned repos and forks map identically via
+  // mapProjectNode.
+  const repoFields = `
+    name
+    description
+    url
+    homepageUrl
+    stargazerCount
+    pushedAt
+    primaryLanguage { name }
+    languages(first: 8, orderBy: { field: SIZE, direction: DESC }) {
+      nodes { name }
+    }
+    defaultBranchRef {
+      target {
+        ... on Commit {
+          history(first: 1) {
+            nodes { messageHeadline committedDate }
+          }
+        }
+      }
+    }
+  `;
   const query = `
     query ($login: String!) {
       user(login: $login) {
@@ -105,27 +131,16 @@ async function fetchViaGraphQL() {
           privacy: PUBLIC
           orderBy: { field: PUSHED_AT, direction: DESC }
         ) {
-          nodes {
-            name
-            description
-            url
-            homepageUrl
-            stargazerCount
-            pushedAt
-            primaryLanguage { name }
-            languages(first: 8, orderBy: { field: SIZE, direction: DESC }) {
-              nodes { name }
-            }
-            defaultBranchRef {
-              target {
-                ... on Commit {
-                  history(first: 1) {
-                    nodes { messageHeadline committedDate }
-                  }
-                }
-              }
-            }
-          }
+          nodes { ${repoFields} }
+        }
+        forks: repositories(
+          first: 25
+          ownerAffiliations: OWNER
+          isFork: true
+          privacy: PUBLIC
+          orderBy: { field: PUSHED_AT, direction: DESC }
+        ) {
+          nodes { ${repoFields} }
         }
         repositoriesContributedTo(
           first: 100
@@ -175,12 +190,30 @@ async function fetchViaGraphQL() {
 
   const user = json.data.user;
   const allRepos = user.repositories.nodes;
+  const forkRepos = user.forks.nodes;
   const contributedRepos = user.repositoriesContributedTo.nodes;
 
-  // Projects: the most-recently-PUSHED public repos (active work, not pinned).
-  // allRepos is already PUSHED_AT-desc, so slice from the top.
-  const projects = allRepos.slice(0, 6).map(mapProjectNode);
-  await enrichWithPortfolioMeta(projects);
+  // Forks are opt-in: only those carrying a .portfolio.json at their root count
+  // as real, curated work. Probe each fork's metadata and keep the ones that
+  // have it — throwaway forks (no file) drop out here.
+  const forkCandidates = forkRepos.map((r) => mapProjectNode(r, { isFork: true }));
+  await enrichWithPortfolioMeta(forkCandidates);
+  const keptForks = forkCandidates.filter((p) => p.pitch != null || p.challenge != null);
+
+  // Projects: the most-recently-PUSHED public repos (active work, not pinned),
+  // plus any opted-in forks — all competing on recency for the top 6 slots.
+  // Merge and sort by recency BEFORE enriching, so we only fetch .portfolio.json
+  // for the handful that actually make the cut (allRepos is PUSHED_AT-desc; a
+  // small owned slice is more than enough candidates to fill 6 alongside forks).
+  const ownedCandidates = allRepos.slice(0, 6).map((r) => mapProjectNode(r));
+  const projects = [...ownedCandidates, ...keptForks]
+    .sort(
+      (a, b) =>
+        new Date(b.pushedAt ?? 0).getTime() - new Date(a.pushedAt ?? 0).getTime(),
+    )
+    .slice(0, 6);
+  // keptForks are already enriched; enrich the owned ones that made the cut.
+  await enrichWithPortfolioMeta(projects.filter((p) => !p.isFork));
 
   // "Currently building": the single most-recently-pushed repo across own repos,
   // forks, and repos contributed to, so the chip reflects all visible activity.
@@ -238,13 +271,16 @@ async function fetchViaREST() {
     throw new Error(`REST request failed: ${res.status} ${res.statusText}`);
   }
   const all = await res.json();
-  // Exclude forks and, defensively, any private repo (the /users/:u/repos
-  // endpoint is public-only, but never rely on that for a leak boundary).
-  const sourceRepos = all.filter((r) => !r.fork && !r.private);
+  // Defensively drop any private repo (the /users/:u/repos endpoint is
+  // public-only, but never rely on that for a leak boundary). Split owned repos
+  // from forks: forks are opt-in via .portfolio.json (see below).
+  const publicRepos = all.filter((r) => !r.private);
+  const sourceRepos = publicRepos.filter((r) => !r.fork);
+  const forkRepos = publicRepos.filter((r) => r.fork);
 
   // REST gives pushed_at and primary language, but not the last commit message
   // cheaply, so lastCommit degrades to null (the UI hides it gracefully).
-  const projects = sourceRepos.slice(0, 6).map((r) => ({
+  const toProject = (r, isFork) => ({
     name: r.name,
     description: r.description ?? '',
     url: r.html_url,
@@ -254,10 +290,26 @@ async function fetchViaREST() {
     stars: r.stargazers_count,
     pushedAt: r.pushed_at ?? null,
     lastCommit: null,
+    isFork,
     pitch: null,
     challenge: null,
-  }));
-  await enrichWithPortfolioMeta(projects);
+  });
+
+  // Forks: keep only those carrying a .portfolio.json (throwaway forks drop out).
+  const forkCandidates = forkRepos.map((r) => toProject(r, true));
+  await enrichWithPortfolioMeta(forkCandidates);
+  const keptForks = forkCandidates.filter((p) => p.pitch != null || p.challenge != null);
+
+  // Merge owned + opted-in forks, compete on recency for the top 6.
+  const ownedCandidates = sourceRepos.slice(0, 6).map((r) => toProject(r, false));
+  const projects = [...ownedCandidates, ...keptForks]
+    .sort(
+      (a, b) =>
+        new Date(b.pushedAt ?? 0).getTime() - new Date(a.pushedAt ?? 0).getTime(),
+    )
+    .slice(0, 6);
+  // keptForks already enriched; enrich the owned ones that made the cut.
+  await enrichWithPortfolioMeta(projects.filter((p) => !p.isFork));
 
   const top = projects[0] ?? null;
   const lastActivity = top
