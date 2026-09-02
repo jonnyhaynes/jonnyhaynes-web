@@ -1,7 +1,30 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-02T18:11:25.568Z",
+  "fetchedAt": "2026-09-02T20:52:04.868Z",
   "projects": [
+    {
+      "name": "jonnyhaynes-web",
+      "description": "My personal website — a static site built with React, Vite & TypeScript.",
+      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+      "homepageUrl": "https://www.jonnyhaynes.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "HTML",
+        "Shell"
+      ],
+      "stars": 1,
+      "pushedAt": "2026-09-02T19:07:02Z",
+      "lastCommit": {
+        "message": "Refresh health data [skip ci] (#512)",
+        "committedAt": "2026-09-02T19:07:02Z"
+      },
+      "isFork": false,
+      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
+      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
     {
       "name": "app-live",
       "description": "Build an Expo app locally with EAS and install it on the device you ask for — a connected device or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
@@ -9,11 +32,15 @@
       "homepageUrl": null,
       "language": "TypeScript",
       "languages": [
-        "TypeScript"
+        "TypeScript",
+        "Shell"
       ],
       "stars": 0,
       "pushedAt": "2026-09-02T18:09:31Z",
-      "lastCommit": null,
+      "lastCommit": {
+        "message": "Halve .portfolio.json copy length (#4)",
+        "committedAt": "2026-09-02T17:58:03Z"
+      },
       "isFork": false,
       "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
       "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
@@ -25,30 +52,20 @@
       "homepageUrl": null,
       "language": "Shell",
       "languages": [
-        "Shell"
+        "Shell",
+        "Swift",
+        "TypeScript",
+        "Makefile"
       ],
       "stars": 0,
       "pushedAt": "2026-09-02T17:50:50Z",
-      "lastCommit": null,
+      "lastCommit": {
+        "message": "Merge pull request #6 from jonnyhaynes/ci-trigger-check",
+        "committedAt": "2026-09-02T17:50:18Z"
+      },
       "isFork": true,
       "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
       "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
-    },
-    {
-      "name": "jonnyhaynes-web",
-      "description": "My personal website — a static site built with React, Vite & TypeScript.",
-      "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-      "homepageUrl": "https://www.jonnyhaynes.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript"
-      ],
-      "stars": 1,
-      "pushedAt": "2026-09-02T17:43:27Z",
-      "lastCommit": null,
-      "isFork": false,
-      "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
-      "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
     },
     {
       "name": "sitwellcc-web",
@@ -57,11 +74,18 @@
       "homepageUrl": "https://www.sitwell.cc",
       "language": "Astro",
       "languages": [
-        "Astro"
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "HTML"
       ],
       "stars": 0,
       "pushedAt": "2026-09-02T09:15:17Z",
-      "lastCommit": null,
+      "lastCommit": {
+        "message": "Bump astro, @astrojs/vercel and transitive security patches (#98)",
+        "committedAt": "2026-09-02T09:13:55Z"
+      },
       "isFork": false,
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
@@ -73,11 +97,19 @@
       "homepageUrl": "https://skillswap.colouringcode.com",
       "language": "TypeScript",
       "languages": [
-        "TypeScript"
+        "TypeScript",
+        "PLpgSQL",
+        "JavaScript",
+        "CSS",
+        "HTML",
+        "Shell"
       ],
       "stars": 0,
       "pushedAt": "2026-08-01T09:03:31Z",
-      "lastCommit": null,
+      "lastCommit": {
+        "message": "fix(build): install Chromium system libs so prerendering works on Ver…",
+        "committedAt": "2026-08-01T09:03:31Z"
+      },
       "isFork": false,
       "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
       "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
@@ -89,37 +121,49 @@
       "homepageUrl": "https://www.rovrum.town",
       "language": "HTML",
       "languages": [
-        "HTML"
+        "HTML",
+        "TypeScript",
+        "Astro",
+        "JavaScript",
+        "Shell"
       ],
       "stars": 0,
       "pushedAt": "2026-07-27T16:11:51Z",
-      "lastCommit": null,
+      "lastCommit": {
+        "message": "Merge pull request #39 from jonnyhaynes/feat/news-broadsheet-design",
+        "committedAt": "2026-07-22T15:46:15Z"
+      },
       "isFork": false,
       "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
       "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
     },
     {
-      "name": "apollo-events-bridge",
-      "description": "Reads Apollo event embeds from Discord and serves them as JSON for a website.",
-      "url": "https://github.com/jonnyhaynes/apollo-events-bridge",
-      "homepageUrl": null,
-      "language": "JavaScript",
+      "name": "colouringcode-web",
+      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
+      "url": "https://github.com/jonnyhaynes/colouringcode-web",
+      "homepageUrl": "https://www.colouringcode.com",
+      "language": "TypeScript",
       "languages": [
+        "TypeScript",
+        "Shell",
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-07-10T14:49:28Z",
-      "lastCommit": null,
+      "pushedAt": "2026-07-20T15:05:02Z",
+      "lastCommit": {
+        "message": "Merge pull request #5 from jonnyhaynes/feature/design-refine-checkup",
+        "committedAt": "2026-07-20T15:05:02Z"
+      },
       "isFork": false,
-      "pitch": "Reads Apollo's Discord event embeds and serves them as JSON for a website.",
-      "challenge": "Parsing Apollo's undocumented Discord event embeds — via a bot with Message Content Intent — so the format can be re-derived when Apollo changes it."
+      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
+      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     }
   ],
   "lastActivity": {
-    "repo": "app-live",
-    "url": "https://github.com/jonnyhaynes/app-live",
-    "message": null,
-    "committedAt": "2026-09-02T18:09:31Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh health data [skip ci] (#512)",
+    "committedAt": "2026-09-02T19:07:02Z"
   },
   "languages": [
     {
@@ -139,5 +183,5 @@
       "count": 1
     }
   ],
-  "totalContributions": null
+  "totalContributions": 1051
 }
