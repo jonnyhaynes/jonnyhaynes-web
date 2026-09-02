@@ -17,9 +17,9 @@ React Native · Expo · TypeScript · JavaScript · React · Next.js · HTML · 
 
 ## Top Skills
 
-- Mobile Architecture
-- AI Workflow Integration
-- Team Mentorship
+- Front-End-Leaning Full-Stack Engineering
+- AI-Accelerated Delivery
+- Technical Leadership & Mentoring
 
 ## Experience
 
