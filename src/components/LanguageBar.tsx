@@ -4,7 +4,7 @@ import { LANGUAGE_COLORS, LANGUAGE_FALLBACK } from '../content/languages';
 /**
  * GitHub language-breakdown bar (spec §C): a single stacked bar showing the
  * share of each top language across the fetched repos, with a legend. Backed by
- * real data — validates the manual skills below it.
+ * real data — the "what I build with" companion to the capabilities below it.
  */
 export function LanguageBar({ languages }: { languages: GitHubLanguage[] }) {
   const total = languages.reduce((sum, l) => sum + l.count, 0);
