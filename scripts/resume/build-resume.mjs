@@ -280,11 +280,12 @@ function renderHtml(doc, fonts, topoSvg) {
     .map(renderSection)
     .join('');
 
-  // The tagline is a `|`-separated line: first part is the role (folded into
-  // the "// Ey up. I'm a <role>" microcopy line), the rest is the muted
-  // subheadline underneath.
-  const [role, ...rest] = doc.tagline.split('|').map((s) => s.trim());
-  const subhead = rest.join(' · ');
+  // The tagline is a `|`-separated line rendered as the muted subheadline
+  // underneath the name.
+  const subhead = doc.tagline
+    .split('|')
+    .map((s) => s.trim())
+    .join(' · ');
 
   // Size the SVG name to the glyph run. JetBrains Mono at this size is ~0.6em
   // wide per char; a little slack on the right avoids clipping the last glyph.
@@ -485,10 +486,9 @@ li::before{
 </style>
 </head>
 <body>
-  <div class="bg"><div class="topo">${topoSvg}</div></div>
   <div class="page">
     <header>
-      <p class="microcopy">// Ey up. I'm a ${esc(role)}</p>
+      <p class="microcopy">// Ey up.</p>
       <h1 class="name">${svgText(doc.name, nameW, Math.round(NAME_SIZE * 1.05), NAME_SIZE, 'heather')}</h1>
       ${subhead ? `<p class="subhead">${esc(subhead)}</p>` : ''}
       <div class="contact">${contact}</div>
