@@ -1,6 +1,6 @@
 # Jonny Haynes
 
-**Full-Stack Developer** | Specialising in React, React Native, TypeScript & AI Workflows | Colouring code & building award-winning apps
+Specialising in React, React Native, TypeScript & AI Workflows | Colouring code & building award-winning apps
 
 - **Phone:** 07460843016
 - **Email:** jonny.d.haynes@gmail.com
@@ -9,7 +9,7 @@
 
 ## Summary
 
-Proud northerner, full-stack developer, bass player, cyclist, and father of five living near Sheffield. With nearly two decades of digital engineering experience starting in 2006, I specialise in architecting high-impact, award-winning cross-platform mobile apps using React Native, Expo, and TypeScript—notably delivering scalable solutions that have secured over 1 million global downloads and prestigious industry awards. Expert in managing complex global application states (Redux) and integrating secure RESTful APIs. Adept at scaling feature deployment using modern workflows like Claude Code while actively advocating for workplace wellness on corporate Wellbeing Task Forces.
+With nearly two decades of digital engineering experience starting in 2006, I build high-impact web applications, websites, and cross-platform mobile apps using React, Next.js, React Native, and TypeScript—from bespoke Laravel and WordPress platforms through to award-winning apps that have secured over 1 million global downloads and prestigious industry awards. Comfortable across the whole stack, from front-end interfaces to RESTful API integration and complex application state (Redux). Adept at scaling feature deployment using modern workflows like Claude Code while actively advocating for workplace wellness on corporate Wellbeing Task Forces.
 
 ## Core Stack
 
