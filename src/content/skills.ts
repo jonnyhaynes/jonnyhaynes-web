@@ -1,10 +1,10 @@
 /**
- * Manually-curated skills, grouped for the Skills section (spec §C). The
- * GitHub language-breakdown bar above this is the data-backed companion; this
- * is the hand-picked list of what Jonny actually works with.
+ * Hand-picked capabilities for the Skills section — what Jonny can *do*, not the
+ * tools he does it with. The GitHub language-breakdown bar above this is the
+ * data-backed "what I build with"; this list is the "what I can do" beside it.
  *
- * TODO(jonny): edit these lists — they're a sensible starting point drawn from
- * the projects/stack, not a definitive claim. Keep each group tight (~6-8).
+ * Verb-led on purpose. Keep each group tight (~3-4) and honest — every line
+ * should be something Jonny would stand behind in an interview.
  */
 
 export type SkillGroup = {
@@ -14,34 +14,28 @@ export type SkillGroup = {
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    title: 'Frontend',
+    title: 'Frontend craft',
     skills: [
-      'React',
-      'React Native',
-      'TypeScript',
-      'Astro',
-      'Tailwind CSS',
-      'Vite',
+      'Build accessible, semantic UIs (WCAG, keyboard, reduced-motion)',
+      'Design and maintain reusable component systems',
+      'Craft responsive layouts and motion that respect the user',
+      'Ship fast interfaces — Core Web Vitals, bundle discipline',
     ],
   },
   {
-    title: 'Backend',
+    title: 'Ship end-to-end',
     skills: [
-      'Node.js',
-      'Supabase / PostgreSQL',
-      'REST & GraphQL APIs',
-      'Serverless functions',
-      'MCP servers',
+      'Wire up data with Node, serverless & typed APIs',
+      'Model data in Supabase / Postgres',
+      'Automate delivery with GitHub Actions & Vercel',
     ],
   },
   {
-    title: 'Tools & DevOps',
+    title: 'Quality & workflow',
     skills: [
-      'Git & GitHub',
-      'GitHub Actions (CI/CD)',
-      'Vercel',
-      'ESLint & Prettier',
-      'AI-assisted workflows',
+      'Test critical paths with Playwright & Maestro',
+      'Weave AI through the dev workflow (incl. MCP servers)',
+      'Keep TypeScript strict and the codebase honest',
     ],
   },
 ];
