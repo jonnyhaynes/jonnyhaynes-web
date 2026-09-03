@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-03T08:23:29.071Z",
+  "fetchedAt": "2026-09-03T15:29:01.279Z",
   "date": "2026-09-03",
   "steps": 49,
   "activeMinutes": 0,
@@ -49,6 +49,33 @@
       }
     ]
   },
-  "weather": null,
-  "sun": null
+  "weather": {
+    "tempC": 22,
+    "code": 3,
+    "forecast": [
+      {
+        "date": "2026-09-03",
+        "hiC": 22,
+        "loC": 18,
+        "code": 51
+      },
+      {
+        "date": "2026-09-04",
+        "hiC": 19,
+        "loC": 16,
+        "code": 63
+      },
+      {
+        "date": "2026-09-05",
+        "hiC": 19,
+        "loC": 14,
+        "code": 3
+      }
+    ]
+  },
+  "sun": {
+    "sunrise": "06:17",
+    "sunset": "19:50",
+    "sunriseTomorrow": "06:19"
+  }
 }
