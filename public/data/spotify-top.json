@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-02T21:37:11.424Z",
+  "fetchedAt": "2026-09-03T11:58:03.390Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
     },
     {
-      "name": "Biffy Clyro",
-      "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
-      "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
+      "name": "Green Day",
+      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
+      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
