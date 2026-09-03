@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-03T11:58:03.390Z",
+  "fetchedAt": "2026-09-03T21:34:50.741Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -29,6 +29,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
     },
     {
+      "name": "Green Day",
+      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
+      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
+    },
+    {
       "name": "Curry Quiche",
       "url": "https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD",
       "image": "https://i.scdn.co/image/ab67616d00004851c347579038597c530ba495db"
@@ -37,11 +42,6 @@
       "name": "Five Finger Death Punch",
       "url": "https://open.spotify.com/artist/5t28BP42x2axFnqOOMg3CM",
       "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
-    },
-    {
-      "name": "Green Day",
-      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
-      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
