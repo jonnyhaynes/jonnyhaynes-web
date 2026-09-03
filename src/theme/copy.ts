@@ -34,12 +34,6 @@ const COPY = {
       emailMe: 'Email Me',
       downloadResume: 'Download Resume',
     },
-    projects: {
-      // Intro line above the terminal (before "help" is styled inline).
-      introLead: 'A little shell — but you don’t need to know one.',
-      introNudge: 'Not into terminals? Just click the project names.',
-      introHelp: 'Or type',
-    },
     health: {
       lead: 'A day away from the compiler, more or less — pulled from my watch.',
       restDay: 'is rather the point of a day beyond the keyboard.',
@@ -80,11 +74,6 @@ const COPY = {
         'Got a project, a role, or just fancy a natter abaht React? Drop us a line.',
       emailMe: 'Email us',
       downloadResume: 'Grab mi CV',
-    },
-    projects: {
-      introLead: 'A little terminal — but tha dun’t need to know one.',
-      introNudge: 'Not one for t’command line? Just click t’project names.',
-      introHelp: 'Or type',
     },
     health: {
       lead: 'A day away from t’compiler, more or less — pulled off mi watch.',
