@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-04T20:37:10.363Z",
+  "fetchedAt": "2026-09-05T10:21:06.541Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 1,
-      "pushedAt": "2026-09-04T18:43:05Z",
+      "pushedAt": "2026-09-05T07:56:15Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#536)",
-        "committedAt": "2026-09-04T18:43:05Z"
+        "message": "Refresh health data [skip ci] (#542)",
+        "committedAt": "2026-09-05T07:56:15Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -44,6 +44,28 @@
       "isFork": false,
       "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
       "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
+    },
+    {
+      "name": "cmux-sentinel",
+      "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
+      "url": "https://github.com/jonnyhaynes/cmux-sentinel",
+      "homepageUrl": null,
+      "language": "Shell",
+      "languages": [
+        "Shell",
+        "Swift",
+        "TypeScript",
+        "Makefile"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-02T17:50:50Z",
+      "lastCommit": {
+        "message": "Merge pull request #6 from jonnyhaynes/ci-trigger-check",
+        "committedAt": "2026-09-02T17:50:18Z"
+      },
+      "isFork": true,
+      "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
+      "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
     },
     {
       "name": "sitwellcc-web",
@@ -112,8 +134,8 @@
         "committedAt": "2026-07-22T15:46:15Z"
       },
       "isFork": false,
-      "pitch": null,
-      "challenge": null
+      "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
+      "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
     },
     {
       "name": "colouringcode-web",
@@ -135,33 +157,13 @@
       "isFork": false,
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "freestyle-libre-mcp-server",
-      "description": "An MCP (Model Context Protocol) server that gives Claude access to Abbott Freestyle Libre CGM (continuous glucose monitor) data.",
-      "url": "https://github.com/jonnyhaynes/freestyle-libre-mcp-server",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript"
-      ],
-      "stars": 2,
-      "pushedAt": "2026-07-10T14:49:52Z",
-      "lastCommit": {
-        "message": "Update .portfolio.json with structured data",
-        "committedAt": "2026-07-10T14:49:51Z"
-      },
-      "isFork": false,
-      "pitch": "An MCP server giving Claude access to Freestyle Libre glucose data.",
-      "challenge": "Reaching glucose data through LibreLinkUp's unofficial follower-account auth, and abstracting three providers behind one clean set of MCP tools."
     }
   ],
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#536)",
-    "committedAt": "2026-09-04T18:43:05Z"
+    "message": "Refresh health data [skip ci] (#542)",
+    "committedAt": "2026-09-05T07:56:15Z"
   },
   "languages": [
     {
