@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-04T21:17:01.616Z",
+  "fetchedAt": "2026-09-05T11:09:23.223Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -46,6 +46,12 @@
   ],
   "tracks": [
     {
+      "title": "There She Is",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
+    },
+    {
       "title": "I'm Out and I Wanna Go Home",
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/1hiwr6Ps0GihMMP573L5Jv",
@@ -55,12 +61,6 @@
       "title": "Don't Worry",
       "artist": "Frank Turner",
       "url": "https://open.spotify.com/track/2P8vJYOVOJ6Elg38SXOhZ6",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
-    {
-      "title": "There She Is",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
