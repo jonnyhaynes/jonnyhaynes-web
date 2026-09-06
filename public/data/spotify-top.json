@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-05T20:57:40.895Z",
+  "fetchedAt": "2026-09-06T11:32:28.294Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -14,6 +14,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
     },
     {
+      "name": "Spencer Sutherland",
+      "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
+      "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
+    },
+    {
       "name": "Carpenter Brut",
       "url": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP",
       "image": "https://i.scdn.co/image/ab6761610000f178ac2f9a19a87d094626992c94"
@@ -22,11 +27,6 @@
       "name": "Clutch",
       "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
       "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
-    },
-    {
-      "name": "Spencer Sutherland",
-      "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
-      "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
     },
     {
       "name": "Green Day",
@@ -52,6 +52,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
+      "title": "Somebody's Gonna Love Me",
+      "artist": "Spencer Sutherland",
+      "url": "https://open.spotify.com/track/6hw8dMgvfPsYqAHKVRFMaK",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
+    },
+    {
       "title": "I'm Out and I Wanna Go Home",
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/1hiwr6Ps0GihMMP573L5Jv",
@@ -74,12 +80,6 @@
       "artist": "blink-182",
       "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
       "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
-    },
-    {
-      "title": "Somebody's Gonna Love Me",
-      "artist": "Spencer Sutherland",
-      "url": "https://open.spotify.com/track/6hw8dMgvfPsYqAHKVRFMaK",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
     },
     {
       "title": "Thunderstruck",
