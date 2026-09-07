@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-09-06T21:05:54.219Z",
+  "fetchedAt": "2026-09-07T13:19:27.439Z",
   "timeRange": "short_term",
-  "topGenre": "pop punk",
+  "topGenre": null,
   "artists": [
     {
       "name": "blink-182",
@@ -24,11 +24,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ac2f9a19a87d094626992c94"
     },
     {
-      "name": "Clutch",
-      "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
-      "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
-    },
-    {
       "name": "Green Day",
       "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
@@ -42,6 +37,11 @@
       "name": "Five Finger Death Punch",
       "url": "https://open.spotify.com/artist/5t28BP42x2axFnqOOMg3CM",
       "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
+    },
+    {
+      "name": "Biffy Clyro",
+      "url": "https://open.spotify.com/artist/1km0R7wy712AzLkA1WjKET",
+      "image": "https://i.scdn.co/image/ab6761610000f178440fa32e555b94307d9f2e85"
     }
   ],
   "tracks": [
