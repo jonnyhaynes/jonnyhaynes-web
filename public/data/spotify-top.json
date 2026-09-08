@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-07T21:55:31.971Z",
+  "fetchedAt": "2026-09-08T12:00:13.076Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -76,6 +76,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
+      "title": "Freewill",
+      "artist": "Rush",
+      "url": "https://open.spotify.com/track/2XwYeBzumtjxVbFWwhJpsy",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
+    },
+    {
       "title": "What's My Age Again?",
       "artist": "blink-182",
       "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
@@ -86,12 +92,6 @@
       "artist": "AC/DC",
       "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
       "albumArt": "https://i.scdn.co/image/ab67616d000048519a9b1cc067e4460da04adce2"
-    },
-    {
-      "title": "Recovery",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/49ccDOSipaIJ4PcmovJy4h",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048517b58c9232add877f07f3f419"
     }
   ],
   "playlists": [
