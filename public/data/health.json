@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-09-08T22:10:47.921Z",
-  "date": "2026-09-08",
-  "steps": 6629,
-  "activeMinutes": 2,
-  "restingHeartRate": 47,
-  "calories": 2195,
+  "fetchedAt": "2026-09-09T02:10:54.529Z",
+  "date": "2026-09-09",
+  "steps": null,
+  "activeMinutes": 0,
+  "restingHeartRate": 50,
+  "calories": 57,
   "history": {
     "steps": [
-      {
-        "date": "2026-09-06",
-        "value": 8280
-      },
       {
         "date": "2026-09-07",
         "value": 7180
       },
       {
         "date": "2026-09-08",
-        "value": 6629
+        "value": 6667
+      },
+      {
+        "date": "2026-09-09",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-09-06",
-        "value": 2651
-      },
       {
         "date": "2026-09-07",
         "value": 2518
       },
       {
         "date": "2026-09-08",
-        "value": 2195
+        "value": 2522
+      },
+      {
+        "date": "2026-09-09",
+        "value": 57
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-09-06",
-        "value": 55
-      },
       {
         "date": "2026-09-07",
         "value": 52
@@ -46,19 +42,17 @@
       {
         "date": "2026-09-08",
         "value": 47
+      },
+      {
+        "date": "2026-09-09",
+        "value": 50
       }
     ]
   },
   "weather": {
     "tempC": 14,
-    "code": 1,
+    "code": 2,
     "forecast": [
-      {
-        "date": "2026-09-08",
-        "hiC": 17,
-        "loC": 13,
-        "code": 53
-      },
       {
         "date": "2026-09-09",
         "hiC": 18,
@@ -67,15 +61,21 @@
       },
       {
         "date": "2026-09-10",
-        "hiC": 19,
+        "hiC": 20,
         "loC": 11,
+        "code": 61
+      },
+      {
+        "date": "2026-09-11",
+        "hiC": 18,
+        "loC": 14,
         "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "06:27",
-    "sunset": "19:39",
-    "sunriseTomorrow": "06:28"
+    "sunrise": "06:28",
+    "sunset": "19:36",
+    "sunriseTomorrow": "06:30"
   }
 }
