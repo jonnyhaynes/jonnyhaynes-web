@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-09-09T12:10:48.397Z",
+  "fetchedAt": "2026-09-09T21:31:28.053Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "pop punk",
   "artists": [
     {
       "name": "blink-182",
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab67616d00004851c347579038597c530ba495db"
     },
     {
-      "name": "Five Finger Death Punch",
-      "url": "https://open.spotify.com/artist/5t28BP42x2axFnqOOMg3CM",
-      "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
-    },
-    {
       "name": "Faith No More",
       "url": "https://open.spotify.com/artist/6GbCJZrI318Ybm8mY36Of5",
       "image": "https://i.scdn.co/image/87848b2d4dc66640f83601753f355a1eceb1b4ee"
+    },
+    {
+      "name": "Five Finger Death Punch",
+      "url": "https://open.spotify.com/artist/5t28BP42x2axFnqOOMg3CM",
+      "image": "https://i.scdn.co/image/ab6761610000f178de4983cb95a0d3883bdfa3d5"
     }
   ],
   "tracks": [
