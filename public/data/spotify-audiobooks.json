@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-08T21:37:37.491Z",
+  "fetchedAt": "2026-09-09T12:10:48.398Z",
   "audiobooks": [
     {
       "title": "The Book of Trespass: Crossing the Lines that Divide Us",
@@ -65,9 +65,9 @@
       "title": "There Is No Antimemetics Division: The thrilling new sci-fi horror novel, 'mind-bendingly brilliant' Guardian",
       "authors": "qntm",
       "url": "https://open.spotify.com/show/6Yg3i7lZEK8bDq01y04TQD",
-      "cover": "https://i.scdn.co/image/ab676663000022a82678645afc594c701291c661",
+      "cover": "https://i.scdn.co/image/ab676663000022a8eea25ebb1e81e80a02202734",
       "spine": {
-        "bg": "rgb(184 232 8)",
+        "bg": "rgb(200 232 56)",
         "ink": "#1a1b1e"
       }
     }
