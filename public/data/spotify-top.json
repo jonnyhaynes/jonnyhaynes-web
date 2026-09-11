@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-11T12:03:22.113Z",
+  "fetchedAt": "2026-09-11T21:33:18.948Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -88,10 +88,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
     },
     {
-      "title": "Thunderstruck",
-      "artist": "AC/DC",
-      "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048519a9b1cc067e4460da04adce2"
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
