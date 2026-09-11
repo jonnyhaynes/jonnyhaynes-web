@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-11T10:58:39.239Z",
+  "fetchedAt": "2026-09-11T20:47:02.171Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,14 +16,36 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-11T08:25:13Z",
+      "pushedAt": "2026-09-11T18:52:41Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#612)",
-        "committedAt": "2026-09-11T08:25:13Z"
+        "message": "Refresh health data [skip ci] (#617)",
+        "committedAt": "2026-09-11T18:52:41Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "colouringcode-web",
+      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
+      "url": "https://github.com/jonnyhaynes/colouringcode-web",
+      "homepageUrl": "https://www.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "Shell",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-11T13:30:03Z",
+      "lastCommit": {
+        "message": "Phase 1 copy: fill stacks, location, confirm descriptor count",
+        "committedAt": "2026-09-11T13:30:01Z"
+      },
+      "isFork": false,
+      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
+      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     },
     {
       "name": "sitwellcc-web",
@@ -136,34 +158,13 @@
       "isFork": false,
       "pitch": "Rovrum — a content platform aggregating Rotherham news, sports, events and jobs into one feed. An Astro front end over a Dockerised Node pipeline with PostgreSQL/Prisma.",
       "challenge": "Collapsing the same story covered by different outlets — different URLs, differently-worded headlines — into one entry without wrongly merging distinct stories."
-    },
-    {
-      "name": "colouringcode-web",
-      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
-      "url": "https://github.com/jonnyhaynes/colouringcode-web",
-      "homepageUrl": "https://www.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-07-20T15:05:02Z",
-      "lastCommit": {
-        "message": "Merge pull request #5 from jonnyhaynes/feature/design-refine-checkup",
-        "committedAt": "2026-07-20T15:05:02Z"
-      },
-      "isFork": false,
-      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
-      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     }
   ],
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#612)",
-    "committedAt": "2026-09-11T08:25:13Z"
+    "message": "Refresh health data [skip ci] (#617)",
+    "committedAt": "2026-09-11T18:52:41Z"
   },
   "languages": [
     {
@@ -183,5 +184,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 1055
+  "totalContributions": 1072
 }
