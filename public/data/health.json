@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-12T14:38:32.861Z",
+  "fetchedAt": "2026-09-12T17:58:36.508Z",
   "date": "2026-09-12",
   "steps": 81,
   "activeMinutes": 0,
@@ -50,26 +50,26 @@
     ]
   },
   "weather": {
-    "tempC": 21,
+    "tempC": 20,
     "code": 3,
     "forecast": [
       {
         "date": "2026-09-12",
         "hiC": 21,
         "loC": 12,
-        "code": 51
+        "code": 61
       },
       {
         "date": "2026-09-13",
         "hiC": 22,
-        "loC": 16,
-        "code": 3
+        "loC": 17,
+        "code": 51
       },
       {
         "date": "2026-09-14",
         "hiC": 24,
         "loC": 17,
-        "code": 61
+        "code": 53
       }
     ]
   },
