@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-13T12:34:28.627Z",
+  "fetchedAt": "2026-09-13T21:15:23.813Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -58,22 +58,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
     },
     {
-      "title": "I'm Out and I Wanna Go Home",
-      "artist": "Daði Freyr",
-      "url": "https://open.spotify.com/track/1hiwr6Ps0GihMMP573L5Jv",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
-    },
-    {
       "title": "Don't Worry",
       "artist": "Frank Turner",
       "url": "https://open.spotify.com/track/2P8vJYOVOJ6Elg38SXOhZ6",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
-      "title": "Be More Kind",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
+      "title": "Duality",
+      "artist": "Slipknot",
+      "url": "https://open.spotify.com/track/61mWefnWQOLf90gepjOCb3",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
     },
     {
       "title": "Wait and Bleed",
@@ -88,10 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
     },
     {
-      "title": "What's My Age Again?",
-      "artist": "blink-182",
-      "url": "https://open.spotify.com/track/4LJhJ6DQS7NwE7UKtvcM52",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048516da502e35a7a3e48de2b0f74"
+      "title": "Be More Kind",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
+    },
+    {
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
