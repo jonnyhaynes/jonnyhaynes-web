@@ -1,30 +1,7 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-15T11:28:55.837Z",
+  "fetchedAt": "2026-09-15T21:06:06.541Z",
   "projects": [
-    {
-      "name": "cmux-sentinel",
-      "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
-      "url": "https://github.com/jonnyhaynes/cmux-sentinel",
-      "homepageUrl": null,
-      "language": "Shell",
-      "languages": [
-        "Shell",
-        "Swift",
-        "TypeScript",
-        "Makefile",
-        "Ruby"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-15T11:22:03Z",
-      "lastCommit": {
-        "message": "Merge pull request #7 from jonnyhaynes/merge/upstream-0.2.2",
-        "committedAt": "2026-09-15T10:14:51Z"
-      },
-      "isFork": true,
-      "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
-      "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
-    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -39,14 +16,37 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-15T09:04:28Z",
+      "pushedAt": "2026-09-15T19:22:28Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#655)",
-        "committedAt": "2026-09-15T09:04:27Z"
+        "message": "Refresh health data [skip ci] (#660)",
+        "committedAt": "2026-09-15T19:22:27Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "cmux-sentinel",
+      "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
+      "url": "https://github.com/jonnyhaynes/cmux-sentinel",
+      "homepageUrl": null,
+      "language": "Shell",
+      "languages": [
+        "Shell",
+        "Swift",
+        "TypeScript",
+        "Makefile",
+        "Ruby"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-15T15:17:14Z",
+      "lastCommit": {
+        "message": "Merge pull request #9 from jonnyhaynes/feat/commandcode-pane-watcher",
+        "committedAt": "2026-09-15T15:17:06Z"
+      },
+      "isFork": true,
+      "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
+      "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
     },
     {
       "name": "colouringcode-web",
@@ -164,8 +164,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#655)",
-    "committedAt": "2026-09-15T09:04:27Z"
+    "message": "Refresh health data [skip ci] (#660)",
+    "committedAt": "2026-09-15T19:22:27Z"
   },
   "languages": [
     {
@@ -185,5 +185,5 @@
       "count": 1
     }
   ],
-  "totalContributions": 1077
+  "totalContributions": 1080
 }
