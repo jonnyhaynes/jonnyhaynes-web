@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-09-15T09:04:04.551Z",
+  "fetchedAt": "2026-09-15T15:54:52.510Z",
   "date": "2026-09-15",
-  "steps": 267,
+  "steps": 3555,
   "activeMinutes": 0,
   "restingHeartRate": 50,
-  "calories": 699,
+  "calories": 1557,
   "history": {
     "steps": [
       {
@@ -17,7 +17,7 @@
       },
       {
         "date": "2026-09-15",
-        "value": 267
+        "value": 3555
       }
     ],
     "calories": [
@@ -31,7 +31,7 @@
       },
       {
         "date": "2026-09-15",
-        "value": 699
+        "value": 1557
       }
     ],
     "restingHeartRate": [
