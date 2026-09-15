@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-14T22:18:23.491Z",
+  "fetchedAt": "2026-09-15T12:29:43.422Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,6 +24,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
     },
     {
+      "name": "Slipknot",
+      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
+      "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
+    },
+    {
       "name": "Carpenter Brut",
       "url": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP",
       "image": "https://i.scdn.co/image/ab6761610000f178ac2f9a19a87d094626992c94"
@@ -37,20 +42,9 @@
       "name": "The Smashing Pumpkins",
       "url": "https://open.spotify.com/artist/40Yq4vzPs9VNUrIBG5Jr2i",
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
-    },
-    {
-      "name": "Curry Quiche",
-      "url": "https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD",
-      "image": "https://i.scdn.co/image/ab67616d00004851c347579038597c530ba495db"
     }
   ],
   "tracks": [
-    {
-      "title": "There She Is",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
     {
       "title": "Somebody's Gonna Love Me",
       "artist": "Spencer Sutherland",
@@ -58,16 +52,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
     },
     {
-      "title": "Don't Worry",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/2P8vJYOVOJ6Elg38SXOhZ6",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
-    {
       "title": "Duality",
       "artist": "Slipknot",
       "url": "https://open.spotify.com/track/61mWefnWQOLf90gepjOCb3",
       "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
+    },
+    {
+      "title": "There She Is",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
       "title": "Wait and Bleed",
@@ -82,16 +76,22 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
     },
     {
-      "title": "Be More Kind",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
-    {
       "title": "Ace of Spades",
       "artist": "Motörhead",
       "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
+    },
+    {
+      "title": "Thunderstruck",
+      "artist": "AC/DC",
+      "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048519a9b1cc067e4460da04adce2"
+    },
+    {
+      "title": "Links Rechts",
+      "artist": "Snollebollekes",
+      "url": "https://open.spotify.com/track/5EcPtaqxmPvgLcB5gRPF2j",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485113f93416952d9f9309d71778"
     }
   ],
   "playlists": [
