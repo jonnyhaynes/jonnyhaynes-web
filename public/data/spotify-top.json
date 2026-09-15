@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-15T12:29:43.422Z",
+  "fetchedAt": "2026-09-15T21:56:05.716Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ac2f9a19a87d094626992c94"
     },
     {
-      "name": "Green Day",
-      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
-      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
-    },
-    {
       "name": "The Smashing Pumpkins",
       "url": "https://open.spotify.com/artist/40Yq4vzPs9VNUrIBG5Jr2i",
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
+    },
+    {
+      "name": "Green Day",
+      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
+      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
