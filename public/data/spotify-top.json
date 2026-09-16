@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-16T12:27:22.398Z",
+  "fetchedAt": "2026-09-16T21:56:00.532Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,6 +24,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
     },
     {
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+    },
+    {
       "name": "Slipknot",
       "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
       "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
@@ -37,11 +42,6 @@
       "name": "The Smashing Pumpkins",
       "url": "https://open.spotify.com/artist/40Yq4vzPs9VNUrIBG5Jr2i",
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
-    },
-    {
-      "name": "Green Day",
-      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
-      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
