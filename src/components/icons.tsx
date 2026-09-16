@@ -42,3 +42,66 @@ export function ExternalLinkIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function AppleIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+    </svg>
+  );
+}
+
+export function PlayIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M3.609 1.814 13.792 12 3.609 22.186A1 1 0 0 1 3 21.266V2.734a1 1 0 0 1 .609-.92Zm10.89 10.894 2.302 2.302-10.937 6.333 8.635-8.635Zm3.199-3.198 2.807 1.626a1 1 0 0 1 0 1.728l-2.807 1.626L15.25 12l2.448-2.49ZM5.864 2.658 16.801 8.99l-2.302 2.302-8.635-8.635Z" />
+    </svg>
+  );
+}
+
+export function TrophyIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M7 3.5h10v6.5a5 5 0 0 1-10 0V3.5z" />
+      <path d="M7 5.5H6a3 3 0 0 0 0 6h1" />
+      <path d="M17 5.5h1a3 3 0 0 1 0 6h-1" />
+      <path d="M12 15v6.5" />
+      <path d="M8 21.5h8" />
+    </svg>
+  );
+}
+
+/**
+ * The briefcase badge worn by curated work projects — ForkIcon's counterpart, in
+ * the same slot and at the same size (16px, 16×16 viewBox), so a work card's
+ * heading aligns exactly with a fork card's. It carries no visible label; the
+ * card's sr-only text supplies the meaning.
+ */
+export function WorkIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M5.75 4.5V3.25A1.25 1.25 0 0 1 7 2h2a1.25 1.25 0 0 1 1.25 1.25V4.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+      />
+      <rect x="1" y="4.5" width="14" height="10" rx="1.75" />
+    </svg>
+  );
+}

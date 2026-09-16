@@ -425,38 +425,6 @@
   }
 }
 
-/* Terminal caret for the project card's "hardest bit" prompt (HardestBit.tsx):
- * a small block that blinks like a shell cursor, on the prompt when idle and
- * trailing the text while it types out. */
-.hb-caret {
-  display: inline-block;
-  width: 0.5em;
-  height: 1em;
-  margin-left: 0.15em;
-  vertical-align: text-bottom;
-  background: currentColor;
-  /* Slow, eased pulse rather than a hard on/off flash — far less intrusive. It
-   * never fully disappears (dips to 0.25), so it reads as a calm resting cursor. */
-  animation: hb-blink 2s ease-in-out infinite;
-}
-
-@keyframes hb-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
-  }
-}
-
-/* Reduced motion: keep the caret visible but stop it blinking. */
-@media (prefers-reduced-motion: reduce) {
-  .hb-caret {
-    animation: none;
-  }
-}
-
 .hero-with-portrait {
   --portrait-x: 0px;
   --portrait-y: 0px;
