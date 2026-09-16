@@ -81,30 +81,11 @@ export function useGitHubData(): GitHubData | null {
 }
 
 /**
- * Repos never surfaced as own work (this portfolio itself) — excluded from both
- * the "currently building" chip and the featured Projects grid.
+ * Repos never surfaced as own work (this portfolio itself) — excluded from the
+ * "currently building" chip. The Projects grid curates by name instead, so it
+ * does not depend on this set (see ../content/projects).
  */
 export const SELF_EXCLUDE = new Set(['jonnyhaynes-web']);
-
-/**
- * The featured projects for the Projects grid: up to six repos sorted
- * alphabetically (case-insensitive), excluding the portfolio itself. The bake
- * stores seven so a full six survive SELF_EXCLUDE; the front end never shows
- * more than `limit`. Returns an empty array when data is absent so the section
- * degrades gracefully.
- */
-export function featuredProjects(
-  data: GitHubData | null,
-  limit = 6,
-): GitHubProject[] {
-  if (!data) return [];
-  return data.projects
-    .filter((p) => !SELF_EXCLUDE.has(p.name))
-    .sort((a, b) =>
-      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
-    )
-    .slice(0, limit);
-}
 
 /**
  * The repo to show in the "currently building" chip: the most-recently-pushed

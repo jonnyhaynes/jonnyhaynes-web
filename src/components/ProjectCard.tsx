@@ -1,30 +1,107 @@
-import type { GitHubProject } from '../data/github';
-import { HardestBit } from './HardestBit';
-import { ExternalLinkIcon, ForkIcon, GitHubIcon } from './icons';
+import type { ComponentType } from 'react';
+import type { ProjectLinkKind } from '../content/projects';
+import type { Project } from '../data/projects';
+import {
+  AppleIcon,
+  ExternalLinkIcon,
+  ForkIcon,
+  GitHubIcon,
+  PlayIcon,
+  TrophyIcon,
+  WorkIcon,
+} from './icons';
 
 /**
- * A featured-project card: name, pitch, stack, "hardest bit", repo/live links,
- * and a fork tag. The "hardest bit" — the tallest, most variable block — is
- * clamped to two lines and types out the rest via a terminal-style prompt (see
- * HardestBit), keeping the grid short without dropping any content.
+ * How each outbound link renders. `description` completes "{project.name}
+ * {description}" for the accessible name, so a link never reads as a bare
+ * "Repo"/"Web" in a screen reader's list of links.
+ */
+const LINK_META: Record<
+  ProjectLinkKind,
+  {
+    label: string;
+    Icon: ComponentType<{ className?: string }>;
+    description: string;
+  }
+> = {
+  repo: { label: 'Repo', Icon: GitHubIcon, description: 'repository on GitHub' },
+  live: { label: 'Web', Icon: ExternalLinkIcon, description: 'live site' },
+  appstore: {
+    label: 'App Store',
+    Icon: AppleIcon,
+    description: 'on the App Store',
+  },
+  play: {
+    label: 'Google Play',
+    Icon: PlayIcon,
+    description: 'on Google Play',
+  },
+  article: {
+    label: 'Article',
+    Icon: ExternalLinkIcon,
+    description: 'in the news',
+  },
+  video: {
+    label: 'Video',
+    Icon: ExternalLinkIcon,
+    description: 'in a video',
+  },
+};
+
+const FOCUS =
+  'focus-visible:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+
+const LINK_CLASS = `inline-flex items-center gap-1.5 text-sm text-foreground transition-colors hover:text-accent-start ${FOCUS}`;
+
+function projectId(name: string): string {
+  return `proj-${name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')}`;
+}
+
+/**
+ * The project's awards: one per line, so a long award title wraps as prose rather
+ * than running on. Each row carries its own trophy, which deliberately sets no
+ * colour — it inherits currentColor from the link, so it turns accent in step
+ * with the text on hover and on keyboard focus.
+ */
+function Awards({ project }: { project: Project }) {
+  return (
+    <ul className="mt-4 space-y-1.5">
+      {project.awards.map((award) => (
+        <li key={award.url}>
+          <a
+            href={award.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label={`Award for ${project.name}: ${award.name}`}
+            className={`flex items-start gap-2 text-sm text-muted transition-colors hover:text-accent-start ${FOCUS}`}
+          >
+            <TrophyIcon className="mt-0.5 size-3.5 shrink-0" />
+            <span>{award.name}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * A curated-project card: title, pitch, awards, and outbound links.
+ *
+ * Personal repos carry a fork glyph when forked; work projects carry a briefcase
+ * in the same slot, at the same size. Both sit inline before the title.
  *
  * Accessibility:
  * - The card is a labelled region (aria-labelledby → the <h3>), NOT a link,
- *   because it has two distinct destinations (repo + live). Each link's
- *   accessible name includes the project name so "Repo"/"Live" aren't ambiguous.
- * - Forks show a fork icon before the title; it's decorative (aria-hidden) with
- *   an sr-only "Forked repository:" prefix so the meaning isn't icon-only.
+ *   because it has several distinct destinations. Every link's accessible name
+ *   carries the project name, so "Repo"/"Web"/"App Store" aren't ambiguous.
+ * - Badging glyphs are decorative (aria-hidden) with an sr-only prefix, so their
+ *   meaning is never icon-only for assistive tech.
  */
-export function ProjectCard({ project }: { project: GitHubProject }) {
-  // Pitch: the repo's .portfolio.json override, else its GitHub "About" text.
-  const pitch = project.pitch ?? project.description;
-  const challenge = project.challenge;
-  const stack = project.languages.length
-    ? project.languages
-    : project.language
-      ? [project.language]
-      : [];
-  const headingId = `proj-${project.name}`;
+export function ProjectCard({ project }: { project: Project }) {
+  const headingId = projectId(project.name);
 
   return (
     <article
@@ -33,57 +110,45 @@ export function ProjectCard({ project }: { project: GitHubProject }) {
     >
       <h3
         id={headingId}
-        className="flex items-center gap-1.5 text-xl font-medium text-foreground"
+        className="flex items-center gap-2 text-xl font-medium text-foreground"
       >
-        {project.isFork && (
+        {project.kind === 'work' ? (
           <>
-            {/* Decorative glyph; the sr-only text carries the meaning. */}
-            <ForkIcon className="size-4 shrink-0 text-muted" />
-            <span className="sr-only">Forked repository: </span>
+            <WorkIcon className="size-4 shrink-0 text-muted" />
+            <span className="sr-only">Work project at {project.company}: </span>
           </>
+        ) : (
+          project.isFork && (
+            <>
+              <ForkIcon className="size-4 shrink-0 text-muted" />
+              <span className="sr-only">Forked repository: </span>
+            </>
+          )
         )}
         {project.name}
       </h3>
 
-      {pitch && <p className="mt-2 text-muted">{pitch}</p>}
+      {project.pitch && <p className="mt-2 text-muted">{project.pitch}</p>}
 
-      {stack.length > 0 && (
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {stack.map((tech) => (
-            <li
-              key={tech}
-              className="rounded-full border border-muted/30 px-2.5 py-0.5 font-mono text-xs text-muted"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {challenge && <HardestBit text={challenge} />}
+      {project.awards.length > 0 && <Awards project={project} />}
 
       {/* Links pinned to the bottom so they align across cards of any height. */}
-      <div className="mt-auto flex items-center gap-4 pt-4">
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noreferrer noopener"
-          aria-label={`${project.name} repository on GitHub`}
-          className="inline-flex items-center gap-1.5 text-sm text-foreground transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-        >
-          <GitHubIcon className="size-4" /> Repo
-        </a>
-        {project.homepageUrl && (
-          <a
-            href={project.homepageUrl}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={`${project.name} live site`}
-            className="inline-flex items-center gap-1.5 text-sm text-foreground transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-          >
-            <ExternalLinkIcon className="size-4" /> Live
-          </a>
-        )}
+      <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-4">
+        {project.links.map((link) => {
+          const { label, Icon, description } = LINK_META[link.kind];
+          return (
+            <a
+              key={link.url}
+              href={link.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${project.name} ${description}`}
+              className={LINK_CLASS}
+            >
+              <Icon className="size-4" /> {label}
+            </a>
+          );
+        })}
       </div>
     </article>
   );

@@ -1,14 +1,12 @@
-import { useGitHubData, featuredProjects } from '../data/github';
+import { useProjects } from '../data/projects';
 import { ProjectCard } from './ProjectCard';
 import { SectionHeading } from './SectionHeading';
 
 export function Projects() {
-  const data = useGitHubData();
-
-  // Up to six repos, alphabetical, excluding the portfolio itself. Pitch +
-  // challenge come baked into each project from its own .portfolio.json
-  // (see fetch-github.mjs).
-  const featured = featuredProjects(data);
+  // The curated grid: the repos named in FEATURED_REPOS, then the hand-written
+  // work projects. Work projects are static, so they render even if the GitHub
+  // snapshot never arrives — see src/content/projects.ts.
+  const projects = useProjects();
 
   return (
     // The parent (App) gives this a max-w-6xl container, wider than the
@@ -16,14 +14,14 @@ export function Projects() {
     <section id="projects" className="scroll-mt-16 py-16">
       <SectionHeading section="projects" />
 
-      {featured.length > 0 ? (
+      {projects.length > 0 ? (
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((project) => (
+          {projects.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}
         </div>
       ) : (
-        // Graceful degradation: GitHub data not loaded / no featured repos.
+        // Graceful degradation: nothing curated and the GitHub data absent.
         <p className="mt-6 text-muted">Projects are loading…</p>
       )}
     </section>
