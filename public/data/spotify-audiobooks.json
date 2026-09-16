@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-03T11:58:03.391Z",
+  "fetchedAt": "2026-09-16T12:27:22.398Z",
   "audiobooks": [
     {
       "title": "The Book of Trespass: Crossing the Lines that Divide Us",
@@ -25,7 +25,7 @@
       "title": "Enshittification: Why Everything Suddenly Got Worse and What to Do About It",
       "authors": "Cory Doctorow",
       "url": "https://open.spotify.com/show/2qKIyXIhP9RnENcWZ1NIWJ",
-      "cover": "https://i.scdn.co/image/ab676663000022a82a6388f9e188674b290e970c",
+      "cover": "https://i.scdn.co/image/ab676663000022a80d56f9877bf87d35b6fde8f6",
       "spine": {
         "bg": "rgb(8 8 8)",
         "ink": "#e8ddcb"
@@ -65,9 +65,9 @@
       "title": "There Is No Antimemetics Division: The thrilling new sci-fi horror novel, 'mind-bendingly brilliant' Guardian",
       "authors": "qntm",
       "url": "https://open.spotify.com/show/6Yg3i7lZEK8bDq01y04TQD",
-      "cover": "https://i.scdn.co/image/ab676663000022a82678645afc594c701291c661",
+      "cover": "https://i.scdn.co/image/ab676663000022a8eea25ebb1e81e80a02202734",
       "spine": {
-        "bg": "rgb(184 232 8)",
+        "bg": "rgb(200 232 56)",
         "ink": "#1a1b1e"
       }
     }
