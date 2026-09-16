@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-15T21:06:06.541Z",
+  "fetchedAt": "2026-09-16T11:14:59.112Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-15T19:22:28Z",
+      "pushedAt": "2026-09-16T08:56:50Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#660)",
-        "committedAt": "2026-09-15T19:22:27Z"
+        "message": "Refresh health data [skip ci] (#666)",
+        "committedAt": "2026-09-16T08:56:49Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -162,10 +162,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#660)",
-    "committedAt": "2026-09-15T19:22:27Z"
+    "repo": "cmux-sentinel",
+    "url": "https://github.com/oliver-kriska/cmux-sentinel",
+    "message": "Correct the reason there is no post_install",
+    "committedAt": "2026-09-16T09:04:38Z"
   },
   "languages": [
     {
