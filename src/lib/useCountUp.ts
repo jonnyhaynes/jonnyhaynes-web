@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useReducedMotion } from './useReducedMotion';
 
-/** Long enough to read as a count, short enough not to be waited on. */
-const DURATION_MS = 800;
+/**
+ * Unhurried on purpose. These figures are the point of the column rather than
+ * something to be got past, so the count is given room to be read.
+ */
+const DURATION_MS = 2000;
 
 /**
  * Counts a figure up from zero the first time it scrolls into view.
