@@ -527,7 +527,7 @@
   letter-spacing: calc(var(--headline-tracking) * -1);
 }
 
-/* The profile panel's portrait: the screenprint cut-out seated in the panel's
+/* The profile panel's portrait: the screenprint cut-out seated in the card's
  * upper area, over the contour field.
  *
  * --portrait-x/y are the cursor parallax offsets, written by PortraitFigure and
@@ -538,16 +538,20 @@
   --portrait-y: 0px;
   position: relative;
   isolation: isolate;
-  /* Left-aligned while the panel is stacked, so the portrait sits on the same
-   * edge as the name and copy beneath it rather than floating in the middle. */
+  /* Width-driven, so the screenprint treatments keep the photo's proportions — the
+   * accent block and halftone are inset in percentages of this box, and a box
+   * whose ratio drifts leaves them sticking out past the portrait. The `40dvh` cap
+   * is what keeps a short window from pushing the figure past the card's top edge,
+   * since the card clips. Left-aligned while the card is stacked, matching the copy
+   * beneath it. */
+  width: min(100%, 22rem, 40dvh);
   margin-inline: 0;
-  width: min(100%, 20rem);
-  aspect-ratio: 0.85;
 }
 
 .portrait-picture {
-  position: absolute;
-  inset: 0;
+  /* In flow, so the figure takes the image's own height. It used to be absolutely
+   * positioned to fill a fixed-ratio box, which meant the box drove the photo. */
+  position: relative;
   z-index: 2;
   display: block;
   transform: translate3d(
@@ -565,20 +569,16 @@
 }
 
 @media (min-width: 64rem) {
-  /* Once the panel is its own column and the three-column sheet appears, centre
-   * it again. The column is narrower than the 20rem cap, so the portrait fills
-   * the width there and this is belt-and-braces — it only matters if the column
-   * ever grows past it. */
+  /* Once the panel is its own column, centre it in the card. */
   .portrait-art {
     margin-inline: auto;
   }
 }
 
 .portrait-picture img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
+  height: auto;
 }
 
 .portrait-art::before,

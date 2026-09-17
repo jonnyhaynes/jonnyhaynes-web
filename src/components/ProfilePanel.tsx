@@ -5,16 +5,22 @@ import { sectionHref } from '../content/sections';
 import { copy } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
 import { PortraitFigure } from './PortraitFigure';
-import { GitHubIcon, LinkedInIcon } from './icons';
+import { ArrowUpRightIcon, DownloadIcon, GitHubIcon, LinkedInIcon } from './icons';
 
-const PRIMARY =
-  'rounded-md bg-accent-start px-4 py-2.5 text-center text-sm font-medium text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
-
-const SECONDARY =
-  'rounded-md border border-muted/40 bg-background/70 px-4 py-2.5 text-center text-sm font-medium text-foreground transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
-
+/** Circular icon button, floated over the portrait's top corner. */
 const SOCIAL =
-  'text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+  'inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-muted/25 bg-background/60 text-muted backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+
+/** The round arrow that leads the call-to-action row. */
+const CIRCLE =
+  'inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-start text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+
+/** The primary pill beside it. */
+const PILL =
+  'inline-flex items-center justify-center rounded-full bg-accent-start px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+
+const GHOST =
+  'inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 /** The role board's resting values, as one plain string for the identity block. */
 const ROLE = `${SITE.hero.roleWords[0][0]} ${SITE.hero.roleWords[1][0]}`;
@@ -28,47 +34,28 @@ const ROLE = `${SITE.hero.roleWords[0][0]} ${SITE.hero.roleWords[1][0]}`;
  * the page keeps exactly one `<h1>` (the hero's), and the panel must not insert a
  * competing level into the document outline.
  *
- * The portrait shows at every width: the panel is either stacked full-width (below
- * lg, where it opens the page) or the column at lg. There is no condensed in-between
- * tier, so it never has to be dropped.
+ * Laid out as a card: the portrait fills the upper area with the socials floated
+ * over its corner, and the identity, rule and calls to action sit beneath it. The
+ * cut-out can't bleed to the card's edges the way a photograph would — it has
+ * transparent margins — so it stands on the identity block instead of being
+ * cropped to fill.
  */
 export function ProfilePanel() {
   const { palette } = useTheme();
   const c = copy(palette).hero;
+  const contact = copy(palette).contact;
 
   return (
     <aside
       aria-labelledby="profile-name"
       className="min-w-0 lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto lg:p-4"
     >
-      <div className="flex h-full flex-col gap-6 p-6 lg:rounded-2xl lg:border lg:border-muted/20 lg:bg-background/70 lg:backdrop-blur-sm">
-        <div className="shrink-0">
-          <PortraitFigure />
-        </div>
-
-        <div className="flex flex-col gap-3 lg:mt-auto">
-          <p id="profile-name" className="font-mono text-2xl font-bold text-foreground">
-            {SITE.name}
-          </p>
-          <p className="font-mono text-sm text-accent-start">{ROLE}</p>
-          <p className="text-sm text-muted">{c.subheadline}</p>
-
-          <div className="mt-3 flex flex-col gap-2">
-            <Link to={sectionHref('projects')} className={PRIMARY}>
-              {c.viewWork}
-            </Link>
-            <Link to={sectionHref('contact')} className={SECONDARY}>
-              {c.getInTouch}
-            </Link>
-            {SITE.resumeUrl && (
-              <a href={SITE.resumeUrl} className={SECONDARY}>
-                {copy(palette).contact.downloadResume}
-              </a>
-            )}
-          </div>
-
-          {/* The live activity chip sits at the top of the hero, not here. */}
-          <div className="mt-4 flex items-center gap-4">
+      <div className="flex h-full flex-col overflow-hidden p-6 lg:rounded-2xl lg:border lg:border-muted/20 lg:bg-background/70 lg:backdrop-blur-sm">
+        {/* From lg the card is a fixed height, so the portrait takes the space the
+            identity block leaves and scales to it. Below lg the card has no fixed
+            height and the figure sets its own. */}
+        <div className="relative flex items-end justify-start lg:min-h-0 lg:flex-1 lg:justify-center">
+          <div className="absolute top-0 right-0 z-10 flex gap-2">
             <a
               href={SITE.githubUrl}
               target="_blank"
@@ -88,6 +75,40 @@ export function ProfilePanel() {
               <LinkedInIcon className="size-5" />
             </a>
           </div>
+
+          <PortraitFigure />
+        </div>
+
+        <div className="flex shrink-0 flex-col gap-3 pt-6">
+          <p id="profile-name" className="font-mono text-2xl font-bold text-foreground">
+            {SITE.name}
+          </p>
+          <p className="font-mono text-sm text-accent-start">{ROLE}</p>
+          <p className="text-sm text-muted">{c.subheadline}</p>
+
+          <div className="my-2 h-px bg-muted/25" />
+
+          <div className="flex items-center gap-3">
+            {/* A section link, so it's a router Link. The arrow carries no text,
+                so the accessible name comes from the label. */}
+            <Link
+              to={sectionHref('projects')}
+              aria-label={c.viewWork}
+              className={CIRCLE}
+            >
+              <ArrowUpRightIcon className="size-5" />
+            </Link>
+            <Link to={sectionHref('contact')} className={PILL}>
+              {c.getInTouch}
+            </Link>
+          </div>
+
+          {SITE.resumeUrl && (
+            <a href={SITE.resumeUrl} className={GHOST}>
+              <DownloadIcon className="size-4" />
+              {contact.downloadResume}
+            </a>
+          )}
         </div>
       </div>
     </aside>
