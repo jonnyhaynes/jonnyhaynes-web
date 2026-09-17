@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { SECTIONS } from '../content/sections';
 import { heading, type HeadingKey } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
 import { SectionRule } from './SectionRule';
@@ -23,6 +24,8 @@ export function SectionHeading({
   children?: ReactNode;
 }) {
   const { palette } = useTheme();
+  const { Icon } = SECTIONS.find((entry) => entry.id === section) ?? {};
+
   return (
     <>
       <SectionRule />
@@ -30,6 +33,11 @@ export function SectionHeading({
           enough to read as deliberate rather than as a tight caption. */}
       <div className="mt-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2 className="font-mono text-title text-foreground">
+          {/* Inside the heading, so it takes the size and colour of the type it
+              sits with rather than being told them: 1em tracks the clamp, and the
+              strokes are currentColor, so it's foreground like the words. Already
+              aria-hidden — the heading text carries the meaning. */}
+          {Icon && <Icon className="mr-3 inline-block size-[1em]" />}
           {heading(palette, section)}
         </h2>
         {children}
