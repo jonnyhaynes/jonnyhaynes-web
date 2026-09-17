@@ -563,25 +563,6 @@
   .portrait-picture {
     transition: none;
   }
-
-  /* Belt and braces: the component never sets the attribute under reduced motion,
-   * but the closed frame must not appear even if it somehow did. */
-  .portrait-art[data-shut='true'] .portrait-picture--closed {
-    opacity: 0;
-  }
-}
-
-/* The closed frame: laid over the open one, sharing its transform so the parallax
- * can't slide the two apart, and hidden until a blink fades it in. */
-.portrait-picture--closed {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 70ms linear;
-}
-
-.portrait-art[data-shut='true'] .portrait-picture--closed {
-  opacity: 1;
 }
 
 @media (min-width: 64rem) {

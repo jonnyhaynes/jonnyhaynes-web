@@ -1,20 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-
-import { useReducedMotion } from '../lib/useReducedMotion';
-
-/** How long the eyes stay shut, and the range of gaps between blinks. */
-const SHUT_MS = 130;
-const GAP_MIN_MS = 4000;
-const GAP_MAX_MS = 9000;
+import { useEffect, useRef } from 'react';
 
 /**
- * The portrait: a screenprint cut-out that leans very slightly towards the cursor,
- * and blinks now and then.
- *
- * The blink swaps between two real images — the cut-out, and a closed-eye frame
- * built from the photo's own pixels by `scripts/build-blink-frame.mjs`. Painting
- * lids over a single image was tried and rejected: a flat shape reads as a shape,
- * and it has to cross the glasses frame to reach the eye.
+ * The portrait: a screenprint cut-out that leans very slightly towards the
+ * cursor.
  *
  * The parallax lives here rather than at the call site so the interactivity
  * travels with the portrait — it was originally a hero effect, and moving the
@@ -27,8 +15,6 @@ const GAP_MAX_MS = 9000;
  */
 export function PortraitFigure() {
   const figureRef = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
-  const [shut, setShut] = useState(false);
 
   useEffect(() => {
     const pointerQuery = window.matchMedia?.('(hover: hover) and (pointer: fine)');
@@ -69,41 +55,8 @@ export function PortraitFigure() {
     };
   }, []);
 
-  // The blink. Randomised rather than on a fixed interval — a metronome reads as a
-  // mechanism, and this is a face. Skipped entirely under reduced motion, where the
-  // closed frame simply never gets faded in.
-  useEffect(() => {
-    if (reduced) return;
-
-    let gap = 0;
-    let hold = 0;
-
-    const schedule = () => {
-      gap = window.setTimeout(
-        () => {
-          setShut(true);
-          hold = window.setTimeout(() => {
-            setShut(false);
-            schedule();
-          }, SHUT_MS);
-        },
-        GAP_MIN_MS + Math.random() * (GAP_MAX_MS - GAP_MIN_MS),
-      );
-    };
-
-    schedule();
-    return () => {
-      window.clearTimeout(gap);
-      window.clearTimeout(hold);
-    };
-  }, [reduced]);
-
   return (
-    <figure
-      ref={figureRef}
-      className="portrait-art portrait-art--screenprint"
-      data-shut={shut ? 'true' : 'false'}
-    >
+    <figure ref={figureRef} className="portrait-art portrait-art--screenprint">
       <picture className="portrait-picture">
         <source
           type="image/webp"
@@ -116,26 +69,6 @@ export function PortraitFigure() {
           height="1129"
           alt="Jonny Haynes wearing glasses and an Ey Up cycling cap"
           fetchPriority="high"
-          decoding="async"
-        />
-      </picture>
-
-      {/* The closed frame, over the open one and faded in for the blink. Same photo,
-          eyes rebuilt from nearby skin, so the glasses stay put. Lazy-loaded: it
-          isn't needed for a few seconds and shouldn't compete with the portrait for
-          the first paint. Decorative, hence the empty alt. */}
-      <picture className="portrait-picture portrait-picture--closed">
-        <source
-          type="image/webp"
-          srcSet="/images/portrait-blink-480.webp 480w, /images/portrait-blink-960.webp 960w"
-          sizes="(min-width: 1024px) 20rem, 80vw"
-        />
-        <img
-          src="/images/portrait-blink-960.webp"
-          width="960"
-          height="1129"
-          alt=""
-          loading="lazy"
           decoding="async"
         />
       </picture>
