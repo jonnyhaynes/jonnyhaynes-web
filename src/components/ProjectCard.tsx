@@ -94,11 +94,11 @@ function Awards({ project }: { project: Project }) {
  * in the same slot, at the same size. Both sit inline before the title.
  *
  * Accessibility:
- * - The card is a labelled region (aria-labelledby → the <h4>), NOT a link,
+ * - The card is a labelled region (aria-labelledby → the <h3>), NOT a link,
  *   because it has several distinct destinations. Every link's accessible name
  *   carries the project name, so "Repo"/"Web"/"App Store" aren't ambiguous.
- * - The title is an <h4>, nesting under the "Selected works" sub-heading. If this
- *   card is ever rendered outside that section, the level needs to be a prop
+ * - The title is an <h3>, nesting directly under the section's <h2>. If this card
+ *   is ever rendered beneath another heading, the level needs to become a prop
  *   rather than a constant.
  * - Badging glyphs are decorative (aria-hidden) with an sr-only prefix, so their
  *   meaning is never icon-only for assistive tech.
@@ -111,7 +111,7 @@ export function ProjectCard({ project }: { project: Project }) {
       aria-labelledby={headingId}
       className="flex flex-col border border-muted/20 bg-background/70 p-5 backdrop-blur-sm transition-colors hover:border-accent-start/50"
     >
-      <h4
+      <h3
         id={headingId}
         className="flex items-center gap-2 text-xl font-medium text-foreground"
       >
@@ -129,7 +129,7 @@ export function ProjectCard({ project }: { project: Project }) {
           )
         )}
         {project.name}
-      </h4>
+      </h3>
 
       {project.pitch && <p className="mt-2 text-muted">{project.pitch}</p>}
 

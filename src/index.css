@@ -2132,3 +2132,44 @@
   }
 }
 
+/* ---------------------------------------------------------------- *
+ * Projects section: the disclosure that hides the tail of the list.
+ *
+ * A native <details> rather than a state toggle, so the collapsed cards stay in
+ * the HTML for crawlers and the control still works with JavaScript off.
+ *
+ * <summary> has to be the first child in the DOM, so it's painted last here — the
+ * control belongs under the list it reveals, not above it. If a browser ignores
+ * the order, the control simply sits between the shown and hidden cards, which
+ * still works.
+ * ---------------------------------------------------------------- */
+.project-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.project-reveal > summary {
+  order: 1;
+}
+
+/* One label for each state. */
+.project-reveal[open] > summary .project-reveal-more,
+.project-reveal:not([open]) > summary .project-reveal-fewer {
+  display: none;
+}
+
+.project-reveal > summary .project-reveal-chevron {
+  transition: transform 200ms ease;
+}
+
+.project-reveal[open] > summary .project-reveal-chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-reveal > summary .project-reveal-chevron {
+    transition: none;
+  }
+}
+

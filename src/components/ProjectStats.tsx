@@ -63,7 +63,7 @@ export function ProjectStats({
   if (!stats.length) return null;
 
   return (
-    <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-6">
+    <dl className="flex flex-col gap-8">
       {stats.map((stat) => (
         // Term before definition in the DOM; `flex-col-reverse` puts the number
         // on top without breaking the pair's order for a screen reader.

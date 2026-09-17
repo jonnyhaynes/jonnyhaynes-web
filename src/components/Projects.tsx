@@ -6,6 +6,9 @@ import { ProjectCard } from './ProjectCard';
 import { ProjectStats } from './ProjectStats';
 import { SectionHeading } from './SectionHeading';
 
+/** How many cards show before the rest go behind the reveal. */
+const SHOWN = 3;
+
 export function Projects() {
   // The curated grid: the repos named in FEATURED_REPOS, then the hand-written
   // work projects. Work projects are static, so they render even if the GitHub
@@ -14,9 +17,10 @@ export function Projects() {
   const github = useGitHubData();
   const bitbucket = useBitbucketData();
 
+  const shown = projects.slice(0, SHOWN);
+  const rest = projects.slice(SHOWN);
+
   return (
-    // The shell's pane gives every section the same content container, so the
-    // grid sits in the same width as the prose sections rather than a wider one.
     <section id="projects" className="scroll-mt-16 py-16">
       {/* The activity chip sits beside the title rather than pinned to the top of
           the page — it's a fact about the work, so it belongs with the work. */}
@@ -24,35 +28,59 @@ export function Projects() {
         <CurrentlyBuildingChip />
       </SectionHeading>
 
-      <ProjectStats
-        contributions={github?.totalContributions ?? null}
-        repositories={github?.repoCount ?? null}
-        mergedPullRequests={bitbucket?.mergedPullRequests ?? null}
-        contributedRepositories={bitbucket?.repositories ?? null}
-      />
+      {/* The work in column one, the figures in column two. Below `md` they stack
+          with the figures first, which is the order this section had before it had
+          columns at all. */}
+      <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <div className="md:order-2">
+          <ProjectStats
+            contributions={github?.totalContributions ?? null}
+            repositories={github?.repoCount ?? null}
+            mergedPullRequests={bitbucket?.mergedPullRequests ?? null}
+            contributedRepositories={bitbucket?.repositories ?? null}
+          />
+        </div>
 
-      {projects.length > 0 ? (
-        <>
-          {/* Labels the selection beneath the section's own title, so this reads as
-              a subset of "Projects" rather than a second name for it. */}
-          <h3 className="mt-12 font-mono text-sm uppercase tracking-wider text-muted">
-            Selected works
-          </h3>
+        <div className="md:order-1">
+          {projects.length > 0 ? (
+            /* One card per row at every width. The column is too narrow for two
+               once the figures have their own, and a single stack is what the
+               reveal below reads best against. */
+            <div className="flex flex-col gap-6">
+              {shown.map((project) => (
+                <ProjectCard key={project.name} project={project} />
+              ))}
 
-          {/* One across on phones, two from `md` — and two is the ceiling, so no
-              further breakpoint is needed. Below lg the pane is the full width of a
-              one-column shell (~720px at md, so ~348px cards); at lg it narrows to
-              two thirds with the panel and rail (~285px cards). Two holds in both. */}
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard key={project.name} project={project} />
-            ))}
-          </div>
-        </>
-      ) : (
-        // Graceful degradation: nothing curated and the GitHub data absent.
-        <p className="mt-6 text-muted">Projects are loading…</p>
-      )}
+              {rest.length > 0 && (
+                /* A native disclosure rather than a state toggle, so the collapsed
+                   cards stay in the HTML for crawlers and the control still works
+                   with JavaScript off. `.project-reveal` paints the summary last,
+                   putting the control under the list it reveals. */
+                <details className="project-reveal">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start [&::-webkit-details-marker]:hidden">
+                    <span className="project-reveal-more">
+                      Show all {projects.length} projects
+                    </span>
+                    <span className="project-reveal-fewer">Show fewer projects</span>
+                    <span aria-hidden="true" className="project-reveal-chevron">
+                      ▾
+                    </span>
+                  </summary>
+
+                  <div className="flex flex-col gap-6">
+                    {rest.map((project) => (
+                      <ProjectCard key={project.name} project={project} />
+                    ))}
+                  </div>
+                </details>
+              )}
+            </div>
+          ) : (
+            // Graceful degradation: nothing curated and the GitHub data absent.
+            <p className="text-muted">Projects are loading…</p>
+          )}
+        </div>
+      </div>
     </section>
   );
 }
