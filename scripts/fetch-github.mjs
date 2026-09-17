@@ -5,7 +5,8 @@
 //   - With GITHUB_TOKEN: GraphQL API for repos + last commit + total
 //     contributions in the last year + language breakdown.
 //   - Without a token: falls back to the public REST API for recent repos
-//     + language breakdown. No contribution total (REST can't give it cheaply).
+//     + language breakdown. No contribution total, and no review breakdown of
+//     it (REST can't give either cheaply).
 //
 // Run: node scripts/fetch-github.mjs   (set GITHUB_USER to override the default)
 
@@ -129,6 +130,14 @@ async function fetchViaGraphQL() {
           ownerAffiliations: OWNER
           isFork: false
           privacy: PUBLIC
+        ) {
+          totalCount
+        }
+        active: repositories(
+          first: 100
+          ownerAffiliations: OWNER
+          isFork: false
+          privacy: PUBLIC
           orderBy: { field: PUSHED_AT, direction: DESC }
         ) {
           nodes { ${repoFields} }
@@ -165,6 +174,7 @@ async function fetchViaGraphQL() {
         }
         contributionsCollection {
           contributionCalendar { totalContributions }
+          totalPullRequestReviewContributions
         }
       }
     }
@@ -189,7 +199,7 @@ async function fetchViaGraphQL() {
   }
 
   const user = json.data.user;
-  const allRepos = user.repositories.nodes;
+  const allRepos = user.active.nodes;
   const forkRepos = user.forks.nodes;
   const contributedRepos = user.repositoriesContributedTo.nodes;
 
@@ -255,11 +265,18 @@ async function fetchViaGraphQL() {
   return {
     projects,
     lastActivity,
+    // How many public repos exist, not just how many are surfaced above — the
+    // projects grid bakes a curated seven, but the stats quote the whole shelf.
+    repoCount: user.repositories.totalCount,
     languages: languageBreakdown(
       allRepos.map((r) => r.primaryLanguage?.name),
     ),
     totalContributions:
       user.contributionsCollection.contributionCalendar.totalContributions,
+    // The slice of that total which came from reviewing other people's work — a
+    // different signal from writing code, and already counted in the total above.
+    reviewContributions:
+      user.contributionsCollection.totalPullRequestReviewContributions,
   };
 }
 
@@ -322,8 +339,12 @@ async function fetchViaREST() {
   return {
     projects,
     lastActivity,
+    // Owned, non-fork, public. The REST list is capped at 100, so this is a floor
+    // rather than an exact count in tokenless mode.
+    repoCount: sourceRepos.length,
     languages: languageBreakdown(sourceRepos.map((r) => r.language)),
     totalContributions: null, // not available without GraphQL + token
+    reviewContributions: null, // nor is the breakdown of it
   };
 }
 
@@ -344,7 +365,10 @@ async function main() {
   console.log(
     `Wrote ${OUT}: ${payload.projects.length} projects, ${payload.languages.length} languages` +
       (payload.totalContributions != null
-        ? `, ${payload.totalContributions} contributions`
+        ? `, ${payload.totalContributions} contributions` +
+          (payload.reviewContributions != null
+            ? ` (${payload.reviewContributions} reviews)`
+            : '')
         : ' (no contribution total — tokenless mode)'),
   );
 }
