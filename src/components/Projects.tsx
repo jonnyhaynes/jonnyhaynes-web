@@ -32,15 +32,23 @@ export function Projects() {
       />
 
       {projects.length > 0 ? (
-        // One across on phones, two from `md` — and two is the ceiling, so no
-        // further breakpoint is needed. Below lg the pane is the full width of a
-        // one-column shell (~720px at md, so ~348px cards); at lg it narrows to
-        // two thirds with the panel and rail (~285px cards). Two holds in both.
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.name} project={project} />
-          ))}
-        </div>
+        <>
+          {/* Labels the selection beneath the section's own title, so this reads as
+              a subset of "Projects" rather than a second name for it. */}
+          <h3 className="mt-12 font-mono text-sm uppercase tracking-wider text-muted">
+            Selected works
+          </h3>
+
+          {/* One across on phones, two from `md` — and two is the ceiling, so no
+              further breakpoint is needed. Below lg the pane is the full width of a
+              one-column shell (~720px at md, so ~348px cards); at lg it narrows to
+              two thirds with the panel and rail (~285px cards). Two holds in both. */}
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {projects.map((project) => (
+              <ProjectCard key={project.name} project={project} />
+            ))}
+          </div>
+        </>
       ) : (
         // Graceful degradation: nothing curated and the GitHub data absent.
         <p className="mt-6 text-muted">Projects are loading…</p>

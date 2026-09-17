@@ -52,6 +52,18 @@ check('home has exactly one h1', count(home, 'h1') === 1, `${count(home, 'h1')}`
 check('home has exactly one main', count(home, 'main') === 1, `${count(home, 'main')}`);
 check('privacy has exactly one h1', count(privacy, 'h1') === 1, `${count(privacy, 'h1')}`);
 
+// Levels must not skip a step. The project cards are <h4> precisely so they nest
+// under the "Selected works" <h3>; a skip is how that regresses.
+const headingSkip = (() => {
+  let previous = 1;
+  for (const [, level] of home.matchAll(/<h([1-4])[\s>]/g)) {
+    if (Number(level) > previous + 1) return `h${previous} → h${level}`;
+    previous = Number(level);
+  }
+  return null;
+})();
+check('heading levels never skip', headingSkip === null, headingSkip ?? 'no skips');
+
 // The left panel is the portrait and nothing else, so it is deliberately not a
 // landmark. It used to be an <aside> restating the hero's name, role, pitch and
 // both destinations; these guard that it stays stripped back.
