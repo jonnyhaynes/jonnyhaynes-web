@@ -66,8 +66,10 @@ export function Hero() {
     <section className="hero-screen" aria-labelledby="hero-heading">
       {/* Below lg the portrait belongs to this block rather than to the shell's
           panel, so the first screen is one centred screenful instead of a portrait
-          plus a screenful. From lg the panel column carries it. */}
-      <div className="lg:hidden">
+          plus a screenful. From lg the panel column carries it.
+          The gap below is `mb` on a `lg:hidden` wrapper, so it only exists while
+          the portrait is stacked above the greeting. */}
+      <div className="mb-8 lg:hidden">
         <PortraitFigure />
       </div>
 
