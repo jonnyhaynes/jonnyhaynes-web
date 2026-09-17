@@ -36,8 +36,11 @@ export function SectionHeading({
           {/* Inside the heading, so it takes the size and colour of the type it
               sits with rather than being told them: 1em tracks the clamp, and the
               strokes are currentColor, so it's foreground like the words. Already
-              aria-hidden — the heading text carries the meaning. */}
-          {Icon && <Icon className="mr-3 inline-block size-[1em]" />}
+              aria-hidden — the heading text carries the meaning.
+
+              align-middle rather than the default baseline: on the baseline a 1em
+              box rests its bottom edge there and reads low against the caps. */}
+          {Icon && <Icon className="mr-3 inline-block size-[1em] align-middle" />}
           {heading(palette, section)}
         </h2>
         {children}
