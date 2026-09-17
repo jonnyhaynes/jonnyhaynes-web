@@ -73,15 +73,14 @@ export function ProjectStats({
       value: String(projectCount),
       label: countLabel(projectCount, 'project'),
     },
-    awards > 0 && {
-      value: String(awards),
-      label: countLabel(awards, 'industry award'),
-    },
-    // Last because it's the only figure describing now rather than everything so
-    // far.
+    // The only figure describing now rather than the total so far.
     openPullRequests != null && {
       value: String(openPullRequests),
       label: countLabel(openPullRequests, 'open pull request'),
+    },
+    awards > 0 && {
+      value: String(awards),
+      label: countLabel(awards, 'industry award'),
     },
   ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
 
