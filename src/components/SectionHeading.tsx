@@ -31,17 +31,22 @@ export function SectionHeading({
       <SectionRule />
       {/* The rule and the heading are a pair, so the gap between them is generous
           enough to read as deliberate rather than as a tight caption. */}
-      <div className="mt-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
         <h2 className="font-mono text-title text-foreground">
-          {/* Inside the heading, so it takes the size and colour of the type it
-              sits with rather than being told them: 1em tracks the clamp, and the
-              strokes are currentColor, so it's foreground like the words. Already
-              aria-hidden — the heading text carries the meaning.
+          {/* A flex row, so the icon centres on the text's line box rather than
+              being aligned to its baseline. For this font's metrics — ascent
+              1.02em, descent 0.3em, line-height 1.05em — the line box's centre
+              lands at about 0.36em above the baseline, which is the cap height:
+              the middle of the visual mass. Baseline alignment instead depends on
+              the x-height, and sits the glyph low against capitals.
 
-              align-middle rather than the default baseline: on the baseline a 1em
-              box rests its bottom edge there and reads low against the caps. */}
-          {Icon && <Icon className="mr-3 inline-block size-[1em] align-middle" />}
-          {heading(palette, section)}
+              Size and colour are inherited rather than set: 1em tracks the
+              heading's clamp, and the strokes are currentColor. Already
+              aria-hidden — the heading text carries the meaning. */}
+          <span className="inline-flex items-center gap-3">
+            {Icon && <Icon className="size-[1em] shrink-0" />}
+            <span className="min-w-0">{heading(palette, section)}</span>
+          </span>
         </h2>
         {children}
       </div>
