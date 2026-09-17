@@ -11,6 +11,10 @@ const sumPresent = (...values: (number | null)[]) => {
   return present.length ? present.reduce((running, value) => running + value, 0) : null;
 };
 
+/** Counts read badly at one: "1 open pull requests". */
+const countLabel = (count: number, singular: string) =>
+  count === 1 ? singular : `${singular}s`;
+
 /**
  * Big-number readouts for the Projects section — the one place the site has real
  * counts worth showing at display size.
@@ -55,7 +59,7 @@ export function ProjectStats({
   const stats = [
     activity != null && {
       value: NUMBER.format(activity),
-      label: 'contributions',
+      label: countLabel(activity, 'contribution'),
     },
     // Only shown when there are some. A zero would read as a deficiency rather
     // than a fact, and the reviewing that does happen is on Bitbucket, whose API
@@ -63,18 +67,21 @@ export function ProjectStats({
     reviews != null &&
       reviews > 0 && {
         value: NUMBER.format(reviews),
-        label: 'code reviews',
+        label: countLabel(reviews, 'code review'),
       },
     projectCount != null && {
       value: String(projectCount),
-      label: 'projects',
+      label: countLabel(projectCount, 'project'),
     },
-    awards > 0 && { value: String(awards), label: 'industry awards' },
+    awards > 0 && {
+      value: String(awards),
+      label: countLabel(awards, 'industry award'),
+    },
     // Last because it's the only figure describing now rather than everything so
     // far.
     openPullRequests != null && {
       value: String(openPullRequests),
-      label: 'open pull requests',
+      label: countLabel(openPullRequests, 'open pull request'),
     },
   ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
 
