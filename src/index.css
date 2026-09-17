@@ -551,16 +551,49 @@
   position: relative;
   z-index: 2;
   display: block;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The eyelids repeat the photo's transform so the parallax can't slide them off the
+ * eyes. They're a separate element only because <picture> can't hold one. */
+.portrait-picture,
+.portrait-lids {
   transform: translate3d(
     calc(var(--portrait-x) + 0.35rem),
     calc(var(--portrait-y) - 0.2rem),
     0
   );
+}
+
+.portrait-lids {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
   transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Positioned in percentages of the portrait, so they track it at any size. The
+ * gradient runs dark at the crease to light at the lashes, and the filter matches
+ * the photo's so the lid sits in the same tonality instead of reading as a painted
+ * shape. An eyelid is round by nature, which is why this one keeps its radius. */
+.portrait-lid {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #8a6a58 0%, #b98f78 55%, #c9a089 100%);
+  filter: grayscale(1) contrast(1.28) sepia(0.18);
+  opacity: 0;
+  transition: opacity 60ms linear;
+}
+
+.portrait-lid[data-closed='true'] {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .portrait-picture {
+  .portrait-picture,
+  .portrait-lids,
+  .portrait-lid {
     transition: none;
   }
 }
