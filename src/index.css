@@ -258,13 +258,10 @@
  * the scroll, with the panel and rail sticking in place. Everything is shared.
  * ------------------------------------------------------------------------- */
 .shell {
-  /* Height of the pane bar. */
-  --bar-h: 3.5rem;
-  /* Everything below lg that sits above the content: the bar plus the activity
-   * chip's line. The hero subtracts it so the first screen still ends at the
-   * fold. Fixed rather than measured, so it's an estimate if the chip's line is
-   * taller than assumed — being a few px out costs nothing visible. */
-  --top-h: calc(var(--bar-h) + 2.5rem);
+  /* Height of the top strip below lg — just the bar, now that the activity chip
+   * lives in the Projects heading. The hero subtracts it so the first screen ends
+   * at the fold. It's 0 at lg, where the bar is hidden. */
+  --top-h: 3.5rem;
   --shell-cols: minmax(0, 1fr);
 }
 
@@ -273,13 +270,7 @@
 }
 
 .mobile-bar {
-  height: var(--bar-h);
-}
-
-/* Collapses entirely when the chip renders nothing (no snapshot yet), so an
- * absent chip leaves no gap. */
-.mobile-chip:empty {
-  display: none;
+  height: var(--top-h);
 }
 
 /* The active section's marker — a shape as well as a colour, so the state is
@@ -525,7 +516,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100dvh - var(--top-h, 6rem));
+  min-height: calc(100dvh - var(--top-h, 3.5rem));
   padding-block: 3rem 5rem;
 }
 

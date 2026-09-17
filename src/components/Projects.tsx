@@ -1,5 +1,6 @@
 import { useGitHubData } from '../data/github';
 import { useProjects } from '../data/projects';
+import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
 import { ProjectCard } from './ProjectCard';
 import { ProjectStats } from './ProjectStats';
 import { SectionHeading } from './SectionHeading';
@@ -15,7 +16,11 @@ export function Projects() {
     // The shell's pane gives every section the same content container, so the
     // grid sits in the same width as the prose sections rather than a wider one.
     <section id="projects" className="scroll-mt-16 py-16">
-      <SectionHeading section="projects" />
+      {/* The activity chip sits beside the title rather than pinned to the top of
+          the page — it's a fact about the work, so it belongs with the work. */}
+      <SectionHeading section="projects">
+        <CurrentlyBuildingChip />
+      </SectionHeading>
 
       <ProjectStats
         projects={projects.length}

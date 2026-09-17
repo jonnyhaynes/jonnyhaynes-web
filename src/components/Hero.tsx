@@ -5,7 +5,6 @@ import { SITE } from '../content/site';
 import { sectionHref } from '../content/sections';
 import { copy } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
-import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
 import { FlipWord } from './FlipWord';
 
 const [WORDS_1, WORDS_2] = SITE.hero.roleWords;
@@ -73,21 +72,6 @@ export function Hero() {
           <FlipWord words={WORDS_2} index={i2} delayMs={150} />
         </span>
       </h1>
-
-      {/* Pinned to the top of the hero, out of the centred flow — an `order`ed
-          item would still sit wherever the centred group lands, which is the
-          middle of the screen.
-          lg only, and the gate lives on this wrapper rather than on the chip:
-          the chip's own class list sets `inline-flex`, and `.inline-flex` is
-          emitted after `.hidden` in the stylesheet, so a `hidden` utility on the
-          chip loses to its own display class and it shows anyway.
-          It stays after the h1 in the DOM, so a screen reader meets the heading
-          first and this line after it. Being absolutely positioned doesn't
-          change that: reading order follows the DOM, and the only two focusable
-          groups here (this chip, then the CTAs) still run top-to-bottom. */}
-      <div className="absolute top-6 left-0 hidden lg:block">
-        <CurrentlyBuildingChip />
-      </div>
 
       <p className="mt-6 max-w-xl text-lg text-muted">{c.subheadline}</p>
 

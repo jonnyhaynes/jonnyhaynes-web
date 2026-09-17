@@ -47,16 +47,11 @@ check(
   `${sectionHrefs.length} found`,
 );
 
-// The chip mounts twice (shell top row below lg, hero at lg and up) and renders
-// nothing without data, so its own markup can't be asserted here. What CAN be
-// asserted is that each mount point is gated on a wrapper — the failure mode was
-// `hidden` on the chip itself losing to its own `inline-flex`, which rendered it
-// twice on every small screen.
-check(
-  'the hero gates the chip on a wrapper, not on the chip',
-  home.includes('absolute top-6 left-0 hidden lg:block'),
-);
-check('the shell gates the chip row below lg', home.includes('mobile-chip px-6 pt-4 lg:hidden'));
+// The activity chip renders nothing without data, so its own markup can't be
+// asserted. What can be asserted is that the mount points at the top of the page
+// are gone: it lives in the Projects heading now, and previously rendered twice
+// (shell row + hero) because `hidden` lost to the chip's own `inline-flex`.
+check('the old top-of-page chip mounts are gone', !home.includes('mobile-chip'));
 
 // Controls that change after hydration must start in their rest state. The rail
 // and the top bar each own a back-to-top, gated by CSS so only one shows.

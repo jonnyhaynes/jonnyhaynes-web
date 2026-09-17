@@ -4,7 +4,6 @@ import { Outlet, useLocation } from 'react-router';
 import { SECTION_IDS } from '../content/sections';
 import { useActiveSection } from '../lib/useActiveSection';
 import { useReducedMotion } from '../lib/useReducedMotion';
-import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
 import { MobileBar } from './MobileBar';
 import { ProfilePanel } from './ProfilePanel';
 import { SectionRail } from './SectionRail';
@@ -80,19 +79,10 @@ function ShellFrame({ panel }: { panel?: ReactNode }) {
         Skip to content
       </a>
       <div className="shell" data-panel={panel ? 'true' : 'false'}>
-        {/* Below lg the nav and the activity chip sit above everything, panel
-            included — otherwise the nav would be buried under the headshot on a
-            phone, and the chip would be too. Both are hidden at lg, where the
-            rail takes the nav and the hero carries the chip. */}
+        {/* Below lg the top bar leads the page, ahead of the stacked panel —
+            otherwise the nav would be buried under the headshot on a phone. It's
+            hidden at lg, where the rail takes over. */}
         <MobileBar active={active} scrolled={scrolled} />
-
-        {/* Aligned to the same content gutter as the pane's sections and the
-            panel's text, so it reads as the first line of the page rather than a
-            stray band between the bar and the panel. Collapses when the chip has
-            nothing to show. */}
-        <div className="mobile-chip px-6 pt-4 lg:hidden">
-          <CurrentlyBuildingChip />
-        </div>
 
         {panel}
         <div className="pane">
