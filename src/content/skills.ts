@@ -1,10 +1,10 @@
 /**
- * Hand-picked capabilities for the Skills section — what Jonny can *do*, not the
- * tools he does it with. The GitHub language-breakdown bar above this is the
- * data-backed "what I build with"; this list is the "what I can do" beside it.
+ * Manually-curated skills, grouped for the Skills section (spec §C). The
+ * GitHub language-breakdown bar above this is the data-backed companion; this
+ * is the hand-picked list of what Jonny actually works with.
  *
- * Verb-led on purpose. Keep each group tight (~3-4) and honest — every line
- * should be something Jonny would stand behind in an interview.
+ * TODO(jonny): edit these lists — they're a sensible starting point drawn from
+ * the projects/stack, not a definitive claim. Keep each group tight (~6-8).
  */
 
 export type SkillGroup = {
@@ -14,28 +14,34 @@ export type SkillGroup = {
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    title: 'Frontend craft',
+    title: 'Frontend',
     skills: [
-      'Build accessible, semantic UIs (WCAG, keyboard, reduced-motion)',
-      'Design and maintain reusable component systems',
-      'Craft responsive layouts and motion that respect the user',
-      'Ship fast interfaces — Core Web Vitals, bundle discipline',
+      'React',
+      'React Native',
+      'TypeScript',
+      'Astro',
+      'Tailwind CSS',
+      'Vite',
     ],
   },
   {
-    title: 'Ship end-to-end',
+    title: 'Backend',
     skills: [
-      'Wire up data with Node, serverless & typed APIs',
-      'Model data in Supabase / Postgres',
-      'Automate delivery with GitHub Actions & Vercel',
+      'Node.js',
+      'Supabase / PostgreSQL',
+      'REST & GraphQL APIs',
+      'Serverless functions',
+      'MCP servers',
     ],
   },
   {
-    title: 'Quality & workflow',
+    title: 'Tools & DevOps',
     skills: [
-      'Test critical paths with Playwright & Maestro',
-      'Weave AI through the dev workflow (incl. MCP servers)',
-      'Keep TypeScript strict and the codebase honest',
+      'Git & GitHub',
+      'GitHub Actions (CI/CD)',
+      'Vercel',
+      'ESLint & Prettier',
+      'AI-assisted workflows',
     ],
   },
 ];
