@@ -112,56 +112,65 @@ export function ProjectRow({
   defaultOpen?: boolean;
 }) {
   return (
-    <details className="project-row" open={defaultOpen ? true : undefined}>
-      <summary
-        className={`flex cursor-pointer list-none items-center gap-3 py-4 transition-colors hover:text-accent-start [&::-webkit-details-marker]:hidden ${FOCUS}`}
+    <li>
+      {/* The card surface the rows kept losing: without a background the pitch and
+          links sat straight on the topography and were hard to read. */}
+      <details
+        className="project-row border border-muted/20 bg-background/70 backdrop-blur-sm transition-colors hover:border-accent-start/50"
+        open={defaultOpen ? true : undefined}
       >
-        {project.kind === 'work' ? (
-          <>
-            <WorkIcon className="size-4 shrink-0 text-muted" />
-            <span className="sr-only">Work project at {project.company}: </span>
-          </>
-        ) : (
-          project.isFork && (
+        {/* Padding lives on the summary rather than the box, so the whole width of
+            the row is clickable and the text still sits inset. */}
+        <summary
+          className={`flex cursor-pointer list-none items-center gap-3 px-5 py-4 transition-colors hover:text-accent-start [&::-webkit-details-marker]:hidden ${FOCUS}`}
+        >
+          {project.kind === 'work' ? (
             <>
-              <ForkIcon className="size-4 shrink-0 text-muted" />
-              <span className="sr-only">Forked repository: </span>
+              <WorkIcon className="size-4 shrink-0 text-muted" />
+              <span className="sr-only">Work project at {project.company}: </span>
             </>
-          )
-        )}
+          ) : (
+            project.isFork && (
+              <>
+                <ForkIcon className="size-4 shrink-0 text-muted" />
+                <span className="sr-only">Forked repository: </span>
+              </>
+            )
+          )}
 
-        {/* No colour of its own, so it turns accent with the summary on hover. */}
-        <h3 className="text-xl font-medium">{project.name}</h3>
+          {/* No colour of its own, so it turns accent with the summary on hover. */}
+          <h3 className="text-xl font-medium">{project.name}</h3>
 
-        <span aria-hidden="true" className="project-row-chevron ml-auto text-muted">
-          ▾
-        </span>
-      </summary>
+          <span aria-hidden="true" className="project-row-chevron ml-auto text-muted">
+            ▾
+          </span>
+        </summary>
 
-      {/* Indented to the title, so the expanded detail lines up under the name. */}
-      <div className="pb-6 pl-7">
-        {project.pitch && <p className="text-muted">{project.pitch}</p>}
+        {/* Indented to the title: px-5 plus the 16px glyph and the 12px gap. */}
+        <div className="pr-5 pb-6 pl-12">
+          {project.pitch && <p className="text-muted">{project.pitch}</p>}
 
-        {project.awards.length > 0 && <Awards project={project} />}
+          {project.awards.length > 0 && <Awards project={project} />}
 
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-          {project.links.map((link) => {
-            const { label, Icon, description } = LINK_META[link.kind];
-            return (
-              <a
-                key={link.url}
-                href={link.url}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label={`${project.name} ${description}`}
-                className={LINK_CLASS}
-              >
-                <Icon className="size-4" /> {label}
-              </a>
-            );
-          })}
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+            {project.links.map((link) => {
+              const { label, Icon, description } = LINK_META[link.kind];
+              return (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={`${project.name} ${description}`}
+                  className={LINK_CLASS}
+                >
+                  <Icon className="size-4" /> {label}
+                </a>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </details>
+      </details>
+    </li>
   );
 }

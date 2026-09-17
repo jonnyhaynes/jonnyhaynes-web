@@ -40,10 +40,10 @@ export function Projects() {
         <div className="md:order-1">
           {projects.length > 0 ? (
             /* Every project is a row, so all six titles are visible at once and the
-               detail folds away behind each one. Rows rather than cards because six
-               cards made this column several times the height of the figures
-               beside it. */
-            <ul className="divide-y divide-muted/20 border-y border-muted/20">
+               detail folds away behind each one. Each is still boxed and sits on
+               its own surface — six rows with no background put the copy straight
+               on the topography and were unreadable. */
+            <ul className="flex list-none flex-col gap-3 p-0">
               {projects.map((project, index) => (
                 <ProjectRow
                   key={project.name}
