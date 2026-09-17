@@ -299,10 +299,6 @@
     display: grid;
     grid-template-columns: var(--shell-cols);
     align-items: start;
-    /* Air between the portrait column and the content beside it. The portrait is
-     * centred in its column, so this is on top of whatever slack is left there —
-     * without it, enlarging the portrait would eat the gap rather than keep it. */
-    column-gap: 4rem;
     /* No top strip at lg: the bar and the chip are hidden here. */
     --top-h: 0rem;
   }
@@ -575,12 +571,10 @@
 }
 
 @media (min-width: 64rem) {
-  /* In its own column: fill the panel up to 32rem, and never taller than the
-   * viewport allows, so a short window can't push it past the column. The ceiling
-   * is generous on purpose — a tighter one leaves the portrait stranded in the
-   * middle of a wide column with a yawning gap beside it. */
+  /* In its own column: fill the panel up to 22rem, and never taller than the
+   * viewport allows, so a short window can't push it past the column. */
   .portrait-art {
-    width: min(100%, 32rem, 48dvh);
+    width: min(100%, 22rem, 40dvh);
     margin-inline: auto;
   }
 }

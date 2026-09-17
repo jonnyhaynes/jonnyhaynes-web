@@ -73,11 +73,13 @@ export function Hero() {
         <PortraitFigure />
       </div>
 
-      <p className="font-mono text-2xl text-accent-start">{SITE.hero.microcopy}</p>
+      <p className="font-mono text-2xl text-accent-start lg:text-4xl">
+        {SITE.hero.microcopy}
+      </p>
 
       <h1
         id="hero-heading"
-        className="hero-headline mt-4 font-extrabold text-display"
+        className="hero-headline mt-4 font-extrabold text-display lg:mt-8"
       >
         <span className="text-foreground">I’m a </span>
         <span className="sr-only">{currentRole}</span>
