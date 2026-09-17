@@ -23,12 +23,12 @@ export function AssetReadout() {
   const failed = assets.length - ok;
 
   return (
-    // `lg:text-right` pins the summary to the column's right edge. The element is
+    // `xl:text-right` pins the summary to the column's right edge. The element is
     // shrink-to-fit and the open list is wider than the closed summary, so without
-    // it the title slides left as the box widens — the colophon column is
-    // right-aligned from `lg`, so that's the edge it has to hold. Below `lg` the
-    // column is left-aligned instead, and the left edge is the one that stays put.
-    <details className="group font-mono text-[0.65rem] text-muted lg:text-right">
+    // it the title slides left as the box widens — the colophon block is
+    // right-aligned from `xl`, so that's the edge it has to hold. Below `xl` the
+    // block is left-aligned instead, and the left edge is the one that stays put.
+    <details className="group font-mono text-[0.65rem] text-muted xl:text-right">
       <summary className="cursor-pointer list-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start [&::-webkit-details-marker]:hidden">
         assets {ok}/{assets.length}
         {failed > 0 ? ` · ${failed} failed` : ''}
