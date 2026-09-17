@@ -10,11 +10,11 @@
 // authored that were merged, which this names as such rather than dressing it up as
 // "contributions".
 //
-// Both figures come from one endpoint:
-//   GET /2.0/workspaces/{workspace}/pullrequests/{user}?state=MERGED
-// `size` there is the total matching the filter, so the count itself needs no
-// paging; the pages are only walked to collect the distinct repositories the PRs
-// landed in.
+// The figures come from one endpoint, called twice per workspace:
+//   GET /2.0/workspaces/{workspace}/pullrequests/{user}?state=MERGED|OPEN
+// `size` is the total matching the filter, so a count needs no paging. The merged
+// call is paged anyway, to collect the distinct repositories the PRs landed in;
+// the open call asks for a single item because only its size is wanted.
 //
 // Run: node --env-file=.env.local scripts/fetch-bitbucket.mjs
 //
@@ -106,6 +106,7 @@ async function main() {
     .filter((slug) => !ONLY_WORKSPACE || slug === ONLY_WORKSPACE);
 
   let mergedPullRequests = 0;
+  let openPullRequests = 0;
   let workspacesFailed = 0;
   const repositories = new Set();
 
@@ -125,6 +126,13 @@ async function main() {
         if (!page.next || pages >= MAX_PAGES) break;
         page = await getJson(page.next);
       }
+
+      // What's still open: the same endpoint, a different filter, and only `size`
+      // is wanted, so one page is enough.
+      const open = await get(
+        `/workspaces/${slug}/pullrequests/${author}?state=OPEN&pagelen=1`,
+      );
+      openPullRequests += open.size ?? 0;
     } catch (error) {
       // One workspace failing (a scope, a revoked permission) must not lose the
       // others — but it does mean the totals are a floor, so it's recorded.
@@ -144,6 +152,7 @@ async function main() {
     fetchedAt: new Date().toISOString(),
     // Deliberately no names or slugs anywhere below this line.
     mergedPullRequests,
+    openPullRequests,
     repositories: repositoryCount,
     workspacesCounted: workspaces.length - workspacesFailed,
     workspacesFailed,
@@ -153,6 +162,7 @@ async function main() {
   await writeFile(OUT, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(
     `Wrote ${OUT}: ${mergedPullRequests} merged PRs, ` +
+      `${openPullRequests} open, ` +
       `${repositoryCount ?? '—'} repositories, across ` +
       `${payload.workspacesCounted} workspace(s)` +
       (workspacesFailed ? `, ${workspacesFailed} skipped` : ''),
