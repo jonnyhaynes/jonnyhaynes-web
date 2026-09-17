@@ -79,16 +79,14 @@ async function main() {
       mergedPullRequests += first.size ?? 0;
 
       let page = first;
-      let pages = 1;
-      do {
+      for (let pages = 1; ; pages += 1) {
         for (const pr of page.values ?? []) {
           const full = pr.destination?.repository?.full_name;
           if (full) repositories.add(full);
         }
         if (!page.next || pages >= MAX_PAGES) break;
         page = await getJson(page.next);
-        pages += 1;
-      } while (page);
+      }
     } catch (error) {
       // One workspace failing (a scope, a revoked permission) must not lose the
       // others — but it does mean the totals are a floor, so it's recorded.

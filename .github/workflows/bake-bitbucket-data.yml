@@ -2,14 +2,16 @@ name: Bake Bitbucket data
 
 # Fetches the counts that stand in for work activity — merged pull requests you
 # authored, and the repositories they landed in — and commits the refreshed
-# public/data/bitbucket.json to main. Runs once a day plus on demand.
+# public/data/bitbucket.json to main. Runs twice daily plus on demand.
 #
 # Aggregates only: the token can read private repositories, so nothing but numbers
 # is written. See the header of scripts/fetch-bitbucket.mjs.
 on:
   schedule:
-    # 07:00 UTC. GitHub may delay scheduled runs under load.
-    - cron: '0 7 * * *'
+    # 08:00 and 20:00 UTC — the same twice-daily cadence as the GitHub bake,
+    # offset by a couple of hours so the two don't land on the same minute. GitHub
+    # may delay scheduled runs under load.
+    - cron: '0 8,20 * * *'
   workflow_dispatch: {}
 
 # Avoid overlapping runs racing to commit.
