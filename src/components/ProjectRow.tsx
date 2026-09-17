@@ -53,13 +53,6 @@ const FOCUS =
 
 const LINK_CLASS = `inline-flex items-center gap-1.5 text-sm text-foreground transition-colors hover:text-accent-start ${FOCUS}`;
 
-function projectId(name: string): string {
-  return `proj-${name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')}`;
-}
-
 /**
  * The project's awards: one per line, so a long award title wraps as prose rather
  * than running on. Each row carries its own trophy, which deliberately sets no
@@ -88,32 +81,40 @@ function Awards({ project }: { project: Project }) {
 }
 
 /**
- * A curated-project card: title, pitch, awards, and outbound links.
+ * One project, collapsed to its title and expanding in place.
  *
- * Personal repos carry a fork glyph when forked; work projects carry a briefcase
- * in the same slot, at the same size. Both sit inline before the title.
+ * A native `<details>` rather than a state toggle, for the same reasons the rest
+ * of the site uses one: every title stays in the HTML, every pitch and link stays
+ * in the HTML whether or not the row is open, and the disclosure works with
+ * JavaScript off. Six titles are visible at once, which is what "all need
+ * visibility" asks for, while the detail stays folded away.
+ *
+ * `defaultOpen` is passed straight to `open` and never changes, so React writes it
+ * once and leaves the reader's own toggling alone.
  *
  * Accessibility:
- * - The card is a labelled region (aria-labelledby → the <h3>), NOT a link,
- *   because it has several distinct destinations. Every link's accessible name
- *   carries the project name, so "Repo"/"Web"/"App Store" aren't ambiguous.
- * - The title is an <h3>, nesting directly under the section's <h2>. If this card
- *   is ever rendered beneath another heading, the level needs to become a prop
- *   rather than a constant.
- * - Badging glyphs are decorative (aria-hidden) with an sr-only prefix, so their
- *   meaning is never icon-only for assistive tech.
+ * - `<summary>` is the disclosure control, so the row needs no separate button and
+ *   gets keyboard support and expand/collapse announcements for free. Its
+ *   accessible name is the heading inside it, prefixed with an sr-only
+ *   "Work project at {company}: " where that applies — so it's announced as what
+ *   it is rather than as a bare project name.
+ * - The title is an `<h3>`, nesting under the section's `<h2>`. If this is ever
+ *   rendered below another heading, the level needs to become a prop.
+ * - A heading inside a summary is sometimes flattened by assistive tech, since the
+ *   summary is a control. Nothing is lost when that happens — the name still
+ *   carries the text — but the outline may be shorter than the markup suggests.
  */
-export function ProjectCard({ project }: { project: Project }) {
-  const headingId = projectId(project.name);
-
+export function ProjectRow({
+  project,
+  defaultOpen = false,
+}: {
+  project: Project;
+  defaultOpen?: boolean;
+}) {
   return (
-    <article
-      aria-labelledby={headingId}
-      className="flex flex-col border border-muted/20 bg-background/70 p-5 backdrop-blur-sm transition-colors hover:border-accent-start/50"
-    >
-      <h3
-        id={headingId}
-        className="flex items-center gap-2 text-xl font-medium text-foreground"
+    <details className="project-row" open={defaultOpen ? true : undefined}>
+      <summary
+        className={`flex cursor-pointer list-none items-center gap-3 py-4 transition-colors hover:text-accent-start [&::-webkit-details-marker]:hidden ${FOCUS}`}
       >
         {project.kind === 'work' ? (
           <>
@@ -128,31 +129,39 @@ export function ProjectCard({ project }: { project: Project }) {
             </>
           )
         )}
-        {project.name}
-      </h3>
 
-      {project.pitch && <p className="mt-2 text-muted">{project.pitch}</p>}
+        {/* No colour of its own, so it turns accent with the summary on hover. */}
+        <h3 className="text-xl font-medium">{project.name}</h3>
 
-      {project.awards.length > 0 && <Awards project={project} />}
+        <span aria-hidden="true" className="project-row-chevron ml-auto text-muted">
+          ▾
+        </span>
+      </summary>
 
-      {/* Links pinned to the bottom so they align across cards of any height. */}
-      <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-4">
-        {project.links.map((link) => {
-          const { label, Icon, description } = LINK_META[link.kind];
-          return (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={`${project.name} ${description}`}
-              className={LINK_CLASS}
-            >
-              <Icon className="size-4" /> {label}
-            </a>
-          );
-        })}
+      {/* Indented to the title, so the expanded detail lines up under the name. */}
+      <div className="pb-6 pl-7">
+        {project.pitch && <p className="text-muted">{project.pitch}</p>}
+
+        {project.awards.length > 0 && <Awards project={project} />}
+
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          {project.links.map((link) => {
+            const { label, Icon, description } = LINK_META[link.kind];
+            return (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${project.name} ${description}`}
+                className={LINK_CLASS}
+              >
+                <Icon className="size-4" /> {label}
+              </a>
+            );
+          })}
+        </div>
       </div>
-    </article>
+    </details>
   );
 }

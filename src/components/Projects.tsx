@@ -2,12 +2,9 @@ import { useBitbucketData } from '../data/bitbucket';
 import { useGitHubData } from '../data/github';
 import { useProjects } from '../data/projects';
 import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
-import { ProjectCard } from './ProjectCard';
+import { ProjectRow } from './ProjectRow';
 import { ProjectStats } from './ProjectStats';
 import { SectionHeading } from './SectionHeading';
-
-/** How many cards show before the rest go behind the reveal. */
-const SHOWN = 3;
 
 export function Projects() {
   // The curated grid: the repos named in FEATURED_REPOS, then the hand-written
@@ -16,9 +13,6 @@ export function Projects() {
   const projects = useProjects();
   const github = useGitHubData();
   const bitbucket = useBitbucketData();
-
-  const shown = projects.slice(0, SHOWN);
-  const rest = projects.slice(SHOWN);
 
   return (
     <section id="projects" className="scroll-mt-16 py-16">
@@ -45,38 +39,19 @@ export function Projects() {
 
         <div className="md:order-1">
           {projects.length > 0 ? (
-            /* One card per row at every width. The column is too narrow for two
-               once the figures have their own, and a single stack is what the
-               reveal below reads best against. */
-            <div className="flex flex-col gap-6">
-              {shown.map((project) => (
-                <ProjectCard key={project.name} project={project} />
+            /* Every project is a row, so all six titles are visible at once and the
+               detail folds away behind each one. Rows rather than cards because six
+               cards made this column several times the height of the figures
+               beside it. */
+            <ul className="divide-y divide-muted/20 border-y border-muted/20">
+              {projects.map((project, index) => (
+                <ProjectRow
+                  key={project.name}
+                  project={project}
+                  defaultOpen={index === 0}
+                />
               ))}
-
-              {rest.length > 0 && (
-                /* A native disclosure rather than a state toggle, so the collapsed
-                   cards stay in the HTML for crawlers and the control still works
-                   with JavaScript off. `.project-reveal` paints the summary last,
-                   putting the control under the list it reveals. */
-                <details className="project-reveal">
-                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start [&::-webkit-details-marker]:hidden">
-                    <span className="project-reveal-more">
-                      Show all {projects.length} projects
-                    </span>
-                    <span className="project-reveal-fewer">Show fewer projects</span>
-                    <span aria-hidden="true" className="project-reveal-chevron">
-                      ▾
-                    </span>
-                  </summary>
-
-                  <div className="flex flex-col gap-6">
-                    {rest.map((project) => (
-                      <ProjectCard key={project.name} project={project} />
-                    ))}
-                  </div>
-                </details>
-              )}
-            </div>
+            </ul>
           ) : (
             // Graceful degradation: nothing curated and the GitHub data absent.
             <p className="text-muted">Projects are loading…</p>
