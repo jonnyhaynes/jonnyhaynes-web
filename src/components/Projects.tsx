@@ -35,8 +35,10 @@ export function Projects() {
         <div className="md:order-2">
           <ProjectStats
             contributions={github?.totalContributions ?? null}
+            reviews={github?.reviewContributions ?? null}
             repositories={github?.repoCount ?? null}
             mergedPullRequests={bitbucket?.mergedPullRequests ?? null}
+            openPullRequests={bitbucket?.openPullRequests ?? null}
             contributedRepositories={bitbucket?.repositories ?? null}
           />
         </div>

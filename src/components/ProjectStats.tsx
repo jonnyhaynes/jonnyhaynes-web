@@ -35,13 +35,17 @@ const sumPresent = (...values: (number | null)[]) => {
  */
 export function ProjectStats({
   contributions,
+  reviews,
   repositories,
   mergedPullRequests,
+  openPullRequests,
   contributedRepositories,
 }: {
   contributions: number | null;
+  reviews: number | null;
   repositories: number | null;
   mergedPullRequests: number | null;
+  openPullRequests: number | null;
   contributedRepositories: number | null;
 }) {
   const awards = WORK_PROJECTS.reduce((total, project) => total + project.awards.length, 0);
@@ -53,11 +57,25 @@ export function ProjectStats({
       value: NUMBER.format(activity),
       label: 'contributions',
     },
+    // Only shown when there are some. A zero would read as a deficiency rather
+    // than a fact, and the reviewing that does happen is on Bitbucket, whose API
+    // can't count it — so this is data that may simply never appear.
+    reviews != null &&
+      reviews > 0 && {
+        value: NUMBER.format(reviews),
+        label: 'code reviews',
+      },
     projectCount != null && {
       value: String(projectCount),
       label: 'projects',
     },
     awards > 0 && { value: String(awards), label: 'industry awards' },
+    // Last because it's the only figure describing now rather than everything so
+    // far.
+    openPullRequests != null && {
+      value: String(openPullRequests),
+      label: 'open pull requests',
+    },
   ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
 
   if (!stats.length) return null;

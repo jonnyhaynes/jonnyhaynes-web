@@ -49,6 +49,12 @@ export type GitHubData = {
   languages: GitHubLanguage[];
   totalContributions: number | null;
   /**
+   * The part of `totalContributions` that came from reviewing other people's pull
+   * requests. Null on older snapshots and in the tokenless REST bake, which can't
+   * provide it.
+   */
+  reviewContributions: number | null;
+  /**
    * Owned, non-fork, public repos in total — not just the curated handful the
    * projects grid bakes. Null on older snapshots, so consumers must fall back.
    */

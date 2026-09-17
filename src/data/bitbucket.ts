@@ -5,6 +5,11 @@ export type BitbucketData = {
   /** Pull requests authored by the account and merged, across the counted workspaces. */
   mergedPullRequests: number;
   /**
+   * Still-open pull requests. Null when the snapshot predates this field, so the
+   * stat is omitted rather than shown as zero.
+   */
+  openPullRequests: number | null;
+  /**
    * Distinct repositories those pull requests landed in. Null when the payload
    * didn't name them, so a schema surprise shows up as a missing stat rather than
    * a wrong one.
