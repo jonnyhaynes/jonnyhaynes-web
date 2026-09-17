@@ -29,6 +29,14 @@
   --text-title--letter-spacing: -0.02em;
   --text-title--font-weight: 700;
 
+  /* The stat figures: a step above the section headings and a step below the hero,
+   * so a column of numbers anchors its own section without competing with the
+   * page's title. Heaviest weight the font carries, to hold up at this size. */
+  --text-stat: clamp(2.25rem, 4.5vw, 4.5rem);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.02em;
+  --text-stat--font-weight: 800;
+
   /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather.
    * accent-start lightened from #9e67b5 to clear WCAG AA (4.5:1) both as text
    * on the background and as the "View My Work" button colour (dark text). */
@@ -2154,6 +2162,34 @@
   .project-row > summary .project-row-chevron {
     transition: none;
   }
+}
+
+/* ---------------------------------------------------------------- *
+ * Project stats: the figures read as one group.
+ *
+ * The gradient sits on the list rather than on each number, so a single ramp runs
+ * down the whole column. Per-number, a two-digit figure and a four-digit one each
+ * carried their own copy of the ramp and showed different ranges of the same
+ * palette.
+ *
+ * `background-clip: text` clips to the text of the element *and its descendants*,
+ * which is what makes this work: the numbers need no styles of their own beyond
+ * the transparency they inherit, and the labels set their own colour and paint
+ * over the top.
+ *
+ * The direction overrides `.animate-gradient` by source order. The drift animation
+ * and the palette stops come from that class and are untouched, so the group still
+ * breathes in step with the hero.
+ * ---------------------------------------------------------------- */
+.stat-figures {
+  background-image: linear-gradient(
+    to bottom in oklch,
+    var(--grad-1),
+    var(--grad-2)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 

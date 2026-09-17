@@ -88,7 +88,7 @@ export function ProjectStats({
   if (!stats.length) return null;
 
   return (
-    <dl className="flex flex-col gap-8">
+    <dl className="animate-gradient stat-figures flex flex-col gap-8">
       {stats.map((stat) => (
         // One component per figure, because the count-up runs a hook each.
         <Stat key={stat.label} {...stat} />
@@ -100,10 +100,12 @@ export function ProjectStats({
 type Stat = { count: number; label: string };
 
 /**
- * A figure and its label. The number carries `.animate-gradient` — the same
- * treatment as the hero's role text, drift and all — so the accent breathes in
- * step across the page. `w-fit` keeps the gradient spanning the number rather than
- * the whole column.
+ * A figure and its label.
+ *
+ * The gradient lives on the list rather than here, so one ramp runs down the whole
+ * column — see `.stat-figures`. The number therefore sets no colour of its own: it
+ * inherits the list's transparency and shows that gradient through its glyphs,
+ * while the label keeps its own colour and paints over the top.
  *
  * Term before definition in the DOM; `flex-col-reverse` puts the number on top
  * without breaking the pair's order for a screen reader.
@@ -116,10 +118,7 @@ function Stat({ count, label }: Stat) {
       <dt className="font-mono text-[0.65rem] uppercase tracking-wider text-muted">
         {label}
       </dt>
-      <dd
-        ref={ref}
-        className="animate-gradient w-fit font-mono text-title font-bold"
-      >
+      <dd ref={ref} className="font-mono text-stat">
         {NUMBER.format(display)}
       </dd>
     </div>
