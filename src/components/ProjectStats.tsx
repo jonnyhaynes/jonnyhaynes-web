@@ -1,4 +1,5 @@
 import { WORK_PROJECTS } from '../content/projects';
+import { useCountUp } from '../lib/useCountUp';
 
 const NUMBER = new Intl.NumberFormat('en-GB');
 
@@ -56,9 +57,9 @@ export function ProjectStats({
   const activity = sumPresent(contributions, mergedPullRequests);
   const projectCount = sumPresent(repositories, contributedRepositories);
 
-  const stats = [
+  const stats: Stat[] = [
     activity != null && {
-      value: NUMBER.format(activity),
+      count: activity,
       label: countLabel(activity, 'contribution'),
     },
     // Only shown when there are some. A zero would read as a deficiency rather
@@ -66,40 +67,61 @@ export function ProjectStats({
     // can't count it — so this is data that may simply never appear.
     reviews != null &&
       reviews > 0 && {
-        value: NUMBER.format(reviews),
+        count: reviews,
         label: countLabel(reviews, 'code review'),
       },
     projectCount != null && {
-      value: String(projectCount),
+      count: projectCount,
       label: countLabel(projectCount, 'project'),
     },
     // The only figure describing now rather than the total so far.
     openPullRequests != null && {
-      value: String(openPullRequests),
+      count: openPullRequests,
       label: countLabel(openPullRequests, 'open pull request'),
     },
     awards > 0 && {
-      value: String(awards),
+      count: awards,
       label: countLabel(awards, 'industry award'),
     },
-  ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
+  ].filter((stat): stat is Stat => Boolean(stat));
 
   if (!stats.length) return null;
 
   return (
     <dl className="flex flex-col gap-8">
       {stats.map((stat) => (
-        // Term before definition in the DOM; `flex-col-reverse` puts the number
-        // on top without breaking the pair's order for a screen reader.
-        <div key={stat.label} className="flex flex-col-reverse gap-1">
-          <dt className="font-mono text-[0.65rem] uppercase tracking-wider text-muted">
-            {stat.label}
-          </dt>
-          <dd className="font-mono text-title font-bold text-foreground">
-            {stat.value}
-          </dd>
-        </div>
+        // One component per figure, because the count-up runs a hook each.
+        <Stat key={stat.label} {...stat} />
       ))}
     </dl>
+  );
+}
+
+type Stat = { count: number; label: string };
+
+/**
+ * A figure and its label. The number carries `.animate-gradient` — the same
+ * treatment as the hero's role text, drift and all — so the accent breathes in
+ * step across the page. `w-fit` keeps the gradient spanning the number rather than
+ * the whole column.
+ *
+ * Term before definition in the DOM; `flex-col-reverse` puts the number on top
+ * without breaking the pair's order for a screen reader.
+ */
+function Stat({ count, label }: Stat) {
+  const { ref, display } = useCountUp(count);
+
+  return (
+    <div className="flex flex-col-reverse gap-1">
+      <dt className="font-mono text-[0.65rem] uppercase tracking-wider text-muted">
+        {label}
+      </dt>
+      <dd
+        ref={ref}
+        className="animate-gradient w-fit font-mono text-title font-bold"
+      >
+        {NUMBER.format(display)}
+      </dd>
+    </div>
   );
 }
