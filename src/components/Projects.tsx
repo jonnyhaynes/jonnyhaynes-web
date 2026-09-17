@@ -1,3 +1,4 @@
+import { useBitbucketData } from '../data/bitbucket';
 import { useGitHubData } from '../data/github';
 import { useProjects } from '../data/projects';
 import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
@@ -11,6 +12,7 @@ export function Projects() {
   // snapshot never arrives — see src/content/projects.ts.
   const projects = useProjects();
   const github = useGitHubData();
+  const bitbucket = useBitbucketData();
 
   return (
     // The shell's pane gives every section the same content container, so the
@@ -23,8 +25,10 @@ export function Projects() {
       </SectionHeading>
 
       <ProjectStats
-        repositories={github?.repoCount ?? null}
         contributions={github?.totalContributions ?? null}
+        repositories={github?.repoCount ?? null}
+        mergedPullRequests={bitbucket?.mergedPullRequests ?? null}
+        contributedRepositories={bitbucket?.repositories ?? null}
       />
 
       {projects.length > 0 ? (

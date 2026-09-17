@@ -2,14 +2,16 @@ name: Bake Bitbucket data
 
 # Fetches the counts that stand in for work activity — merged pull requests you
 # authored, and the repositories they landed in — and commits the refreshed
-# public/data/bitbucket.json to main. Runs once a day plus on demand.
+# public/data/bitbucket.json to main. Runs twice daily plus on demand.
 #
 # Aggregates only: the token can read private repositories, so nothing but numbers
 # is written. See the header of scripts/fetch-bitbucket.mjs.
 on:
   schedule:
-    # 07:00 UTC. GitHub may delay scheduled runs under load.
-    - cron: '0 7 * * *'
+    # 08:00 and 20:00 UTC — the same twice-daily cadence as the GitHub bake, offset
+    # by a couple of hours so the two don't land on the same minute. GitHub may
+    # delay scheduled runs under load.
+    - cron: '0 8,20 * * *'
   workflow_dispatch: {}
 
 # Avoid overlapping runs racing to commit.
@@ -36,11 +38,15 @@ jobs:
 
       - name: Fetch Bitbucket data
         env:
-          # Atlassian API token, scoped read:pullrequest:bitbucket,
-          # read:repository:bitbucket and read:workspace:bitbucket. If the secret
-          # is absent the script exits non-zero and the bake fails loudly, rather
-          # than quietly baking zeros over real numbers.
+          # Two credential shapes, and sending the wrong one fails as a bare 403:
+          #  - Atlassian API token → HTTP Basic, with BITBUCKET_EMAIL set to your
+          #    Atlassian email;
+          #  - workspace/repository access token → Bearer, with the email unset.
           BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
+          BITBUCKET_EMAIL: ${{ secrets.BITBUCKET_EMAIL }}
+          # Optional: your Bitbucket username or uuid, to skip the /user call — and
+          # so not need the read:user:bitbucket scope.
+          BITBUCKET_USER: ${{ vars.BITBUCKET_USER }}
         run: node scripts/fetch-bitbucket.mjs
 
       # main is a protected branch (PR required + Vercel check), so we can't push
@@ -52,7 +58,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if git diff --quiet -- public/data/bitbucket.json; then
+          # `git status`, not `git diff`: the first bake creates this file, and
+          # `git diff` reports nothing for an untracked path — so it would have
+          # announced "no change" and committed nothing on the run that mattered.
+          if [ -z "$(git status --porcelain -- public/data/bitbucket.json)" ]; then
             echo "No change in bitbucket.json — nothing to commit."
             exit 0
           fi
