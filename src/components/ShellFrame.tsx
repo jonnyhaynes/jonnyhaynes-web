@@ -99,7 +99,15 @@ export function PanelShell() {
   return <ShellFrame panel={<ProfilePanel />} />;
 }
 
-/** Everything else: pane + rail, no panel — the site's chrome doesn't need a face next to the legal copy. */
+/**
+ * Every other route: the same three-column sheet, with the panel column left
+ * empty. No portrait beside the legal copy, but the content column sits exactly
+ * where it does on the home route, so moving between pages doesn't shift the page.
+ *
+ * The empty element is what holds that column open. Passing no panel at all drops
+ * the column from the template and slides the pane into its place — which is why
+ * the two routes used to look different from each other.
+ */
 export function PlainShell() {
-  return <ShellFrame />;
+  return <ShellFrame panel={<div />} />;
 }
