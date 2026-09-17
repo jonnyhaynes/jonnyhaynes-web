@@ -8,12 +8,12 @@ const LINK =
   'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 /**
- * Privacy page. Served by the /privacy route inside the plain shell — the pane
- * and rail are shared, the profile panel is not.
+ * Privacy page. Served by the /privacy route, which uses the same three-column
+ * sheet as home with the panel column left empty — so this page's content sits in
+ * the same place as every other page's.
  *
- * Renders into the pane, so it carries its own reading width rather than relying
- * on the shell; without the panel column the pane is wide enough that full-width
- * prose would be uncomfortable to read.
+ * The container matches the home route's, so the prose fills the pane rather than
+ * sitting in a narrower centred column.
  */
 export function Privacy() {
   const contactRef = useRef<HTMLSpanElement>(null);
@@ -50,7 +50,7 @@ export function Privacy() {
       <main
         id="main"
         tabIndex={-1}
-        className="mx-auto w-full max-w-2xl px-6 py-8 focus:outline-none"
+        className="mx-auto w-full max-w-6xl px-6 py-8 focus:outline-none"
       >
         <Link
           to="/"
