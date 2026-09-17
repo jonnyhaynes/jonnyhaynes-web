@@ -146,8 +146,8 @@ export function ProjectRow({
           </span>
         </summary>
 
-        {/* Indented to the title: px-5 plus the 16px glyph and the 12px gap. */}
-        <div className="pr-5 pb-6 pl-12">
+        {/* Aligned with the summary's inset rather than indented to the title. */}
+        <div className="px-5 pb-6">
           {project.pitch && <p className="text-muted">{project.pitch}</p>}
 
           {project.awards.length > 0 && <Awards project={project} />}
