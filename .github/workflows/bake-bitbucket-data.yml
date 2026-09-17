@@ -1,0 +1,76 @@
+name: Bake Bitbucket data
+
+# Fetches the counts that stand in for work activity — merged pull requests you
+# authored, and the repositories they landed in — and commits the refreshed
+# public/data/bitbucket.json to main. Runs once a day plus on demand.
+#
+# Aggregates only: the token can read private repositories, so nothing but numbers
+# is written. See the header of scripts/fetch-bitbucket.mjs.
+on:
+  schedule:
+    # 07:00 UTC. GitHub may delay scheduled runs under load.
+    - cron: '0 7 * * *'
+  workflow_dispatch: {}
+
+# Avoid overlapping runs racing to commit.
+concurrency:
+  group: bake-bitbucket-data
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch Bitbucket data
+        env:
+          # Atlassian API token, scoped read:pullrequest:bitbucket,
+          # read:repository:bitbucket and read:workspace:bitbucket. If the secret
+          # is absent the script exits non-zero and the bake fails loudly, rather
+          # than quietly baking zeros over real numbers.
+          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
+        run: node scripts/fetch-bitbucket.mjs
+
+      # main is a protected branch (PR required + Vercel check), so we can't push
+      # to it directly. Instead push the refreshed data to a fixed branch, open a
+      # PR if one isn't already open, and enable auto-merge — since the branch
+      # rule requires 0 approvals, it merges itself once the Vercel check passes.
+      - name: Open/refresh data PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- public/data/bitbucket.json; then
+            echo "No change in bitbucket.json — nothing to commit."
+            exit 0
+          fi
+
+          branch="bake/bitbucket-data"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add public/data/bitbucket.json
+          git commit -m "Refresh Bitbucket data [skip ci]"
+          # Force: this is a disposable, machine-owned data branch.
+          git push --force origin "$branch"
+
+          # Open the PR only if there isn't already an open one for this branch.
+          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr create \
+              --base main --head "$branch" \
+              --title "Refresh Bitbucket data" \
+              --body "Automated data bake (merged pull requests, repositories contributed to). Auto-merges once the Vercel check passes."
+            gh pr merge "$branch" --auto --squash
+          fi
