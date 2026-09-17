@@ -23,18 +23,18 @@ function HeavyRotation() {
                 target="_blank"
                 rel="noreferrer noopener"
                 title={a.name}
-                className="block rounded-full ring-2 ring-background transition-transform hover:z-10 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+                className="block ring-2 ring-background transition-transform hover:z-10 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
               >
                 {a.image ? (
                   <img
                     src={a.image}
                     alt={a.name}
-                    className="size-12 rounded-full object-cover"
+                    className="size-12 object-cover"
                     width={48}
                     height={48}
                   />
                 ) : (
-                  <span className="flex size-12 items-center justify-center rounded-full bg-muted/30 text-xs text-muted">
+                  <span className="flex size-12 items-center justify-center bg-muted/30 text-xs text-muted">
                     {a.name.slice(0, 2)}
                   </span>
                 )}
@@ -88,18 +88,18 @@ function CodingFuel() {
             href={c.url}
             target="_blank"
             rel="noreferrer noopener"
-            className="group flex min-w-0 items-center gap-4 rounded-lg border border-muted/20 bg-background/70 p-4 backdrop-blur-sm transition-colors hover:border-accent-start/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+            className="group flex min-w-0 items-center gap-4 border border-muted/20 bg-background/70 p-4 backdrop-blur-sm transition-colors hover:border-accent-start/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
           >
             {c.cover ? (
               <img
                 src={c.cover}
                 alt=""
-                className="size-16 shrink-0 rounded object-cover"
+                className="size-16 shrink-0 object-cover"
                 width={64}
                 height={64}
               />
             ) : (
-              <span className="flex size-16 shrink-0 items-center justify-center rounded bg-accent-start/15 font-mono text-xs text-accent-start">
+              <span className="flex size-16 shrink-0 items-center justify-center bg-accent-start/15 font-mono text-xs text-accent-start">
                 ♪
               </span>
             )}

@@ -108,18 +108,18 @@ function TvHero({
     <div className="group">
       {/* Cabinet: the link is only the screen, the bezel lip with the dials
           sits outside it so the controls don't trigger navigation. */}
-      <div className="tv-cabinet rounded-2xl p-3 transition-transform group-hover:scale-[1.01] md:p-4">
+      <div className="tv-cabinet p-3 transition-transform group-hover:scale-[1.01] md:p-4">
         <GameLink
           game={game}
           ariaLabel={`${game.title} — ${meta}`}
-          className="block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start"
+          className="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start"
         >
           {/* Screen: cover art behind scanline + glow overlays. Square so it
               lines up with the jewel-case grid beside it. When the bezel power
               button is off, the tube goes dark (.crt-off) and the overlays are
               suppressed. */}
           <div
-            className={`relative aspect-square w-full overflow-hidden rounded-lg bg-black ${
+            className={`relative aspect-square w-full overflow-hidden bg-black ${
               powered ? '' : 'crt-off'
             }`}
           >
@@ -145,7 +145,7 @@ function TvHero({
                 />
                 <span
                   aria-hidden="true"
-                  className="crt-glow pointer-events-none absolute inset-0 rounded-lg"
+                  className="crt-glow pointer-events-none absolute inset-0"
                 />
                 {/* OSD readout — title + platform/recency in heather, fading
                     away seconds after load like a real TV's channel display. */}
@@ -239,12 +239,12 @@ function GameCase({ game }: { game: GameTile }) {
       <GameLink
         game={game}
         ariaLabel={`${game.title} — ${meta}`}
-        className="group/case block min-w-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+        className="group/case block min-w-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
       >
         {/* Case: cover + left spine, wrapped so both sit under one sheen. The
             dark backdrop shows as letterbox bars behind non-square covers
             (contain), matching the TV screen's black field. */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-md bg-black shadow-sm ring-1 ring-black/20 transition-transform group-hover/case:scale-[1.02]">
+        <div className="relative aspect-square w-full overflow-hidden bg-black shadow-sm ring-1 ring-black/20 transition-transform group-hover/case:scale-[1.02]">
           {game.coverUrl ? (
             <img
               src={game.coverUrl}

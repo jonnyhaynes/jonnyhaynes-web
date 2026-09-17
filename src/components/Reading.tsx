@@ -113,16 +113,16 @@ function FeatureCover({
       target="_blank"
       rel="noreferrer noopener"
       aria-label={`${book.title} by ${book.authors} — open on Spotify`}
-      className={`book-feature group block self-end rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start ${className}`}
+      className={`book-feature group block self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start ${className}`}
     >
       {book.cover ? (
         <img
           src={book.cover}
           alt=""
-          className="aspect-square w-full rounded-md object-cover transition-transform group-hover:scale-[1.01]"
+          className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.01]"
         />
       ) : (
-        <span className="flex aspect-square w-full items-center justify-center rounded-md bg-muted/20 font-mono text-4xl text-muted">
+        <span className="flex aspect-square w-full items-center justify-center bg-muted/20 font-mono text-4xl text-muted">
           📖
         </span>
       )}
@@ -180,7 +180,7 @@ function SpineBar({
           target="_blank"
           rel="noreferrer noopener"
           aria-label={`${book.title} by ${book.authors} — open on Spotify`}
-          className="flex min-h-14 flex-col justify-center gap-0.5 rounded-sm px-4 py-2 shadow-[inset_0_2px_3px_rgba(0,0,0,0.25),inset_0_-1px_2px_rgba(255,255,255,0.15)] transition-transform hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+          className="flex min-h-14 flex-col justify-center gap-0.5 px-4 py-2 shadow-[inset_0_2px_3px_rgba(0,0,0,0.25),inset_0_-1px_2px_rgba(255,255,255,0.15)] transition-transform hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
           style={{ background: spine.bg, color: spine.ink }}
         >
           <span className="text-sm font-medium leading-tight tracking-tight">
@@ -201,7 +201,7 @@ function SpineBar({
         target="_blank"
         rel="noreferrer noopener"
         aria-label={`${book.title} by ${book.authors} — open on Spotify`}
-        className="book-spine flex items-center justify-center rounded-sm px-2 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+        className="book-spine flex items-center justify-center px-2 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
         style={
           {
             background: spine.bg,

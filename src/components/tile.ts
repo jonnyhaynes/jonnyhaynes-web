@@ -8,7 +8,7 @@
  * the rest of the chrome uses.
  */
 export const TILE =
-  'relative inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-[var(--color-control-hover)] hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+  'relative inline-flex size-10 shrink-0 items-center justify-center text-muted transition-colors hover:bg-[var(--color-control-hover)] hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 /** The selected/on state: accent ink plus the tinted disc, so it isn't colour alone. */
 export const TILE_ACTIVE = 'bg-[var(--color-control-hover)] text-accent-start';
@@ -19,4 +19,4 @@ export const TILE_ACTIVE = 'bg-[var(--color-control-hover)] text-accent-start';
  * affordance would hide the name from keyboard users.
  */
 export const PILL =
-  'pointer-events-none absolute right-full z-10 mr-2 translate-x-1 whitespace-nowrap rounded-full border border-muted/30 bg-background/90 px-3 py-1 font-mono text-sm text-foreground opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none';
+  'pointer-events-none absolute right-full z-10 mr-2 translate-x-1 whitespace-nowrap border border-muted/30 bg-background/90 px-3 py-1 font-mono text-sm text-foreground opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none';

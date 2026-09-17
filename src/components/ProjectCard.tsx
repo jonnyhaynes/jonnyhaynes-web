@@ -106,7 +106,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <article
       aria-labelledby={headingId}
-      className="flex flex-col rounded-lg border border-muted/20 bg-background/70 p-5 backdrop-blur-sm transition-colors hover:border-accent-start/50"
+      className="flex flex-col border border-muted/20 bg-background/70 p-5 backdrop-blur-sm transition-colors hover:border-accent-start/50"
     >
       <h3
         id={headingId}

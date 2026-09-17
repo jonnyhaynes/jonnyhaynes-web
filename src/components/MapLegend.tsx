@@ -22,7 +22,7 @@ export function MapLegend() {
 
       {/* Segmented scale bar: five 5 km blocks spanning the 25 km window. */}
       <div aria-hidden="true" className="mt-3">
-        <div className="flex h-2 overflow-hidden rounded-[2px]">
+        <div className="flex h-2 overflow-hidden">
           {SCALE_TICKS_KM.slice(0, -1).map((km, i) => (
             <span
               key={km}

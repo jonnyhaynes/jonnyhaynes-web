@@ -180,7 +180,7 @@ function MarqueeReadout({ data }: { data: NowPlayingData }) {
  */
 function DeckStandby() {
   return (
-    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
+    <div className="deck-panel flex w-full flex-col overflow-hidden p-4">
       {/* Header strip: standby label + steady dim LED. */}
       <div className="mb-3 flex items-center justify-between">
         <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
@@ -192,7 +192,7 @@ function DeckStandby() {
       </div>
 
       <div className="deck-lcd-wrap relative">
-        <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+        <div className="deck-lcd relative aspect-square w-full overflow-hidden">
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
             <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--color-deck-panel-text)] opacity-90">
               No signal
@@ -234,7 +234,7 @@ function Deck({
   onVisualizerChange,
 }: DeckProps) {
   return (
-    <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
+    <div className="deck-panel flex w-full flex-col overflow-hidden p-4">
       {/* Header strip: playing/last-played label + power light. */}
       <div className="mb-3 flex items-center justify-between">
         <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-deck-panel-text)]">
@@ -252,7 +252,7 @@ function Deck({
           wrapper is the knob's positioning context. The chosen visualizer
           persists to localStorage like the site theme (see useVisualizer). */}
       <div className="deck-lcd-wrap relative">
-        <div className="deck-lcd relative aspect-square w-full overflow-hidden rounded-sm">
+        <div className="deck-lcd relative aspect-square w-full overflow-hidden">
           {/* Album art sits behind the visualizer, dimmed under a scrim so the
               accent-coloured bars/wave/plasma stay legible over any cover. */}
           {data.albumArt && (
@@ -293,8 +293,8 @@ function Deck({
             progressPct={spinning ? (progressPct ?? 0) : 0}
             position={position}
             duration={duration}
-            className="h-1 overflow-hidden rounded-full bg-muted/25"
-            fillClassName={`h-full rounded-full bg-accent-start ease-linear motion-reduce:transition-none ${
+            className="h-1 overflow-hidden bg-muted/25"
+            fillClassName={`h-full bg-accent-start ease-linear motion-reduce:transition-none ${
               spinning
                 ? 'transition-[width] duration-1000'
                 : 'transition-[width] duration-[3500ms]'
