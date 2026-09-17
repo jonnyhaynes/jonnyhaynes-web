@@ -16,19 +16,19 @@ const sumPresent = (...values: (number | null)[]) => {
  * counts worth showing at display size.
  *
  * Every figure is derived, never asserted: the award total is the sum of the awards
- * actually attached to the work projects, and the repository count is the whole
- * public shelf rather than the curated handful the grid renders. Each is named for
- * where it comes from, so the source is on the page rather than implied.
+ * actually attached to the work projects, and the project count spans every
+ * repository rather than the curated handful the grid renders.
  *
- * Each figure now spans both platforms. Two things worth knowing before relabelling:
+ * Both totals span GitHub and Bitbucket, and the labels deliberately don't say so.
+ * Two things worth knowing before changing them:
  *
- *  - The repository total adds repositories *owned* on GitHub to repositories
- *    *contributed to* on Bitbucket. Different relationships, so it reads as
- *    "repositories I've worked in" rather than "repositories I own".
+ *  - The project total adds repositories *owned* on GitHub to repositories merely
+ *    *contributed to* on Bitbucket. Different relationships: it reads as "projects
+ *    I've worked in", not "projects I own".
  *  - The activity total adds GitHub's contribution count — commits, issues, reviews
  *    and pull requests — to Bitbucket's, which can only report merged pull requests,
- *    because Bitbucket has no contributions API. So the Bitbucket side misses
- *    commits that never went through a pull request, and the total reads low rather
+ *    because Bitbucket has no contributions API. The Bitbucket side therefore misses
+ *    commits that never went through a pull request, so the total reads low rather
  *    than high.
  *
  * Anything missing is omitted rather than shown as a zero.
@@ -46,16 +46,16 @@ export function ProjectStats({
 }) {
   const awards = WORK_PROJECTS.reduce((total, project) => total + project.awards.length, 0);
   const activity = sumPresent(contributions, mergedPullRequests);
-  const workedIn = sumPresent(repositories, contributedRepositories);
+  const projectCount = sumPresent(repositories, contributedRepositories);
 
   const stats = [
     activity != null && {
       value: NUMBER.format(activity),
-      label: 'contributions · GitHub + Bitbucket',
+      label: 'contributions',
     },
-    workedIn != null && {
-      value: String(workedIn),
-      label: 'repositories · GitHub + Bitbucket',
+    projectCount != null && {
+      value: String(projectCount),
+      label: 'projects',
     },
     awards > 0 && { value: String(awards), label: 'industry awards' },
   ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
