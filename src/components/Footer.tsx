@@ -54,11 +54,12 @@ export function Footer() {
       </p>
 
       {/* Colophon: where the background data comes from, and which build you're
-          looking at. */}
-      <div className="mt-10 flex flex-wrap items-start justify-between gap-8 border-t border-muted/15 pt-8">
+          looking at. Everything is left-aligned until lg, where the sheet's
+          columns appear and the colophon moves to the right-hand end. */}
+      <div className="mt-10 flex flex-wrap items-start justify-start gap-8 border-t border-muted/15 pt-8 lg:justify-between">
         <MapLegend />
 
-        <div className="flex flex-col items-start gap-3 sm:items-end">
+        <div className="flex flex-col items-start gap-3 lg:items-end">
           <BuildStamp />
           <p
             aria-hidden="true"
