@@ -4,13 +4,15 @@ import { copy } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
 
 /**
- * Compact "currently building" chip — a live activity signal. Renders nothing
- * until data resolves, so it degrades gracefully.
+ * Compact "currently building" chip — a live activity signal, showing the
+ * most-recently-pushed repo and how long ago that was.
  *
- * Mounted twice (the shell's top row below lg, the hero at lg and up), so callers
- * gate visibility on a *wrapper*, never with a display utility on this element:
- * the class list below sets `inline-flex`, and `.inline-flex` is emitted after
- * `.hidden`, so `hidden` here would lose to it and the chip would render twice.
+ * Sits beside the Projects title, where the work it describes actually is. It
+ * renders nothing until the snapshot resolves, so it degrades to silent rather
+ * than to an empty shell.
+ *
+ * The repo name truncates and the timeframe doesn't, so on a narrow phone the
+ * name gives way first and "3 days ago" always survives.
  */
 export function CurrentlyBuildingChip() {
   const activity = currentlyBuilding(useGitHubData());
@@ -34,12 +36,13 @@ export function CurrentlyBuildingChip() {
         _
       </span>
       <span className="text-muted">{copy(palette).chip.building}</span>
-      {/* Truncates rather than pushing the row wider — this sits in the profile
-          column at md, which is only ~16rem. */}
+      {/* Truncates rather than pushing the row wider, and yields to the
+          timeframe: the repo name gives way first, so "3 days ago" survives on a
+          phone. */}
       <span className="truncate text-foreground group-hover:text-accent-start">
         {activity.repo}
       </span>
-      {when && <span className="hidden text-muted sm:inline">· {when}</span>}
+      {when && <span className="shrink-0 text-muted">· {when}</span>}
     </a>
   );
 }
