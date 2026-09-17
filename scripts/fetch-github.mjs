@@ -2,8 +2,9 @@
 //
 // Surfaces the most-recently-PUSHED public repos (active work — NOT pinned),
 // their language breakdown, and the last commit. Two modes:
-//   - With GITHUB_TOKEN: GraphQL API for repos + last commit + total
-//     contributions in the last year + language breakdown.
+//   - With GITHUB_TOKEN: GraphQL API for repos + last commit + all-time
+//     contributions (summed a calendar year at a time, since a window is capped
+//     at a year) + language breakdown.
 //   - Without a token: falls back to the public REST API for recent repos
 //     + language breakdown. No contribution total, and no review breakdown of
 //     it (REST can't give either cheaply).
@@ -98,6 +99,69 @@ async function enrichWithPortfolioMeta(projects) {
   );
 }
 
+/** One POST to the GraphQL API, so every call site shares the error handling. */
+async function github(query, variables) {
+  const res = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`GraphQL request failed: ${res.status} ${res.statusText}`);
+  }
+
+  const json = await res.json();
+  if (json.errors) {
+    throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
+  }
+
+  return json.data;
+}
+
+/**
+ * GitHub reports contributions per window, and a window is capped at a year, so an
+ * all-time figure has to be summed. Calendar years keep the windows adjacent and
+ * non-overlapping; the first and last are clipped to the account's own life.
+ *
+ * The count includes contributions to private repositories, because the token
+ * belongs to the account — it's a total, not a public-only one.
+ */
+async function allTimeContributions(createdAt) {
+  const openedOn = new Date(createdAt);
+  const now = new Date();
+  let totalContributions = 0;
+  let reviewContributions = 0;
+
+  for (let year = openedOn.getUTCFullYear(); year <= now.getUTCFullYear(); year += 1) {
+    const yearStart = new Date(Date.UTC(year, 0, 1));
+    const yearEnd = new Date(Date.UTC(year + 1, 0, 1));
+    const from = yearStart < openedOn ? openedOn : yearStart;
+    const to = yearEnd > now ? now : yearEnd;
+
+    const data = await github(
+      `query ($login: String!, $from: DateTime!, $to: DateTime!) {
+        user(login: $login) {
+          contributionsCollection(from: $from, to: $to) {
+            contributionCalendar { totalContributions }
+            totalPullRequestReviewContributions
+          }
+        }
+      }`,
+      { login: USER, from: from.toISOString(), to: to.toISOString() },
+    );
+
+    const collection = data.user.contributionsCollection;
+    totalContributions += collection.contributionCalendar.totalContributions ?? 0;
+    reviewContributions += collection.totalPullRequestReviewContributions ?? 0;
+  }
+
+  return { totalContributions, reviewContributions };
+}
+
 async function fetchViaGraphQL() {
   // Shared node selection so owned repos and forks map identically via
   // mapProjectNode.
@@ -172,33 +236,13 @@ async function fetchViaGraphQL() {
             }
           }
         }
-        contributionsCollection {
-          contributionCalendar { totalContributions }
-          totalPullRequestReviewContributions
-        }
+        createdAt
       }
     }
   `;
 
-  const res = await fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query, variables: { login: USER } }),
-  });
-
-  if (!res.ok) {
-    throw new Error(`GraphQL request failed: ${res.status} ${res.statusText}`);
-  }
-
-  const json = await res.json();
-  if (json.errors) {
-    throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
-  }
-
-  const user = json.data.user;
+  const data = await github(query, { login: USER });
+  const user = data.user;
   const allRepos = user.active.nodes;
   const forkRepos = user.forks.nodes;
   const contributedRepos = user.repositoriesContributedTo.nodes;
@@ -262,6 +306,8 @@ async function fetchViaGraphQL() {
       }
     : null;
 
+  const contributions = await allTimeContributions(user.createdAt);
+
   return {
     projects,
     lastActivity,
@@ -271,12 +317,7 @@ async function fetchViaGraphQL() {
     languages: languageBreakdown(
       allRepos.map((r) => r.primaryLanguage?.name),
     ),
-    totalContributions:
-      user.contributionsCollection.contributionCalendar.totalContributions,
-    // The slice of that total which came from reviewing other people's work — a
-    // different signal from writing code, and already counted in the total above.
-    reviewContributions:
-      user.contributionsCollection.totalPullRequestReviewContributions,
+    ...contributions,
   };
 }
 
@@ -365,7 +406,7 @@ async function main() {
   console.log(
     `Wrote ${OUT}: ${payload.projects.length} projects, ${payload.languages.length} languages` +
       (payload.totalContributions != null
-        ? `, ${payload.totalContributions} contributions` +
+        ? `, ${payload.totalContributions} contributions all time` +
           (payload.reviewContributions != null
             ? ` (${payload.reviewContributions} reviews)`
             : '')

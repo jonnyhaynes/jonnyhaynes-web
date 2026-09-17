@@ -47,6 +47,10 @@ export type GitHubData = {
   projects: GitHubProject[];
   lastActivity: GitHubLastActivity | null;
   languages: GitHubLanguage[];
+  /**
+   * Every contribution on the account, not the last twelve months. GitHub only
+   * reports a window at a time, so the bake sums them a calendar year at a time.
+   */
   totalContributions: number | null;
   /**
    * The part of `totalContributions` that came from reviewing other people's pull

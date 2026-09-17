@@ -30,11 +30,11 @@ const countLabel = (count: number, singular: string) =>
  *  - The project total adds repositories *owned* on GitHub to repositories merely
  *    *contributed to* on Bitbucket. Different relationships: it reads as "projects
  *    I've worked in", not "projects I own".
- *  - The activity total adds GitHub's contribution count — commits, issues, reviews
- *    and pull requests — to Bitbucket's, which can only report merged pull requests,
- *    because Bitbucket has no contributions API. The Bitbucket side therefore misses
- *    commits that never went through a pull request, so the total reads low rather
- *    than high.
+ *  - The activity total adds GitHub's all-time contribution count — commits,
+ *    issues, reviews and pull requests — to Bitbucket's, which can only report
+ *    merged pull requests, because Bitbucket has no contributions API. So the
+ *    Bitbucket side misses commits that never went through a pull request, and the
+ *    total reads low rather than high.
  *
  * Anything missing is omitted rather than shown as a zero.
  */
