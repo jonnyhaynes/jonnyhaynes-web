@@ -727,3 +727,33 @@ references. All are in `main` with the shell work; none change the architecture 
     clipped by it. The top bar's tiles therefore carry their names as sr-only text only, and the
     footer's text nav stays as the nav a sighted touch user can read — renamed `"Section index"` so
     it isn't a second landmark sharing the name of the one now visible at the same widths.
+
+## Parked: the glasses
+
+Two attempts at giving the portrait's eyes some life, both reverted and shelved. Recorded so a third
+start doesn't begin from zero.
+
+- **Painted eyelids** (4d1fe3e, reverted). Ellipses over the eyes, faded in for 130ms on randomised
+  4–9s gaps. Rejected: a flat shape over a photograph reads as a shape rather than an eyelid, and it
+  has to cross the glasses frame to reach the eye.
+- **A second image** (f933594, reverted). The animation was good — a closed-eye frame generated from
+  the photo by cloning nearby skin, so the glasses survived intact — but the marks never landed
+  reliably, and at 640px it read as eyes *absent* rather than eyes closed.
+- **Next idea, also parked:** a reflection in the lenses that follows the page scroll, on desktop
+  only. Not started.
+
+**Measurements, as percentages of `public/images/portrait-cutout-960.webp` (960×1129).** His head is
+turned, so everything sits well right of where a frontal portrait would put it — the left eye is past
+the halfway mark, near the bridge rather than in the outer half of its lens.
+
+| | x | y | w | h |
+| --- | --- | --- | --- | --- |
+| left iris | 49.9 | 38.8 | | |
+| right iris | 70.1 | 38.0 | | |
+| left lens glass | 33.5 | 35.5 | 18.5 | 11.5 |
+| right lens glass | 62.5 | 34.5 | 13.0 | 9.5 |
+
+Method note, because it cost two false starts: measure at **3–5× with a 2% grid**, or from pixel
+luminance (threshold inside each lens so the very dark frames can't dominate). A 1× overlay looks
+plausible while being several percent out — the first estimate put the left lid at 34.5% when the eye
+is at 50%.
