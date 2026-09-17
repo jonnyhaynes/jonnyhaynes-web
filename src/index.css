@@ -509,15 +509,15 @@
   }
 }
 
-/* The first screen. Fills the visible pane: subtracting the top strip's height
- * makes the hero end at the fold, so Projects begins on the next screen. */
+/* The first screen. On a phone the portrait sits directly above this, so the
+ * content follows it rather than being centred in a screenful — centred content
+ * would put the eyebrow a third of the way down, nowhere near the portrait. */
 .hero-screen {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: calc(100dvh - var(--top-h, 3.5rem));
-  padding-block: 3rem 5rem;
+  justify-content: flex-start;
+  padding-block: 0.5rem 3rem;
 }
 
 /* Display tracking, shared with the split-flap board so the rolling letters keep
@@ -610,9 +610,11 @@
 }
 
 @media (min-width: 64rem) {
-  /* No top strip at lg (--top-h is 0), so the hero is the full pane height and
-   * the rule above already resolves to 100dvh. */
+  /* The column layout: the panel is beside the hero rather than above it, so the
+   * pitch centres in the pane and fills the first screen again. */
   .hero-screen {
+    justify-content: center;
+    min-height: 100dvh;
     padding-block: 4rem 6rem;
   }
 }

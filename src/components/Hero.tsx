@@ -6,6 +6,10 @@ import { sectionHref } from '../content/sections';
 import { copy } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
 import { FlipWord } from './FlipWord';
+import { GitHubIcon, LinkedInIcon } from './icons';
+
+const SOCIAL =
+  'text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 const [WORDS_1, WORDS_2] = SITE.hero.roleWords;
 const HOLD_MS = 5000;
@@ -88,6 +92,29 @@ export function Hero() {
         >
           {c.getInTouch}
         </Link>
+
+        {/* Plain icons, no button chrome. They take their own line under the
+            buttons on a phone and sit to the right of them once there's room. */}
+        <div className="flex w-full items-center gap-4 sm:ml-auto sm:w-auto">
+          <a
+            href={SITE.githubUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="GitHub"
+            className={SOCIAL}
+          >
+            <GitHubIcon className="size-6" />
+          </a>
+          <a
+            href={SITE.linkedinUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="LinkedIn"
+            className={SOCIAL}
+          >
+            <LinkedInIcon className="size-6" />
+          </a>
+        </div>
       </div>
 
       {/* The first screen is now a plateau, so it has to say there is more below.

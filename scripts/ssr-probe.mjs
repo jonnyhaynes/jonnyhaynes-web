@@ -51,8 +51,21 @@ check('build stamp is inlined', /v\d+\.\d+\.\d+/.test(home));
 check('home has exactly one h1', count(home, 'h1') === 1, `${count(home, 'h1')}`);
 check('home has exactly one main', count(home, 'main') === 1, `${count(home, 'main')}`);
 check('privacy has exactly one h1', count(privacy, 'h1') === 1, `${count(privacy, 'h1')}`);
-check('privacy has no profile panel', count(privacy, 'aside') === 0, `${count(privacy, 'aside')}`);
-check('home has the profile panel', count(home, 'aside') === 1, `${count(home, 'aside')}`);
+
+// The left panel is the portrait and nothing else, so it is deliberately not a
+// landmark. It used to be an <aside> restating the hero's name, role, pitch and
+// both destinations; these guard that it stays stripped back.
+check('home renders the portrait panel', home.includes('portrait-art'));
+check('privacy renders no portrait panel', !privacy.includes('portrait-art'));
+for (const [label, needle] of [
+  ['the subheadline', 'Building React, React Native and TypeScript products'],
+  ['the role', 'Full-Stack Developer'],
+  ['"View My Work"', 'View My Work'],
+  ['"Get in Touch"', 'Get in Touch'],
+]) {
+  const seen = home.split(needle).length - 1;
+  check(`${label} appears exactly once`, seen === 1, `${seen}`);
+}
 
 // Navigation must be real anchors, not click handlers.
 const sectionHrefs = [...home.matchAll(/href="(\/#[^"]+)"/g)].map((m) => m[1]);
