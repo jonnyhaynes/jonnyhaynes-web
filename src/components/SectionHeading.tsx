@@ -26,7 +26,9 @@ export function SectionHeading({
   return (
     <>
       <SectionRule />
-      <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      {/* The rule and the heading are a pair, so the gap between them is generous
+          enough to read as deliberate rather than as a tight caption. */}
+      <div className="mt-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2 className="font-mono text-title text-foreground">
           {heading(palette, section)}
         </h2>
