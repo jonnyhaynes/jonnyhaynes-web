@@ -7,7 +7,6 @@ import { BUILD } from '../lib/buildInfo';
 export function BuildStamp() {
   return (
     <p className="font-mono text-[0.65rem] text-muted">
-      <span aria-hidden="true">// </span>
       {BUILD.version}
       <span aria-hidden="true"> · </span>
       {BUILD.sha}

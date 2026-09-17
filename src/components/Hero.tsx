@@ -96,7 +96,7 @@ export function Hero() {
         aria-hidden="true"
         className="absolute bottom-6 left-0 font-mono text-xs text-muted"
       >
-        // scroll
+        scroll
         <span className="ml-2 inline-block animate-bounce motion-reduce:animate-none">
           ↓
         </span>

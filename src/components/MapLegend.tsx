@@ -18,7 +18,7 @@ const ROW = 'flex justify-between gap-2';
 export function MapLegend() {
   return (
     <div className="max-w-sm">
-      <p className="font-mono text-[0.65rem] text-muted">// source</p>
+      <p className="font-mono text-[0.65rem] text-muted">source</p>
 
       {/* Segmented scale bar: five 5 km blocks spanning the 25 km window. */}
       <div aria-hidden="true" className="mt-3">

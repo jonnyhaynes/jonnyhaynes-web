@@ -25,7 +25,6 @@ export function AssetReadout() {
   return (
     <details className="group font-mono text-[0.65rem] text-muted">
       <summary className="cursor-pointer list-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start [&::-webkit-details-marker]:hidden">
-        <span aria-hidden="true">// </span>
         assets {ok}/{assets.length}
         {failed > 0 ? ` · ${failed} failed` : ''}
         <span

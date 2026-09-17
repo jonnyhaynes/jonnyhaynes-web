@@ -28,7 +28,22 @@ try {
 // Real content, not an empty shell.
 check('home renders substantive markup', home.length > 20000, `${home.length} bytes`);
 check('home contains the hero', /I’m a/.test(home));
-check('home contains section headings', (home.match(/\/\/ /g) ?? []).length >= 4);
+
+// Section headings. This used to detect them by counting `//` prefixes, which
+// broke the moment the prefix was dropped — so it asserts the headings
+// themselves now, and separately that the prefix hasn't come back.
+const headings = [...home.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map((m) =>
+  m[1]
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim(),
+);
+check('home renders section headings', headings.length >= 4, `${headings.length} found`);
+check(
+  'headings carry no // prefix',
+  headings.every((heading) => !heading.includes('//')),
+  headings.join(', '),
+);
 check('footer colophon is present', /OS Terrain 50/.test(home));
 check('build stamp is inlined', /v\d+\.\d+\.\d+/.test(home));
 
