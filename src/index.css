@@ -615,11 +615,17 @@
 
 @media (min-width: 64rem) {
   /* The column layout: the panel is beside the hero rather than above it, so the
-   * pitch centres in the pane and fills the first screen again. */
+   * pitch centres in the pane and fills the first screen again.
+   *
+   * Padding is symmetric on purpose. It was `4rem 6rem`, which pushed the copy's
+   * optical centre 1rem above the column centre while the portrait centred exactly
+   * — a constant 13px misalignment between the copy and the image, at every width
+   * from lg up. Symmetric padding puts both centres on the same line, and since the
+   * two blocks are of similar height their tops line up too. */
   .hero-screen {
     justify-content: center;
     min-height: 100dvh;
-    padding-block: 4rem 6rem;
+    padding-block: 5rem;
   }
 }
 
