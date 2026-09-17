@@ -1,28 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-
-import { useReducedMotion } from '../lib/useReducedMotion';
+import { useEffect, useRef } from 'react';
 
 /**
- * Where the eyes are, as percentages of the portrait image.
- *
- * Measured off the cut-out rather than guessed: the grid was rendered over the
- * photo and these marks land on both pupils. His head is turned, so both are well
- * right of where a frontal portrait would put them — the left eye sits near the
- * bridge, not in the outer half of its lens. Nudge these if a blink drifts.
- */
-const EYES = [
-  { key: 'left', x: 46.0, y: 37.4, w: 7.0, h: 3.2 },
-  { key: 'right', x: 67.2, y: 36.7, w: 7.0, h: 3.2 },
-];
-
-/** How long the lids stay shut, and the range of gaps between blinks. */
-const SHUT_MS = 130;
-const GAP_MIN_MS = 4000;
-const GAP_MAX_MS = 9000;
-
-/**
- * The portrait: a screenprint cut-out that leans very slightly towards the cursor,
- * and blinks now and then.
+ * The portrait: a screenprint cut-out that leans very slightly towards the
+ * cursor.
  *
  * The parallax lives here rather than at the call site so the interactivity
  * travels with the portrait — it was originally a hero effect, and moving the
@@ -35,8 +15,6 @@ const GAP_MAX_MS = 9000;
  */
 export function PortraitFigure() {
   const figureRef = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
-  const [shut, setShut] = useState(false);
 
   useEffect(() => {
     const pointerQuery = window.matchMedia?.('(hover: hover) and (pointer: fine)');
@@ -77,35 +55,6 @@ export function PortraitFigure() {
     };
   }, []);
 
-  // The blink. Randomised rather than on a fixed interval — a metronome reads as a
-  // mechanism, and this is a face. Skipped entirely under reduced motion, and the
-  // lids then simply never open from `opacity: 0`.
-  useEffect(() => {
-    if (reduced) return;
-
-    let gap = 0;
-    let hold = 0;
-
-    const schedule = () => {
-      gap = window.setTimeout(
-        () => {
-          setShut(true);
-          hold = window.setTimeout(() => {
-            setShut(false);
-            schedule();
-          }, SHUT_MS);
-        },
-        GAP_MIN_MS + Math.random() * (GAP_MAX_MS - GAP_MIN_MS),
-      );
-    };
-
-    schedule();
-    return () => {
-      window.clearTimeout(gap);
-      window.clearTimeout(hold);
-    };
-  }, [reduced]);
-
   return (
     <figure ref={figureRef} className="portrait-art portrait-art--screenprint">
       <picture className="portrait-picture">
@@ -123,26 +72,6 @@ export function PortraitFigure() {
           decoding="async"
         />
       </picture>
-
-      {/* The eyelids. A separate element only because a `<picture>` can't hold one,
-          so the photo's transform is repeated onto this layer to keep them together.
-          The painted lids are the closed state; the photo underneath is always the
-          open one. Decorative — the alt text already describes the portrait. */}
-      <span className="portrait-lids" aria-hidden="true">
-        {EYES.map((eye) => (
-          <span
-            key={eye.key}
-            className="portrait-lid"
-            data-closed={shut ? 'true' : 'false'}
-            style={{
-              left: `${eye.x}%`,
-              top: `${eye.y}%`,
-              width: `${eye.w}%`,
-              height: `${eye.h}%`,
-            }}
-          />
-        ))}
-      </span>
     </figure>
   );
 }
