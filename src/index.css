@@ -538,13 +538,12 @@
   --portrait-y: 0px;
   position: relative;
   isolation: isolate;
-  /* Width-driven, so the screenprint treatments keep the photo's proportions — the
-   * accent block and halftone are inset in percentages of this box, and a box
-   * whose ratio drifts leaves them sticking out past the portrait. The `40dvh` cap
-   * is what keeps a short window from pushing the figure past the card's top edge,
-   * since the card clips. Left-aligned while the card is stacked, matching the copy
-   * beneath it. */
-  width: min(100%, 22rem, 40dvh);
+  /* While the panel is stacked, roughly half the browser width — a portrait, not a
+   * backdrop — with a 22rem ceiling so a tablet doesn't balloon it. Width-driven so
+   * the screenprint treatments keep the photo's proportions: the accent block and
+   * halftone are inset in percentages of this box, and a box whose ratio drifts
+   * leaves them sticking out past the portrait. Left-aligned, matching the copy. */
+  width: min(50vw, 22rem);
   margin-inline: 0;
 }
 
@@ -569,8 +568,10 @@
 }
 
 @media (min-width: 64rem) {
-  /* Once the panel is its own column, centre it in the card. */
+  /* In its own column: fill the panel up to 22rem, and never taller than the
+   * viewport allows, so a short window can't push it off the top. */
   .portrait-art {
+    width: min(100%, 22rem, 40dvh);
     margin-inline: auto;
   }
 }

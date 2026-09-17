@@ -117,11 +117,14 @@ export function Hero() {
         </div>
       </div>
 
-      {/* The first screen is now a plateau, so it has to say there is more below.
-          Decorative — the section navs already carry the real destinations. */}
+      {/* Decorative — the section navs already carry the real destinations. Only
+          from lg, where the panel is a column beside the hero and this screenful
+          is a plateau worth signposting. On a phone the portrait sits directly
+          above and the content flows straight on, so a scroll cue there would be
+          pointing at something already visible. */}
       <p
         aria-hidden="true"
-        className="absolute bottom-6 left-0 font-mono text-xs text-muted"
+        className="absolute bottom-6 left-0 hidden font-mono text-xs text-muted lg:block"
       >
         scroll
         <span className="ml-2 inline-block animate-bounce motion-reduce:animate-none">
