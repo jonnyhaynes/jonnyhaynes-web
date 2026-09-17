@@ -17,14 +17,29 @@
 // landed in.
 //
 // Run: node --env-file=.env.local scripts/fetch-bitbucket.mjs
-// Needs BITBUCKET_TOKEN, scoped read:pullrequest:bitbucket, read:repository:bitbucket
-// and read:workspace:bitbucket.
+//
+// Bitbucket has two kinds of credential and they authenticate differently, which
+// matters because the wrong shape fails as a bare 403:
+//
+//  - An **Atlassian API token** (id.atlassian.com) uses HTTP Basic auth, with your
+//    Atlassian email as the username and the token as the password. It also needs
+//    the read:user:bitbucket scope to answer /user. Set BITBUCKET_EMAIL for these.
+//  - A **workspace or repository access token** (Bitbucket settings) is sent as a
+//    Bearer token and has no email. Leave BITBUCKET_EMAIL unset for those.
+//
+// Scopes, either way: read:pullrequest:bitbucket, read:repository:bitbucket,
+// read:workspace:bitbucket — plus read:user:bitbucket if you want the author
+// discovered rather than configured.
+//
+// Optional: BITBUCKET_USER (username or uuid) to skip the /user call entirely.
 // Optional: BITBUCKET_WORKSPACE to count a single workspace instead of all of them.
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
 const TOKEN = process.env.BITBUCKET_TOKEN;
+const EMAIL = process.env.BITBUCKET_EMAIL ?? null;
+const AUTHOR = process.env.BITBUCKET_USER ?? null;
 const ONLY_WORKSPACE = process.env.BITBUCKET_WORKSPACE ?? null;
 const OUT = 'public/data/bitbucket.json';
 const API = 'https://api.bitbucket.org/2.0';
@@ -34,13 +49,22 @@ const MAX_PAGES = 40;
 const PAGE_SIZE = 50;
 
 const authHeaders = () => ({
-  Authorization: `Bearer ${TOKEN}`,
+  Authorization: EMAIL
+    ? `Basic ${Buffer.from(`${EMAIL}:${TOKEN}`).toString('base64')}`
+    : `Bearer ${TOKEN}`,
   Accept: 'application/json',
 });
 
 async function getJson(url) {
   const res = await fetch(url, { headers: authHeaders() });
-  if (!res.ok) throw new Error(`${url} → ${res.status} ${res.statusText}`);
+  if (!res.ok) {
+    // The API explains itself in the body — "Invalid token", a missing scope, a
+    // bad path. Dropping it turns every failure into the same bare 403.
+    const body = await res.text().catch(() => '');
+    throw new Error(
+      `${url} → ${res.status} ${res.statusText}${body ? ` — ${body.slice(0, 300)}` : ''}`,
+    );
+  }
   return res.json();
 }
 
@@ -55,11 +79,25 @@ async function main() {
     );
   }
 
-  // The pull-request endpoint is keyed on the author, so who the token belongs to
-  // has to come from the API rather than from config.
-  const me = await get('/user');
-  const author = me.username ?? me.uuid;
-  if (!author) throw new Error('Bitbucket /user returned no username or uuid');
+  // The pull-request endpoint is keyed on the author. Normally that comes from
+  // /user, but that call needs the read:user:bitbucket scope — and a token allowed
+  // to read the work may not be allowed to read the account — so a username or uuid
+  // can be configured instead and the call skipped.
+  let author = AUTHOR;
+  if (!author) {
+    try {
+      const me = await get('/user');
+      author = me.username ?? me.uuid;
+    } catch (error) {
+      throw new Error(
+        `${error.message}\n` +
+          'Could not read the authenticated user. Either add the ' +
+          'read:user:bitbucket scope to the token, or set BITBUCKET_USER to your ' +
+          "username or uuid so this call isn't needed.",
+      );
+    }
+  }
+  if (!author) throw new Error('No username or uuid to use as the PR author');
 
   const { values: memberships } = await get('/user/workspaces?pagelen=100');
   const workspaces = (memberships ?? [])
@@ -79,16 +117,14 @@ async function main() {
       mergedPullRequests += first.size ?? 0;
 
       let page = first;
-      let pages = 1;
-      do {
+      for (let pages = 1; ; pages += 1) {
         for (const pr of page.values ?? []) {
           const full = pr.destination?.repository?.full_name;
           if (full) repositories.add(full);
         }
         if (!page.next || pages >= MAX_PAGES) break;
         page = await getJson(page.next);
-        pages += 1;
-      } while (page);
+      }
     } catch (error) {
       // One workspace failing (a scope, a revoked permission) must not lose the
       // others — but it does mean the totals are a floor, so it's recorded.
