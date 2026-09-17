@@ -71,7 +71,7 @@ export function Hero() {
         <PortraitFigure />
       </div>
 
-      <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
+      <p className="font-mono text-2xl text-accent-start">{SITE.hero.microcopy}</p>
 
       <h1
         id="hero-heading"
