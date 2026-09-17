@@ -2,19 +2,28 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
 import { Footer } from '../components/Footer';
-import { PaletteToggle } from '../theme/PaletteToggle';
-import { ThemeToggle } from '../theme/ThemeToggle';
+import { useDocumentMeta } from '../lib/useDocumentMeta';
 
 const LINK =
   'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 /**
- * Privacy page. Static content, served by the /privacy route so the whole
- * site shares one footer and stylesheet. Restyled for V2 (Tailwind); no
- * animated gradient.
+ * Privacy page. Served by the /privacy route, which uses the shell's flush layout:
+ * no portrait column, so the content and the footer start at the left edge, but the
+ * pane keeps the two-thirds measure the rest of the sheet gives it.
+ *
+ * The container matches the home route's, so the prose fills the pane rather than
+ * sitting in a narrower centred column.
  */
 export function Privacy() {
   const contactRef = useRef<HTMLSpanElement>(null);
+
+  useDocumentMeta({
+    title: 'Privacy - Jonny Haynes',
+    description:
+      'What happens when you visit jonnyhaynes.com: cookieless analytics, privacy-first fonts, no advertising and no profiling.',
+    path: '/privacy',
+  });
 
   useEffect(() => {
     // Email assembled at runtime so the address never appears in the raw HTML
@@ -38,26 +47,20 @@ export function Privacy() {
 
   return (
     <>
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-
-      <header className="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="mx-auto w-full max-w-6xl px-6 py-8 focus:outline-none"
+      >
         <Link
           to="/"
           className="font-mono text-sm text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
         >
           &larr; Back to home
         </Link>
-        <div className="flex items-center gap-2">
-          <PaletteToggle />
-          <ThemeToggle />
-        </div>
-      </header>
 
-      <main id="main" className="mx-auto max-w-4xl px-6 py-8">
-        <article className="flex flex-col gap-6">
-          <h1 className="text-4xl font-medium tracking-tight">Privacy</h1>
+        <article className="mt-8 flex flex-col gap-6">
+          <h1 className="text-title font-bold tracking-tight">Privacy</h1>
 
           <p className="text-muted">
             This is a small personal website. It does not sell anything, run

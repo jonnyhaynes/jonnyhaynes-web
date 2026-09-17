@@ -1,5 +1,9 @@
+import { useBitbucketData } from '../data/bitbucket';
+import { useGitHubData } from '../data/github';
 import { useProjects } from '../data/projects';
-import { ProjectCard } from './ProjectCard';
+import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
+import { ProjectRow } from './ProjectRow';
+import { ProjectStats } from './ProjectStats';
 import { SectionHeading } from './SectionHeading';
 
 export function Projects() {
@@ -7,23 +11,53 @@ export function Projects() {
   // work projects. Work projects are static, so they render even if the GitHub
   // snapshot never arrives — see src/content/projects.ts.
   const projects = useProjects();
+  const github = useGitHubData();
+  const bitbucket = useBitbucketData();
 
   return (
-    // The parent (App) gives this a max-w-6xl container, wider than the
-    // max-w-4xl reading width used elsewhere, so the grid feels substantial.
     <section id="projects" className="scroll-mt-16 py-16">
-      <SectionHeading section="projects" />
+      {/* The activity chip sits beside the title rather than pinned to the top of
+          the page — it's a fact about the work, so it belongs with the work. */}
+      <SectionHeading section="projects">
+        <CurrentlyBuildingChip />
+      </SectionHeading>
 
-      {projects.length > 0 ? (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <ProjectCard key={project.name} project={project} />
-          ))}
+      {/* The work in column one, the figures in column two. Below `md` they stack
+          with the figures first, which is the order this section had before it had
+          columns at all. */}
+      <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <div className="md:order-2">
+          <ProjectStats
+            contributions={github?.totalContributions ?? null}
+            reviews={github?.reviewContributions ?? null}
+            repositories={github?.repoCount ?? null}
+            mergedPullRequests={bitbucket?.mergedPullRequests ?? null}
+            openPullRequests={bitbucket?.openPullRequests ?? null}
+            contributedRepositories={bitbucket?.repositories ?? null}
+          />
         </div>
-      ) : (
-        // Graceful degradation: nothing curated and the GitHub data absent.
-        <p className="mt-6 text-muted">Projects are loading…</p>
-      )}
+
+        <div className="md:order-1">
+          {projects.length > 0 ? (
+            /* Every project is a row, so all six titles are visible at once and the
+               detail folds away behind each one. Each is still boxed and sits on
+               its own surface — six rows with no background put the copy straight
+               on the topography and were unreadable. */
+            <ul className="flex list-none flex-col gap-3 p-0">
+              {projects.map((project, index) => (
+                <ProjectRow
+                  key={project.name}
+                  project={project}
+                  defaultOpen={index === 0}
+                />
+              ))}
+            </ul>
+          ) : (
+            // Graceful degradation: nothing curated and the GitHub data absent.
+            <p className="text-muted">Projects are loading…</p>
+          )}
+        </div>
+      </div>
     </section>
   );
 }

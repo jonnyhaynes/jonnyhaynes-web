@@ -22,7 +22,7 @@ export function LanguageBar({ languages }: { languages: GitHubLanguage[] }) {
         Languages, by GitHub
       </p>
 
-      <div className="mt-3 flex h-2.5 overflow-hidden rounded-full">
+      <div className="mt-3 flex h-2.5 overflow-hidden">
         {withPct.map((l) => (
           <div
             key={l.name}
@@ -37,7 +37,7 @@ export function LanguageBar({ languages }: { languages: GitHubLanguage[] }) {
         {withPct.map((l) => (
           <li key={l.name} className="flex items-center gap-1.5 text-sm text-muted">
             <span
-              className="inline-block size-2.5 rounded-full"
+              className="inline-block size-2.5"
               style={{ backgroundColor: l.color }}
               aria-hidden="true"
             />

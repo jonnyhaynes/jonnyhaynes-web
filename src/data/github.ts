@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useAsset } from '../lib/assets';
 
 export type GitHubLanguage = {
   name: string;
@@ -47,7 +47,22 @@ export type GitHubData = {
   projects: GitHubProject[];
   lastActivity: GitHubLastActivity | null;
   languages: GitHubLanguage[];
+  /**
+   * Every contribution on the account, not the last twelve months. GitHub only
+   * reports a window at a time, so the bake sums them a calendar year at a time.
+   */
   totalContributions: number | null;
+  /**
+   * The part of `totalContributions` that came from reviewing other people's pull
+   * requests. Null on older snapshots and in the tokenless REST bake, which can't
+   * provide it.
+   */
+  reviewContributions: number | null;
+  /**
+   * Owned, non-fork, public repos in total — not just the curated handful the
+   * projects grid bakes. Null on older snapshots, so consumers must fall back.
+   */
+  repoCount: number | null;
 };
 
 /**
@@ -58,26 +73,7 @@ export type GitHubData = {
  * means the section quietly hides rather than breaking the page.
  */
 export function useGitHubData(): GitHubData | null {
-  const [data, setData] = useState<GitHubData | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch('/data/github.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: GitHubData) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {
-        // Leave data null; the section renders its empty state.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  return useAsset<GitHubData>('github', '/data/github.json');
 }
 
 /**

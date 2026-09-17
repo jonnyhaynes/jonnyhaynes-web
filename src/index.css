@@ -15,6 +15,28 @@
   --font-mono:
     'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
 
+  /* Display type scale. Fluid clamp() rather than stepped sizes so the display
+   * type keeps reflowing at 320px and under 400% zoom (WCAG 1.4.10) instead of
+   * jumping. Weights 700/800 are real JetBrains Mono weights — see the font
+   * request in index.html; without those loaded, bold renders synthetically. */
+  --text-display: clamp(2.5rem, 6.5vw, 6rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 800;
+
+  --text-title: clamp(1.75rem, 3.5vw, 3rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 700;
+
+  /* The stat figures: a step above the section headings and a step below the hero,
+   * so a column of numbers anchors its own section without competing with the
+   * page's title. Heaviest weight the font carries, to hold up at this size. */
+  --text-stat: clamp(2.25rem, 4.5vw, 4.5rem);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.02em;
+  --text-stat--font-weight: 800;
+
   /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather.
    * accent-start lightened from #9e67b5 to clear WCAG AA (4.5:1) both as text
    * on the background and as the "View My Work" button colour (dark text). */
@@ -74,12 +96,6 @@
   /* unfilled ring track opacity — low on the dark face where faint heather still
    * reads; bumped in the light block so tracks don't vanish on the pale face */
   --watch-ring-track-opacity: 0.15;
-
-  /* Recessed control surfaces (the switcher track + its hover). Foreground-based
-   * so they read as a subtle inset in both themes: a faint dark fill on dark, a
-   * faint dark fill on light — no hardcoded black/white that only works on one. */
-  --color-control-recess: color-mix(in oklch, var(--color-foreground) 8%, transparent);
-  --color-control-hover: color-mix(in oklch, var(--color-foreground) 12%, transparent);
 
   /* Reading-section shelf shadows. Lightened in the light-theme block so the
    * same physical cast doesn't look muddy on the chalk background. */
@@ -219,7 +235,6 @@
     left: 0.5rem;
     z-index: 50;
     transform: translateY(-150%);
-    border-radius: 0.375rem;
     background-color: var(--color-accent-start);
     padding: 0.5rem 1rem;
     font-family: var(--font-mono);
@@ -234,27 +249,98 @@
   }
 }
 
-/* Slow diagonal parallax drift for the topographic background (spec §4B).
- * The oversized layers (120%, inset -10%) leave room to translate without
- * exposing an edge. Shared by the base and glow layers so they move together. */
-@keyframes topo-drift {
-  from {
-    transform: translate3d(0, 0, 0);
+/* ---------------------------------------------------------------------------
+ * App shell — profile panel, content, icon rail.
+ *
+ * Below lg the shell is a single column: the top bar, the activity chip, the
+ * profile panel and the content all stack, and the document scrolls. From lg it
+ * becomes three columns via `data-layout` (set by ShellFrame) — the panel column on
+ * the home route, the pane flush left on every other — and the document still owns
+ * the scroll, with the panel and rail sticking in place. Everything is shared.
+ * ------------------------------------------------------------------------- */
+.shell {
+  /* Height of the top strip below lg — just the bar, now that the activity chip
+   * lives in the Projects heading. The hero subtracts it so the first screen ends
+   * at the fold. It's 0 at lg, where the bar is hidden. */
+  --top-h: 3.5rem;
+  --shell-cols: minmax(0, 1fr);
+}
+
+.pane {
+  min-width: 0;
+}
+
+.mobile-bar {
+  height: var(--top-h);
+}
+
+/* The active section's marker — a shape as well as a colour, so the state is
+ * never signalled by hue alone. Square, like everything else in the chrome. */
+.rail-marker {
+  position: absolute;
+  bottom: 0.15rem;
+  left: 50%;
+  width: 0.3rem;
+  height: 0.3rem;
+  translate: -50% 0;
+  background-color: var(--color-accent-start);
+}
+
+@media (min-width: 64rem) {
+  /* From lg the shell becomes the three-column sheet — panel, pane, rail — and it
+   * is deliberately *not* a scroll container: the document owns the scrollbar, so
+   * the page scrolls as a whole and the panel and rail stick in place beside the
+   * content. An inner scroller would have put the scrollbar in the middle of the
+   * layout, next to the content column rather than at the window edge.
+   *
+   * Below lg everything stacks in one column and the document scrolls, so the
+   * scroll model is the same at every width. */
+  .shell {
+    display: grid;
+    grid-template-columns: var(--shell-cols);
+    align-items: start;
+    /* No top strip at lg: the bar and the chip are hidden here. */
+    --top-h: 0rem;
   }
-  to {
-    transform: translate3d(-8%, -8%, 0);
+
+  /* Home: panel, pane, rail. The rail is a fixed strip outside the split, so the
+   * one-third : two-thirds ratio is of the space left beside it. */
+  .shell[data-layout='panel'] {
+    --shell-cols: minmax(0, 1fr) minmax(0, 2fr) 3.75rem;
+  }
+
+  /* Every other route: the same two-thirds pane, but starting at the left edge. The
+   * empty trailing column is what holds it to two thirds — without it the pane
+   * would take the whole width. */
+  .shell[data-layout='flush'] {
+    --shell-cols: minmax(0, 2fr) minmax(0, 1fr) 3.75rem;
   }
 }
 
-.topo-drift {
-  animation: topo-drift 60s linear infinite alternate;
-  will-change: transform;
+/* Skills as a taxonomy: each group's tools hang off a dotted connector with a
+ * node marker, so the list reads as "these belong to that" at a glance. The
+ * markup underneath is still a plain nested list. */
+.skill-tree {
+  position: relative;
+  padding-left: 1.15rem;
+  border-left: 1px dotted color-mix(in oklch, var(--color-muted) 45%, transparent);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .topo-drift {
-    animation: none;
-  }
+.skill-node {
+  position: relative;
+}
+
+/* Diamond node marker, sitting on the connector. */
+.skill-node::before {
+  position: absolute;
+  top: 0.55em;
+  left: -1.15rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  content: '';
+  translate: -50% 0;
+  rotate: 45deg;
+  background-color: var(--color-accent-start);
 }
 
 /* Animated text gradient for the hero headline (spec §A).
@@ -366,9 +452,10 @@
  * margin (see below). --slot-w is one cell's width, shared by the slots. */
 .flip-role {
   display: inline;
-  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
-   * so the flip letters sit at the same rhythm as the static "I'm a". */
-  --slot-w: calc(1ch - 0.025em);
+  /* One cell width: 1ch folded with the headline's tracking, so the flip letters
+   * sit at the same rhythm as the static "I'm a". Reads the same custom property
+   * the headline sets its letter-spacing from, so the two can't drift apart. */
+  --slot-w: calc(1ch - var(--headline-tracking, 0.025em));
 }
 
 /* Word 2 drops to a new line, aligned to the left margin under "I'm a" (not
@@ -425,38 +512,80 @@
   }
 }
 
-.hero-with-portrait {
-  --portrait-x: 0px;
-  --portrait-y: 0px;
-  display: grid;
-  min-height: 70vh;
-  align-items: center;
-  gap: 2.25rem;
-  padding-block: 2rem 4rem;
+/* The first screen: the portrait, the pitch and the calls to action, filling the
+ * browser height below the bar and centred in it. `min-height` rather than a fixed
+ * height, so on a short screen the content grows the section instead of being
+ * pushed out of both ends — and the top padding is the floor that keeps the
+ * portrait clear of the sticky bar when that happens. */
+.hero-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100dvh - var(--top-h, 3.5rem));
+  padding-block: 1.5rem 3rem;
 }
 
+/* Display tracking, shared with the split-flap board so the rolling letters keep
+ * the same rhythm as the static "I'm a" — see --slot-w in .flip-role. */
+.hero-headline {
+  --headline-tracking: 0.03em;
+  letter-spacing: calc(var(--headline-tracking) * -1);
+}
+
+/* The profile panel's portrait: the screenprint cut-out seated in the card's
+ * upper area, over the contour field.
+ *
+ * --portrait-x/y are the cursor parallax offsets, written by PortraitFigure and
+ * defaulted here. Touch and reduced-motion readers never get them set, so the
+ * transform falls back to the static offset and nothing moves. */
 .portrait-art {
+  --portrait-x: 0px;
+  --portrait-y: 0px;
   position: relative;
   isolation: isolate;
-  margin-inline: 0 auto;
-  width: min(52vw, 13rem);
-  aspect-ratio: 0.85;
+  /* While the panel is stacked, roughly half the browser width — a portrait, not a
+   * backdrop — with a 22rem ceiling so a tablet doesn't balloon it. Width-driven so
+   * the screenprint treatments keep the photo's proportions: the accent block and
+   * halftone are inset in percentages of this box, and a box whose ratio drifts
+   * leaves them sticking out past the portrait. Left-aligned, matching the copy. */
+  width: min(50vw, 22rem);
+  margin-inline: 0;
 }
 
 .portrait-picture {
-  position: absolute;
-  inset: 0;
+  /* In flow, so the figure takes the image's own height. It used to be absolutely
+   * positioned to fill a fixed-ratio box, which meant the box drove the photo. */
+  position: relative;
   z-index: 2;
   display: block;
-  transform: translate3d(calc(var(--portrait-x) + 0.35rem), calc(var(--portrait-y) - 0.2rem), 0);
+  transform: translate3d(
+    calc(var(--portrait-x) + 0.35rem),
+    calc(var(--portrait-y) - 0.2rem),
+    0
+  );
   transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .portrait-picture {
+    transition: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  /* In its own column: fill the panel up to 22rem, and never taller than the
+   * viewport allows, so a short window can't push it past the column. */
+  .portrait-art {
+    width: min(100%, 22rem, 40dvh);
+    margin-inline: auto;
+  }
+}
+
 .portrait-picture img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
+  height: auto;
 }
 
 .portrait-art::before,
@@ -488,27 +617,18 @@
 }
 
 @media (min-width: 64rem) {
-  .hero-with-portrait {
-    grid-template-columns: minmax(15rem, 0.58fr) minmax(0, 1.42fr);
-    gap: clamp(2.5rem, 5vw, 5rem);
-    padding-block: 3rem 4rem;
-  }
-
-  .portrait-art {
-    width: min(23vw, 18rem);
-  }
-}
-
-@media (hover: none), (pointer: coarse) {
-  .portrait-picture {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portrait-picture {
-    transition: none;
-    transform: none;
+  /* The column layout: the panel is beside the hero rather than above it, so the
+   * pitch centres in the pane and fills the first screen again.
+   *
+   * Padding is symmetric on purpose. It was `4rem 6rem`, which pushed the copy's
+   * optical centre 1rem above the column centre while the portrait centred exactly
+   * — a constant 13px misalignment between the copy and the image, at every width
+   * from lg up. Symmetric padding puts both centres on the same line, and since the
+   * two blocks are of similar height their tops line up too. */
+  .hero-screen {
+    justify-content: center;
+    min-height: 100dvh;
+    padding-block: 5rem;
   }
 }
 
@@ -2019,4 +2139,57 @@
     transition: none;
   }
 }
+
+/* ---------------------------------------------------------------- *
+ * Projects section: one row per project, expanding in place.
+ *
+ * Native <details> rather than a state toggle, so every title sits in the HTML,
+ * every pitch and link stays in the HTML whether or not a row is open, and the
+ * disclosure works with JavaScript off.
+ *
+ * Unlike the single reveal this replaced, the summary is first in the DOM *and*
+ * first on screen — no reordering needed here.
+ * ---------------------------------------------------------------- */
+.project-row > summary .project-row-chevron {
+  transition: transform 200ms ease;
+}
+
+.project-row[open] > summary .project-row-chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-row > summary .project-row-chevron {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Project stats: the figures read as one group.
+ *
+ * The gradient sits on the list rather than on each number, so a single ramp runs
+ * down the whole column. Per-number, a two-digit figure and a four-digit one each
+ * carried their own copy of the ramp and showed different ranges of the same
+ * palette.
+ *
+ * `background-clip: text` clips to the text of the element *and its descendants*,
+ * which is what makes this work: the numbers need no styles of their own beyond
+ * the transparency they inherit, and the labels set their own colour and paint
+ * over the top.
+ *
+ * The direction overrides `.animate-gradient` by source order. The drift animation
+ * and the palette stops come from that class and are untouched, so the group still
+ * breathes in step with the hero.
+ * ---------------------------------------------------------------- */
+.stat-figures {
+  background-image: linear-gradient(
+    to bottom in oklch,
+    var(--grad-1),
+    var(--grad-2)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
 

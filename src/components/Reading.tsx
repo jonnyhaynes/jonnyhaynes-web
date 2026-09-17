@@ -35,10 +35,9 @@ export function Reading() {
 
   return (
     <section id="reading" className="scroll-mt-16 py-16">
-      {/* Title sits in the section's own wrapper, which is `max-w-4xl px-6` —
-          identical to the "What I'm playing" section — so the title and shelf
-          line match its width and left edge at every screen size with no extra
-          classes. Only the books row (below) breaks out wider. */}
+      {/* Title and shelf line both sit in the section's own box, which now fills
+          the shell's single content container — so they share a width and left
+          edge with every other section at every screen size, with no classes. */}
       <SectionHeading section="reading" />
 
       {/* Mobile only: stacked cover + horizontal bars. The leaning shelf takes
@@ -55,13 +54,11 @@ export function Reading() {
       </div>
 
       {/* Desktop: the leaning bookshelf — one row of spines standing on their
-          ends, with the face-out cover in the centre. The section wrapper is
-          max-w-4xl (matching "What I'm playing"), but the books want more room,
-          so this row breaks out symmetrically to the wider max-w-6xl content
-          width via a centered fixed max-width and negative side margins. The
-          title and shelf line stay at the wrapper's 4xl width. */}
+          ends, with the face-out cover in the centre. Every section now shares
+          the shell's single content container, so the row fills it directly: the
+          old max-w-4xl → max-w-6xl breakout this used to need is gone. */}
       <ul
-        className="bookshelf relative left-1/2 mt-10 hidden w-[min(72rem,100vw-3rem)] max-w-none -translate-x-1/2 items-end justify-center gap-3 md:flex"
+        className="bookshelf mt-10 hidden w-full items-end justify-center gap-3 md:flex"
         role="list"
       >
         {/* Left pair — lean right, into the cover. Outermost (i=0) leans most.
@@ -93,10 +90,10 @@ export function Reading() {
         ))}
       </ul>
 
-      {/* The shelf line spans the section wrapper's content width (max-w-4xl,
-          matching "What I'm playing") — narrower than the broken-out books row
-          above it. No extra max-width/padding of its own, so it can't drift from
-          the title. Shown with the leaning shelf (`md`) only. */}
+      {/* The shelf line spans the section's content width — the same width as
+          the books row above it and as the title. No max-width/padding of its
+          own, so it can't drift from either. Shown with the leaning shelf (`md`)
+          only. */}
       <div className="book-shelf-line hidden md:block" />
     </section>
   );
@@ -116,16 +113,16 @@ function FeatureCover({
       target="_blank"
       rel="noreferrer noopener"
       aria-label={`${book.title} by ${book.authors} — open on Spotify`}
-      className={`book-feature group block self-end rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start ${className}`}
+      className={`book-feature group block self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-start ${className}`}
     >
       {book.cover ? (
         <img
           src={book.cover}
           alt=""
-          className="aspect-square w-full rounded-md object-cover transition-transform group-hover:scale-[1.01]"
+          className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.01]"
         />
       ) : (
-        <span className="flex aspect-square w-full items-center justify-center rounded-md bg-muted/20 font-mono text-4xl text-muted">
+        <span className="flex aspect-square w-full items-center justify-center bg-muted/20 font-mono text-4xl text-muted">
           📖
         </span>
       )}
@@ -183,7 +180,7 @@ function SpineBar({
           target="_blank"
           rel="noreferrer noopener"
           aria-label={`${book.title} by ${book.authors} — open on Spotify`}
-          className="flex min-h-14 flex-col justify-center gap-0.5 rounded-sm px-4 py-2 shadow-[inset_0_2px_3px_rgba(0,0,0,0.25),inset_0_-1px_2px_rgba(255,255,255,0.15)] transition-transform hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+          className="flex min-h-14 flex-col justify-center gap-0.5 px-4 py-2 shadow-[inset_0_2px_3px_rgba(0,0,0,0.25),inset_0_-1px_2px_rgba(255,255,255,0.15)] transition-transform hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
           style={{ background: spine.bg, color: spine.ink }}
         >
           <span className="text-sm font-medium leading-tight tracking-tight">
@@ -204,7 +201,7 @@ function SpineBar({
         target="_blank"
         rel="noreferrer noopener"
         aria-label={`${book.title} by ${book.authors} — open on Spotify`}
-        className="book-spine flex items-center justify-center rounded-sm px-2 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+        className="book-spine flex items-center justify-center px-2 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
         style={
           {
             background: spine.bg,

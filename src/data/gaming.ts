@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useAsset } from '../lib/assets';
 
 /** One recently-played game tile, normalised across Steam and Xbox. */
 export type GameTile = {
@@ -31,22 +31,7 @@ export type GamingData = {
  * (or the third-party Xbox service) being down can never break the page.
  */
 export function useGamingData(): GamingData | null {
-  const [data, setData] = useState<GamingData | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/data/gaming.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: GamingData) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  return useAsset<GamingData>('gaming', '/data/gaming.json');
 }
 
 /**
