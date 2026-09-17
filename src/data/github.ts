@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useAsset } from '../lib/assets';
 
 export type GitHubLanguage = {
   name: string;
@@ -58,26 +58,7 @@ export type GitHubData = {
  * means the section quietly hides rather than breaking the page.
  */
 export function useGitHubData(): GitHubData | null {
-  const [data, setData] = useState<GitHubData | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch('/data/github.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: GitHubData) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {
-        // Leave data null; the section renders its empty state.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  return useAsset<GitHubData>('github', '/data/github.json');
 }
 
 /**

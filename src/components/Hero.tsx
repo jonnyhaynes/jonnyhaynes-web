@@ -1,54 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+
 import { SITE } from '../content/site';
+import { sectionHref } from '../content/sections';
 import { copy } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
+import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
 import { FlipWord } from './FlipWord';
-import { PortraitFigure } from './PortraitFigure';
-import { GitHubIcon, LinkedInIcon } from './icons';
 
 const [WORDS_1, WORDS_2] = SITE.hero.roleWords;
 const HOLD_MS = 5000;
 
+/**
+ * The first screen. Fills exactly the visible pane — `.hero-screen` subtracts the
+ * pane bar's height, so the hero lands flush to the fold at every tier and
+ * Projects starts on the next screen.
+ *
+ * The role is a split-flap board: decorative and aria-hidden, with the readable
+ * role carried in a single sr-only span so screen readers and crawlers get one
+ * clean sentence rather than the churn of rolling glyphs.
+ */
 export function Hero() {
   const [i1, setI1] = useState(0);
   const [i2, setI2] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
   const { palette } = useTheme();
   const c = copy(palette).hero;
-
-  useEffect(() => {
-    const pointerQuery = window.matchMedia?.('(hover: hover) and (pointer: fine)');
-    const motionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    const section = sectionRef.current;
-    if (!pointerQuery?.matches || motionQuery?.matches || !section) return;
-
-    let frame = 0;
-    const reset = () => {
-      section.style.setProperty('--portrait-x', '0px');
-      section.style.setProperty('--portrait-y', '0px');
-    };
-    const track = (event: PointerEvent) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const x = (event.clientX / window.innerWidth - 0.5) * 2;
-        const y = (event.clientY / window.innerHeight - 0.5) * 2;
-        section.style.setProperty('--portrait-x', `${x * 12}px`);
-        section.style.setProperty('--portrait-y', `${y * 9}px`);
-      });
-    };
-
-    window.addEventListener('pointermove', track);
-    window.addEventListener('pointerleave', reset);
-    document.documentElement.addEventListener('mouseleave', reset);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('pointermove', track);
-      window.removeEventListener('pointerleave', reset);
-      document.documentElement.removeEventListener('mouseleave', reset);
-      reset();
-    };
-  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -83,54 +59,64 @@ export function Hero() {
   const currentRole = `${WORDS_1[i1]} ${WORDS_2[i2]}`;
 
   return (
-    <section ref={sectionRef} className="hero-with-portrait" aria-labelledby="hero-heading">
-      <PortraitFigure />
-      <div className="min-w-0">
-        <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
-        <h1 id="hero-heading" className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
-          <span className="text-foreground">I’m a </span>
-          <span className="sr-only">{currentRole}</span>
-          <span className="flip-role" aria-hidden="true">
-            <FlipWord words={WORDS_1} index={i1} />
-            <FlipWord words={WORDS_2} index={i2} delayMs={150} />
-          </span>
-        </h1>
-        <p className="mt-6 max-w-xl text-lg text-muted">{c.subheadline}</p>
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <a
-            href="#projects"
-            className="rounded-md bg-accent-start px-5 py-2.5 font-medium text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-          >
-            {c.viewWork}
-          </a>
-          <a
-            href="#contact"
-            className="rounded-md border border-muted/40 bg-background/70 px-5 py-2.5 font-medium text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-          >
-            {c.getInTouch}
-          </a>
-          <div className="flex w-full items-center gap-3 sm:ml-auto sm:w-auto">
-            <a
-              href={SITE.githubUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="GitHub"
-              className="text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-            >
-              <GitHubIcon className="size-6" />
-            </a>
-            <a
-              href={SITE.linkedinUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="LinkedIn"
-              className="text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-            >
-              <LinkedInIcon className="size-6" />
-            </a>
-          </div>
-        </div>
+    <section className="hero-screen" aria-labelledby="hero-heading">
+      <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
+
+      <h1
+        id="hero-heading"
+        className="hero-headline mt-4 font-extrabold text-display"
+      >
+        <span className="text-foreground">I’m a </span>
+        <span className="sr-only">{currentRole}</span>
+        <span className="flip-role" aria-hidden="true">
+          <FlipWord words={WORDS_1} index={i1} />
+          <FlipWord words={WORDS_2} index={i2} delayMs={150} />
+        </span>
+      </h1>
+
+      {/* Pinned to the top of the hero, out of the centred flow — an `order`ed
+          item would still sit wherever the centred group lands, which is the
+          middle of the screen.
+          lg only, and the gate lives on this wrapper rather than on the chip:
+          the chip's own class list sets `inline-flex`, and `.inline-flex` is
+          emitted after `.hidden` in the stylesheet, so a `hidden` utility on the
+          chip loses to its own display class and it shows anyway.
+          It stays after the h1 in the DOM, so a screen reader meets the heading
+          first and this line after it. Being absolutely positioned doesn't
+          change that: reading order follows the DOM, and the only two focusable
+          groups here (this chip, then the CTAs) still run top-to-bottom. */}
+      <div className="absolute top-6 left-0 hidden lg:block">
+        <CurrentlyBuildingChip />
       </div>
+
+      <p className="mt-6 max-w-xl text-lg text-muted">{c.subheadline}</p>
+
+      <div className="mt-10 flex flex-wrap items-center gap-4">
+        <Link
+          to={sectionHref('projects')}
+          className="rounded-md bg-accent-start px-5 py-2.5 font-medium text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+        >
+          {c.viewWork}
+        </Link>
+        <Link
+          to={sectionHref('contact')}
+          className="rounded-md border border-muted/40 bg-background/70 px-5 py-2.5 font-medium text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+        >
+          {c.getInTouch}
+        </Link>
+      </div>
+
+      {/* The first screen is now a plateau, so it has to say there is more below.
+          Decorative — the section navs already carry the real destinations. */}
+      <p
+        aria-hidden="true"
+        className="absolute bottom-6 left-0 font-mono text-xs text-muted"
+      >
+        // scroll
+        <span className="ml-2 inline-block animate-bounce motion-reduce:animate-none">
+          ↓
+        </span>
+      </p>
     </section>
   );
 }

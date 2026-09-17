@@ -15,6 +15,20 @@
   --font-mono:
     'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
 
+  /* Display type scale. Fluid clamp() rather than stepped sizes so the display
+   * type keeps reflowing at 320px and under 400% zoom (WCAG 1.4.10) instead of
+   * jumping. Weights 700/800 are real JetBrains Mono weights — see the font
+   * request in index.html; without those loaded, bold renders synthetically. */
+  --text-display: clamp(2.5rem, 6.5vw, 6rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 800;
+
+  --text-title: clamp(1.75rem, 3.5vw, 3rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 700;
+
   /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather.
    * accent-start lightened from #9e67b5 to clear WCAG AA (4.5:1) both as text
    * on the background and as the "View My Work" button colour (dark text). */
@@ -234,27 +248,105 @@
   }
 }
 
-/* Slow diagonal parallax drift for the topographic background (spec §4B).
- * The oversized layers (120%, inset -10%) leave room to translate without
- * exposing an edge. Shared by the base and glow layers so they move together. */
-@keyframes topo-drift {
-  from {
-    transform: translate3d(0, 0, 0);
+/* ---------------------------------------------------------------------------
+ * App shell — profile panel, content, icon rail.
+ *
+ * Below lg the shell is a single column: the top bar, the activity chip, the
+ * profile panel and the content all stack, and the document scrolls. From lg it
+ * becomes three columns via `data-panel` (set by ShellFrame) — three on the home
+ * route, two on the routes with no profile panel — and the document still owns
+ * the scroll, with the panel and rail sticking in place. Everything is shared.
+ * ------------------------------------------------------------------------- */
+.shell {
+  /* Height of the pane bar. */
+  --bar-h: 3.5rem;
+  /* Everything below lg that sits above the content: the bar plus the activity
+   * chip's line. The hero subtracts it so the first screen still ends at the
+   * fold. Fixed rather than measured, so it's an estimate if the chip's line is
+   * taller than assumed — being a few px out costs nothing visible. */
+  --top-h: calc(var(--bar-h) + 2.5rem);
+  --shell-cols: minmax(0, 1fr);
+}
+
+.pane {
+  min-width: 0;
+}
+
+.mobile-bar {
+  height: var(--bar-h);
+}
+
+/* Collapses entirely when the chip renders nothing (no snapshot yet), so an
+ * absent chip leaves no gap. */
+.mobile-chip:empty {
+  display: none;
+}
+
+/* The active section's marker — a shape as well as a colour, so the state is
+ * never signalled by hue alone. */
+.rail-marker {
+  position: absolute;
+  bottom: 0.15rem;
+  left: 50%;
+  width: 0.3rem;
+  height: 0.3rem;
+  translate: -50% 0;
+  border-radius: 9999px;
+  background-color: var(--color-accent-start);
+}
+
+@media (min-width: 64rem) {
+  /* From lg the shell becomes the three-column sheet — panel, pane, rail — and it
+   * is deliberately *not* a scroll container: the document owns the scrollbar, so
+   * the page scrolls as a whole and the panel and rail stick in place beside the
+   * content. An inner scroller would have put the scrollbar in the middle of the
+   * layout, next to the content column rather than at the window edge.
+   *
+   * Below lg everything stacks in one column and the document scrolls, so the
+   * scroll model is the same at every width. */
+  .shell {
+    display: grid;
+    grid-template-columns: var(--shell-cols);
+    align-items: start;
+    /* No top strip at lg: the bar and the chip are hidden here. */
+    --top-h: 0rem;
   }
-  to {
-    transform: translate3d(-8%, -8%, 0);
+
+  /* Panel one third, pane two thirds — the sheet's proportions. The rail is a
+   * fixed strip outside that ratio, so the split is of the space left beside it. */
+  .shell[data-panel='true'] {
+    --shell-cols: minmax(0, 1fr) minmax(0, 2fr) 3.75rem;
+  }
+
+  .shell[data-panel='false'] {
+    --shell-cols: minmax(0, 1fr) 3.75rem;
   }
 }
 
-.topo-drift {
-  animation: topo-drift 60s linear infinite alternate;
-  will-change: transform;
+/* Skills as a taxonomy: each group's tools hang off a dotted connector with a
+ * node marker, so the list reads as "these belong to that" at a glance. The
+ * markup underneath is still a plain nested list. */
+.skill-tree {
+  position: relative;
+  padding-left: 1.15rem;
+  border-left: 1px dotted color-mix(in oklch, var(--color-muted) 45%, transparent);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .topo-drift {
-    animation: none;
-  }
+.skill-node {
+  position: relative;
+}
+
+/* Diamond node marker, sitting on the connector. */
+.skill-node::before {
+  position: absolute;
+  top: 0.55em;
+  left: -1.15rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  content: '';
+  translate: -50% 0;
+  rotate: 45deg;
+  background-color: var(--color-accent-start);
 }
 
 /* Animated text gradient for the hero headline (spec §A).
@@ -366,9 +458,10 @@
  * margin (see below). --slot-w is one cell's width, shared by the slots. */
 .flip-role {
   display: inline;
-  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
-   * so the flip letters sit at the same rhythm as the static "I'm a". */
-  --slot-w: calc(1ch - 0.025em);
+  /* One cell width: 1ch folded with the headline's tracking, so the flip letters
+   * sit at the same rhythm as the static "I'm a". Reads the same custom property
+   * the headline sets its letter-spacing from, so the two can't drift apart. */
+  --slot-w: calc(1ch - var(--headline-tracking, 0.025em));
 }
 
 /* Word 2 drops to a new line, aligned to the left margin under "I'm a" (not
@@ -425,21 +518,39 @@
   }
 }
 
-.hero-with-portrait {
-  --portrait-x: 0px;
-  --portrait-y: 0px;
-  display: grid;
-  min-height: 70vh;
-  align-items: center;
-  gap: 2.25rem;
-  padding-block: 2rem 4rem;
+/* The first screen. Fills the visible pane: subtracting the top strip's height
+ * makes the hero end at the fold, so Projects begins on the next screen. */
+.hero-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100dvh - var(--top-h, 6rem));
+  padding-block: 3rem 5rem;
 }
 
+/* Display tracking, shared with the split-flap board so the rolling letters keep
+ * the same rhythm as the static "I'm a" — see --slot-w in .flip-role. */
+.hero-headline {
+  --headline-tracking: 0.03em;
+  letter-spacing: calc(var(--headline-tracking) * -1);
+}
+
+/* The profile panel's portrait: the screenprint cut-out seated in the panel's
+ * upper area, over the contour field.
+ *
+ * --portrait-x/y are the cursor parallax offsets, written by PortraitFigure and
+ * defaulted here. Touch and reduced-motion readers never get them set, so the
+ * transform falls back to the static offset and nothing moves. */
 .portrait-art {
+  --portrait-x: 0px;
+  --portrait-y: 0px;
   position: relative;
   isolation: isolate;
-  margin-inline: 0 auto;
-  width: min(52vw, 13rem);
+  /* Left-aligned while the panel is stacked, so the portrait sits on the same
+   * edge as the name and copy beneath it rather than floating in the middle. */
+  margin-inline: 0;
+  width: min(100%, 20rem);
   aspect-ratio: 0.85;
 }
 
@@ -448,8 +559,28 @@
   inset: 0;
   z-index: 2;
   display: block;
-  transform: translate3d(calc(var(--portrait-x) + 0.35rem), calc(var(--portrait-y) - 0.2rem), 0);
+  transform: translate3d(
+    calc(var(--portrait-x) + 0.35rem),
+    calc(var(--portrait-y) - 0.2rem),
+    0
+  );
   transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-picture {
+    transition: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  /* Once the panel is its own column and the three-column sheet appears, centre
+   * it again. The column is narrower than the 20rem cap, so the portrait fills
+   * the width there and this is belt-and-braces — it only matters if the column
+   * ever grows past it. */
+  .portrait-art {
+    margin-inline: auto;
+  }
 }
 
 .portrait-picture img {
@@ -488,27 +619,10 @@
 }
 
 @media (min-width: 64rem) {
-  .hero-with-portrait {
-    grid-template-columns: minmax(15rem, 0.58fr) minmax(0, 1.42fr);
-    gap: clamp(2.5rem, 5vw, 5rem);
-    padding-block: 3rem 4rem;
-  }
-
-  .portrait-art {
-    width: min(23vw, 18rem);
-  }
-}
-
-@media (hover: none), (pointer: coarse) {
-  .portrait-picture {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portrait-picture {
-    transition: none;
-    transform: none;
+  /* No top strip at lg (--top-h is 0), so the hero is the full pane height and
+   * the rule above already resolves to 100dvh. */
+  .hero-screen {
+    padding-block: 4rem 6rem;
   }
 }
 

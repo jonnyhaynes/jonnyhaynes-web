@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router';
 
 import { TopographicBackground } from './components/TopographicBackground';
+import { PanelShell, PlainShell } from './components/ShellFrame';
 import { Home } from './pages/Home';
 import { Privacy } from './pages/Privacy';
 
@@ -14,8 +15,14 @@ function App() {
       <TopographicBackground />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/privacy" element={<Privacy />} />
+        {/* Home carries the profile panel; every other route gets the same pane
+            and rail without it. See ShellFrame for the shared frame. */}
+        <Route element={<PanelShell />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        <Route element={<PlainShell />}>
+          <Route path="/privacy" element={<Privacy />} />
+        </Route>
       </Routes>
     </div>
   );

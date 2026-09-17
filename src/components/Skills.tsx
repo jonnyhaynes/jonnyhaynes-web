@@ -17,13 +17,22 @@ export function Skills() {
         </div>
       ) : null}
 
-      <div className="mt-10 grid gap-8 sm:grid-cols-3">
+      {/* The tools as a taxonomy rather than three flat lists: each group is a
+          node and its tools hang off a connector, so the shape says "these
+          belong to that" before you read a word. Plain nested lists underneath,
+          so it stays navigable and crawlable. */}
+      <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {SKILL_GROUPS.map((group) => (
           <div key={group.title}>
-            <h3 className="font-medium text-foreground">{group.title}</h3>
-            <ul className="mt-3 flex flex-col gap-2">
+            <h3 className="flex items-baseline gap-2 font-mono text-sm font-medium text-foreground">
+              <span aria-hidden="true" className="text-accent-start">
+                ✢
+              </span>
+              {group.title}
+            </h3>
+            <ul className="skill-tree mt-4 flex list-none flex-col gap-2 p-0">
               {group.skills.map((skill) => (
-                <li key={skill} className="text-muted">
+                <li key={skill} className="skill-node text-muted">
                   {skill}
                 </li>
               ))}

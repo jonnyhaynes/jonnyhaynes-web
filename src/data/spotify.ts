@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { fetchAsset, useAsset } from '../lib/assets';
+
 export type SpotifyArtist = {
   name: string;
   url: string | null;
@@ -108,22 +110,7 @@ export type SpotifyAudiobooks = {
  * on failure so the music section degrades gracefully.
  */
 export function useSpotifyTop(): SpotifyTop | null {
-  const [data, setData] = useState<SpotifyTop | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/data/spotify-top.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: SpotifyTop) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  return useAsset<SpotifyTop>('spotify-top', '/data/spotify-top.json');
 }
 
 /**
@@ -132,22 +119,10 @@ export function useSpotifyTop(): SpotifyTop | null {
  * case before the widened-scope re-auth has happened).
  */
 export function useSpotifyAudiobooks(): SpotifyAudiobooks | null {
-  const [data, setData] = useState<SpotifyAudiobooks | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/data/spotify-audiobooks.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: SpotifyAudiobooks) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  return useAsset<SpotifyAudiobooks>(
+    'spotify-audiobooks',
+    '/data/spotify-audiobooks.json',
+  );
 }
 
 /** Slow poll when paused/idle — nothing is changing fast. */
@@ -181,8 +156,9 @@ export function useNowPlaying(): NowPlaying | null {
     };
 
     const poll = () => {
-      fetch('/api/now-playing')
-        .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      // Deliberately not via loadAsset: this one is polled, not cached.
+      fetchAsset('now-playing', '/api/now-playing')
+        .then((res) => res.json())
         .then((json: NowPlaying) => {
           if (cancelled) return;
           setData(json);

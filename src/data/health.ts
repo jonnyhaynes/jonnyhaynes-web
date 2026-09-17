@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useAsset } from '../lib/assets';
 
 /** One day of a metric in the 3-day drill-down histories. */
 export type HistoryPoint = { date: string; value: number | null };
@@ -42,24 +42,5 @@ export type HealthData = {
  * first bake) just shows the section's rest-day fallback.
  */
 export function useHealthData(): HealthData | null {
-  const [data, setData] = useState<HealthData | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch('/data/health.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: HealthData) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {
-        // Leave data null; the section renders its rest-day fallback.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  return useAsset<HealthData>('health', '/data/health.json');
 }

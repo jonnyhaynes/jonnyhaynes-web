@@ -1,3 +1,4 @@
+import { TILE, PILL } from '../components/tile';
 import { useTheme } from './useTheme';
 
 /** Sun icon — shown in dark mode (click to bring the light on). */
@@ -37,6 +38,14 @@ function MoonIcon() {
   );
 }
 
+/**
+ * The big-light toggle, drawn as a plain rail tile to sit with the section links
+ * and the palette toggle at equal weight.
+ *
+ * It carries no on/off styling: it's a mode switch, not a selection, and the icon
+ * already says which mode you're in. The label reveals on hover and focus; the
+ * accessible name comes from `aria-label`.
+ */
 export function ThemeToggle() {
   const { theme, toggle, toggleTitle } = useTheme();
 
@@ -45,23 +54,12 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={toggleTitle}
-      className="group relative inline-flex items-center rounded-full border border-muted/30 bg-background/70 p-1 text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+      className={`${TILE} group`}
     >
-      {/* Yorkshire prompt — reveals on hover/focus. Positioned ABSOLUTELY to the
-          left of the icon (right-full) so it floats OVER whatever sits beside the
-          button (the palette rose) instead of pushing it sideways. Its own pill
-          bg + blur keeps it legible over the rose. Slides in from the right +
-          fades. aria-hidden: the button already carries the label via aria-label.
-          motion-reduce: instant swap. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute right-full mr-1 whitespace-nowrap rounded-full border border-muted/30 bg-background/90 px-3 py-1 font-mono text-sm opacity-0 backdrop-blur-sm transition-all duration-300 translate-x-1 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none"
-      >
+      <span aria-hidden="true" className={PILL}>
         {toggleTitle}
       </span>
-      <span className="inline-flex size-8 shrink-0 items-center justify-center">
-        {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-      </span>
+      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }

@@ -12,6 +12,9 @@
 /dist
 /build
 
+# SSR probe output (see npm run probe:ssr)
+/.ssr-probe
+
 # misc
 .DS_Store
 *.pem

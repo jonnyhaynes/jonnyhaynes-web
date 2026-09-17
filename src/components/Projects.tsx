@@ -1,5 +1,7 @@
+import { useGitHubData } from '../data/github';
 import { useProjects } from '../data/projects';
 import { ProjectCard } from './ProjectCard';
+import { ProjectStats } from './ProjectStats';
 import { SectionHeading } from './SectionHeading';
 
 export function Projects() {
@@ -7,15 +9,25 @@ export function Projects() {
   // work projects. Work projects are static, so they render even if the GitHub
   // snapshot never arrives — see src/content/projects.ts.
   const projects = useProjects();
+  const github = useGitHubData();
 
   return (
-    // The parent (App) gives this a max-w-6xl container, wider than the
-    // max-w-4xl reading width used elsewhere, so the grid feels substantial.
+    // The shell's pane gives every section the same content container, so the
+    // grid sits in the same width as the prose sections rather than a wider one.
     <section id="projects" className="scroll-mt-16 py-16">
       <SectionHeading section="projects" />
 
+      <ProjectStats
+        projects={projects.length}
+        contributions={github?.totalContributions ?? null}
+      />
+
       {projects.length > 0 ? (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        // One across on phones, two from `md` — and two is the ceiling, so no
+        // further breakpoint is needed. Below lg the pane is the full width of a
+        // one-column shell (~720px at md, so ~348px cards); at lg it narrows to
+        // two thirds with the panel and rail (~285px cards). Two holds in both.
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}

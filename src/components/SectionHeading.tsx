@@ -1,5 +1,6 @@
 import { heading, type HeadingKey } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
+import { SectionRule } from './SectionRule';
 
 /**
  * The `// section name` heading shared by every home-page section. Reads the
@@ -11,8 +12,11 @@ import { useTheme } from '../theme/useTheme';
 export function SectionHeading({ section }: { section: HeadingKey }) {
   const { palette } = useTheme();
   return (
-    <h2 className="font-mono text-sm uppercase tracking-wider text-muted">
-      {heading(palette, section)}
-    </h2>
+    <>
+      <SectionRule />
+      <h2 className="mt-5 font-mono text-title text-foreground">
+        {heading(palette, section)}
+      </h2>
+    </>
   );
 }
