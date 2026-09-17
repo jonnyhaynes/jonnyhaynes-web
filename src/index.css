@@ -89,12 +89,6 @@
    * reads; bumped in the light block so tracks don't vanish on the pale face */
   --watch-ring-track-opacity: 0.15;
 
-  /* Recessed control surfaces (the switcher track + its hover). Foreground-based
-   * so they read as a subtle inset in both themes: a faint dark fill on dark, a
-   * faint dark fill on light — no hardcoded black/white that only works on one. */
-  --color-control-recess: color-mix(in oklch, var(--color-foreground) 8%, transparent);
-  --color-control-hover: color-mix(in oklch, var(--color-foreground) 12%, transparent);
-
   /* Reading-section shelf shadows. Lightened in the light-theme block so the
    * same physical cast doesn't look muddy on the chalk background. */
   --color-shelf: color-mix(in oklch, black 25%, transparent);

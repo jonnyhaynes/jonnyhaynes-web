@@ -1,17 +1,19 @@
 /**
- * Shared chrome for the small round controls — the section tiles, the back-to-top
+ * Shared chrome for the nav's small controls — the section tiles, the back-to-top
  * button, and both theme toggles. One definition so they can't drift apart: these
- * four sat in a column together and looked like four different families.
+ * four sit in a column together and used to look like four different families.
  *
- * Square `size-10` hit area (40px, comfortably past the 24px minimum), no border
- * or fill at rest, muted ink, and a tinted disc on hover — the same recess tokens
- * the rest of the chrome uses.
+ * Square `size-10` hit area (40px, comfortably past the 24px minimum) and no fill
+ * in any state — the only feedback is the ink going from muted to accent.
  */
 export const TILE =
-  'relative inline-flex size-10 shrink-0 items-center justify-center text-muted transition-colors hover:bg-[var(--color-control-hover)] hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+  'relative inline-flex size-10 shrink-0 items-center justify-center text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
-/** The selected/on state: accent ink plus the tinted disc, so it isn't colour alone. */
-export const TILE_ACTIVE = 'bg-[var(--color-control-hover)] text-accent-start';
+/**
+ * The selected/on state: accent ink, nothing else. The section tiles pair it with
+ * the marker dot, so the state is never signalled by colour alone.
+ */
+export const TILE_ACTIVE = 'text-accent-start';
 
 /**
  * The reveal-on-hover label, floated to the left of the tile so it overlays the
