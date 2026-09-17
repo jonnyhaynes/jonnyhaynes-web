@@ -20,9 +20,17 @@ const SEEK_FRAMES = 30;
  * The document owns the scroll at every width — the shell lays the columns out but
  * doesn't scroll them — so the panel and rail stick beside the page rather than
  * living in their own scroll pane. See the `.shell` rules in index.css, where
- * `data-panel` selects the column template.
+ * `data-layout` selects the column template.
  */
-function ShellFrame({ panel }: { panel?: ReactNode }) {
+function ShellFrame({
+  layout,
+  panel,
+}: {
+  /** `panel` reserves a leading column for `panel`; `flush` starts the pane at the
+   *  left edge and holds it to two thirds with a trailing spacer. */
+  layout: 'panel' | 'flush';
+  panel?: ReactNode;
+}) {
   const { pathname, hash, key } = useLocation();
   const reduced = useReducedMotion();
 
@@ -78,7 +86,7 @@ function ShellFrame({ panel }: { panel?: ReactNode }) {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div className="shell" data-panel={panel ? 'true' : 'false'}>
+      <div className="shell" data-layout={layout}>
         {/* Below lg the top bar leads the page, ahead of the stacked panel —
             otherwise the nav would be buried under the headshot on a phone. It's
             hidden at lg, where the rail takes over. */}
@@ -88,26 +96,28 @@ function ShellFrame({ panel }: { panel?: ReactNode }) {
         <div className="pane">
           <Outlet />
         </div>
+
+        {/* The flush layout's trailing spacer. It holds the pane to two thirds
+            without reserving anything in front of it, so the content starts at the
+            left edge. */}
+        {layout === 'flush' && <div aria-hidden="true" />}
+
         <SectionRail active={active} scrolled={scrolled} />
       </div>
     </>
   );
 }
 
-/** Home: panel + pane + rail. */
+/** Home: the portrait column, the pane, the rail. */
 export function PanelShell() {
-  return <ShellFrame panel={<ProfilePanel />} />;
+  return <ShellFrame layout="panel" panel={<ProfilePanel />} />;
 }
 
 /**
- * Every other route: the same three-column sheet, with the panel column left
- * empty. No portrait beside the legal copy, but the content column sits exactly
- * where it does on the home route, so moving between pages doesn't shift the page.
- *
- * The empty element is what holds that column open. Passing no panel at all drops
- * the column from the template and slides the pane into its place — which is why
- * the two routes used to look different from each other.
+ * Every other route. No panel and no leading gap: the pane keeps the two-thirds
+ * measure the sheet gives it, but starts at the left edge, so the content and the
+ * footer sit flush left instead of being pushed in by a column with nothing in it.
  */
 export function PlainShell() {
-  return <ShellFrame panel={<div />} />;
+  return <ShellFrame layout="flush" />;
 }

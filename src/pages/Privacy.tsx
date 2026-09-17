@@ -8,9 +8,9 @@ const LINK =
   'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
 
 /**
- * Privacy page. Served by the /privacy route, which uses the same three-column
- * sheet as home with the panel column left empty — so this page's content sits in
- * the same place as every other page's.
+ * Privacy page. Served by the /privacy route, which uses the shell's flush layout:
+ * no portrait column, so the content and the footer start at the left edge, but the
+ * pane keeps the two-thirds measure the rest of the sheet gives it.
  *
  * The container matches the home route's, so the prose fills the pane rather than
  * sitting in a narrower centred column.

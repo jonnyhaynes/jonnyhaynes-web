@@ -57,12 +57,10 @@ check('privacy has exactly one h1', count(privacy, 'h1') === 1, `${count(privacy
 // both destinations; these guard that it stays stripped back.
 check('home renders the portrait panel', home.includes('portrait-art'));
 check('privacy renders no portrait panel', !privacy.includes('portrait-art'));
-// Both routes keep the panel column open, so the content column doesn't shift as
-// you move between them — the privacy page just has nothing in it.
-check(
-  'both routes use the same column template',
-  home.includes('data-panel="true"') && privacy.includes('data-panel="true"'),
-);
+// Home reserves a leading column for the portrait; privacy starts the pane at the
+// left edge and holds it to two thirds with a trailing spacer instead.
+check('home uses the panel layout', home.includes('data-layout="panel"'));
+check('privacy uses the flush layout', privacy.includes('data-layout="flush"'));
 for (const [label, needle] of [
   ['the subheadline', 'Building React, React Native and TypeScript products'],
   ['the role', 'Full-Stack Developer'],

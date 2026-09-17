@@ -246,8 +246,8 @@
  *
  * Below lg the shell is a single column: the top bar, the activity chip, the
  * profile panel and the content all stack, and the document scrolls. From lg it
- * becomes three columns via `data-panel` (set by ShellFrame) — three on the home
- * route, two on the routes with no profile panel — and the document still owns
+ * becomes three columns via `data-layout` (set by ShellFrame) — the panel column on
+ * the home route, the pane flush left on every other — and the document still owns
  * the scroll, with the panel and rail sticking in place. Everything is shared.
  * ------------------------------------------------------------------------- */
 .shell {
@@ -295,14 +295,17 @@
     --top-h: 0rem;
   }
 
-  /* Panel one third, pane two thirds — the sheet's proportions. The rail is a
-   * fixed strip outside that ratio, so the split is of the space left beside it. */
-  .shell[data-panel='true'] {
+  /* Home: panel, pane, rail. The rail is a fixed strip outside the split, so the
+   * one-third : two-thirds ratio is of the space left beside it. */
+  .shell[data-layout='panel'] {
     --shell-cols: minmax(0, 1fr) minmax(0, 2fr) 3.75rem;
   }
 
-  .shell[data-panel='false'] {
-    --shell-cols: minmax(0, 1fr) 3.75rem;
+  /* Every other route: the same two-thirds pane, but starting at the left edge. The
+   * empty trailing column is what holds it to two thirds — without it the pane
+   * would take the whole width. */
+  .shell[data-layout='flush'] {
+    --shell-cols: minmax(0, 2fr) minmax(0, 1fr) 3.75rem;
   }
 }
 
