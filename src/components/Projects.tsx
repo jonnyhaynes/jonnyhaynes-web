@@ -23,7 +23,7 @@ export function Projects() {
       </SectionHeading>
 
       <ProjectStats
-        projects={projects.length}
+        repositories={github?.repoCount ?? null}
         contributions={github?.totalContributions ?? null}
       />
 

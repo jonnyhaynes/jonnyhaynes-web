@@ -129,6 +129,14 @@ async function fetchViaGraphQL() {
           ownerAffiliations: OWNER
           isFork: false
           privacy: PUBLIC
+        ) {
+          totalCount
+        }
+        active: repositories(
+          first: 100
+          ownerAffiliations: OWNER
+          isFork: false
+          privacy: PUBLIC
           orderBy: { field: PUSHED_AT, direction: DESC }
         ) {
           nodes { ${repoFields} }
@@ -189,7 +197,7 @@ async function fetchViaGraphQL() {
   }
 
   const user = json.data.user;
-  const allRepos = user.repositories.nodes;
+  const allRepos = user.active.nodes;
   const forkRepos = user.forks.nodes;
   const contributedRepos = user.repositoriesContributedTo.nodes;
 
@@ -255,6 +263,9 @@ async function fetchViaGraphQL() {
   return {
     projects,
     lastActivity,
+    // How many public repos exist, not just how many are surfaced above — the
+    // projects grid bakes a curated seven, but the stats quote the whole shelf.
+    repoCount: user.repositories.totalCount,
     languages: languageBreakdown(
       allRepos.map((r) => r.primaryLanguage?.name),
     ),
@@ -322,6 +333,9 @@ async function fetchViaREST() {
   return {
     projects,
     lastActivity,
+    // Owned, non-fork, public. The REST list is capped at 100, so this is a floor
+    // rather than an exact count in tokenless mode.
+    repoCount: sourceRepos.length,
     languages: languageBreakdown(sourceRepos.map((r) => r.language)),
     totalContributions: null, // not available without GraphQL + token
   };

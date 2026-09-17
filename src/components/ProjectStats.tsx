@@ -6,16 +6,18 @@ const NUMBER = new Intl.NumberFormat('en-GB');
  * Big-number readouts for the Projects section — the one place the site has real
  * counts worth showing at display size.
  *
- * Every figure is derived, never asserted: the award total is the sum of the
- * awards actually attached to the work projects, and the project count is what
- * the grid is really rendering. Contributions come from the baked snapshot and
- * are omitted rather than shown as zero when that fetch is missing.
+ * Every figure is derived, never asserted: the award total is the sum of the awards
+ * actually attached to the work projects, and the repository count is the whole
+ * public shelf rather than the curated handful the grid renders. Each is named for
+ * where it comes from, so the source is on the page rather than implied.
+ *
+ * Anything missing is omitted rather than shown as a zero.
  */
 export function ProjectStats({
-  projects,
+  repositories,
   contributions,
 }: {
-  projects: number;
+  repositories: number | null;
   contributions: number | null;
 }) {
   const awards = WORK_PROJECTS.reduce((total, project) => total + project.awards.length, 0);
@@ -25,7 +27,10 @@ export function ProjectStats({
       value: NUMBER.format(contributions),
       label: 'contributions · past year',
     },
-    projects > 0 && { value: String(projects), label: 'projects' },
+    repositories != null && {
+      value: String(repositories),
+      label: 'repositories on GitHub',
+    },
     awards > 0 && { value: String(awards), label: 'industry awards' },
   ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
 

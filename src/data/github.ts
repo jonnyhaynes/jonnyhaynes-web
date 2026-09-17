@@ -48,6 +48,11 @@ export type GitHubData = {
   lastActivity: GitHubLastActivity | null;
   languages: GitHubLanguage[];
   totalContributions: number | null;
+  /**
+   * Owned, non-fork, public repos in total — not just the curated handful the
+   * projects grid bakes. Null on older snapshots, so consumers must fall back.
+   */
+  repoCount: number | null;
 };
 
 /**
