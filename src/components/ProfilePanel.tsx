@@ -12,12 +12,15 @@ import { PortraitFigure } from './PortraitFigure';
  * complementary region containing a single image. The portrait's alt text carries
  * its meaning, so a plain wrapper is the honest markup.
  *
- * It sits directly above the hero on a phone, so the portrait runs straight into
- * the eyebrow, and vertically centred in its own column from lg.
+ * lg only. Below that the panel is stacked above the content, and a portrait up
+ * there can't be part of the hero's full-height centred block — the first screen
+ * would be the portrait plus a screenful, not a screenful. So the hero renders its
+ * own portrait at those widths instead, and this column appears when there's room
+ * beside it.
  */
 export function ProfilePanel() {
   return (
-    <div className="shrink-0 px-6 pt-6 lg:sticky lg:top-0 lg:flex lg:h-dvh lg:items-center lg:px-0 lg:pt-0">
+    <div className="hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:items-center">
       <PortraitFigure />
     </div>
   );

@@ -6,6 +6,7 @@ import { sectionHref } from '../content/sections';
 import { copy } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
 import { FlipWord } from './FlipWord';
+import { PortraitFigure } from './PortraitFigure';
 import { GitHubIcon, LinkedInIcon } from './icons';
 
 const SOCIAL =
@@ -63,6 +64,13 @@ export function Hero() {
 
   return (
     <section className="hero-screen" aria-labelledby="hero-heading">
+      {/* Below lg the portrait belongs to this block rather than to the shell's
+          panel, so the first screen is one centred screenful instead of a portrait
+          plus a screenful. From lg the panel column carries it. */}
+      <div className="lg:hidden">
+        <PortraitFigure />
+      </div>
+
       <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
 
       <h1
