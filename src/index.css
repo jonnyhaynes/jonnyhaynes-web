@@ -1324,10 +1324,13 @@
  * spare. Taking the smaller of the two means the text always lands in two columns
  * or fewer, inside both dimensions.
  *
- * There is deliberately no minimum size. A floor and a guaranteed fit cannot both
- * hold — the floor wins, the type stops shrinking, and the overflow is back. A
- * very long title in a narrow row therefore gets small, which is the honest
- * outcome: the alternative is text outside the book, which is what this fixes. */
+ * The 0.6875rem floor is what makes the spines legible — some were reaching 4–6px
+ * without it. It also means the fit is no longer unconditional: a spine set below
+ * the floor wraps to a third column and eats into the row. The component keeps
+ * that from happening by shortening what a spine carries (title alone past 43
+ * characters) so the fitted size stays above the floor in the tightest case. The
+ * floor and the character limit are derived from each other — change one and the
+ * other needs re-deriving. */
 .book-spine-text {
   --avail: calc(
     max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
@@ -1335,8 +1338,7 @@
   /* Room one spine can take: the row, less the face-out cover (whose height
      equals its width) and the gaps between, shared between the spines. The gaps
      are counted in rem against a row measured in cqw, so this is approximate —
-     deliberately erring small, since a smaller figure only shrinks the type,
-     which cannot overflow. */
+     deliberately erring small, since a smaller figure only shrinks the type. */
   --spine-w: calc(
     (100cqw - var(--cover-h, 15rem) * 1 - (var(--spines, 6) + 1) * 1rem) /
       var(--spines, 6)
@@ -1347,10 +1349,13 @@
      bottom edge; clearance matches .book-spine's py-5 (1.25rem each end). */
   max-height: var(--avail);
   text-align: center;
-  font-size: min(
-    0.875rem,
-    calc(var(--avail) * 2 / (var(--chars, 20) * 0.6)),
-    calc((var(--spine-w) - 1rem) / 2 / 1.4)
+  font-size: max(
+    0.6875rem,
+    min(
+      0.875rem,
+      calc(var(--avail) * 2 / (var(--chars, 20) * 0.6)),
+      calc((var(--spine-w) - 1rem) / 2 / 1.4)
+    )
   );
 }
 

@@ -158,6 +158,14 @@ const FALLBACK_SPINE = {
 const SPINE_FRACTIONS = [0.92, 0.8, 0.98, 0.85, 0.94, 0.78];
 
 /**
+ * The most characters a spine can carry and still hold the minimum type size on
+ * the tightest shelf (seven books at `lg`): ~142px of usable height, two columns
+ * of it, at 0.6875rem. Derived from that floor rather than chosen — see the note
+ * on `.book-spine-text`, and change both together.
+ */
+const SPINE_CHARS = 43;
+
+/**
  * A book "spine" linking to Spotify: a coloured strip in the cover's baked
  * dominant colour showing the full title and author.
  *
@@ -181,9 +189,23 @@ function SpineBar({
   horizontal?: boolean;
 }) {
   const spine = book.spine ?? FALLBACK_SPINE;
-  // The exact characters the spine has to hold, spaces included, so CSS can size
-  // the type to fit them rather than leaving it to spill.
-  const spineText = `${book.title} · ${book.authors}`;
+  // The spine's text, in the longest form that fits the tightest shelf at the
+  // minimum type size: title and author if they fit, else the title alone, else
+  // the title trimmed.
+  //
+  // The tightest shelf is seven books at `lg` — ~47px per spine, ~142px of usable
+  // height — where 43 characters is what two columns hold at the 0.6875rem
+  // minimum. Keeping every spine to that length is what lets the type hold its
+  // minimum; the two numbers are derived from each other.
+  const withAuthor = `${book.title} · ${book.authors}`;
+  const spineText =
+    book.authors.length > 0 && withAuthor.length <= SPINE_CHARS
+      ? withAuthor
+      : book.title.length <= SPINE_CHARS
+        ? book.title
+        : `${book.title.slice(0, SPINE_CHARS - 1).trimEnd()}…`;
+  const showsAuthor = spineText === withAuthor;
+  const trimmed = !showsAuthor && spineText !== book.title;
 
   if (horizontal) {
     return (
@@ -240,11 +262,22 @@ function SpineBar({
         {/* One text run, not a flex row: the spaces around the separator are
             literal, so the length really is characters × advance. The separator
             keeps the title and author from reading as one string, and it's
-            aria-hidden because the link's label already says "by". */}
+            aria-hidden because the link's label already says "by" — including the
+            full title when this has had to trim it. */}
         <span className="book-spine-text">
-          <span className="font-medium">{book.title}</span>
-          <span aria-hidden="true">{' · '}</span>
-          <span>{book.authors}</span>
+          {trimmed ? (
+            <span className="font-medium">{spineText}</span>
+          ) : (
+            <>
+              <span className="font-medium">{book.title}</span>
+              {showsAuthor && (
+                <>
+                  <span aria-hidden="true">{' · '}</span>
+                  <span>{book.authors}</span>
+                </>
+              )}
+            </>
+          )}
         </span>
       </a>
     </li>
