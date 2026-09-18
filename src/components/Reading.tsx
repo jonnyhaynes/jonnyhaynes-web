@@ -165,14 +165,16 @@ const SPINE_FRACTIONS = [1.28, 1.2, 1.35, 1.22, 1.32, 1.2];
 /**
  * The most characters a spine can carry and still hold the minimum type size.
  * The tightest shelf is seven books at `lg`: ~47px wide by ~198px of usable
- * height, which is two columns of 30 at 0.6875rem — 60 characters, a title and
- * its author for anything short of a long subtitle.
+ * height, two columns, which is 58 characters at the 0.6875rem floor — 56 here,
+ * leaving a margin for rounding. Still a title and its author for anything short
+ * of a long subtitle.
  *
  * Derived from the geometry rather than chosen, so changing the spine fractions
- * or the type floor means re-deriving this. Trimming past it is a safety net, not
- * the expected path.
+ * or the type floor means re-deriving this. At 60 characters it overflows the
+ * slot at `lg` by a hair, which is how this number was found. Trimming past it is
+ * a safety net, not the expected path.
  */
-const SPINE_CHARS = 60;
+const SPINE_CHARS = 56;
 
 /**
  * A book "spine" linking to Spotify: a coloured strip in the cover's baked
