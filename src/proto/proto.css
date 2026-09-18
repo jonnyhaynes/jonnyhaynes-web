@@ -1,0 +1,396 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   PROTOTYPE ONLY — step 1: background + chrome.
+
+   Everything here is prefixed `proto-` (or scoped under `.proto`) and exists to
+   be deleted. It deliberately does NOT touch the shipped `.shell`, panel or rail
+   rules in index.css: the prototype has to be reviewable next to the real site
+   without either affecting the other.
+
+   Element display is set here rather than with Tailwind utilities, because this
+   file's position in the cascade relative to the emitted utilities isn't
+   guaranteed — and a base display utility losing to a component's own class is a
+   bug this codebase has already shipped once.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.proto {
+  --proto-bar-h: 3.5rem;
+  --proto-strip-h: 2.25rem;
+  /* How much chrome sits above the pane, for sticky sections to park beneath.
+     The real site has none, so it falls back to 0 there. */
+  --chrome-h: var(--proto-strip-h);
+}
+
+@media (min-width: 64rem) {
+  .proto {
+    --proto-strip-h: 2.5rem;
+  }
+}
+
+/* ── The top bar, below lg ─────────────────────────────────────────────────── */
+
+.proto-bar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: var(--proto-bar-h);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .proto-bar {
+    display: none;
+  }
+}
+
+/* ── The map data strip ────────────────────────────────────────────────────── */
+
+.proto-strip {
+  position: sticky;
+  top: var(--proto-bar-h);
+  z-index: 25;
+  height: var(--proto-strip-h);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0 1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+  background: color-mix(in oklab, var(--color-background) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media (min-width: 64rem) {
+  .proto-strip {
+    top: 0;
+  }
+}
+
+/* Placement variants, driven by the control panel. */
+.proto[data-readout='rail'] .proto-strip,
+.proto[data-readout='none'] .proto-strip {
+  display: none;
+}
+
+.proto-strip-value {
+  color: var(--color-accent-start);
+}
+
+.proto-strip-spacer {
+  margin-left: auto;
+}
+
+.proto-strip-mid {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .proto-strip-mid {
+    display: inline;
+  }
+}
+
+/* The yeqq-style progress bar, folded into the strip's own bottom edge so the
+   page gains a progress indicator without gaining another bar. */
+.proto-strip-progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(var(--traverse, 0));
+  transform-origin: left center;
+  background: var(--color-accent-start);
+}
+
+.proto[data-progress='rail'] .proto-strip-progress,
+.proto[data-progress='none'] .proto-strip-progress {
+  display: none;
+}
+
+/* ── Rail ──────────────────────────────────────────────────────────────────── */
+
+.proto-rail {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .proto-rail {
+    display: flex;
+    position: sticky;
+    top: var(--chrome-h);
+    height: calc(100dvh - var(--chrome-h));
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1rem 0;
+    /* The same surface as the map strip, so full-bleed sections travelling past
+       the content column disappear underneath the chrome instead of showing
+       through the nav icons. `z-20` sits it above the transformed track. */
+    z-index: 20;
+    border-left: 1px solid color-mix(in oklab, var(--color-muted) 15%, transparent);
+    background: color-mix(in oklab, var(--color-background) 80%, transparent);
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* The rail is the route: a traverse line behind tiles that stay evenly spaced
+   and fixed, so the line reports progress without moving the controls. */
+.proto-route {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-block: 0.5rem;
+}
+
+.proto-route-line {
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 50%;
+  translate: -50% 0;
+  width: 2px;
+  z-index: 0;
+}
+
+.proto-route-track {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: color-mix(in oklab, var(--color-muted) 25%, transparent);
+}
+
+.proto-route-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--traverse, 0) * 100%);
+  background: var(--color-accent-start);
+}
+
+.proto[data-progress='strip'] .proto-route-line,
+.proto[data-progress='none'] .proto-route-line {
+  display: none;
+}
+
+.proto-rail > nav {
+  position: relative;
+  z-index: 1;
+}
+
+.proto-rail-toggles {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+
+/* Vertical readout for the rail: real map-sheet lettering, and the only way a
+   coordinate fits a 3.75rem column readably. */
+.proto-rail-readout {
+  writing-mode: vertical-rl;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+  padding-block: 0.5rem;
+}
+
+.proto[data-readout='strip'] .proto-rail-readout,
+.proto[data-readout='both'] .proto-rail-readout {
+  display: none;
+}
+
+.proto[data-readout='none'] .proto-rail-readout {
+  display: none;
+}
+
+/* The hero in this route is the real Hero component, so its full-height rule
+   has to be re-pointed at this route's chrome. It reads `--top-h`, which only
+   exists inside the shipped shell; here the strip and the bar are the offsets
+   that matter. Higher specificity than `.hero-screen`, so it wins. */
+.proto .hero-screen {
+  min-height: calc(100dvh - var(--proto-bar-h) - var(--proto-strip-h));
+}
+
+@media (min-width: 64rem) {
+  .proto .hero-screen {
+    min-height: calc(100dvh - var(--proto-strip-h));
+  }
+}
+
+/* ── Step-1 placeholder content ────────────────────────────────────────────── */
+
+.proto-sections {
+  padding: 0 1.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.proto-section {
+  min-height: 60vh;
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.proto-section-label {
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--color-foreground);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.proto-section-label svg {
+  width: 1em;
+  height: 1em;
+}
+
+.proto-section-ref {
+  margin-top: 0.75rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+
+.proto-hero {
+  min-height: calc(100dvh - var(--proto-bar-h) - var(--proto-strip-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+@media (min-width: 64rem) {
+  .proto-hero {
+    min-height: calc(100dvh - var(--proto-strip-h));
+  }
+}
+
+.proto-hero-note {
+  max-width: 34rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* ── The control panel (not part of the design) ────────────────────────────── */
+
+.proto-controls {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 60;
+  width: 20rem;
+  max-width: 100vw;
+  max-height: 78vh;
+  overflow: auto;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-background) 94%, transparent);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 30%, transparent);
+  border-right: 1px solid color-mix(in oklab, var(--color-muted) 30%, transparent);
+}
+
+.proto-controls summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.5rem 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 20%, transparent);
+}
+
+.proto-controls summary::-webkit-details-marker {
+  display: none;
+}
+
+.proto-controls summary::before {
+  content: '▸ ';
+  color: var(--color-accent-start);
+}
+
+.proto-controls[open] summary::before {
+  content: '▾ ';
+}
+
+.proto-controls-body {
+  padding: 0.25rem 0.75rem 1rem;
+}
+
+.proto-controls fieldset {
+  border: 0;
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 15%, transparent);
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0 0;
+}
+
+.proto-controls legend {
+  padding: 0;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-size: 0.625rem;
+}
+
+.proto-controls label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  cursor: pointer;
+  padding: 1px 0;
+}
+
+.proto-controls input[type='radio'],
+.proto-controls input[type='checkbox'] {
+  accent-color: var(--color-accent-start);
+  margin: 0;
+}
+
+.proto-controls input[type='range'] {
+  width: 100%;
+  accent-color: var(--color-accent-start);
+}
+
+.proto-controls input[type='range']:disabled {
+  opacity: 0.4;
+}
+
+.proto-note {
+  color: var(--color-muted);
+  font-size: 0.625rem;
+  margin: 0.5rem 0 0;
+  line-height: 1.6;
+}
+
+.proto-pass {
+  color: var(--color-accent-start);
+}
+
+.proto-fail {
+  color: #e06c75;
+}
+
+/* Simulated reduced motion: behavioural suppression is threaded through the
+   components, and this covers the CSS transitions. Verifying against the real
+   OS setting is still a separate check. */
+.proto[data-reduce='true'] * {
+  transition: none !important;
+  animation: none !important;
+}

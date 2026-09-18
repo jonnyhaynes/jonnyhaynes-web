@@ -9,17 +9,27 @@ import { useReducedMotion } from '../lib/useReducedMotion';
  * sequence of glyphs and settles on its final letter, staggered left-to-right —
  * the classic tumble of an arrivals board.
  *
- * Decorative: the whole board is aria-hidden. The readable role text is a
- * single sr-only span in Hero, so screen readers get one clean name and this
- * never announces its churn. Layout is stable — the slot count is fixed, so the
- * board reserves a constant width; shorter words settle trailing slots to
- * blank. Reduced motion is honoured: no riffle, the final letters appear at
- * once (see useReducedMotion in ../lib).
+ * Decorative: the whole board is aria-hidden. The readable text is a single
+ * sr-only span in Hero, so screen readers get one clean name and this never
+ * announces its churn. Layout is stable — the slot count is fixed, so the board
+ * reserves a constant width; shorter words settle trailing slots to blank.
+ * Reduced motion is honoured: no riffle, the final letters appear at once (see
+ * useReducedMotion in ../lib).
+ *
+ * Two things vary between the headline's three boards, so they're props rather
+ * than assumptions:
+ * - `uppercase` — the role board is upper-cased to match the display type; the
+ *   article that opens the line is not, because it's set in the headline's own
+ *   case ("I'm an AI Enthusiast", not "I'M AN AI ENTHUSIAST").
+ * - `gradient` — the role board carries the animated gradient; the article takes
+ *   the headline's plain ink, because it reads as part of the static sentence
+ *   rather than as the thing being announced.
  */
 
-// Glyphs a slot rolls through while settling. Upper-case + a few symbols; the
-// headline is upper-cased and monospace, so these all share the cell width.
-const RIFFLE_GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-#*'.split('');
+/** Glyphs a slot rolls through while settling. Upper-case + a few symbols; the
+ *  headline is monospace, so these all share the cell width. */
+const RIFFLE_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-#*'.split('');
+const RIFFLE_LOWER = 'abcdefghijklmnopqrstuvwxyz-#*'.split('');
 
 // Timing (ms). Each slot rolls one glyph per RIFFLE_STEP; slot i doesn't start
 // until i * SLOT_STAGGER has passed, and rolls for RIFFLE_STEPS glyphs.
@@ -31,16 +41,22 @@ export function FlipWord({
   words,
   index,
   delayMs = 0,
+  uppercase = true,
+  gradient = true,
 }: {
   words: readonly string[];
   index: number;
   delayMs?: number;
+  uppercase?: boolean;
+  gradient?: boolean;
 }) {
   const reduced = useReducedMotion();
+  const glyphs = uppercase ? RIFFLE_UPPER : RIFFLE_LOWER;
 
   // Fixed slot count = the longest word this flapper can show. Constant width.
   const slotCount = words.reduce((m, w) => Math.max(m, w.length), 0);
-  const target = (words[index] ?? words[0]).toUpperCase();
+  const raw = words[index] ?? words[0];
+  const target = uppercase ? raw.toUpperCase() : raw;
 
   // Transition state: which word we're riffling `from`, which `to`, and a `run`
   // counter that changes on every new transition to re-key the riffle effect.
@@ -99,7 +115,7 @@ export function FlipWord({
     }
     // Mid-riffle: pick a glyph based on how far into the roll this slot is.
     const step = Math.floor((elapsed - startAt) / RIFFLE_STEP);
-    const glyph = RIFFLE_GLYPHS[(i * 7 + step * 3) % RIFFLE_GLYPHS.length];
+    const glyph = glyphs[(i * 7 + step * 3) % glyphs.length];
     return { char: glyph, rolling: true };
   });
 
@@ -112,11 +128,11 @@ export function FlipWord({
       {slots.map((slot, i) => (
         <span
           key={i}
-          className={`flip-slot animate-gradient${slot.rolling ? ' flip-slot--rolling' : ''}`}
+          className={`flip-slot${gradient ? ' animate-gradient' : ''}${slot.rolling ? ' flip-slot--rolling' : ''}`}
           style={{ '--slot-i': i } as CSSProperties}
         >
           {/* Non-breaking space keeps an empty slot's box. */}
-          {slot.char === '' ? ' ' : slot.char}
+          {slot.char === '' ? ' ' : slot.char}
         </span>
       ))}
     </span>

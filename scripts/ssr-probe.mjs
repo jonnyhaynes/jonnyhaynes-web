@@ -27,7 +27,14 @@ try {
 
 // Real content, not an empty shell.
 check('home renders substantive markup', home.length > 20000, `${home.length} bytes`);
-check('home contains the hero', /I’m a/.test(home));
+// The headline's article is its own split-flap board now, because word 1 can be
+// vowel-led ("an AI Enthusiast") and the lead-in has to agree with it. So "I'm a"
+// is no longer a contiguous string: the static text ends at "I'm ", and the
+// readable sentence is carried by the sr-only span beside it. Assert that.
+check(
+  'home contains the hero',
+  home.includes('I’m ') && home.includes('a Full-Stack Developer'),
+);
 
 // Section headings. This used to detect them by counting `//` prefixes, which
 // broke the moment the prefix was dropped — so it asserts the headings

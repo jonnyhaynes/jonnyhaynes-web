@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 
-import { SECTIONS } from '../content/sections';
 import { heading, type HeadingKey } from '../theme/copy';
 import { useTheme } from '../theme/useTheme';
 import { SectionRule } from './SectionRule';
@@ -24,7 +23,6 @@ export function SectionHeading({
   children?: ReactNode;
 }) {
   const { palette } = useTheme();
-  const { Icon } = SECTIONS.find((entry) => entry.id === section) ?? {};
 
   return (
     <>
@@ -32,21 +30,11 @@ export function SectionHeading({
       {/* The rule and the heading are a pair, so the gap between them is generous
           enough to read as deliberate rather than as a tight caption. */}
       <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+        {/* The title is the words alone. It used to open with the same icon its
+            rail entry carries, to tie the two together; the words are enough, and
+            the rail keeps its icons — that's the nav. */}
         <h2 className="font-mono text-title text-foreground">
-          {/* A flex row, so the icon centres on the text's line box rather than
-              being aligned to its baseline. For this font's metrics — ascent
-              1.02em, descent 0.3em, line-height 1.05em — the line box's centre
-              lands at about 0.36em above the baseline, which is the cap height:
-              the middle of the visual mass. Baseline alignment instead depends on
-              the x-height, and sits the glyph low against capitals.
-
-              Size and colour are inherited rather than set: 1em tracks the
-              heading's clamp, and the strokes are currentColor. Already
-              aria-hidden — the heading text carries the meaning. */}
-          <span className="inline-flex items-center gap-3">
-            {Icon && <Icon className="size-[1em] shrink-0" />}
-            <span className="min-w-0">{heading(palette, section)}</span>
-          </span>
+          {heading(palette, section)}
         </h2>
         {children}
       </div>
