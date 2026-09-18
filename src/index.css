@@ -1328,7 +1328,7 @@
  *
  * The 0.6875rem floor is what makes the spines legible — some were reaching 4–6px
  * without it. It also means the fit is no longer unconditional, so what each spine
- * carries is chosen to hold the floor: title and author up to 64 characters, else
+ * carries is chosen to hold the floor: title and author up to 60 characters, else
  * the title, else the title trimmed. Six spines at `lg` share ~47px each, so the
  * height each one is given is what buys that capacity — the floor, the spine
  * fractions and the character limit are derived from each other. */

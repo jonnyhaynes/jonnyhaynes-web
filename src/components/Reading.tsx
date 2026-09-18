@@ -150,26 +150,29 @@ const FALLBACK_SPINE = {
  * Spine heights as a fraction of the centre cover's height.
  *
  * The cover is square and stands in for a book's width, so these are book
- * proportions — a real book is roughly half again as tall as it is wide. That
- * isn't decoration: a spine's height is what sets how many characters fit in each
- * of its columns, and it's what lets seven books carry a full title at a legible
- * size at every width. Varied by a little so the shelf reads as a mix of book
- * sizes rather than six identical bars, assigned by shelf position (not book
- * identity) so the shape stays stable across data refreshes.
+ * proportions — taller than they are wide, as books are. That isn't decoration: a
+ * spine's height is what sets how many characters fit in each of its columns, and
+ * it's what lets seven books carry a full title at a legible size at every width.
+ * Varied by a little so the shelf reads as a mix of book sizes rather than six
+ * identical bars, assigned by shelf position (not book identity) so the shape
+ * stays stable across data refreshes.
+ *
+ * Kept close to the cover's height: past about a third taller the books start to
+ * dwarf the square rather than sit beside it.
  */
-const SPINE_FRACTIONS = [1.38, 1.3, 1.45, 1.33, 1.42, 1.3];
+const SPINE_FRACTIONS = [1.28, 1.2, 1.35, 1.22, 1.32, 1.2];
 
 /**
  * The most characters a spine can carry and still hold the minimum type size.
- * The tightest shelf is seven books at `lg`: ~47px wide by ~218px of usable
- * height, which is two columns of three at 0.6875rem — 64 characters, a long
- * title and its author.
+ * The tightest shelf is seven books at `lg`: ~47px wide by ~198px of usable
+ * height, which is two columns of 30 at 0.6875rem — 60 characters, a title and
+ * its author for anything short of a long subtitle.
  *
  * Derived from the geometry rather than chosen, so changing the spine fractions
  * or the type floor means re-deriving this. Trimming past it is a safety net, not
  * the expected path.
  */
-const SPINE_CHARS = 64;
+const SPINE_CHARS = 60;
 
 /**
  * A book "spine" linking to Spotify: a coloured strip in the cover's baked
