@@ -60,7 +60,7 @@ export function Reading() {
           the shell's single content container, so the row fills it directly: the
           old max-w-4xl → max-w-6xl breakout this used to need is gone. */}
       <ul
-        className="bookshelf mt-10 hidden w-full items-end justify-center gap-3 md:flex"
+        className="bookshelf mt-10 hidden w-full items-end justify-center gap-4 md:flex"
         role="list"
         // How many books share the row, so the spine type can work out the width
         // it has as well as the height it has.
@@ -72,13 +72,14 @@ export function Reading() {
           <SpineBar
             key={b.title}
             book={b}
+            side="left"
             lean={left.length === 2 ? [8, 4][i] : 5}
             heightFrac={SPINE_FRACTIONS[i % SPINE_FRACTIONS.length]}
           />
         ))}
 
         {/* Centre display copy — upright, face-out, up to a third of the row. */}
-        <li className="mx-3 w-1/3 shrink-0 self-end">
+        <li className="mx-4 w-1/3 shrink-0 self-end">
           <FeatureCover book={feature} className="w-full" />
         </li>
 
@@ -87,6 +88,7 @@ export function Reading() {
           <SpineBar
             key={b.title}
             book={b}
+            side="right"
             lean={-(4 + i * 2)}
             heightFrac={
               SPINE_FRACTIONS[(i + left.length) % SPINE_FRACTIONS.length]
@@ -168,11 +170,14 @@ function SpineBar({
   book,
   lean,
   heightFrac,
+  side,
   horizontal = false,
 }: {
   book: SpotifyAudiobook;
   lean?: number;
   heightFrac?: number;
+  /** Which half of the shelf this sits on. Hover straightens a whole side at once. */
+  side?: 'left' | 'right';
   horizontal?: boolean;
 }) {
   const spine = book.spine ?? FALLBACK_SPINE;
@@ -203,7 +208,7 @@ function SpineBar({
   }
 
   return (
-    <li>
+    <li data-side={side}>
       <a
         href={book.url ?? '#'}
         target="_blank"

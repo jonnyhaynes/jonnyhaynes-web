@@ -1338,7 +1338,7 @@
      deliberately erring small, since a smaller figure only shrinks the type,
      which cannot overflow. */
   --spine-w: calc(
-    (100cqw - var(--cover-h, 15rem) * 1 - (var(--spines, 6) + 1) * 0.75rem) /
+    (100cqw - var(--cover-h, 15rem) * 1 - (var(--spines, 6) + 1) * 1rem) /
       var(--spines, 6)
   );
   writing-mode: vertical-rl;
@@ -1363,6 +1363,25 @@
     inset -2px 0 3px var(--book-shadow-page),
     0 10px 15px -3px var(--book-shadow-lift),
     0 4px 6px -4px var(--book-shadow-lift-sm);
+}
+
+/* Hovering a book stands up every book further from the cover on the same side,
+ * not just the one under the pointer.
+ *
+ * They all lean the same way, so straightening one on its own swings its top out
+ * from under the next book's lean and the two collide: measured, the intrusion
+ * goes from 4px to 12px against a 12px gap. Standing the whole side up together
+ * keeps the spacing coherent and the overshoot comfortably inside the gap.
+ *
+ * Only the transform is shared — the lift and the straighten, so the side moves as
+ * one. The glow and the cast shadow stay with the book actually being pointed at.
+ *
+ * The two sides need different selectors because the DOM runs outward → inward on
+ * the left and inward → outward on the right. `:has` isn't in every browser yet;
+ * where it's missing the left side simply doesn't cascade, which is harmless. */
+.bookshelf [data-side='right']:hover ~ [data-side='right'] .book-spine,
+.bookshelf [data-side='left']:has(~ [data-side='left']:hover) .book-spine {
+  transform: rotate(calc(var(--lean, 0deg) * 0.4)) translateY(-4px);
 }
 
 /* The upright centre display copy — a touch of lift to sit "in front". */
