@@ -66,16 +66,15 @@ export function Reading() {
         // it has as well as the height it has.
         style={{ '--spines': String(books.length - 1) } as CSSProperties}
       >
-        {/* Left pair — lean right, into the cover. Outermost (i=0) leans most.
-            Stepped 2° like the right-hand side: a 4° step swung the outer book's
-            top far enough to clip its neighbour at every width (19–30px against a
-            16px gap), which is why only this side showed an overlap. */}
+        {/* Left pair — lean right, into the cover. Both at the same angle: a
+            shared lean means they lean as one unit and can sit touching, where a
+            fan of angles splays their tops apart and forces the gap open. */}
         {left.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
             side="left"
-            lean={left.length === 2 ? [8, 6][i] : 5}
+            lean={6}
             heightFrac={SPINE_FRACTIONS[i % SPINE_FRACTIONS.length]}
           />
         ))}
@@ -85,13 +84,14 @@ export function Reading() {
           <FeatureCover book={feature} className="w-full" />
         </li>
 
-        {/* Right four — lean left, into the cover. Grows outward: -4…-10deg. */}
+        {/* Right four — lean left, into the cover, all at the same angle so they
+            stand as one row rather than fanning apart. */}
         {right.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
             side="right"
-            lean={-(4 + i * 2)}
+            lean={-6}
             heightFrac={
               SPINE_FRACTIONS[(i + left.length) % SPINE_FRACTIONS.length]
             }

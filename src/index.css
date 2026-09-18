@@ -1261,11 +1261,12 @@
  * — below md the component falls back to a plain vertical flow. */
 .bookshelf {
   align-items: flex-end;
-  /* Gaps scale with the books, because the lean does. A fixed gap is cleared at
-     one width and overlapped at another — the intrusion into a neighbour is
-     proportional to the cover's height, measured at 5.7% worst case, so 7% leaves
-     margin at every width. */
-  --gap: calc(var(--cover-h, 15rem) * 0.07);
+  /* Gaps are small because the books lean together. With one angle per group the
+     only intrusion between neighbours comes from their differing heights —
+     measured at 2.1% of the cover worst case — so 2% lets them touch. A fan of
+     angles would need 7% to stay clear, which reads as spacing rather than a
+     shelf. */
+  --gap: calc(var(--cover-h, 15rem) * 0.02);
   column-gap: var(--gap);
   /* Container so spine heights can scale off the row width (and thus off the
      centre cover, which is 1/3 of the row). */
@@ -1331,6 +1332,12 @@
  * spine's height, and two columns at that size must fit the width the row can
  * spare. Taking the smaller of the two means the text always lands in two columns
  * or fewer, inside both dimensions.
+ *
+ * Two is the budget, not a rule about lines: it's what the narrowest slot holds at
+ * the floor — a third column would need ~15px more than lg has. So a long title
+ * gets smaller type rather than a third line, and past the limit below it gets
+ * trimmed. At wider widths the type reaches its 14px ceiling first, so the
+ * two-column budget never binds there.
  *
  * The 0.6875rem floor is what makes the spines legible — some were reaching 4–6px
  * without it. It also means the fit is no longer unconditional, so what each spine
