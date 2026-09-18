@@ -1,4 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
+import { toGridRef } from '../lib/gridref';
+import {
+  CELL,
+  RAMP,
+  SPOTLIGHT_RADIUS,
+  cellToEasting,
+  cellToNorthing,
+  mirror,
+  parseColor,
+  sampleHeight,
+  toMetres,
+  useTopographyGrid,
+} from '../lib/topography-grid';
+import { getBackground } from '../lib/traverse';
 import { useTheme } from '../theme/useTheme';
 
 /**
@@ -10,96 +24,23 @@ import { useTheme } from '../theme/useTheme';
  * scripts/build-topography-grid.mjs (© Crown copyright, OGL v3).
  *
  * Each grid cell picks a glyph from a low→high ASCII ramp and is painted to a
- * full-bleed <canvas>. On fine-pointer devices that allow motion the field
- * drifts on a slow diagonal parallax and a ~300px cursor "spotlight" lerps the
- * nearby glyphs from the muted base colour toward the accent. Touch /
- * reduced-motion users get a single static frame — no pointer listeners, no
- * animation. If the grid JSON is missing the background simply doesn't draw
- * (graceful degradation) and the page is unaffected.
+ * full-bleed <canvas>. Colours are read from the live CSS custom properties
+ * (--color-muted, --color-accent-start) so the layer tints with the Big Light
+ * theme.
  *
- * Colours are read from the live CSS custom properties (--color-muted,
- * --color-accent-start) so the layer tints with the Big Light theme; a theme
- * flip re-runs the draw effect and re-reads them.
+ * The sampling offset comes from `lib/traverse`'s store, which lets a page drive
+ * the field from scroll instead of the clock — see BackgroundMode. The store's
+ * defaults reproduce the original behaviour exactly (a slow time-based drift on
+ * fine-pointer devices that allow motion, with a ~300px cursor spotlight), so a
+ * page that doesn't opt in is unaffected. Touch / reduced-motion users get a
+ * static frame — no pointer listeners, and no meaningful redraw. If the grid JSON
+ * is missing the background simply doesn't draw and the page is unaffected.
  */
-
-const GRID_URL = '/topography-grid.json';
-const RAMP = ' ·:-=+*#%@'; // low → high elevation
-const CELL = 12; // px per glyph cell (CSS pixels)
-const SPOTLIGHT_RADIUS = 300;
-
-type Grid = { cols: number; rows: number; data: Uint8Array };
-
-/** Mirror (ping-pong) an index into [0, n-1] so the field tiles seamlessly:
- * ...0 1 2 3 3 2 1 0 0 1 2 3... — reflecting at each edge means no hard seam
- * where the grid wraps, however far the drift pushes the sample. */
-function mirror(i: number, n: number): number {
-  const period = 2 * n;
-  let m = ((i % period) + period) % period;
-  if (m >= n) m = period - 1 - m;
-  return m;
-}
-
-/** Bilinearly sample the height field at continuous grid coords (gx, gy),
- * returning 0..1. Interpolating between the four surrounding cells (instead of
- * snapping to the nearest) makes the drift flow as a smooth gradient rather than
- * stepping cell-by-cell. Out-of-range coords mirror in via mirror(). */
-function sampleHeight(grid: Grid, gx: number, gy: number): number {
-  const x0 = Math.floor(gx);
-  const y0 = Math.floor(gy);
-  const fx = gx - x0;
-  const fy = gy - y0;
-  const cx0 = mirror(x0, grid.cols);
-  const cx1 = mirror(x0 + 1, grid.cols);
-  const cy0 = mirror(y0, grid.rows);
-  const cy1 = mirror(y0 + 1, grid.rows);
-  const h00 = grid.data[cy0 * grid.cols + cx0];
-  const h10 = grid.data[cy0 * grid.cols + cx1];
-  const h01 = grid.data[cy1 * grid.cols + cx0];
-  const h11 = grid.data[cy1 * grid.cols + cx1];
-  const top = h00 + (h10 - h00) * fx;
-  const bottom = h01 + (h11 - h01) * fx;
-  return (top + (bottom - top) * fy) / 255;
-}
-
-/** Decode the baked base64 byte grid into a typed array. */
-function decodeGrid(json: {
-  cols: number;
-  rows: number;
-  data: string;
-}): Grid {
-  const bin = atob(json.data);
-  const data = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) data[i] = bin.charCodeAt(i);
-  return { cols: json.cols, rows: json.rows, data };
-}
-
-/** Parse an rgb/hex CSS colour string into [r,g,b]. */
-function parseColor(raw: string): [number, number, number] {
-  const s = raw.trim();
-  const rgb = s.match(/rgba?\(([^)]+)\)/i);
-  if (rgb) {
-    const [r, g, b] = rgb[1].split(',').map((n) => parseFloat(n));
-    return [r, g, b];
-  }
-  const hex = s.replace('#', '');
-  if (hex.length === 3) {
-    return [
-      parseInt(hex[0] + hex[0], 16),
-      parseInt(hex[1] + hex[1], 16),
-      parseInt(hex[2] + hex[2], 16),
-    ];
-  }
-  return [
-    parseInt(hex.slice(0, 2), 16),
-    parseInt(hex.slice(2, 4), 16),
-    parseInt(hex.slice(4, 6), 16),
-  ];
-}
 
 export function TopographicBackground() {
   const { theme, palette } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [grid, setGrid] = useState<Grid | null>(null);
+  const grid = useTopographyGrid();
 
   const prefersReduced =
     typeof window !== 'undefined' &&
@@ -116,23 +57,6 @@ export function TopographicBackground() {
     return () => mq.removeEventListener('change', update);
   }, []);
   const interactive = finePointer && !prefersReduced;
-
-  // Load the baked height grid once. On any failure we leave `grid` null and
-  // the canvas stays blank — the page renders fine without it.
-  useEffect(() => {
-    let cancelled = false;
-    fetch(GRID_URL)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error('no grid'))))
-      .then((json) => {
-        if (!cancelled) setGrid(decodeGrid(json));
-      })
-      .catch(() => {
-        /* graceful degradation — no background */
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -169,10 +93,9 @@ export function TopographicBackground() {
       canvas.width = Math.round(cw * dpr);
       canvas.height = Math.round(ch * dpr);
       // …but the *displayed* size must stay the CSS viewport, or the width
-      // attribute becomes the element's intrinsic CSS size (e.g. 2766px in a
-      // 1383px viewport on retina) and the whole field renders ~dpr× too big
-      // and clipped. Pin CSS size explicitly; the transform below maps CSS px
-      // → device px.
+      // attribute becomes the element's intrinsic CSS size and the whole field
+      // renders ~dpr× too big and clipped. Pin CSS size explicitly; the
+      // transform below maps CSS px → device px.
       canvas.style.width = `${cw}px`;
       canvas.style.height = `${ch}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -197,15 +120,25 @@ export function TopographicBackground() {
       window.addEventListener('pointermove', onMove, { passive: true });
     }
 
+    // Eased offset for the `waypoints` mode, which parks at each section's
+    // waypoint rather than tracking scroll continuously.
+    let easedX = 0;
+    let easedY = 0;
+    let eased = false;
+
+    let lastOffsetX = NaN;
+    let lastOffsetY = NaN;
     let lastT = 0;
+    let raf = 0;
+    let running = true;
 
     const draw = (t: number) => {
       // Frame delta in seconds, clamped so a long pause (tab refocus) can't
-      // teleport the cursor or lurch the drift.
+      // teleport the cursor or lurch the field.
       const dt = lastT ? Math.min((t - lastT) / 1000, 0.05) : 0;
       lastT = t;
 
-      ctx.clearRect(0, 0, cw, ch);
+      const bg = getBackground();
 
       // Ease the smoothed cursor toward the pointer target with a
       // framerate-independent exponential (same feel at 30 or 144fps).
@@ -218,22 +151,62 @@ export function TopographicBackground() {
         curY += (targetY - curY) * k;
       }
 
-      // Slow diagonal drift, expressed in GRID CELLS and driven by real elapsed
-      // time so the velocity is constant regardless of framerate. Because the
-      // height is now bilinearly sampled, this sub-cell offset makes the whole
-      // field flow smoothly rather than stepping. Disabled for reduced motion.
-      const driftX = interactive ? (t / 1000) * 0.9 : 0; // cells/sec
-      const driftY = interactive ? (t / 1000) * 0.65 : 0;
+      /* Where the field is sampled from.
+       *
+       * `pan` is the traverse: the offset is a pure function of scroll, so the
+       * ground at the middle of the screen is always the ground the chrome is
+       * naming. `waypoints` parks at the current section's waypoint and eases
+       * across. `drift` is the original time-based diagonal — meaningless by
+       * design, which is why nothing positional may be anchored to it. */
+      let offsetX: number;
+      let offsetY: number;
+      if (bg.mode === 'pan') {
+        offsetX = bg.panX;
+        offsetY = bg.panY;
+      } else if (bg.mode === 'waypoints') {
+        if (!eased) {
+          easedX = bg.panX;
+          easedY = bg.panY;
+          eased = true;
+        }
+        const k = 1 - Math.exp(-dt * 3);
+        easedX += (bg.panX - easedX) * k;
+        easedY += (bg.panY - easedY) * k;
+        offsetX = easedX;
+        offsetY = easedY;
+      } else if (bg.mode === 'static') {
+        offsetX = 0;
+        offsetY = 0;
+      } else {
+        offsetX = interactive ? (t / 1000) * 0.9 : 0; // cells/sec
+        offsetY = interactive ? (t / 1000) * 0.65 : 0;
+      }
+
+      // Nothing to repaint while the field is still, the cursor isn't being
+      // followed and no reticle is drawn — the touch-device case, which is why
+      // the original code could stop after a single frame. The loop stays alive
+      // so a control that changes the mode is honoured on the very next frame;
+      // it just skips the expensive repaint until something actually moves.
+      const settled =
+        offsetX === lastOffsetX &&
+        offsetY === lastOffsetY &&
+        !(interactive && curX > -9998) &&
+        !bg.reticle;
+      if (settled) return;
+      lastOffsetX = offsetX;
+      lastOffsetY = offsetY;
+
+      ctx.clearRect(0, 0, cw, ch);
 
       const sxScale = grid.cols / cols;
       const syScale = grid.rows / rows;
 
       for (let ry = 0; ry < rows; ry++) {
         for (let rx = 0; rx < cols; rx++) {
-          // Continuous grid coords + drift; sampleHeight mirrors + interpolates,
+          // Continuous grid coords + offset; sampleHeight mirrors + interpolates,
           // so there's no hard wrap seam and the transition is smooth.
-          const gx = rx * sxScale + driftX;
-          const gy = ry * syScale + driftY;
+          const gx = rx * sxScale + offsetX;
+          const gy = ry * syScale + offsetY;
           const h = sampleHeight(grid, gx, gy);
           const ci = Math.min(RAMP.length - 1, Math.floor(h * RAMP.length));
           const glyph = RAMP[ci];
@@ -257,41 +230,79 @@ export function TopographicBackground() {
           ctx.fillText(glyph, sx, sy);
         }
       }
-    };
 
-    let raf = 0;
-    let running = true;
+      /* The reticle.
+       *
+       * It reads the height under the pointer by calling the same sampleHeight()
+       * the glyphs above were drawn from, so the number is true by construction
+       * rather than by a parallel lookup that could drift. The reference is only
+       * claimed for a point genuinely inside the baked sheet: the field mirrors
+       * past the edge, so terrain outside it is a repeat, and naming a repeat
+       * would be fiction. Those samples are marked `≈` instead. */
+      if (bg.reticle && interactive && curX > -9998) {
+        const gx = (curX / CELL) * sxScale + offsetX;
+        const gy = (curY / CELL) * syScale + offsetY;
+        const metres = Math.round(toMetres(sampleHeight(grid, gx, gy)));
+
+        const wrapped =
+          Math.floor(gx) < 0 ||
+          Math.floor(gx) >= grid.cols ||
+          Math.floor(gy) < 0 ||
+          Math.floor(gy) >= grid.rows;
+        const easting = Math.round(cellToEasting(mirror(gx, grid.cols)));
+        const northing = Math.round(cellToNorthing(mirror(gy, grid.rows)));
+        const label = `${wrapped ? '≈ ' : ''}${toGridRef(easting, northing)} · ${metres} m`;
+
+        ctx.strokeStyle = `rgba(${accent.join(',')},0.85)`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        const arm = 9;
+        const gap = 4;
+        ctx.moveTo(curX - arm - gap, curY);
+        ctx.lineTo(curX - gap, curY);
+        ctx.moveTo(curX + gap, curY);
+        ctx.lineTo(curX + arm + gap, curY);
+        ctx.moveTo(curX, curY - arm - gap);
+        ctx.lineTo(curX, curY - gap);
+        ctx.moveTo(curX, curY + gap);
+        ctx.lineTo(curX, curY + arm + gap);
+        ctx.stroke();
+
+        ctx.font = '11px ui-monospace, "SF Mono", Menlo, monospace';
+        ctx.textBaseline = 'top';
+        const textWidth = ctx.measureText(label).width;
+        const boxX = Math.min(cw - textWidth - 14, curX + 16);
+        const boxY = Math.max(4, curY - 24);
+        const light = document.documentElement.dataset.theme === 'light';
+        ctx.fillStyle = light ? 'rgba(255,255,255,0.84)' : 'rgba(0,0,0,0.62)';
+        ctx.fillRect(boxX - 5, boxY, textWidth + 10, 18);
+        ctx.fillStyle = `rgba(${accent.join(',')},1)`;
+        ctx.fillText(label, boxX, boxY + 3);
+      }
+    };
 
     const loop = (t: number) => {
       if (!running) return;
       draw(t);
-      raf = requestAnimationFrame(loop);
+      if (running) raf = requestAnimationFrame(loop);
     };
 
-    // Read colours on the next frame — by then the theme/palette attribute set
-    // in ThemeProvider's effect has committed and styles recomputed, so we never
-    // pick up the previous palette's accent (see readColors above).
-    if (interactive) {
-      raf = requestAnimationFrame((t) => {
-        readColors();
-        loop(t);
-      });
-    } else {
-      // Static devices (touch / reduced motion) draw one frame and stop.
-      raf = requestAnimationFrame(() => {
-        readColors();
-        draw(0);
-      });
-    }
+    raf = requestAnimationFrame((t) => {
+      readColors();
+      loop(t);
+    });
 
-    // Pause the loop when the tab is hidden so idle drift costs nothing.
+    // Pause the loop when the tab is hidden so idle work costs nothing. Playback
+    // resumes on the next visibility change, and the settled case above stops it
+    // on its own once nothing can change.
     const onVisibility = () => {
-      if (!interactive) return;
       if (document.hidden) {
         running = false;
         cancelAnimationFrame(raf);
       } else if (!running) {
         running = true;
+        lastT = 0;
+        lastOffsetX = NaN;
         raf = requestAnimationFrame(loop);
       }
     };
@@ -302,7 +313,12 @@ export function TopographicBackground() {
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
         resize();
-        if (!interactive) draw(0); // redraw the static frame at the new size
+        lastOffsetX = NaN;
+        lastT = 0;
+        if (!running) {
+          running = true;
+          raf = requestAnimationFrame(loop);
+        }
       }, 120);
     };
     window.addEventListener('resize', onResize);

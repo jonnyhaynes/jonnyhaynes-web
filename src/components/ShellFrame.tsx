@@ -5,7 +5,6 @@ import { SECTION_IDS } from '../content/sections';
 import { useActiveSection } from '../lib/useActiveSection';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { MobileBar } from './MobileBar';
-import { ProfilePanel } from './ProfilePanel';
 import { SectionRail } from './SectionRail';
 
 /** How many frames to keep looking for a section that hasn't mounted yet. */
@@ -108,9 +107,12 @@ function ShellFrame({
   );
 }
 
-/** Home: the portrait column, the pane, the rail. */
+/**
+ * Home. The pane and the rail, with nothing ahead of the pane — the portrait is
+ * the hero's leading column now, so the shell has no panel to reserve room for.
+ */
 export function PanelShell() {
-  return <ShellFrame layout="panel" panel={<ProfilePanel />} />;
+  return <ShellFrame layout="panel" />;
 }
 
 /**
