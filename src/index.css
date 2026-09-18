@@ -1299,15 +1299,15 @@
   z-index: 1;
 }
 
-/* Picking the display copy out grows it, and the books on either side move out by
- * the same amount so they stay in contact with it. `transform-origin: bottom
- * center` splits the growth evenly, so each side takes half of it — both read the
- * one `--cover-grow`, so the growth and the shift are the same number by
- * construction rather than by hand.
+/* Picking the display copy out grows it and shifts the books on either side out by
+ * what it grows, so they don't end up underneath it. `transform-origin: bottom
+ * center` splits the growth evenly, so each side takes half — both read the one
+ * `--cover-grow`, so the growth and the shift can't drift apart.
  *
- * A rigid shift of each side, applied to the list items rather than the spines, so
- * the books keep both their lean and their spacing: the whole side moves as one,
- * which reads as the shelf making room rather than as the books reacting. */
+ * The books tilt as well, by the same amount hovering one of them does: standing
+ * up is what makes room, and a nudge of it reads as the shelf noticing rather than
+ * snapping to attention. The cover is the innermost thing on the shelf, so every
+ * book is outward of it and all of them move. */
 .book-feature {
   transform-origin: bottom center;
   transition: transform 200ms ease;
@@ -1320,6 +1320,11 @@
 
 .bookshelf [data-side] {
   transition: transform 200ms ease;
+}
+
+.bookshelf:has(.book-feature:hover) .book-spine,
+.bookshelf:has(.book-feature:focus-visible) .book-spine {
+  transform: rotate(calc(var(--lean, 0deg) * 0.4)) translateY(-4px);
 }
 
 .bookshelf:has(.book-feature:hover) [data-side='left'],
