@@ -35,6 +35,15 @@ export function Reading() {
   const left = rest.slice(0, 2);
   const right = rest.slice(2);
 
+  // How far the innermost book on each side reaches across, as a fraction of the
+  // cover's height: its height × sin(lean), and its height is the cover × its
+  // fraction. That's what the cover's side margins are set to, so the books come
+  // to rest against it rather than lying over it. Read from the books actually
+  // present, so a short list is exact rather than padded.
+  const fracAt = (index: number) => SPINE_FRACTIONS[index % SPINE_FRACTIONS.length];
+  const leanOnLeft = left.length ? fracAt(left.length - 1) * SIN_LEAN : 0;
+  const leanOnRight = right.length ? fracAt(left.length) * SIN_LEAN : 0;
+
   return (
     <section id="reading" className="scroll-mt-16 py-16">
       {/* Title and shelf line both sit in the section's own box, which now fills
@@ -70,8 +79,8 @@ export function Reading() {
         style={
           {
             '--spines': String(books.length - 1),
-            '--lean-left': String(LEAN_ON_LEFT),
-            '--lean-right': String(LEAN_ON_RIGHT),
+            '--lean-left': String(leanOnLeft),
+            '--lean-right': String(leanOnRight),
           } as CSSProperties
         }
       >
@@ -160,18 +169,19 @@ const FALLBACK_SPINE = {
 };
 
 /**
- * Spine heights as a fraction of the centre cover's height.
+ * Spine heights as a fraction of the centre cover's height, read in shelf order:
+ * the left pair takes the first two, the right four the last four.
  *
  * The cover is square and stands in for a book's width, so these are book
  * proportions — taller than they are wide, as books are. That isn't decoration: a
- * spine's height is what sets how many characters fit in each of its columns, and
- * it's what lets seven books carry a full title at a legible size at every width.
- * Varied by a little so the shelf reads as a mix of book sizes rather than six
- * identical bars, assigned by shelf position (not book identity) so the shape
- * stays stable across data refreshes.
+ * spine's height sets how many characters fit in each of its columns, which is
+ * what lets seven books carry a full title at a legible size.
  *
- * Kept close to the cover's height: past about a third taller the books start to
- * dwarf the square rather than sit beside it.
+ * Deliberately mixed rather than ordered. Every book leans at the same angle, and
+ * two books at the same angle keep their faces parallel — so the distance between
+ * them is the gap between their slots, the same all the way up, and they touch
+ * whatever their heights. Heights are free to be a mix of sizes, as on a real
+ * shelf, with the tops stepping up and down.
  */
 const SPINE_FRACTIONS = [1.28, 1.2, 1.35, 1.22, 1.32, 1.2];
 
@@ -179,18 +189,6 @@ const SPINE_FRACTIONS = [1.28, 1.2, 1.35, 1.22, 1.32, 1.2];
 const LEAN_DEG = 6;
 
 const SIN_LEAN = Math.sin((LEAN_DEG * Math.PI) / 180);
-
-/**
- * How far a leaning book's top reaches across, as a fraction of the cover's
- * height: height × sin(lean), and the height is the cover × the spine fraction.
- * The innermost book on each side decides how much clearance the cover needs, so
- * the others lean *on* it rather than lying over it.
- *
- * Derived from the fractions and the lean rather than measured, so changing either
- * moves these with them.
- */
-const LEAN_ON_LEFT = SPINE_FRACTIONS[1] * SIN_LEAN;
-const LEAN_ON_RIGHT = SPINE_FRACTIONS[2] * SIN_LEAN;
 
 /**
  * The most characters a spine can carry and still hold the minimum type size.

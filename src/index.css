@@ -1261,12 +1261,12 @@
  * — below md the component falls back to a plain vertical flow. */
 .bookshelf {
   align-items: flex-end;
-  /* Gaps are small because the books lean together. With one angle per group the
-     only intrusion between neighbours comes from their differing heights —
-     measured at 2.1% of the cover worst case — so 2% lets them touch. A fan of
-     angles would need 7% to stay clear, which reads as spacing rather than a
-     shelf. */
-  --gap: calc(var(--cover-h, 15rem) * 0.02);
+  /* As close to none as a gap can be. Every book leans at the same angle, so
+     neighbouring faces stay parallel and the slot gap *is* the visible gap along
+     their whole length — a hair of it is the difference between touching and
+     looking like books that happen to be near each other. Kept just off zero so
+     the sub-pixel rounding can't tip two books into overlapping. */
+  --gap: calc(var(--cover-h, 15rem) * 0.002);
   column-gap: var(--gap);
   /* Container so spine heights can scale off the row width (and thus off the
      centre cover, which is 1/3 of the row). */
@@ -1284,17 +1284,17 @@
 }
 
 /* The face-out cover. Its side margins are the lean-on distance — how far the
- * innermost book on each side reaches across, as a fraction of the cover's own
- * height — so the leaning books rest against it instead of lying over it. A hair
- * over the measured reach, so contact reads as a lean rather than an overlap. */
+ * innermost book on each side reaches across — so the leaning books come to rest
+ * against it rather than lying over it. Exact, because a lean-on is contact. */
 .book-cover {
-  margin-inline: calc(var(--cover-h, 15rem) * var(--lean-left, 0) * 1.05)
-    calc(var(--cover-h, 15rem) * var(--lean-right, 0) * 1.05);
+  margin-inline: calc(var(--cover-h, 15rem) * var(--lean-left, 0))
+    calc(var(--cover-h, 15rem) * var(--lean-right, 0));
 }
 
-/* Picking the display copy out lifts it. The leaning books move out by the same
- * amount it grows — a 1.04 scale reaches 2% further each side — so they stay in
- * contact with it as it rises, rather than it growing over them. */
+/* Picking the display copy out stands its neighbours up. Straightening them is
+ * what makes room for it to grow: a leaning book reaches across, an upright one
+ * doesn't, so the span it was occupying is free by the time the cover lifts into
+ * it. */
 .book-feature {
   transform-origin: bottom center;
   transition: transform 200ms ease;
@@ -1305,21 +1305,17 @@
   transform: scale(1.04);
 }
 
-.bookshelf:has(.book-feature:hover) [data-side='left'],
-.bookshelf:has(.book-feature:focus-visible) [data-side='left'] {
-  transform: translateX(calc(var(--cover-h, 15rem) * -0.02));
-  transition: transform 200ms ease;
-}
-
-.bookshelf:has(.book-feature:hover) [data-side='right'],
-.bookshelf:has(.book-feature:focus-visible) [data-side='right'] {
-  transform: translateX(calc(var(--cover-h, 15rem) * 0.02));
-  transition: transform 200ms ease;
+.bookshelf:has(.book-feature:hover) .book-spine,
+.bookshelf:has(.book-feature:focus-visible) .book-spine {
+  transform: rotate(0deg) translateY(-4px);
+  transition:
+    transform 200ms ease,
+    filter 0.2s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .book-feature,
-  .bookshelf [data-side] {
+  .book-spine {
     transition: none;
   }
 }
@@ -1396,7 +1392,7 @@
      the row exactly as the real layout does. */
   --spacing: calc(
     (var(--spines, 6) - 1) * var(--gap, 1rem) +
-      (var(--lean-left, 0) + var(--lean-right, 0)) * 1.05 * var(--cover-h, 15rem)
+      (var(--lean-left, 0) + var(--lean-right, 0)) * var(--cover-h, 15rem)
   );
   --spine-w: calc(
     (100cqw - var(--cover-h, 15rem) * 1 - var(--spacing)) / var(--spines, 6)
