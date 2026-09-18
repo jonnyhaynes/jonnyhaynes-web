@@ -1325,12 +1325,13 @@
  * or fewer, inside both dimensions.
  *
  * The 0.6875rem floor is what makes the spines legible — some were reaching 4–6px
- * without it. It also means the fit is no longer unconditional: a spine set below
- * the floor wraps to a third column and eats into the row. The component keeps
- * that from happening by shortening what a spine carries (title alone past 43
- * characters) so the fitted size stays above the floor in the tightest case. The
- * floor and the character limit are derived from each other — change one and the
- * other needs re-deriving. */
+ * without it. It also means the fit is no longer unconditional, so what each spine
+ * carries is chosen to hold the floor: title and author up to 64 characters, else
+ * the title, else the title trimmed. A spine can only fit so much at a legible
+ * size, and how much depends on how many books share the row — which is why the
+ * shelf shows five books below `xl` and seven above it. The floor, the character
+ * limit and that breakpoint are derived from each other; change one and the others
+ * need re-deriving. */
 .book-spine-text {
   --avail: calc(
     max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem

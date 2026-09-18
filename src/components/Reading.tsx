@@ -9,10 +9,13 @@ import { SectionHeading } from './SectionHeading';
  * Desktop: the most-recent book stands face-out in the centre as a large square
  * cover (the "display copy"); the other six stand on their ends as tall vertical
  * spines — two on the left leaning right into the cover, four on the right
- * leaning left into it. All seven show at every width the shelf renders: the
- * spines carry text sized to fit (see .book-spine-text), which keeps each one
- * narrow enough that the row doesn't crowd. Title + author run up each spine
- * (rotated 90°) and every item links to its Spotify page.
+ * leaning left into it. Title + author run up each spine (rotated 90°) and every
+ * item links to its Spotify page.
+ *
+ * Five books show below `xl` and seven above it. That isn't about crowding: a
+ * spine's type has a legible minimum, and with seven books at `lg` there is only
+ * room for 21 characters of it — no title at all. Five narrows the row enough that
+ * every spine holds 64+, which is a real title and author.
  *
  * Mobile: falls back to a simple stacked flow — the cover on top, horizontal
  * spine bars below — since the leaning shelf illusion needs the horizontal room.
@@ -83,7 +86,9 @@ export function Reading() {
           <FeatureCover book={feature} className="w-full" />
         </li>
 
-        {/* Right four — lean left, into the cover. Grows outward: -4…-10deg. */}
+        {/* Right four — lean left, into the cover. Grows outward: -4…-10deg. The
+            last two are held back below `xl`, where a spine can't hold a real
+            title at the minimum type size. */}
         {right.map((b, i) => (
           <SpineBar
             key={b.title}
@@ -93,6 +98,7 @@ export function Reading() {
             heightFrac={
               SPINE_FRACTIONS[(i + left.length) % SPINE_FRACTIONS.length]
             }
+            wideOnly={i >= 2}
           />
         ))}
       </ul>
@@ -159,11 +165,14 @@ const SPINE_FRACTIONS = [0.92, 0.8, 0.98, 0.85, 0.94, 0.78];
 
 /**
  * The most characters a spine can carry and still hold the minimum type size on
- * the tightest shelf (seven books at `lg`): ~142px of usable height, two columns
- * of it, at 0.6875rem. Derived from that floor rather than chosen — see the note
- * on `.book-spine-text`, and change both together.
+ * the tightest shelf: five books below `xl`, where each gets ~75px by ~142px of
+ * usable height, which is three columns at 0.6875rem — 64 characters.
+ *
+ * Derived from the floor rather than chosen; change both together. The reason the
+ * shelf drops to five books below `xl` is this number: at seven books and `lg` a
+ * spine holds only 21 characters, which is no title at all.
  */
-const SPINE_CHARS = 43;
+const SPINE_CHARS = 64;
 
 /**
  * A book "spine" linking to Spotify: a coloured strip in the cover's baked
@@ -179,6 +188,7 @@ function SpineBar({
   lean,
   heightFrac,
   side,
+  wideOnly = false,
   horizontal = false,
 }: {
   book: SpotifyAudiobook;
@@ -186,6 +196,8 @@ function SpineBar({
   heightFrac?: number;
   /** Which half of the shelf this sits on. Hover straightens a whole side at once. */
   side?: 'left' | 'right';
+  /** Held back below `xl`, where the spine can't hold a real title legibly. */
+  wideOnly?: boolean;
   horizontal?: boolean;
 }) {
   const spine = book.spine ?? FALLBACK_SPINE;
@@ -230,7 +242,7 @@ function SpineBar({
   }
 
   return (
-    <li data-side={side}>
+    <li data-side={side} className={wideOnly ? 'hidden xl:block' : undefined}>
       <a
         href={book.url ?? '#'}
         target="_blank"
