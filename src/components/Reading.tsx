@@ -179,6 +179,9 @@ function SpineBar({
   horizontal?: boolean;
 }) {
   const spine = book.spine ?? FALLBACK_SPINE;
+  // The exact characters the spine has to hold, spaces included, so CSS can size
+  // the type to fit them rather than leaving it to spill.
+  const spineText = `${book.title} · ${book.authors}`;
 
   if (horizontal) {
     return (
@@ -214,6 +217,9 @@ function SpineBar({
           {
             background: spine.bg,
             color: spine.ink,
+            // JetBrains Mono is monospace, so CSS can size the type to fit the
+            // spine exactly if it knows how many characters it has to hold.
+            '--chars': `${spineText.length}`,
             ...(lean != null
               ? {
                   '--lean': `${lean}deg`,
@@ -229,13 +235,14 @@ function SpineBar({
           } as CSSProperties
         }
       >
-        <span className="book-spine-text flex items-baseline gap-1.5">
-          <span className="text-sm font-medium leading-tight tracking-tight">
-            {book.title}
-          </span>
-          <span className="shrink-0 text-xs leading-tight">
-            {book.authors}
-          </span>
+        {/* One text run, not a flex row: the spaces around the separator are
+            literal, so the length really is characters × advance. The separator
+            keeps the title and author from reading as one string, and it's
+            aria-hidden because the link's label already says "by". */}
+        <span className="book-spine-text">
+          <span className="font-medium">{book.title}</span>
+          <span aria-hidden="true">{' · '}</span>
+          <span>{book.authors}</span>
         </span>
       </a>
     </li>

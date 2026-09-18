@@ -1287,9 +1287,10 @@
   height: calc(var(--cover-h, 15rem) * var(--spine-frac, 0.6));
   /* Never collapse below a readable minimum on narrow desktop widths. */
   min-height: 11rem;
-  /* Comfortable minimum thickness; grows wider as the title wraps. */
+  /* Comfortable minimum thickness; grows wider as the title wraps. Deliberately
+     uncapped: capping it is what used to push the wrapped columns out of the
+     book. Type size is what keeps a spine from getting absurd instead. */
   min-width: 2.75rem;
-  max-width: 5.5rem;
   /* Pivot on the bottom corner that rests on the shelf (bottom-left for a
      right-leaning book, bottom-right for a left-leaning one — set per book via
      --pivot-x), so the base stays flush on the baseline instead of the far
@@ -1307,21 +1308,34 @@
     0 4px 6px -3px var(--book-shadow-cast);
 }
 
-/* Title + author rotated to read bottom-to-top up the spine. Wraps into extra
+/* Title + author rotated to read bottom-to-top up the spine, wrapping into extra
  * columns (spreading across the spine's thickness) when the text is longer than
- * the spine is tall, so the full title always shows. */
+ * the spine is tall, so the full title always shows.
+ *
+ * The type is sized to fit rather than left at a fixed size and allowed to spill.
+ * JetBrains Mono is monospace, so a string of N characters occupies exactly
+ * N × 0.6em at any size — which means the length is known without measuring the
+ * DOM, and the size that fits a given height is arithmetic. `--chars` comes from
+ * the component (title + separator + author, including the spaces).
+ *
+ * Sized to two columns' worth so a long title ends up two columns wide at most,
+ * which keeps the book to a believable thickness; the 0.5rem floor only binds for
+ * titles long enough to wrap to a third. Either way nothing is truncated and
+ * nothing leaves the spine. */
 .book-spine-text {
+  --avail: calc(
+    max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
+  );
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   /* Bounded to the spine height so the block wraps instead of overflowing the
-     bottom edge; clearance matches .book-spine's py-5 (1.25rem each end). Uses
-     the same fraction-of-cover height as .book-spine, floored at its min. */
-  max-height: calc(
-    max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
+     bottom edge; clearance matches .book-spine's py-5 (1.25rem each end). */
+  max-height: var(--avail);
+  text-align: center;
+  font-size: max(
+    0.5rem,
+    min(0.875rem, calc(var(--avail) * 2 / (var(--chars, 20) * 0.6)))
   );
-  flex-wrap: wrap;
-  align-content: center;
-  gap: 0.25rem 0.5rem;
 }
 
 .book-spine:hover {
