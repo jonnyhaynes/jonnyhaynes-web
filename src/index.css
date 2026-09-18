@@ -1283,6 +1283,47 @@
   border-top: 10px solid var(--color-shelf);
 }
 
+/* The face-out cover. Its side margins are the lean-on distance — how far the
+ * innermost book on each side reaches across, as a fraction of the cover's own
+ * height — so the leaning books rest against it instead of lying over it. A hair
+ * over the measured reach, so contact reads as a lean rather than an overlap. */
+.book-cover {
+  margin-inline: calc(var(--cover-h, 15rem) * var(--lean-left, 0) * 1.05)
+    calc(var(--cover-h, 15rem) * var(--lean-right, 0) * 1.05);
+}
+
+/* Picking the display copy out lifts it. The leaning books move out by the same
+ * amount it grows — a 1.04 scale reaches 2% further each side — so they stay in
+ * contact with it as it rises, rather than it growing over them. */
+.book-feature {
+  transform-origin: bottom center;
+  transition: transform 200ms ease;
+}
+
+.book-feature:hover,
+.book-feature:focus-visible {
+  transform: scale(1.04);
+}
+
+.bookshelf:has(.book-feature:hover) [data-side='left'],
+.bookshelf:has(.book-feature:focus-visible) [data-side='left'] {
+  transform: translateX(calc(var(--cover-h, 15rem) * -0.02));
+  transition: transform 200ms ease;
+}
+
+.bookshelf:has(.book-feature:hover) [data-side='right'],
+.bookshelf:has(.book-feature:focus-visible) [data-side='right'] {
+  transform: translateX(calc(var(--cover-h, 15rem) * 0.02));
+  transition: transform 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-feature,
+  .bookshelf [data-side] {
+    transition: none;
+  }
+}
+
 /* A vertical spine standing on its end. `--lean` (deg) and `--spine-frac` are
  * set per-book inline so the shelf looks like a real mix of book sizes rather
  * than six identical bars. Height is `--spine-frac` of the centre cover's height,
@@ -1349,12 +1390,16 @@
   --avail: calc(
     max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
   );
-  /* Room one spine can take: the row, less the face-out cover (whose height
-     equals its width) and the gaps between, shared between the spines. Uses the
-     same --gap the row does, so the two can't drift. */
+  /* Room one spine can take: the row, less the face-out cover, less everything
+     standing between them — the gaps *and* the cover's two lean-on margins.
+     All of it is expressed as fractions of the cover, so the estimate scales with
+     the row exactly as the real layout does. */
+  --spacing: calc(
+    (var(--spines, 6) - 1) * var(--gap, 1rem) +
+      (var(--lean-left, 0) + var(--lean-right, 0)) * 1.05 * var(--cover-h, 15rem)
+  );
   --spine-w: calc(
-    (100cqw - var(--cover-h, 15rem) * 1 - (var(--spines, 6) + 1) * var(--gap, 1rem)) /
-      var(--spines, 6)
+    (100cqw - var(--cover-h, 15rem) * 1 - var(--spacing)) / var(--spines, 6)
   );
   writing-mode: vertical-rl;
   transform: rotate(180deg);

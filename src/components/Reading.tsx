@@ -60,38 +60,49 @@ export function Reading() {
           the shell's single content container, so the row fills it directly: the
           old max-w-4xl → max-w-6xl breakout this used to need is gone. */}
       <ul
-        className="bookshelf mt-10 hidden w-full items-end justify-center gap-4 md:flex"
+        className="bookshelf mt-10 hidden w-full items-end justify-center md:flex"
         role="list"
         // How many books share the row, so the spine type can work out the width
-        // it has as well as the height it has.
-        style={{ '--spines': String(books.length - 1) } as CSSProperties}
+        // it has as well as the height it has; and how far the books lean on the
+        // cover, which is what the cover's margins and the row's spacing are built
+        // from. Custom properties cascade, so setting them here reaches every
+        // spine and the cover alike.
+        style={
+          {
+            '--spines': String(books.length - 1),
+            '--lean-left': String(LEAN_ON_LEFT),
+            '--lean-right': String(LEAN_ON_RIGHT),
+          } as CSSProperties
+        }
       >
-        {/* Left pair — lean right, into the cover. Both at the same angle: a
-            shared lean means they lean as one unit and can sit touching, where a
-            fan of angles splays their tops apart and forces the gap open. */}
+        {/* Left pair — lean right, onto the cover. Both at the same angle: a shared
+            lean means they lean as one unit and can sit touching, where a fan of
+            angles splays their tops apart and forces the gap open. */}
         {left.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
             side="left"
-            lean={6}
+            lean={LEAN_DEG}
             heightFrac={SPINE_FRACTIONS[i % SPINE_FRACTIONS.length]}
           />
         ))}
 
-        {/* Centre display copy — upright, face-out, up to a third of the row. */}
-        <li className="mx-4 w-1/3 shrink-0 self-end">
+        {/* Centre display copy — upright, face-out, up to a third of the row. Its
+            margins are the lean-on distance, set in CSS, so the books either side
+            rest against it. */}
+        <li className="book-cover w-1/3 shrink-0 self-end">
           <FeatureCover book={feature} className="w-full" />
         </li>
 
-        {/* Right four — lean left, into the cover, all at the same angle so they
+        {/* Right four — lean left, onto the cover, all at the same angle so they
             stand as one row rather than fanning apart. */}
         {right.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
             side="right"
-            lean={-6}
+            lean={-LEAN_DEG}
             heightFrac={
               SPINE_FRACTIONS[(i + left.length) % SPINE_FRACTIONS.length]
             }
@@ -128,7 +139,7 @@ function FeatureCover({
         <img
           src={book.cover}
           alt=""
-          className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.01]"
+          className="aspect-square w-full object-cover"
         />
       ) : (
         <span className="flex aspect-square w-full items-center justify-center bg-muted/20 font-mono text-4xl text-muted">
@@ -163,6 +174,23 @@ const FALLBACK_SPINE = {
  * dwarf the square rather than sit beside it.
  */
 const SPINE_FRACTIONS = [1.28, 1.2, 1.35, 1.22, 1.32, 1.2];
+
+/** The lean shared by every spine, in degrees. One per group — see the shelf row. */
+const LEAN_DEG = 6;
+
+const SIN_LEAN = Math.sin((LEAN_DEG * Math.PI) / 180);
+
+/**
+ * How far a leaning book's top reaches across, as a fraction of the cover's
+ * height: height × sin(lean), and the height is the cover × the spine fraction.
+ * The innermost book on each side decides how much clearance the cover needs, so
+ * the others lean *on* it rather than lying over it.
+ *
+ * Derived from the fractions and the lean rather than measured, so changing either
+ * moves these with them.
+ */
+const LEAN_ON_LEFT = SPINE_FRACTIONS[1] * SIN_LEAN;
+const LEAN_ON_RIGHT = SPINE_FRACTIONS[2] * SIN_LEAN;
 
 /**
  * The most characters a spine can carry and still hold the minimum type size.
