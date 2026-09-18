@@ -1261,6 +1261,12 @@
  * — below md the component falls back to a plain vertical flow. */
 .bookshelf {
   align-items: flex-end;
+  /* Gaps scale with the books, because the lean does. A fixed gap is cleared at
+     one width and overlapped at another — the intrusion into a neighbour is
+     proportional to the cover's height, measured at 5.7% worst case, so 7% leaves
+     margin at every width. */
+  --gap: calc(var(--cover-h, 15rem) * 0.07);
+  column-gap: var(--gap);
   /* Container so spine heights can scale off the row width (and thus off the
      centre cover, which is 1/3 of the row). */
   container-type: inline-size;
@@ -1337,11 +1343,10 @@
     max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
   );
   /* Room one spine can take: the row, less the face-out cover (whose height
-     equals its width) and the gaps between, shared between the spines. The gaps
-     are counted in rem against a row measured in cqw, so this is approximate —
-     deliberately erring small, since a smaller figure only shrinks the type. */
+     equals its width) and the gaps between, shared between the spines. Uses the
+     same --gap the row does, so the two can't drift. */
   --spine-w: calc(
-    (100cqw - var(--cover-h, 15rem) * 1 - (var(--spines, 6) + 1) * 1rem) /
+    (100cqw - var(--cover-h, 15rem) * 1 - (var(--spines, 6) + 1) * var(--gap, 1rem)) /
       var(--spines, 6)
   );
   writing-mode: vertical-rl;

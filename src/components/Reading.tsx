@@ -67,13 +67,15 @@ export function Reading() {
         style={{ '--spines': String(books.length - 1) } as CSSProperties}
       >
         {/* Left pair — lean right, into the cover. Outermost (i=0) leans most.
-            `pos` indexes into the size table so no two neighbours match. */}
+            Stepped 2° like the right-hand side: a 4° step swung the outer book's
+            top far enough to clip its neighbour at every width (19–30px against a
+            16px gap), which is why only this side showed an overlap. */}
         {left.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
             side="left"
-            lean={left.length === 2 ? [8, 4][i] : 5}
+            lean={left.length === 2 ? [8, 6][i] : 5}
             heightFrac={SPINE_FRACTIONS[i % SPINE_FRACTIONS.length]}
           />
         ))}
