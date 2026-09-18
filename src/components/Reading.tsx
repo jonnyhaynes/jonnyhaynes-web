@@ -7,12 +7,12 @@ import { SectionHeading } from './SectionHeading';
  * Reading section — saved audiobooks from Spotify, rendered as a bookshelf.
  *
  * Desktop: the most-recent book stands face-out in the centre as a large square
- * cover (the "display copy"); the others stand on their ends as tall vertical
- * spines — two on the left leaning right into the cover, and up to four on the
- * right leaning left into it. That's five books by default and seven once the row
- * is at its widest (`2xl`), so the shelf is never crowded and the two extra simply
- * join the right-hand end. Title + author run up each spine (rotated 90°) and every
- * item links to its Spotify page.
+ * cover (the "display copy"); the other six stand on their ends as tall vertical
+ * spines — two on the left leaning right into the cover, four on the right
+ * leaning left into it. All seven show at every width the shelf renders: the
+ * spines carry text sized to fit (see .book-spine-text), which keeps each one
+ * narrow enough that the row doesn't crowd. Title + author run up each spine
+ * (rotated 90°) and every item links to its Spotify page.
  *
  * Mobile: falls back to a simple stacked flow — the cover on top, horizontal
  * spine bars below — since the leaning shelf illusion needs the horizontal room.
@@ -29,12 +29,11 @@ export function Reading() {
   if (!books.length) return null;
 
   const [feature, ...rest] = books;
-  // Split the rest: two lean against the left of the cover, up to four the right.
-  // The right side's last two are the pair that only appear at the widest
-  // breakpoint, so the shelf is five books by default and the extra two join the
-  // end rather than reshuffling what's already there.
+  // Split the rest: two lean against the left of the cover, four the right. If
+  // fewer than seven came back, the left side takes up to two and the rest go
+  // right, so short lists still look intentional.
   const left = rest.slice(0, 2);
-  const right = rest.slice(2, 6);
+  const right = rest.slice(2);
 
   return (
     <section id="reading" className="scroll-mt-16 py-16">
@@ -63,6 +62,9 @@ export function Reading() {
       <ul
         className="bookshelf mt-10 hidden w-full items-end justify-center gap-3 md:flex"
         role="list"
+        // How many books share the row, so the spine type can work out the width
+        // it has as well as the height it has.
+        style={{ '--spines': String(books.length - 1) } as CSSProperties}
       >
         {/* Left pair — lean right, into the cover. Outermost (i=0) leans most.
             `pos` indexes into the size table so no two neighbours match. */}
@@ -80,8 +82,7 @@ export function Reading() {
           <FeatureCover book={feature} className="w-full" />
         </li>
 
-        {/* Right side — lean left, into the cover. Grows outward: -4…-10deg. The
-            last two are held back until `2xl`, where the row has room for seven. */}
+        {/* Right four — lean left, into the cover. Grows outward: -4…-10deg. */}
         {right.map((b, i) => (
           <SpineBar
             key={b.title}
@@ -90,7 +91,6 @@ export function Reading() {
             heightFrac={
               SPINE_FRACTIONS[(i + left.length) % SPINE_FRACTIONS.length]
             }
-            wideOnly={i >= 2}
           />
         ))}
       </ul>
@@ -168,14 +168,11 @@ function SpineBar({
   book,
   lean,
   heightFrac,
-  wideOnly = false,
   horizontal = false,
 }: {
   book: SpotifyAudiobook;
   lean?: number;
   heightFrac?: number;
-  /** Held back until the widest breakpoint, so the shelf shows five by default. */
-  wideOnly?: boolean;
   horizontal?: boolean;
 }) {
   const spine = book.spine ?? FALLBACK_SPINE;
@@ -206,7 +203,7 @@ function SpineBar({
   }
 
   return (
-    <li className={wideOnly ? 'hidden 2xl:block' : undefined}>
+    <li>
       <a
         href={book.url ?? '#'}
         target="_blank"
