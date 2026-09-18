@@ -1268,6 +1268,10 @@
      the sub-pixel rounding can't tip two books into overlapping. */
   --gap: calc(var(--cover-h, 15rem) * 0.002);
   column-gap: var(--gap);
+  /* How much the face-out cover grows when picked out. The leaning books shift out
+     by half of this per side, which is what keeps them in contact with it — one
+     number, so the growth and the shift can't drift apart. */
+  --cover-grow: 0.04;
   /* Container so spine heights can scale off the row width (and thus off the
      centre cover, which is 1/3 of the row). */
   container-type: inline-size;
@@ -1295,10 +1299,15 @@
   z-index: 1;
 }
 
-/* Picking the display copy out stands its neighbours up. Straightening them is
- * what makes room for it to grow: a leaning book reaches across, an upright one
- * doesn't, so the span it was occupying is free by the time the cover lifts into
- * it. */
+/* Picking the display copy out grows it, and the books on either side move out by
+ * the same amount so they stay in contact with it. `transform-origin: bottom
+ * center` splits the growth evenly, so each side takes half of it — both read the
+ * one `--cover-grow`, so the growth and the shift are the same number by
+ * construction rather than by hand.
+ *
+ * A rigid shift of each side, applied to the list items rather than the spines, so
+ * the books keep both their lean and their spacing: the whole side moves as one,
+ * which reads as the shelf making room rather than as the books reacting. */
 .book-feature {
   transform-origin: bottom center;
   transition: transform 200ms ease;
@@ -1306,20 +1315,26 @@
 
 .book-feature:hover,
 .book-feature:focus-visible {
-  transform: scale(1.04);
+  transform: scale(calc(1 + var(--cover-grow, 0.04)));
 }
 
-.bookshelf:has(.book-feature:hover) .book-spine,
-.bookshelf:has(.book-feature:focus-visible) .book-spine {
-  transform: rotate(0deg) translateY(-4px);
-  transition:
-    transform 200ms ease,
-    filter 0.2s ease;
+.bookshelf [data-side] {
+  transition: transform 200ms ease;
+}
+
+.bookshelf:has(.book-feature:hover) [data-side='left'],
+.bookshelf:has(.book-feature:focus-visible) [data-side='left'] {
+  transform: translateX(calc(var(--cover-h, 15rem) * var(--cover-grow, 0.04) * -0.5));
+}
+
+.bookshelf:has(.book-feature:hover) [data-side='right'],
+.bookshelf:has(.book-feature:focus-visible) [data-side='right'] {
+  transform: translateX(calc(var(--cover-h, 15rem) * var(--cover-grow, 0.04) * 0.5));
 }
 
 @media (prefers-reduced-motion: reduce) {
   .book-feature,
-  .book-spine {
+  .bookshelf [data-side] {
     transition: none;
   }
 }
