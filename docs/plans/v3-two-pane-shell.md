@@ -757,10 +757,3 @@ Method note, because it cost two false starts: measure at **3–5× with a 2% gr
 luminance (threshold inside each lens so the very dark frames can't dominate). A 1× overlay looks
 plausible while being several percent out — the first estimate put the left lid at 34.5% when the eye
 is at 50%.
-
-- **The panel's titles are scroll-linked.** The section titles left the content column
-  — hidden at `lg` with `sr-only`, kept in the DOM — and the panel became a strip of
-  full-height slots: the portrait, then one per section, translated by the reader's
-  position. A title scrolls up through the panel, holds while its section is current,
-  then carries on out as the next arrives. Positional only, no fades. See
-  `docs/plans/scroll-linked-section-titles.md`.

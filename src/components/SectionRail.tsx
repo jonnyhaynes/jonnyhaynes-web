@@ -1,7 +1,6 @@
 import { BackToTopButton } from './BackToTopButton';
 import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
-import { useActiveSectionContext } from '../lib/activeSectionContext';
 import { SectionNavLinks } from './SectionNavLinks';
 
 /**
@@ -16,9 +15,13 @@ import { SectionNavLinks } from './SectionNavLinks';
  * toggles (palette before theme, the same left-to-right order they read in when
  * the bar lays them out in a row).
  */
-export function SectionRail() {
-  const { active, scrolled } = useActiveSectionContext();
-
+export function SectionRail({
+  active,
+  scrolled,
+}: {
+  active: string | null;
+  scrolled: boolean;
+}) {
   return (
     <div className="z-10 hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:items-center lg:gap-1 lg:py-4">
       <BackToTopButton scrolled={scrolled} />

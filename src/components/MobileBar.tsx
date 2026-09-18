@@ -1,6 +1,5 @@
 import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
-import { useActiveSectionContext } from '../lib/activeSectionContext';
 import { BackToTopButton } from './BackToTopButton';
 import { SectionNavLinks } from './SectionNavLinks';
 
@@ -16,11 +15,16 @@ import { SectionNavLinks } from './SectionNavLinks';
  * leads the row, ahead of the links, matching the rail's order at lg — and it
  * sits outside the strip so it can't scroll out of reach. The strip scrolls
  * sideways to fit seven links plus three controls on a phone, and at tablet width
- * fits with no scrolling at all.
+ * it fits with no scrolling at all. The live activity chip is deliberately not
+ * here: the shell renders it on the row below this bar.
  */
-export function MobileBar() {
-  const { active, scrolled } = useActiveSectionContext();
-
+export function MobileBar({
+  active,
+  scrolled,
+}: {
+  active: string | null;
+  scrolled: boolean;
+}) {
   return (
     <header className="mobile-bar sticky top-0 z-20 flex items-center gap-2 border-b border-muted/15 bg-background/80 px-4 backdrop-blur-sm lg:hidden">
       <BackToTopButton scrolled={scrolled} />

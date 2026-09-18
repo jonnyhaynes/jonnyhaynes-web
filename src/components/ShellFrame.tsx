@@ -1,8 +1,7 @@
-import { useEffect, useMemo, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Outlet, useLocation } from 'react-router';
 
 import { SECTION_IDS } from '../content/sections';
-import { ActiveSectionContext } from '../lib/activeSectionContext';
 import { useActiveSection } from '../lib/useActiveSection';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { MobileBar } from './MobileBar';
@@ -35,16 +34,10 @@ function ShellFrame({
   const { pathname, hash, key } = useLocation();
   const reduced = useReducedMotion();
 
-  // Watched once, here, and published to everything that needs it: the rail and
-  // the top bar want the active section and the scroll state, and the profile panel
-  // wants the active section too — which it can't take as a prop, because
-  // `PanelShell` builds it outside this component. Two observers measuring the same
-  // page would be two sources of truth.
+  // Watched once, here, and handed to both navs: the rail needs the active
+  // section and the scroll state, the top bar needs the active section, and two
+  // observers measuring the same page would be two sources of truth.
   const { active, scrolled } = useActiveSection(SECTION_IDS);
-
-  // Memoised because the consumers re-render on identity change, and this object
-  // would otherwise be new on every render of the shell.
-  const activeSection = useMemo(() => ({ active, scrolled }), [active, scrolled]);
 
   /**
    * Owns scrolling for two things the browser can't cover:
@@ -89,7 +82,7 @@ function ShellFrame({
   }, [pathname, hash, key, reduced]);
 
   return (
-    <ActiveSectionContext.Provider value={activeSection}>
+    <>
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -97,7 +90,7 @@ function ShellFrame({
         {/* Below lg the top bar leads the page, ahead of the stacked panel —
             otherwise the nav would be buried under the headshot on a phone. It's
             hidden at lg, where the rail takes over. */}
-        <MobileBar />
+        <MobileBar active={active} scrolled={scrolled} />
 
         {panel}
         <div className="pane">
@@ -109,9 +102,9 @@ function ShellFrame({
             left edge. */}
         {layout === 'flush' && <div aria-hidden="true" />}
 
-        <SectionRail />
+        <SectionRail active={active} scrolled={scrolled} />
       </div>
-    </ActiveSectionContext.Provider>
+    </>
   );
 }
 

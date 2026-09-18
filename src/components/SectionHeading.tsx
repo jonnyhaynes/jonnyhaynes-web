@@ -45,7 +45,7 @@ export function SectionHeading({
               aria-hidden — the heading text carries the meaning. */}
           <span className="inline-flex items-center gap-3">
             {Icon && <Icon className="size-[1em] shrink-0" />}
-            <span className="min-w-0 lg:sr-only">{heading(palette, section)}</span>
+            <span className="min-w-0">{heading(palette, section)}</span>
           </span>
         </h2>
         {children}

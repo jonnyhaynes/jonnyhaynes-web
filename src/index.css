@@ -533,21 +533,6 @@
   letter-spacing: calc(var(--headline-tracking) * -1);
 }
 
-/* The panel's title strip: a window onto a column of full-height slots — the
- * portrait, then one per section in document order.
- *
- * `--strip-progress` is the reader's position in slots, written on the document
- * element by useActiveSection. Whole numbers land on a slot; the fraction between
- * them is the handover, and it only moves in the run-up to the next section, so
- * the strip is genuinely still for the body of every section — that stillness is
- * the pause.
- *
- * Slots are 100dvh rather than a percentage: a percentage in translateY resolves
- * against the strip's own height, which is eight slots tall, not one. */
-.panel-strip {
-  transform: translateY(calc(var(--strip-progress, 0) * -100dvh));
-}
-
 /* The profile panel's portrait: the screenprint cut-out seated in the card's
  * upper area, over the contour field.
  *

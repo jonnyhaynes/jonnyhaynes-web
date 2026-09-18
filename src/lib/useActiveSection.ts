@@ -1,21 +1,5 @@
 import { useEffect, useState } from 'react';
 
-/**
- * Where the panel's title strip sits, in slots: a whole number when a section is
- * current, fractional during the handover between two. Written on the document
- * element as a CSS custom property — see the note in `measure` — and read by
- * `.strip` in index.css. The name has to appear in both places.
- */
-export const STRIP_PROGRESS = '--strip-progress';
-
-/**
- * How much of the viewport a handover occupies, as a fraction of its height. The
- * next section's approach is mapped across this distance before it reaches the
- * reading line, so the strip is still for the whole body of a section and only
- * moves in the run-up to the next one — that stillness is the pause.
- */
-const RAMP = 0.4;
-
 type ScrollSpy = {
   /** The section currently occupying the reading line, or null above the first one. */
   active: string | null;
@@ -56,47 +40,21 @@ export function useActiveSection(ids: readonly string[]): ScrollSpy {
       // Client coordinates: the viewport's top edge is 0, so the reading line is
       // simply the middle of the window.
       const line = height / 2;
-      const ramp = height * RAMP;
 
       let found: string | null = null;
-      let foundIndex = -1;
       let lowest = -Infinity;
-      // The nearest section still below the line, for the handover.
-      let nextTop = Infinity;
-
-      for (const [index, id] of ids.entries()) {
+      for (const id of ids) {
         const section = main.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
         if (!section) continue;
         const sectionTop = section.getBoundingClientRect().top;
-        if (sectionTop <= line) {
-          if (sectionTop > lowest) {
-            lowest = sectionTop;
-            found = id;
-            foundIndex = index;
-          }
-        } else if (sectionTop < nextTop) {
-          nextTop = sectionTop;
+        if (sectionTop <= line && sectionTop > lowest) {
+          lowest = sectionTop;
+          found = id;
         }
       }
 
       setActive(found);
       setScrolled(window.scrollY > height / 2);
-
-      // Straight to the DOM rather than into state: this changes on every frame of
-      // a scroll, and re-rendering for a transform is exactly what the portrait's
-      // parallax avoids. React still re-renders from here, but only when `active`
-      // or `scrolled` actually change — at section boundaries, not per frame.
-      //
-      // The section's index, not how many have been passed: a section whose
-      // snapshot hasn't landed renders nothing, and counting the present ones would
-      // shift every later slot and name the wrong section. Index + 1 because the
-      // portrait is slot 0, and no section found leaves the strip on the portrait.
-      const handover =
-        nextTop === Infinity ? 0 : Math.min(1, Math.max(0, 1 - (nextTop - line) / ramp));
-      document.documentElement.style.setProperty(
-        STRIP_PROGRESS,
-        String(foundIndex + 1 + handover),
-      );
     };
 
     const schedule = () => {
@@ -119,7 +77,6 @@ export function useActiveSection(ids: readonly string[]): ScrollSpy {
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
       mutation.disconnect();
-      document.documentElement.style.removeProperty(STRIP_PROGRESS);
     };
   }, [ids]);
 
