@@ -1283,12 +1283,16 @@
   border-top: 10px solid var(--color-shelf);
 }
 
-/* The face-out cover. Its side margins are the lean-on distance — how far the
- * innermost book on each side reaches across — so the leaning books come to rest
- * against it rather than lying over it. Exact, because a lean-on is contact. */
+/* The face-out cover. Its side margins are the lean-on distance less the overlap
+ * the leaning books' top corners take up, so they come to rest against it rather
+ * than stopping short of it or lying across it. */
 .book-cover {
   margin-inline: calc(var(--cover-h, 15rem) * var(--lean-left, 0))
     calc(var(--cover-h, 15rem) * var(--lean-right, 0));
+  /* Painted above the spines, so a corner that overlaps it reads as resting
+   * against its face. Without this the right-hand books pass in front of it,
+   * which is the one thing a leaning book never does. */
+  z-index: 1;
 }
 
 /* Picking the display copy out stands its neighbours up. Straightening them is

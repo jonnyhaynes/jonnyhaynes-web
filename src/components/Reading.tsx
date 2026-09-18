@@ -37,12 +37,17 @@ export function Reading() {
 
   // How far the innermost book on each side reaches across, as a fraction of the
   // cover's height: its height × sin(lean), and its height is the cover × its
-  // fraction. That's what the cover's side margins are set to, so the books come
-  // to rest against it rather than lying over it. Read from the books actually
-  // present, so a short list is exact rather than padded.
+  // fraction. The cover's side margins are set to this, so the books come to rest
+  // against it. Read from the books actually present, so a short list is exact
+  // rather than padded.
+  //
+  // Then pulled in a little further: sized to the reach exactly, the top corner
+  // stops just short of the cover, and a book that leans on something leans *onto*
+  // it. The cover paints above the spines, so the overlap reads as the corner
+  // resting against its face rather than passing in front of it.
   const fracAt = (index: number) => SPINE_FRACTIONS[index % SPINE_FRACTIONS.length];
-  const leanOnLeft = left.length ? fracAt(left.length - 1) * SIN_LEAN : 0;
-  const leanOnRight = right.length ? fracAt(left.length) * SIN_LEAN : 0;
+  const leanOnLeft = left.length ? fracAt(left.length - 1) * SIN_LEAN * CONTACT : 0;
+  const leanOnRight = right.length ? fracAt(left.length) * SIN_LEAN * CONTACT : 0;
 
   return (
     <section id="reading" className="scroll-mt-16 py-16">
@@ -189,6 +194,14 @@ const SPINE_FRACTIONS = [1.28, 1.2, 1.35, 1.22, 1.32, 1.2];
 const LEAN_DEG = 6;
 
 const SIN_LEAN = Math.sin((LEAN_DEG * Math.PI) / 180);
+
+/**
+ * How much of the lean-on distance the cover keeps clear, the rest being overlap
+ * where the book's top corner rests against the cover's face. Sized to the reach
+ * exactly the books stop just short of it, which reads as a shelf that happens to
+ * have space in it rather than one where the books are leaning on each other.
+ */
+const CONTACT = 0.85;
 
 /**
  * The most characters a spine can carry and still hold the minimum type size.
