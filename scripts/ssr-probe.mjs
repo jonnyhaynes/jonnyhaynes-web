@@ -13,6 +13,7 @@ import { render } from '../.ssr-probe/ssr-probe.js';
 const results = [];
 const check = (name, pass, detail = '') => results.push({ name, pass, detail });
 const count = (html, tag) => (html.match(new RegExp(`<${tag}[ >]`, 'g')) ?? []).length;
+const occurrences = (haystack, needle) => haystack.split(needle).length - 1;
 
 let home;
 let privacy;
@@ -52,8 +53,8 @@ check('home has exactly one h1', count(home, 'h1') === 1, `${count(home, 'h1')}`
 check('home has exactly one main', count(home, 'main') === 1, `${count(home, 'main')}`);
 check('privacy has exactly one h1', count(privacy, 'h1') === 1, `${count(privacy, 'h1')}`);
 
-// Levels must not skip a step. The project cards are <h4> precisely so they nest
-// under the "Selected works" <h3>; a skip is how that regresses.
+// Levels must not skip a step: h1, then an h2 per section, then whatever nests
+// inside it. A skip is how that regresses.
 const headingSkip = (() => {
   let previous = 1;
   for (const [, level] of home.matchAll(/<h([1-4])[\s>]/g)) {
@@ -64,11 +65,21 @@ const headingSkip = (() => {
 })();
 check('heading levels never skip', headingSkip === null, headingSkip ?? 'no skips');
 
-// The left panel is the portrait and nothing else, so it is deliberately not a
-// landmark. It used to be an <aside> restating the hero's name, role, pitch and
-// both destinations; these guard that it stays stripped back.
+// The left panel is a strip of full-height slots — the portrait, then one per
+// section — translated by the reader's position in the page. It isn't a landmark,
+// and it used to restate the hero's name, role, pitch and both destinations; these
+// guard that it stays stripped back, and that its copies of the section titles are
+// decorative rather than a second announcement of every heading.
+const slots = occurrences(home, 'items-center justify-center px-8');
+check('the panel strip has a slot per section, plus the portrait', slots === 8, `${slots}`);
+check(
+  'the panel titles are presentational',
+  occurrences(home, 'justify-center px-8" aria-hidden') === 7,
+  `${occurrences(home, 'justify-center px-8" aria-hidden')} of 7`,
+);
 check('home renders the portrait panel', home.includes('portrait-art'));
 check('privacy renders no portrait panel', !privacy.includes('portrait-art'));
+check('privacy has no panel strip', !privacy.includes('panel-strip'));
 // Home reserves a leading column for the portrait; privacy starts the pane at the
 // left edge and holds it to two thirds with a trailing spacer instead.
 check('home uses the panel layout', home.includes('data-layout="panel"'));
@@ -79,7 +90,7 @@ for (const [label, needle] of [
   ['"View My Work"', 'View My Work'],
   ['"Get in Touch"', 'Get in Touch'],
 ]) {
-  const seen = home.split(needle).length - 1;
+  const seen = occurrences(home, needle);
   check(`${label} appears exactly once`, seen === 1, `${seen}`);
 }
 
