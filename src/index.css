@@ -1278,8 +1278,10 @@
 
 /* A vertical spine standing on its end. `--lean` (deg) and `--spine-frac` are
  * set per-book inline so the shelf looks like a real mix of book sizes rather
- * than six identical bars. Height is `--spine-frac` (0–1) of the centre cover's
- * height, landing each spine around half to two-thirds of the display copy. The
+ * than six identical bars. Height is `--spine-frac` of the centre cover's height,
+ * and sits above 1: the cover is square and stands for a book's width, and books
+ * are taller than they are wide. That height is load-bearing rather than
+ * decorative — it's what lets a spine carry a full title at a legible size. The
  * title runs up the spine and wraps into extra columns when long, so the spine
  * widens (never truncates) to hold the full title — a thick book vs a thin one,
  * like a real shelf. transform-origin bottom so it pivots off the shelf. */
@@ -1327,11 +1329,9 @@
  * The 0.6875rem floor is what makes the spines legible — some were reaching 4–6px
  * without it. It also means the fit is no longer unconditional, so what each spine
  * carries is chosen to hold the floor: title and author up to 64 characters, else
- * the title, else the title trimmed. A spine can only fit so much at a legible
- * size, and how much depends on how many books share the row — which is why the
- * shelf shows five books below `xl` and seven above it. The floor, the character
- * limit and that breakpoint are derived from each other; change one and the others
- * need re-deriving. */
+ * the title, else the title trimmed. Six spines at `lg` share ~47px each, so the
+ * height each one is given is what buys that capacity — the floor, the spine
+ * fractions and the character limit are derived from each other. */
 .book-spine-text {
   --avail: calc(
     max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
