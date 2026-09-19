@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-18T12:06:02.134Z",
+  "fetchedAt": "2026-09-19T11:48:57.823Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -29,14 +29,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
-      "name": "Slipknot",
-      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
-      "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
-    },
-    {
       "name": "Green Day",
       "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
+    },
+    {
+      "name": "Slipknot",
+      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
+      "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
     },
     {
       "name": "Curry Quiche",
@@ -64,22 +64,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     },
     {
-      "title": "Wait and Bleed",
-      "artist": "Slipknot",
-      "url": "https://open.spotify.com/track/15DLl1r2zi07Ssq5RT1yT0",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485181e0d9617e70d75e7ae11fa6"
-    },
-    {
       "title": "Freewill",
       "artist": "Rush",
       "url": "https://open.spotify.com/track/2XwYeBzumtjxVbFWwhJpsy",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
-    },
-    {
-      "title": "Ace of Spades",
-      "artist": "Motörhead",
-      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     },
     {
       "title": "Thunderstruck",
@@ -92,6 +80,18 @@
       "artist": "Snollebollekes",
       "url": "https://open.spotify.com/track/5EcPtaqxmPvgLcB5gRPF2j",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485113f93416952d9f9309d71778"
+    },
+    {
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
+    },
+    {
+      "title": "Deutschland",
+      "artist": "Rammstein",
+      "url": "https://open.spotify.com/track/2bPGTMB5sFfFYQ2YvSmup0",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485102add2c77fb6999e311a3248"
     }
   ],
   "playlists": [
