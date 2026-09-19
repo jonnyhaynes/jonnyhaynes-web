@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-09-18T22:04:16.359Z",
-  "date": "2026-09-18",
-  "steps": 8011,
+  "fetchedAt": "2026-09-19T02:16:17.709Z",
+  "date": "2026-09-19",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 49,
-  "calories": 2340,
+  "restingHeartRate": 54,
+  "calories": 215,
   "history": {
     "steps": [
-      {
-        "date": "2026-09-16",
-        "value": 9313
-      },
       {
         "date": "2026-09-17",
         "value": 3801
       },
       {
         "date": "2026-09-18",
-        "value": 8011
+        "value": 8061
+      },
+      {
+        "date": "2026-09-19",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-09-16",
-        "value": 2642
-      },
       {
         "date": "2026-09-17",
         "value": 2572
       },
       {
         "date": "2026-09-18",
-        "value": 2340
+        "value": 2510
+      },
+      {
+        "date": "2026-09-19",
+        "value": 215
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-09-16",
-        "value": 55
-      },
       {
         "date": "2026-09-17",
         "value": 49
@@ -46,6 +42,10 @@
       {
         "date": "2026-09-18",
         "value": 49
+      },
+      {
+        "date": "2026-09-19",
+        "value": 54
       }
     ]
   },
@@ -53,12 +53,6 @@
     "tempC": 16,
     "code": 3,
     "forecast": [
-      {
-        "date": "2026-09-18",
-        "hiC": 17,
-        "loC": 13,
-        "code": 51
-      },
       {
         "date": "2026-09-19",
         "hiC": 21,
@@ -68,14 +62,20 @@
       {
         "date": "2026-09-20",
         "hiC": 18,
-        "loC": 12,
+        "loC": 13,
+        "code": 3
+      },
+      {
+        "date": "2026-09-21",
+        "hiC": 20,
+        "loC": 11,
         "code": 3
       }
     ]
   },
   "sun": {
-    "sunrise": "06:44",
-    "sunset": "19:13",
-    "sunriseTomorrow": "06:45"
+    "sunrise": "06:45",
+    "sunset": "19:11",
+    "sunriseTomorrow": "06:47"
   }
 }
