@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-21T13:41:35.753Z",
+  "fetchedAt": "2026-09-21T22:28:09.633Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,6 +24,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
+      "name": "Beastie Boys",
+      "url": "https://open.spotify.com/artist/03r4iKL2g2442PT9n2UKsx",
+      "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
+    },
+    {
       "name": "Mushroomhead",
       "url": "https://open.spotify.com/artist/18absyD7lQaXUDBXnyzU8M",
       "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
@@ -32,11 +37,6 @@
       "name": "Green Day",
       "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
-    },
-    {
-      "name": "Slipknot",
-      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
-      "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
     },
     {
       "name": "Curry Quiche",
