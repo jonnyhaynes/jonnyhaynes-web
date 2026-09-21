@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-20T21:12:26.227Z",
+  "fetchedAt": "2026-09-21T13:41:35.753Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -58,12 +58,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
     },
     {
-      "title": "There She Is",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
-    {
       "title": "Freewill",
       "artist": "Rush",
       "url": "https://open.spotify.com/track/2XwYeBzumtjxVbFWwhJpsy",
@@ -88,9 +82,15 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485102add2c77fb6999e311a3248"
     },
     {
-      "title": "Don't Worry",
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
+    },
+    {
+      "title": "There She Is",
       "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/2P8vJYOVOJ6Elg38SXOhZ6",
+      "url": "https://open.spotify.com/track/0aEHqdfXihqRpqXpWt9aCr",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
     }
   ],
