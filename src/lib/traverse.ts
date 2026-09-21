@@ -93,9 +93,9 @@ type Options = {
   /** Walk the route in reverse, so the page descends into the city instead. */
   reverse?: boolean;
   /**
-   * Hold the field still regardless of the OS setting. The prototype's control
-   * panel uses this to simulate reduced motion without the reviewer having to
-   * change a system preference; the real OS setting still wins on its own.
+   * Hold the field still regardless of the OS setting, for a caller that needs to
+   * simulate reduced motion without touching a system preference. The real OS
+   * setting still wins on its own.
    */
   frozen?: boolean;
 };

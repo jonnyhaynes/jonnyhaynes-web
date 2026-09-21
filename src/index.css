@@ -2392,16 +2392,16 @@
   /* Tall enough to give the traverse somewhere to happen. Sticky travel is the
      difference between this and the sticky child's own height. */
   .projects-scroller {
-    height: calc(220dvh - var(--chrome-h, 0px));
+    height: 220dvh;
   }
 
   .projects-sticky {
     position: sticky;
-    top: var(--chrome-h, 0px);
+    top: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: calc(100dvh - var(--chrome-h, 0px));
+    height: 100dvh;
   }
 
   .projects-window {

@@ -5,8 +5,8 @@ import { TOPOGRAPHY } from '../content/topography';
  *
  * Pure arithmetic, no dependency. Two separate pieces of maths, both verified
  * against published Ordnance Survey values rather than eyeballed — see
- * `GRID_REF_CASES` and `PROJECTION_CASES` below, which the prototype surfaces in
- * its control panel so they can't silently rot.
+ * `GRID_REF_CASES` and `PROJECTION_CASES` below, and by `selfTest()`, which runs
+ * them so a regression can't rot silently.
  */
 
 /**
@@ -194,9 +194,9 @@ export function insideWindow(easting: number, northing: number): boolean {
 }
 
 /* ── Known-answer cases ─────────────────────────────────────────────────────
-   Real published coordinates. The prototype runs these on load and reports the
-   result, so a regression in either half of the maths shows up on screen rather
-   than quietly producing a plausible-but-wrong number.
+   Real published coordinates. `selfTest()` runs these, so a regression in either
+   half of the maths reports a failure rather than quietly producing a
+   plausible-but-wrong number.
    ------------------------------------------------------------------------- */
 
 export type GridRefCase = {
@@ -241,7 +241,7 @@ export type SelfTest = {
   metres?: number;
 };
 
-/** Runs every known-answer case. Used by the prototype's control panel. */
+/** Runs every known-answer case, and reports which of them fail. */
 export function selfTest(): SelfTest[] {
   const results: SelfTest[] = GRID_REF_CASES.map((c) => {
     const got = toGridRef(c.easting, c.northing);

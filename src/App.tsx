@@ -4,8 +4,6 @@ import { TopographicBackground } from './components/TopographicBackground';
 import { PanelShell, PlainShell } from './components/ShellFrame';
 import { Home } from './pages/Home';
 import { Privacy } from './pages/Privacy';
-import { Proto } from './pages/Proto';
-import { ProtoShell } from './proto/ProtoShell';
 
 function App() {
   return (
@@ -24,13 +22,6 @@ function App() {
         </Route>
         <Route element={<PlainShell />}>
           <Route path="/privacy" element={<Privacy />} />
-        </Route>
-
-        {/* PROTOTYPE ONLY. Its own shell so the shipped one stays untouched, and
-            it hands the background back to the drift on unmount. Delete this
-            route, the proto/ directory and proto.css once a direction is agreed. */}
-        <Route element={<ProtoShell />}>
-          <Route path="/proto" element={<Proto />} />
         </Route>
       </Routes>
     </div>
