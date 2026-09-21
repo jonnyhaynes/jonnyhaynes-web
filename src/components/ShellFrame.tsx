@@ -4,6 +4,8 @@ import { Outlet, useLocation } from 'react-router';
 import { SECTION_IDS } from '../content/sections';
 import { useActiveSection } from '../lib/useActiveSection';
 import { useReducedMotion } from '../lib/useReducedMotion';
+import { useTraverse } from '../lib/traverse';
+import { MapStrip } from './MapStrip';
 import { MobileBar } from './MobileBar';
 import { SectionRail } from './SectionRail';
 
@@ -20,6 +22,10 @@ const SEEK_FRAMES = 30;
  * doesn't scroll them — so the panel and rail stick beside the page rather than
  * living in their own scroll pane. See the `.shell` rules in index.css, where
  * `data-layout` selects the column template.
+ *
+ * `useTraverse` is measured here for the same reason the active section is: the
+ * strip reads it, the background draws from it, and two observers over one scroll
+ * position would be two sources of truth.
  */
 function ShellFrame({
   layout,
@@ -37,6 +43,7 @@ function ShellFrame({
   // section and the scroll state, the top bar needs the active section, and two
   // observers measuring the same page would be two sources of truth.
   const { active, scrolled } = useActiveSection(SECTION_IDS);
+  const traverse = useTraverse();
 
   /**
    * Owns scrolling for two things the browser can't cover:
@@ -85,12 +92,13 @@ function ShellFrame({
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div className="shell" data-layout={layout}>
-        {/* Below lg the top bar leads the page, ahead of the stacked panel —
-            otherwise the nav would be buried under the headshot on a phone. It's
-            hidden at lg, where the rail takes over. */}
-        <MobileBar active={active} scrolled={scrolled} />
+      {/* Both rows are full-width chrome rather than grid columns, so they sit
+          outside `.shell`. Below lg the bar leads and the strip tucks under it;
+          from lg the bar is hidden and the strip leads on its own. */}
+      <MobileBar active={active} scrolled={scrolled} />
+      <MapStrip traverse={traverse} />
 
+      <div className="shell" data-layout={layout}>
         {panel}
         <div className="pane">
           <Outlet />

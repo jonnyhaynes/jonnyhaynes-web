@@ -269,11 +269,24 @@
  * the home route, the pane flush left on every other — and the document still owns
  * the scroll, with the panel and rail sticking in place. Everything is shared.
  * ------------------------------------------------------------------------- */
-.shell {
-  /* Height of the top strip below lg — just the bar, now that the activity chip
-   * lives in the Projects heading. The hero subtracts it so the first screen ends
-   * at the fold. It's 0 at lg, where the bar is hidden. */
+/* Chrome heights live on the root rather than on `.shell`, because the map strip
+ * sits *outside* the shell — it has to be a full-width row rather than a grid
+ * column — and still needs to know how tall the bar above it is. */
+:root {
+  /* The top bar, below lg only. */
   --top-h: 3.5rem;
+  /* The map strip, at every width. */
+  --strip-h: 2.25rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --top-h: 0rem;
+    --strip-h: 2.5rem;
+  }
+}
+
+.shell {
   --shell-cols: minmax(0, 1fr);
 }
 
@@ -283,6 +296,70 @@
 
 .mobile-bar {
   height: var(--top-h);
+}
+
+/* The map data strip. Sticks above everything, full width, so the reference it
+ * shows is the page's own position rather than a section's. Below lg it tucks
+ * under the top bar; from lg the bar is gone and it leads. */
+.map-strip {
+  position: sticky;
+  top: var(--top-h);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  height: var(--strip-h);
+  padding: 0 1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+  background: color-mix(in oklab, var(--color-background) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.map-strip-live {
+  color: var(--color-accent-start);
+}
+
+.map-strip-end {
+  margin-left: auto;
+}
+
+.map-strip-wide {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .map-strip-wide {
+    display: inline;
+  }
+}
+
+/* The traverse's progress, as the strip's own bottom edge — one indicator rather
+ * than a second bar. */
+.map-strip-progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(var(--traverse, 0));
+  transform-origin: left center;
+  background: var(--color-accent-start);
+}
+
+/* Beside the page for as long as it's long, parked below the strip rather than
+ * under it. */
+@media (min-width: 64rem) {
+  .rail {
+    position: sticky;
+    top: var(--strip-h);
+    height: calc(100dvh - var(--strip-h));
+  }
 }
 
 /* The active section's marker — a shape as well as a colour, so the state is
@@ -310,8 +387,6 @@
     display: grid;
     grid-template-columns: var(--shell-cols);
     align-items: start;
-    /* No top strip at lg: the bar and the chip are hidden here. */
-    --top-h: 0rem;
   }
 
   /* Home: pane, rail. The portrait used to occupy a leading column here; it is
@@ -530,7 +605,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100dvh - var(--top-h, 3.5rem));
+  min-height: calc(100dvh - var(--top-h) - var(--strip-h));
   padding-block: 1.5rem 3rem;
 }
 
@@ -674,7 +749,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
     align-items: center;
     column-gap: 3rem;
-    min-height: 100dvh;
+    min-height: calc(100dvh - var(--strip-h));
     padding-block: 5rem;
   }
 
@@ -2392,16 +2467,16 @@
   /* Tall enough to give the traverse somewhere to happen. Sticky travel is the
      difference between this and the sticky child's own height. */
   .projects-scroller {
-    height: 220dvh;
+    height: calc(220dvh - var(--strip-h));
   }
 
   .projects-sticky {
     position: sticky;
-    top: 0;
+    top: var(--strip-h);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100dvh;
+    height: calc(100dvh - var(--strip-h));
   }
 
   .projects-window {

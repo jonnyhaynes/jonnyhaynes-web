@@ -22,7 +22,7 @@ import { useReducedMotion } from './useReducedMotion';
 /**
  * How the background is being driven.
  *
- * `drift` is what ships today — a slow time-based diagonal with no meaning.
+ * `drift` is the original behaviour — a slow time-based diagonal with no meaning.
  * `pan` is the traverse: the offset is a pure function of scroll, so the map is
  * always showing the ground the chrome is claiming. `waypoints` parks the field
  * at each section's waypoint and eases between them. `static` holds one frame.
@@ -44,17 +44,17 @@ type BackgroundState = {
  * The canvas reads it once per animation frame. Routing this through state would
  * re-render the tree on every scroll event and re-run the background's setup
  * effect — which owns a full-viewport canvas, its listeners and its RAF loop.
- * The defaults are the current shipped behaviour, so anything that doesn't opt in
- * is unaffected.
+ *
+ * The defaults are what the site now ships: the traverse drives the pan and the
+ * reticle is on. `ShellFrame` writes the pan on every route, so the field is never
+ * left parked at the grid origin.
  */
 const background: BackgroundState = {
-  mode: 'drift',
+  mode: 'pan',
   panX: 0,
   panY: 0,
-  reticle: false,
+  reticle: true,
 };
-
-const IDLE: BackgroundState = { mode: 'drift', panX: 0, panY: 0, reticle: false };
 
 /** Read by the canvas each frame. Same object every time — no allocation. */
 export function getBackground(): BackgroundState {
@@ -63,10 +63,6 @@ export function getBackground(): BackgroundState {
 
 export function setBackground(patch: Partial<BackgroundState>): void {
   Object.assign(background, patch);
-}
-
-export function resetBackground(): void {
-  Object.assign(background, IDLE);
 }
 
 /** Live position along the traverse, for the chrome. */
