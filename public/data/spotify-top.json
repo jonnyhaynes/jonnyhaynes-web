@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-21T22:28:09.633Z",
+  "fetchedAt": "2026-09-22T12:24:36.440Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -7,6 +7,11 @@
       "name": "blink-182",
       "url": "https://open.spotify.com/artist/6FBDaR13swtiWwGhX1WQsP",
       "image": "https://i.scdn.co/image/ab6761610000f1785da36f8b98dd965336a1507a"
+    },
+    {
+      "name": "Beastie Boys",
+      "url": "https://open.spotify.com/artist/03r4iKL2g2442PT9n2UKsx",
+      "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
     },
     {
       "name": "Frank Turner",
@@ -22,11 +27,6 @@
       "name": "Rammstein",
       "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
-    },
-    {
-      "name": "Beastie Boys",
-      "url": "https://open.spotify.com/artist/03r4iKL2g2442PT9n2UKsx",
-      "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
     },
     {
       "name": "Mushroomhead",
