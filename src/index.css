@@ -2517,14 +2517,24 @@
 
 
 /* ---------------------------------------------------------------- *
- * Career: the roles as a ruled timeline, then credentials and stack.
+ * Career & credentials: the profile rotated, so time runs down the page.
  *
- * The rule is the spine and each role carries a marker on it — filled for the role
- * held now, hollow for the rest. A shape as well as a colour, following the rail's
- * active marker, so "current" survives greyscale.
+ * Newest first — the way the page reads and the way a CV is read. On a
+ * horizontal axis time has to run left to right, which forces oldest-first
+ * and sets this section against every other list on the page; down the page
+ * the two orderings agree.
  *
- * Each role is a native <details>, so all seven titles stay legible at once and the
- * prose folds away behind them, and the whole thing works with JavaScript off.
+ * The spine carries a real vertical cross-section of the elevation field the
+ * background draws, with a marker per role. The line draws itself as the
+ * section passes the viewport.
+ *
+ * Scrolling drives it: the role nearest the reading line takes the marker and
+ * opens, so the section shows its information without anything being hovered.
+ * Every row reserves the height of its opened state, so the reveal cannot grow
+ * and shrink the page under the reader.
+ *
+ * Each role is a native <details>, so it opens by click as well, and it still
+ * works with JavaScript off.
  * ---------------------------------------------------------------- */
 
 .career-lead {
@@ -2535,59 +2545,137 @@
   color: var(--color-muted);
 }
 
+/* The fallback row pitch. Each row and its marker are given their own measured
+   height by the section itself, because the details differ in length by five lines
+   and one shared number cannot serve both the longest and the shortest. */
+.career-cols {
+  --career-row-h: 6rem;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0 1.25rem;
+  margin-top: 3rem;
+}
+
+/* The credentials join as a third column only once the roles can still keep a
+   readable line length. Below lg they sit under the profile instead, because a
+   14rem column of qualification names alongside a squeezed timeline reads worse
+   than the extra scrolling costs. */
+@media (min-width: 64rem) {
+  .career-cols {
+    grid-template-columns: 5.5rem minmax(0, 1fr) minmax(14rem, 0.4fr);
+    gap: 0 2rem;
+  }
+
+  .career-block {
+    grid-column: auto;
+    margin-top: 0;
+  }
+}
+
+.career-spine {
+  position: relative;
+}
+
+.career-spine-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.career-spine-fill {
+  fill: color-mix(in oklab, var(--color-muted) 7%, transparent);
+}
+
+.career-spine-line {
+  fill: none;
+  stroke: color-mix(in oklab, var(--color-muted) 45%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  /* pathLength="1" on the path, plus the custom property the section writes as it
+     scrolls. Defaults to drawn, so the line is whole when the property is never
+     set — no JavaScript, or before the first scroll event. */
+  stroke-dasharray: 1px;
+  stroke-dashoffset: calc(1px - var(--career-p, 1) * 1px);
+}
+
+.career-marks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* A shape as well as a colour, following the rail's active marker, so which role
+   is current survives greyscale. */
+.career-mark {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-height: var(--career-row-h);
+  padding-top: 1.15rem;
+}
+
+.career-mark::after {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  border: 1px solid color-mix(in oklab, var(--color-muted) 60%, transparent);
+  background: var(--color-background);
+}
+
+.career-mark[data-active='true']::after {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-color: var(--color-accent-start);
+  background: var(--color-accent-start);
+}
+
 .career-roles {
-  margin: 3rem 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
-  border-left: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
 }
 
 .career-role {
-  padding-left: 1.5rem;
+  /* flow-root so the detail's bottom margin stays inside the row. Without it the
+     margin collapses out while the row is being measured — which is measured with
+     min-height cleared — and every reservation comes back exactly one margin short. */
+  display: flow-root;
+  min-height: var(--career-row-h);
 }
 
 .career-summary {
-  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.35rem 1rem;
-  padding: 1rem 0;
+  margin-left: -1rem;
+  padding: 1rem 0 0.5rem 1rem;
+  border-left: 1px solid transparent;
   cursor: pointer;
   list-style: none;
-  border-top: 1px solid color-mix(in oklab, var(--color-muted) 14%, transparent);
 }
 
-.career-role:first-child .career-summary {
-  border-top: 0;
+.career-role[data-active='true'] .career-summary {
+  border-left-color: color-mix(in oklab, var(--color-accent-start) 55%, transparent);
 }
 
 .career-summary::-webkit-details-marker {
   display: none;
 }
 
-.career-marker {
-  position: absolute;
-  left: calc(-1.5rem - 0.2rem);
-  top: 1.4rem;
-  width: 0.4rem;
-  height: 0.4rem;
-  border: 1px solid color-mix(in oklab, var(--color-muted) 60%, transparent);
-}
-
-.career-marker--current {
-  border-color: var(--color-accent-start);
-  background: var(--color-accent-start);
-}
-
 /* The three things a reader scans for, on one line where there's room. */
 .career-period {
   flex: 0 0 auto;
-  min-width: 10rem;
+  white-space: nowrap;
   font-size: 0.6875rem;
   letter-spacing: 0.12em;
   font-variant-numeric: tabular-nums;
   color: var(--color-muted);
+}
+
+.career-role[data-active='true'] .career-period {
+  color: var(--color-accent-start);
 }
 
 .career-title {
@@ -2603,6 +2691,7 @@
 
 .career-chevron {
   margin-left: auto;
+  padding-left: 1rem;
   color: var(--color-muted);
   transition: rotate 200ms ease;
 }
@@ -2615,9 +2704,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-width: 52rem;
-  margin: 0 0 1.25rem;
-  padding: 0;
+  max-width: 46rem;
+  margin: 0.25rem 0 1.25rem -1rem;
+  padding: 0 0 0 1rem;
   list-style: none;
   font-size: 0.9375rem;
   line-height: 1.7;
@@ -2636,9 +2725,11 @@
   color: color-mix(in oklab, var(--color-muted) 45%, transparent);
 }
 
-/* Credentials and stack, in the map legend's term/value shape. */
+/* Credentials, in the map legend's term/value shape. Full width below lg, where
+   they sit under the profile rather than beside it. */
 .career-block {
-  margin-top: 3.5rem;
+  grid-column: 1 / -1;
+  margin-top: 3rem;
 }
 
 .career-block-name {
@@ -2651,41 +2742,31 @@
   color: var(--color-muted);
 }
 
-.career-credentials,
-.career-stack {
+.career-credentials {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.75rem;
   margin: 0;
-}
-
-.career-credentials {
   padding: 0;
   list-style: none;
 }
 
-.career-credentials > li,
-.career-stack > div {
+/* Stacked rather than side by side: in the narrow column the awarding body reads
+   better beneath the qualification than squeezed beside it. */
+.career-credentials > li {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 1rem;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
-.career-cred-name,
-.career-stack dd {
+.career-cred-name {
   margin: 0;
   color: var(--color-foreground);
 }
 
-.career-cred-from,
-.career-stack dt {
+.career-cred-from {
   font-size: 0.8125rem;
   color: var(--color-muted);
-}
-
-.career-stack dt {
-  flex: 0 0 6.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

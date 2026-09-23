@@ -121,3 +121,25 @@ export const CREDENTIALS: readonly Credential[] = [
 /** The opening line, in the resume's own words. */
 export const CAREER_LEAD =
   'Nearly two decades of digital engineering — from semantic HTML in 2006, through award-winning cross-platform apps, to AI-accelerated delivery.';
+
+/* ── Period maths ────────────────────────────────────────────────────────────
+   Two facts about the whole career, needed by anything that has to place these
+   roles on an axis: where it starts, and where one role sits on it. The resume
+   writes months as words, so parsing them is the only way to compare them. */
+
+/**
+ * Resolved once at module load. `Date.now()` during render is impure, and the
+ * present tense of a career does not change mid-session.
+ */
+export const CAREER_NOW = Date.now();
+
+/** "Nov 2006" → a timestamp. */
+export function monthStart(text: string): number {
+  return new Date(`1 ${text}`).getTime();
+}
+
+/** "Jan 2011 — Mar 2015" → [start, end], with "present" resolving to now. */
+export function roleSpan(period: string): [number, number] {
+  const [from, to] = period.split(' — ');
+  return [monthStart(from), to === 'present' ? CAREER_NOW : monthStart(to)];
+}

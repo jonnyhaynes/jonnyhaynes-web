@@ -1,7 +1,7 @@
 /* Throwaway: three treatments of the career content, for choosing a direction. */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { CAREER_LEAD, CREDENTIALS, ROLES } from '../content/career';
+import { CAREER_LEAD, CAREER_NOW, CREDENTIALS, ROLES, roleSpan } from '../content/career';
 import { sampleHeight, useTopographyGrid } from '../lib/topography-grid';
 import '../proto/career-proto.css';
 
@@ -17,11 +17,6 @@ const VARIANTS = [
     note: 'No axis, no rules, no markers, no chevrons. A year gutter in tabular figures and type doing all the work. This is the reductionist end: it strips every piece of chrome the current version carries and lets hierarchy and space carry it instead. The question: is the section heavy because of the words, or because of the furniture around them?',
   },
   {
-    id: 'd',
-    label: 'D — Profile down',
-    note: 'The profile rotated: time runs down the page, newest first. The section is as tall as the date span deserves, so a nine-year tenure reads as a nine-year gap and a three-year burst reads as a burst. The terrain line draws itself as you scroll, and the role nearest the reading line takes the marker — no hovering anywhere.',
-  },
-  {
     id: 'c',
     label: 'C — Tiles',
     note: 'The same facts laid out in space rather than time. Span set large as the anchor, then title, place and a line of detail. This is the widest use of the pane and the most scannable, but it gives up the sense of a career being a sequence. The question: do you want a route, or a set of rooms?',
@@ -31,19 +26,6 @@ const VARIANTS = [
 type VariantId = (typeof VARIANTS)[number]['id'];
 
 /* ── shared ──────────────────────────────────────────────────────────────── */
-
-/** Resolved once at module load: Date.now() during render is impure. */
-const NOW = Date.now();
-
-/** "Nov 2006" → a timestamp. The resume writes months as words, so parse those. */
-function monthStart(text: string): number {
-  return new Date(`1 ${text}`).getTime();
-}
-
-function roleSpan(period: string): [number, number] {
-  const [from, to] = period.split(' — ');
-  return [monthStart(from), to === 'present' ? NOW : monthStart(to)];
-}
 
 /** "May 2017 — present" → "2017—". */
 function spanYears(period: string): string {
@@ -68,7 +50,7 @@ function Profile() {
   // The whole career as one axis: first month to now.
   const [careerStart, careerEnd] = useMemo(() => {
     const starts = ROLES.map((role) => roleSpan(role.period)[0]);
-    return [Math.min(...starts), NOW];
+    return [Math.min(...starts), CAREER_NOW];
   }, []);
 
   const pxOf = (t: number) => ((t - careerStart) / (careerEnd - careerStart)) * 1000;
@@ -212,134 +194,6 @@ function Ledger() {
   );
 }
 
-/* ── D — Profile down ────────────────────────────────────────────────────── */
-
-function ProfileDown() {
-  const grid = useTopographyGrid();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const rowsRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-
-  // Newest first, so the axis runs down the page the way the page reads.
-  const ordered = useMemo(
-    () => [...ROLES].sort((a, b) => roleSpan(b.period)[0] - roleSpan(a.period)[0]),
-    [],
-  );
-  // A genuine vertical cross-section of the same field the background draws.
-  const { line, area } = useMemo(() => {
-    if (!grid) return { line: '', area: '' };
-    const SAMPLES = 160;
-    const W = 200;
-    const H = 1400;
-    const gx = Math.round(grid.cols * 0.35);
-    const points: [number, number][] = [];
-    for (let i = 0; i <= SAMPLES; i++) {
-      const gy = (i / SAMPLES) * (grid.rows - 1);
-      const h = sampleHeight(grid, gx, gy);
-      points.push([14 + h * (W - 28), (i / SAMPLES) * H]);
-    }
-    const d = points
-      .map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`)
-      .join(' ');
-    return { line: d, area: `${d} L${W},${H} L${W},0 Z` };
-  }, [grid]);
-
-  // Which role is nearest the reading line, so scrolling alone takes you through
-  // the career. Positional, not a fade.
-  useEffect(() => {
-    const rows = rowsRef.current;
-    const section = sectionRef.current;
-    if (!rows || !section) return;
-    const onScroll = () => {
-      // 0 as the top enters the viewport, 1 as the bottom comes level with the
-      // bottom of it — so the line finishes exactly as the section is fully read,
-      // rather than running out of page before it gets there.
-      const rect = section.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / rect.height));
-      section.style.setProperty('--career-p', p.toFixed(4));
-
-      const line = window.innerHeight * 0.45;
-      let best = 0;
-      let bestGap = Infinity;
-      rows.querySelectorAll('[data-row]').forEach((el, i) => {
-        const gap = Math.abs(el.getBoundingClientRect().top + 20 - line);
-        if (gap < bestGap) {
-          bestGap = gap;
-          best = i;
-        }
-      });
-      setActive((prev) => (prev === best ? prev : best));
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-
-  return (
-    <div>
-      <p className="proto-note">
-        <strong>Profile down.</strong> {VARIANTS.find((v) => v.id === 'd')!.note}
-      </p>
-
-      <div
-        className="proto-d"
-        ref={sectionRef}
-      >
-        <div className="proto-d-spine">
-          <svg
-            className="proto-d-svg"
-            viewBox="0 0 200 1400"
-            preserveAspectRatio="none"
-            role="img"
-            aria-label="A vertical cross-section of the same elevation field the background draws"
-          >
-            <path className="proto-d-fill" d={area} />
-            <path className="proto-d-line" d={line} pathLength={1} />
-          </svg>
-
-          <div className="proto-d-marks">
-            {ordered.map((role, i) => (
-              <span
-                key={`mark-${role.company}-${role.period}`}
-                className="proto-d-mark"
-                aria-current={i === active}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="proto-d-rows" ref={rowsRef}>
-          {ordered.map((role, i) => (
-            <div
-              key={`${role.company}-${role.period}`}
-              className="proto-d-row"
-              data-row
-              aria-current={i === active}
-            >
-              <p className="proto-d-period">{role.period}</p>
-              <h3 className="proto-d-title">{role.title}</h3>
-              <p className="proto-d-where">
-                {role.company} · {role.place}
-              </p>
-              {i === active && (
-                <ul className="proto-d-detail">
-                  {role.detail.map((entry) => (
-                    <li key={entry}>{entry}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ── C — Tiles ───────────────────────────────────────────────────────────── */
 
 function Tiles() {
@@ -393,7 +247,7 @@ function Tiles() {
 /* ── page ────────────────────────────────────────────────────────────────── */
 
 export function Proto() {
-  const [variant, setVariant] = useState<VariantId>('d');
+  const [variant, setVariant] = useState<VariantId>('a');
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10">
@@ -418,7 +272,6 @@ export function Proto() {
 
       {variant === 'a' && <Profile />}
       {variant === 'b' && <Ledger />}
-      {variant === 'd' && <ProfileDown />}
       {variant === 'c' && <Tiles />}
     </div>
   );

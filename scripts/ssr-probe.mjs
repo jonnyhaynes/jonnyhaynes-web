@@ -90,6 +90,36 @@ for (const [label, needle] of [
   check(`${label} appears exactly once`, seen === 1, `${seen}`);
 }
 
+// The career section is scroll-driven, which is exactly the kind of thing that
+// quietly moves content behind JavaScript. The guard is that no role's detail
+// depends on the scroll: every role carries its own <details>, so the whole history
+// is in the markup for a crawler or a no-JS reader, and exactly one starts open so
+// the section shows something without a click. If this ever becomes one shared
+// detail block, the history disappears from the markup at the same moment.
+const career = (() => {
+  const start = home.indexOf('<section id="career"');
+  if (start === -1) return '';
+  const next = home.indexOf('<section id="', start + 1);
+  return next === -1 ? home.slice(start) : home.slice(start, next);
+})();
+const careerRoles = (career.match(/class="career-title"/g) ?? []).length;
+const careerDetails = (career.match(/class="career-detail"/g) ?? []).length;
+check('career section renders', career.length > 0, `${career.length} bytes`);
+check(
+  'every role carries its own detail in the markup',
+  careerRoles >= 6 && careerRoles === careerDetails,
+  `${careerDetails} details across ${careerRoles} roles`,
+);
+check(
+  'exactly one role detail starts open',
+  (career.match(/<details[^>]*\bopen\b/g) ?? []).length === 1,
+  `${(career.match(/<details[^>]*\bopen\b/g) ?? []).length} open`,
+);
+check(
+  'the profile spine and credentials render',
+  career.includes('career-spine-line') && career.includes('career-credentials'),
+);
+
 // Navigation must be real anchors, not click handlers.
 const sectionHrefs = [...home.matchAll(/href="(\/#[^"]+)"/g)].map((m) => m[1]);
 check(
