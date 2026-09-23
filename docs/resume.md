@@ -9,7 +9,7 @@ Specialising in React, React Native, TypeScript & AI Workflows | Colouring code 
 
 ## Summary
 
-With nearly two decades of digital engineering experience starting in 2006, I build high-impact web applications, websites, and cross-platform mobile apps using React, Next.js, React Native, and TypeScript—from bespoke Laravel and WordPress platforms through to award-winning apps that have secured over 1 million global downloads and prestigious industry awards. Comfortable across the whole stack, from front-end interfaces to RESTful API integration and complex application state (Redux). Adept at scaling feature deployment using modern workflows like Claude Code while actively advocating for workplace wellness on corporate Wellbeing Task Forces.
+With nearly two decades of digital engineering experience starting in 2006, I build high-impact web applications, websites, and cross-platform mobile apps using React, Next.js, React Native, and TypeScript—from bespoke Laravel and WordPress platforms through to award-winning apps that have secured over 2 million global downloads and prestigious industry awards. Comfortable across the whole stack, from front-end interfaces to RESTful API integration and complex application state (Redux). Adept at scaling feature deployment using modern workflows like Claude Code while actively advocating for workplace wellness on corporate Wellbeing Task Forces.
 
 ## Core Stack
 
@@ -28,7 +28,7 @@ React Native · Expo · TypeScript · JavaScript · React · Next.js · HTML · 
 *May 2017 – Present • Barnsley*
 
 - **Cross-Platform Mobile Engineering:** Architect and scale high-performance iOS and Android applications utilising React Native, Expo, and TypeScript.
-- **Award-Winning Delivery:** Engineered the 'Calm Harm' mobile app using TypeScript/Redux, securing 1M+ global downloads and winning a prestigious DBA Gold award.
+- **Award-Winning Delivery:** Engineered the 'Calm Harm' mobile app using TypeScript/Redux, securing 2M+ global downloads and winning a prestigious DBA Gold award.
 - **Full-Stack Integration:** Collaborate across front-end layers to integrate bespoke JavaScript frameworks (Next.js, React) and PHP ecosystems (Laravel, Statamic, WordPress).
 - **Web Ecosystems:** Developed a highly customised, bespoke WordPress platform for 'DigiBete' supporting teenagers with T1 diabetes, winning awards for UI design and effectiveness.
 - **Modern AI Workflows:** Integrated Claude Code to accelerate deployment times while boosting code quality and documentation standards.
