@@ -155,10 +155,8 @@ export const WORK_PROJECTS: WorkProject[] = [
     name: 'Ancon Building Products',
     company: LEDGARD_JEPSON,
     pitch:
-      'A multi-language site for Ancon’s stainless-steel structural fixings — technical literature, BIM objects and specification tools across several markets — plus the accompanying Cavity Wall Tie Product Selector app for iOS and Android, which narrows the range down from the cavity width, inner leaf, building type and height.',
-    // Not declared: this predates the GitHub-era stacks, and the site has been
-    // rebuilt since, so the current platform isn't evidence of what was built.
-    stack: [],
+      'A multi-language Rails site for Ancon’s stainless-steel structural fixings, in hand-written HTML and CSS — plus the Wall Tie Product Selector app for iOS and Android.',
+    stack: ['Rails', 'HTML', 'CSS'],
     links: [{ kind: 'live', url: 'https://www.ancon.co.uk/' }],
     awards: [],
   },
