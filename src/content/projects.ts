@@ -152,7 +152,7 @@ export const WORK_PROJECTS: WorkProject[] = [
   },
   {
     kind: 'work',
-    name: 'Ancon Building Products',
+    name: 'Ancon',
     company: LEDGARD_JEPSON,
     pitch:
       'A multi-language Rails site for Ancon’s stainless-steel structural fixings, in hand-written HTML and CSS — plus the Wall Tie Product Selector app for iOS and Android.',
