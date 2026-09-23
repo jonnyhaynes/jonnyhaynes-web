@@ -2515,3 +2515,181 @@
 }
 
 
+
+/* ---------------------------------------------------------------- *
+ * Career: the roles as a ruled timeline, then credentials and stack.
+ *
+ * The rule is the spine and each role carries a marker on it — filled for the role
+ * held now, hollow for the rest. A shape as well as a colour, following the rail's
+ * active marker, so "current" survives greyscale.
+ *
+ * Each role is a native <details>, so all seven titles stay legible at once and the
+ * prose folds away behind them, and the whole thing works with JavaScript off.
+ * ---------------------------------------------------------------- */
+
+.career-lead {
+  max-width: 46rem;
+  margin: 2.5rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-muted);
+}
+
+.career-roles {
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
+}
+
+.career-role {
+  padding-left: 1.5rem;
+}
+
+.career-summary {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  list-style: none;
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 14%, transparent);
+}
+
+.career-role:first-child .career-summary {
+  border-top: 0;
+}
+
+.career-summary::-webkit-details-marker {
+  display: none;
+}
+
+.career-marker {
+  position: absolute;
+  left: calc(-1.5rem - 0.2rem);
+  top: 1.4rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border: 1px solid color-mix(in oklab, var(--color-muted) 60%, transparent);
+}
+
+.career-marker--current {
+  border-color: var(--color-accent-start);
+  background: var(--color-accent-start);
+}
+
+/* The three things a reader scans for, on one line where there's room. */
+.career-period {
+  flex: 0 0 auto;
+  min-width: 10rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+
+.career-title {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.career-where {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+.career-chevron {
+  margin-left: auto;
+  color: var(--color-muted);
+  transition: rotate 200ms ease;
+}
+
+.career-role[open] .career-chevron {
+  rotate: 180deg;
+}
+
+.career-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 52rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.career-detail > li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.career-detail > li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: color-mix(in oklab, var(--color-muted) 45%, transparent);
+}
+
+/* Credentials and stack, in the map legend's term/value shape. */
+.career-block {
+  margin-top: 3.5rem;
+}
+
+.career-block-name {
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 18%, transparent);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.career-credentials,
+.career-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.career-credentials {
+  padding: 0;
+  list-style: none;
+}
+
+.career-credentials > li,
+.career-stack > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+
+.career-cred-name,
+.career-stack dd {
+  margin: 0;
+  color: var(--color-foreground);
+}
+
+.career-cred-from,
+.career-stack dt {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.career-stack dt {
+  flex: 0 0 6.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .career-chevron {
+    transition: none;
+  }
+}

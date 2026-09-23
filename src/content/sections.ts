@@ -2,12 +2,12 @@ import type { ComponentType } from 'react';
 import type { HeadingKey } from '../theme/copy';
 import {
   BookIcon,
+  CareerIcon,
   GamepadIcon,
   HeartPulseIcon,
   ProjectsIcon,
   RecordIcon,
   SendIcon,
-  SkillsIcon,
 } from '../components/icons';
 
 /**
@@ -28,7 +28,7 @@ export type Section = {
 
 export const SECTIONS: readonly Section[] = [
   { id: 'projects', label: 'Selected Work', Icon: ProjectsIcon },
-  { id: 'skills', label: 'Skills', Icon: SkillsIcon },
+  { id: 'career', label: 'Career & credentials', Icon: CareerIcon },
   { id: 'listening', label: 'Listening', Icon: RecordIcon },
   { id: 'reading', label: 'Reading', Icon: BookIcon },
   { id: 'gaming', label: 'Gaming', Icon: GamepadIcon },

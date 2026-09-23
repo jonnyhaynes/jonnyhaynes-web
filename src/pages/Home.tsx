@@ -1,3 +1,4 @@
+import { Career } from '../components/Career';
 import { Contact } from '../components/Contact';
 import { Footer } from '../components/Footer';
 import { Gaming } from '../components/Gaming';
@@ -6,7 +7,6 @@ import { Hero } from '../components/Hero';
 import { Listening } from '../components/Listening';
 import { Projects } from '../components/Projects';
 import { Reading } from '../components/Reading';
-import { Skills } from '../components/Skills';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
 const META = {
@@ -38,7 +38,7 @@ export function Home() {
       >
         <Hero />
         <Projects />
-        <Skills />
+        <Career />
         <Listening />
         <Reading />
         <Gaming />
