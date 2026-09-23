@@ -7,6 +7,10 @@ import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
 import { ProjectCard } from './ProjectCard';
 import { SectionHeading } from './SectionHeading';
 
+/** Pixels of horizontal travel the traverse covers per pixel of scroll. Tuned
+ *  against the six-card version; everything else is derived from it. */
+const pace = 1.04;
+
 /**
  * The work as a horizontal traverse: the section is made taller than the viewport
  * and its contents stick while the track slides sideways, so scrolling down moves
@@ -55,7 +59,9 @@ export function Projects() {
   useEffect(() => {
     const element = windowRef.current;
     const container = element?.parentElement;
-    if (!element || !container) return;
+    const scroller = scrollerRef.current;
+    const track = trackRef.current;
+    if (!element || !container || !scroller || !track) return;
 
     let frame = 0;
     const measure = () => {
@@ -66,16 +72,28 @@ export function Projects() {
         '--bleed-right',
         `${Math.max(0, document.documentElement.clientWidth - rect.right)}px`,
       );
+
+      // How much scroll the traverse needs, measured rather than fixed. It depends
+      // on how many cards there are, so no single constant is right for six of them
+      // and for eight — which is exactly how adding two projects quietly made the
+      // cards cross two-thirds faster. Derived from the track's own width, so a ninth
+      // project can only make the section taller.
+      const travel = track.scrollWidth - element.clientWidth;
+      scroller.style.height = `calc(100dvh - var(--strip-h) + ${Math.round(travel / pace)}px)`;
     };
     const schedule = () => {
       if (frame) return;
       frame = requestAnimationFrame(measure);
     };
 
-    // The container's width changes with the breakpoint and as sections mount;
-    // its position changes when the rail appears.
+    // Two things to watch, for two different reasons. The container's width changes
+    // with the breakpoint and its position changes when the rail appears. The track's
+    // width changes when cards arrive — the work projects render immediately and the
+    // personal ones wait for the GitHub snapshot, so without this the scroll is sized
+    // for half a traverse and never corrected.
     const observer = new ResizeObserver(schedule);
     observer.observe(container);
+    observer.observe(track);
     window.addEventListener('resize', schedule);
     schedule();
 

@@ -2463,8 +2463,11 @@
 @media (min-width: 64rem) {
   /* Tall enough to give the traverse somewhere to happen. Sticky travel is the
      difference between this and the sticky child's own height. */
+  /* A fallback, for the server render and the frame before the effect measures.
+   * The real height is set from the track's measured travel — see `pace` in
+   * Projects — because it depends on the card count and this number cannot know it. */
   .projects-scroller {
-    height: calc(220dvh - var(--strip-h));
+    height: calc(300dvh - var(--strip-h));
   }
 
   .projects-sticky {
