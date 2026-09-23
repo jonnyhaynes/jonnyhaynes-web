@@ -114,7 +114,7 @@ export const CREDENTIALS: readonly Credential[] = [
     name: 'FAA Level 3 Award in Supervising First Aid for Mental Health',
     from: 'First Aid Awards',
   },
-  { name: 'Emergency First Aid — Level 3', from: 'First Aid Awards' },
+  { name: 'ITC Level 3 Award in Outdoor First Aid', from: 'ITC First' },
   {
     name: 'HND, Interactive use of Media',
     from: 'Wakefield College',

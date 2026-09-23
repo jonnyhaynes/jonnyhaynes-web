@@ -76,7 +76,7 @@ React Native · Expo · TypeScript · JavaScript · React · Next.js · HTML · 
 ## Certifications
 
 - FAA Level 3 Award in Supervising First Aid for Mental Health
-- Emergency First Aid — Level 3
+- ITC Level 3 Award in Outdoor First Aid
 
 ## Education
 
