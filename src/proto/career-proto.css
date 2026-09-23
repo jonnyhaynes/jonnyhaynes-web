@@ -299,3 +299,139 @@
   line-height: 1.6;
   color: var(--color-muted);
 }
+
+/* ── D: Profile down ───────────────────────────────────────────────────────
+   The same profile rotated: time runs down the page, newest first. The section
+   is as tall as the date span deserves, so a nine-year tenure is a nine-year gap
+   and a three-year burst reads as a burst. The terrain line draws itself as you
+   scroll, driven by a CSS variable rather than per-frame JS. */
+
+.proto-d {
+  position: relative;
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0 2rem;
+  min-height: 78rem;
+  margin-top: 1rem;
+}
+
+.proto-d-spine {
+  position: relative;
+}
+
+.proto-d-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.proto-d-fill {
+  fill: color-mix(in oklab, var(--color-muted) 8%, transparent);
+}
+
+.proto-d-line {
+  fill: none;
+  stroke: color-mix(in oklab, var(--color-muted) 50%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  /* pathLength="1" plus a scroll variable: the line draws as the section passes. */
+  stroke-dasharray: 1px;
+  /* Defaults to fully drawn, so the line is intact when the variable is never
+     set — no-JS, or before the first scroll event. */
+  stroke-dashoffset: calc(1px - var(--career-p, 1) * 1px);
+}
+
+.proto-d-marks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.proto-d-mark {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 10.5rem;
+  padding: 0 0 1rem;
+  border: 0;
+  background: transparent;
+}
+
+.proto-d-mark::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border: 1px solid color-mix(in oklab, var(--color-muted) 60%, transparent);
+  background: var(--color-background);
+}
+
+.proto-d-mark[aria-current='true']::after {
+  width: 9px;
+  height: 9px;
+  border-color: var(--color-accent-start);
+  background: var(--color-accent-start);
+}
+
+.proto-d-rows {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Every row reserves its expanded height. Opening the active row's detail is a
+   scroll-driven reveal, and without the reservation that reveal would push every
+   row below it down as you scrolled — the page would grow and shrink under you. */
+.proto-d-row {
+  min-height: 10.5rem;
+  padding: 0.35rem 0 1rem 1rem;
+  margin-left: -1rem;
+  border-left: 1px solid transparent;
+}
+
+.proto-d-row[aria-current='true'] {
+  border-left-color: color-mix(in oklab, var(--color-accent-start) 55%, transparent);
+}
+
+.proto-d-period {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.proto-d-row[aria-current='true'] .proto-d-period {
+  color: var(--color-accent-start);
+}
+
+.proto-d-title {
+  margin: 0.15rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.proto-d-where {
+  margin: 0.1rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.proto-d-detail {
+  margin: 0.5rem 0 0;
+  max-width: 40rem;
+  padding-left: 1.1rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.proto-d-summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.proto-d-summary::-webkit-details-marker {
+  display: none;
+}

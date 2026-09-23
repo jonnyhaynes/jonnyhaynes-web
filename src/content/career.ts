@@ -19,10 +19,6 @@ export type Role = {
   place: string;
   /** The role held now — marked in the UI, and the only one in present tense. */
   current?: boolean;
-  /**
-   * Beyond the headline three, this is not on a CV — coaching is not digital
-   * engineering — so it is listed and its detail kept short.
-   */
   detail: string[];
 };
 
@@ -39,16 +35,6 @@ export const ROLES: readonly Role[] = [
       'Built the DigiBete platform for teenagers with type 1 diabetes, award-winning for UI design and effectiveness.',
       'Integrate bespoke JavaScript frameworks — Next.js, React — alongside PHP ecosystems in Laravel, Statamic and WordPress.',
       'Introduced Claude Code into the workflow, accelerating deployment while raising code-quality and documentation standards.',
-    ],
-  },
-  {
-    title: 'Off-Road Ride Leader & MTB Coach',
-    company: 'Peaky Adventures',
-    period: 'Aug 2023 — Jun 2026',
-    place: 'Sheffield',
-    detail: [
-      'Designed and ran coaching sessions on technical skills progression and rider confidence.',
-      'Planned and led commercial guided off-road expeditions across complex terrain.',
     ],
   },
   {
@@ -134,4 +120,4 @@ export const CREDENTIALS: readonly Credential[] = [
 
 /** The opening line, in the resume's own words. */
 export const CAREER_LEAD =
-  'Nearly two decades of digital engineering, starting in 2006 — from semantic HTML and a first responsive rebuild, through award-winning cross-platform apps, to AI-accelerated delivery.';
+  'Nearly two decades of digital engineering — from semantic HTML in 2006, through award-winning cross-platform apps, to AI-accelerated delivery.';
