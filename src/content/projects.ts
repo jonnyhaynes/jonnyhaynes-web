@@ -162,6 +162,16 @@ export const WORK_PROJECTS: WorkProject[] = [
   },
   {
     kind: 'work',
+    name: 'Ezz Steel',
+    company: LEDGARD_JEPSON,
+    pitch:
+      'A bilingual Rails site for the Egyptian steel producer, in hand-written HTML and CSS — the entire layout mirrors between the English and Arabic versions.',
+    stack: ['Rails', 'HTML', 'CSS'],
+    links: [{ kind: 'live', url: 'https://www.ezzsteel.com/' }],
+    awards: [],
+  },
+  {
+    kind: 'work',
     name: 'DigiBete',
     company: COMPANY,
     pitch:
