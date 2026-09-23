@@ -2556,6 +2556,15 @@
   margin-top: 3rem;
 }
 
+/* Credentials, in the map legend's term/value shape. Full width until the third
+   column exists, where they sit under the profile rather than beside it. Placed
+   before the media query below, because the override has to come after the rule it
+   overrides — the other way round silently spans all three columns. */
+.career-block {
+  grid-column: 1 / -1;
+  margin-top: 3rem;
+}
+
 /* The credentials join as a third column only once the roles can still keep a
    readable line length. Below lg they sit under the profile instead, because a
    14rem column of qualification names alongside a squeezed timeline reads worse
@@ -2723,13 +2732,6 @@
   position: absolute;
   left: 0;
   color: color-mix(in oklab, var(--color-muted) 45%, transparent);
-}
-
-/* Credentials, in the map legend's term/value shape. Full width below lg, where
-   they sit under the profile rather than beside it. */
-.career-block {
-  grid-column: 1 / -1;
-  margin-top: 3rem;
 }
 
 .career-block-name {
