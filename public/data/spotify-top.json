@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-23T12:36:33.837Z",
+  "fetchedAt": "2026-09-23T22:05:57.963Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -46,6 +46,12 @@
   ],
   "tracks": [
     {
+      "title": "Intergalactic - Remastered 2009",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
+    },
+    {
       "title": "Somebody's Gonna Love Me",
       "artist": "Spencer Sutherland",
       "url": "https://open.spotify.com/track/6hw8dMgvfPsYqAHKVRFMaK",
@@ -64,9 +70,9 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
     },
     {
-      "title": "Intergalactic - Remastered 2009",
+      "title": "And Me - Remastered 2009",
       "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
+      "url": "https://open.spotify.com/track/0ZcJ2JdB8vdgCWij7mFUuQ",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
@@ -86,12 +92,6 @@
       "artist": "Rammstein",
       "url": "https://open.spotify.com/track/2bPGTMB5sFfFYQ2YvSmup0",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485102add2c77fb6999e311a3248"
-    },
-    {
-      "title": "Ace of Spades",
-      "artist": "Motörhead",
-      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
