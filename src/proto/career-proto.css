@@ -1,0 +1,301 @@
+/* Throwaway styles for the /proto career variants. Delete with src/pages/Proto.tsx. */
+
+.proto-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem 0 2rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 25%, transparent);
+}
+
+.proto-tab {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid color-mix(in oklab, var(--color-muted) 35%, transparent);
+  background: transparent;
+  color: var(--color-muted);
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.proto-tab[aria-pressed='true'] {
+  border-color: var(--color-accent-start);
+  color: var(--color-foreground);
+}
+
+.proto-note {
+  margin: 0 0 2rem;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.proto-note strong {
+  color: var(--color-foreground);
+  font-weight: 500;
+}
+
+/* ── A: Profile ────────────────────────────────────────────────────────────
+   Time on x, real terrain as the silhouette behind it. */
+
+.proto-a-stage {
+  position: relative;
+  margin-top: 1rem;
+}
+
+.proto-a-profile {
+  display: block;
+  width: 100%;
+  height: 160px;
+}
+
+.proto-a-fill {
+  fill: color-mix(in oklab, var(--color-muted) 10%, transparent);
+}
+
+.proto-a-line {
+  fill: none;
+  stroke: color-mix(in oklab, var(--color-muted) 45%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.proto-a-ticks {
+  position: relative;
+  height: 4.25rem;
+  margin-top: -1px;
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 30%, transparent);
+}
+
+/* 2009, 2010 and 2011 start within a year of each other on a 20-year axis, so
+   their labels overlap. Alternating rows is the cheapest honest fix. */
+.proto-a-tick:nth-child(even) {
+  top: 1.6rem;
+}
+
+.proto-a-tick:nth-child(even)::before {
+  height: 1.6rem;
+}
+
+.proto-a-tick {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.4rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
+  font: inherit;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  cursor: pointer;
+  /* Centre each tick on its date, but never let the first/last fall off the edge. */
+  transform: translateX(-50%);
+}
+
+.proto-a-tick::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 0.75rem;
+  background: color-mix(in oklab, var(--color-muted) 45%, transparent);
+}
+
+.proto-a-tick[aria-pressed='true'] {
+  color: var(--color-foreground);
+}
+
+.proto-a-tick[aria-pressed='true']::before {
+  width: 2px;
+  background: var(--color-accent-start);
+}
+
+.proto-a-readout {
+  min-height: 9rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 20%, transparent);
+}
+
+.proto-a-readout-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.proto-a-readout-meta {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+
+.proto-a-readout-body {
+  margin: 0;
+  max-width: 46rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+/* ── B: Ledger ─────────────────────────────────────────────────────────────
+   No axis, no rules, no markers. A year gutter and type. */
+
+.proto-b {
+  display: grid;
+  gap: 0 2.5rem;
+}
+
+@media (min-width: 48rem) {
+  .proto-b {
+    grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  }
+}
+
+.proto-b-entry {
+  display: grid;
+  padding: 1.5rem 0;
+}
+
+@media (min-width: 48rem) {
+  .proto-b-entry {
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+  }
+}
+
+.proto-b-year {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklab, var(--color-muted) 75%, transparent);
+}
+
+.proto-b-title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.proto-b-where {
+  margin: 0.2rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+}
+
+.proto-b-detail {
+  margin: 0.6rem 0 0;
+  max-width: 44rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.proto-b-summary {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  cursor: pointer;
+  list-style: none;
+}
+
+.proto-b-summary::-webkit-details-marker {
+  display: none;
+}
+
+.proto-b-current {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-start);
+  vertical-align: 0.35em;
+}
+
+.proto-b-creds {
+  display: grid;
+  gap: 0.5rem 2.5rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 20%, transparent);
+}
+
+@media (min-width: 48rem) {
+  .proto-b-creds {
+    grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  }
+}
+
+/* ── C: Tiles ──────────────────────────────────────────────────────────────
+   Same content, laid out in space rather than time. */
+
+.proto-c {
+  display: grid;
+  gap: 0;
+  /* The backdrop carries the tile colour, not the rule colour: an unfilled cell in
+     the last row should read as empty, not as a grey block. The rules come from the
+     tiles themselves. */
+  background: var(--color-background);
+  border: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
+}
+
+@media (min-width: 40rem) {
+  .proto-c {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .proto-c {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.proto-c-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: var(--color-background);
+  box-shadow: inset -1px -1px 0 0 color-mix(in oklab, var(--color-muted) 22%, transparent);
+}
+
+.proto-c-tile--current {
+  background: color-mix(in oklab, var(--color-accent-start) 7%, var(--color-background));
+}
+
+.proto-c-span {
+  font-size: 1.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--color-foreground);
+}
+
+.proto-c-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.proto-c-where {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.proto-c-body {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
