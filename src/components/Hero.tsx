@@ -170,12 +170,12 @@ export function Hero() {
             {c.getInTouch}
           </Link>
 
-          {/* Plain icons, no button chrome. On a phone they take their own line
-              under the buttons; from sm they join the same row, sitting alongside
-              the two buttons rather than being pushed out to the far edge — the
-              row is one group of destinations, so the gap between them is the
-              group's own gap and nothing more. */}
-          <div className="flex w-full items-center gap-4 sm:w-auto">
+          {/* Plain icons, no button chrome. They take their own line under the
+              buttons on a phone; from sm they join that row and go to its far edge,
+              so the buttons read as the actions and the icons as a quieter aside.
+              Below sm there is no row to push against, so they stay left-aligned
+              with everything else. */}
+          <div className="flex w-full items-center gap-4 sm:ml-auto sm:w-auto">
             <a
               href={SITE.githubUrl}
               target="_blank"
