@@ -70,7 +70,18 @@ export function Career() {
         <ul className="career-credentials">
           {CREDENTIALS.map((credential) => (
             <li key={credential.name}>
-              <span className="career-cred-name">{credential.name}</span>
+              {credential.url ? (
+                <a
+                  href={credential.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="career-cred-name transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+                >
+                  {credential.name}
+                </a>
+              ) : (
+                <span className="career-cred-name">{credential.name}</span>
+              )}
               <span className="career-cred-from">
                 {credential.from}
                 {credential.year ? ` · ${credential.year}` : ''}

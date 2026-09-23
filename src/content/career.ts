@@ -106,6 +106,12 @@ export type Credential = {
   /** Who awarded it, or where it was studied. */
   from: string;
   year?: string;
+  /**
+   * Where the qualification is described by whoever awards it. Optional, because
+   * a link that goes nowhere is worse than no link — the mental health award and
+   * the HND don't have one I could verify.
+   */
+  url?: string;
 };
 
 /** Qualified-for things: certifications and education. */
@@ -114,7 +120,11 @@ export const CREDENTIALS: readonly Credential[] = [
     name: 'FAA Level 3 Award in Supervising First Aid for Mental Health',
     from: 'First Aid Awards',
   },
-  { name: 'ITC Level 3 Award in Outdoor First Aid', from: 'ITC First' },
+  {
+    name: 'ITC Level 3 Award in Outdoor First Aid',
+    from: 'ITC First',
+    url: 'https://www.itcfirst.org.uk/qualifications/itc-level-3-award-in-outdoor-first-aid/32',
+  },
   {
     name: 'HND, Interactive use of Media',
     from: 'Wakefield College',
