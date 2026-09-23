@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { CAREER_LEAD, CREDENTIALS, ROLES, roleSpan } from '../content/career';
 import { WORK_PROJECTS } from '../content/projects';
+import { useReducedMotion } from '../lib/useReducedMotion';
 import { sampleHeight, useTopographyGrid } from '../lib/topography-grid';
 import { SectionHeading } from './SectionHeading';
 
@@ -9,30 +11,28 @@ import { SectionHeading } from './SectionHeading';
  *
  * Newest first, because that is the order the page reads in and the order a CV is
  * read in. On a horizontal axis time has to run left to right, which forces
- * oldest-first and sets the section against every other list on the page; down
- * the page the two orderings agree.
+ * oldest-first and sets the section against every other list on the page; down the
+ * page the two orderings agree.
  *
  * The spine carries a real vertical cross-section of the same elevation field the
  * background draws — the same canvas the map samples, taken down a fixed northing
- * column — with a marker per role. The line draws itself as the section passes the
- * viewport, driven by a custom property written straight onto the element rather
- * than React state, so the reveal costs no render.
+ * column. It starts as an outline and fills with colour from the top as the reader
+ * moves through the roles, so the section draws its own progress rather than
+ * reporting it.
  *
- * Scrolling is what drives the section: the role nearest the reading line takes
- * the marker and opens. That is positional, not a fade, and it means the section
- * shows its information without anything having to be hovered for it.
+ * The section is about one screen tall and stays there: the wrapper is taller than
+ * the viewport and the contents stick inside it, so scrolling moves *through* the
+ * roles rather than past them. Which detail is shown is always one role's, in a
+ * readout sized once to the tallest — so nothing moves as the active role changes,
+ * which is what made the previous version grow and shrink the page.
  *
- * Every row reserves the height of its opened state. Without that reservation the
- * reveal would grow and shrink the page under the reader as they scrolled it.
+ * The reveal is a function of scroll position alone, so it runs backwards as
+ * readily as forwards and nothing accumulates. There is no fade anywhere.
  *
- * Each role is still a native `<details>`, so it opens by click as well, and the
- * first is open in the markup — which is why the no-JS and prerendered page shows
- * a role's detail rather than none.
- *
- * Rows are content-spaced rather than date-scaled. A true-to-scale vertical axis
- * needs around 2380px before 2009, 2010 and 2011 stop colliding — three roles a
- * year apart — so it is not viable at this width. The date scaling lives in the
- * horizontal prototype, where the axis is 735px wide and labels can be staggered.
+ * Two fallbacks, both dropping the pinning and the stepping entirely and leaving a
+ * plain list with every role's detail open:
+ * - below `lg`, where a pinned section fights the page on touch;
+ * - under `prefers-reduced-motion`.
  *
  * The awards are deliberately not listed. They are already attached to the projects
  * that won them, and a second copy would say the same thing twice; the credentials
@@ -40,9 +40,12 @@ import { SectionHeading } from './SectionHeading';
  */
 export function Career() {
   const grid = useTopographyGrid();
-  const colsRef = useRef<HTMLDivElement>(null);
-  const rowsRef = useRef<HTMLOListElement>(null);
-  const marksRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const pinned = !reduced;
+
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const readoutRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   const awards = WORK_PROJECTS.reduce(
@@ -76,43 +79,70 @@ export function Career() {
   }, [grid]);
 
   /**
-   * Each row reserves the height it has when open, measured rather than guessed.
+   * Scroll progress through the pin, which drives two things: the fill on the
+   * profile, written straight to the element because a scroll-driven paint should
+   * not cost a render, and which role is active, which has to be React state
+   * because the readout renders from it — so only a change re-renders.
    *
-   * A single shared pitch cannot work here: the longest role's detail is five
-   * bullets and the rest are one or two, so reserving the worst case would make the
-   * section about 900px taller than it needs to be, and reserving anything less
-   * would let the reveal push every row below it down as the scroll moved through —
-   * which is a page that grows and shrinks under the reader.
+   * Measured from the wrapper's travel rather than the section's own height: the
+   * pinned element is shorter than the space it sticks in, so dividing by its own
+   * height would run the whole reveal out in the first third of the scroll.
+   */
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const pin = pinRef.current;
+    if (!scroller || !pin || !pinned) return;
+
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const rect = scroller.getBoundingClientRect();
+      const travel = rect.height - window.innerHeight;
+      const progress = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0;
+      pin.style.setProperty('--career-p', progress.toFixed(4));
+
+      const next = Math.min(
+        ordered.length - 1,
+        Math.floor(progress * ordered.length),
+      );
+      setActive((previous) => (previous === next ? previous : next));
+    };
+
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(measure);
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    schedule();
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [pinned, ordered.length]);
+
+  /**
+   * One readout, sized to the tallest detail so switching roles cannot resize it.
    *
-   * A layout effect, so the measuring happens before the first paint rather than as
-   * a correction the reader can see. Re-run on resize and once the font has settled,
-   * because both change how many lines a detail takes.
+   * Measured from the details themselves rather than guessed: the longest is five
+   * bullets and the shortest is one, so any fixed height is either wrong for the
+   * longest or wasteful for the rest. A layout effect, so it lands before the first
+   * paint, re-run on resize and once the font settles, both of which change how many
+   * lines a bullet takes.
    */
   useLayoutEffect(() => {
-    const rows = rowsRef.current;
-    if (!rows) return;
+    const readout = readoutRef.current;
+    if (!readout) return;
 
     const measure = () => {
-      rows.querySelectorAll<HTMLLIElement>('[data-row]').forEach((row, index) => {
-        const details = row.querySelector('details');
-        if (!details) return;
-
-        // Cleared first: min-height counts towards the measurement, so leaving it
-        // on would ratchet the reservation up on every pass.
-        row.style.setProperty('--career-row-h', 'auto');
-        const wasOpen = details.open;
-        details.open = true;
-        const height = Math.ceil(row.getBoundingClientRect().height);
-        details.open = wasOpen;
-        row.style.setProperty('--career-row-h', `${height}px`);
-
-        // The marker on the spine has to keep the matching row's pitch or the two
-        // columns drift apart down the section.
-        const mark = marksRef.current?.children[index];
-        if (mark instanceof HTMLElement) {
-          mark.style.setProperty('--career-row-h', `${height}px`);
-        }
+      let tallest = 0;
+      readout.querySelectorAll('.career-detail').forEach((detail) => {
+        tallest = Math.max(tallest, Math.ceil(detail.getBoundingClientRect().height));
       });
+      if (tallest) readout.style.setProperty('--career-readout-h', `${tallest}px`);
     };
 
     measure();
@@ -121,81 +151,48 @@ export function Career() {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  useEffect(() => {
-    const cols = colsRef.current;
-    const rows = rowsRef.current;
-    if (!cols || !rows) return;
-
-    const onScroll = () => {
-      // 0 as the top enters the viewport, 1 as the bottom comes level with the
-      // bottom of it — so the line finishes exactly as the section is fully read.
-      const rect = cols.getBoundingClientRect();
-      const progress = Math.min(
-        1,
-        Math.max(0, (window.innerHeight - rect.top) / rect.height),
-      );
-      cols.style.setProperty('--career-p', progress.toFixed(4));
-
-      const readingLine = window.innerHeight * 0.45;
-      let nearest = 0;
-      let nearestGap = Infinity;
-      rows.querySelectorAll('[data-row]').forEach((row, index) => {
-        const gap = Math.abs(row.getBoundingClientRect().top + 20 - readingLine);
-        if (gap < nearestGap) {
-          nearestGap = gap;
-          nearest = index;
-        }
-      });
-      setActive((previous) => (previous === nearest ? previous : nearest));
-    };
-
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-
   return (
-    <section id="career" className="scroll-mt-16 py-16">
-      <SectionHeading section="career" />
+    <section id="career" className="scroll-mt-16">
+      <div
+        className="career-scroller"
+        ref={scrollerRef}
+        style={{ '--career-steps': ordered.length } as CSSProperties}
+      >
+        <div className="career-pin" ref={pinRef}>
+          <SectionHeading section="career" />
 
-      <p className="career-lead">{CAREER_LEAD}</p>
+          <p className="career-lead">{CAREER_LEAD}</p>
 
-      <div className="career-cols" ref={colsRef}>
-        <div className="career-spine" aria-hidden="true">
-          <svg
-            className="career-spine-svg"
-            viewBox="0 0 200 1400"
-            preserveAspectRatio="none"
-          >
-            <path className="career-spine-fill" d={area} />
-            <path className="career-spine-line" d={line} pathLength={1} />
-          </svg>
+          <div className="career-cols" data-pinned={pinned}>
+            <div className="career-spine" aria-hidden="true">
+              <svg
+                className="career-spine-svg"
+                viewBox="0 0 200 1400"
+                preserveAspectRatio="none"
+              >
+                <path className="career-terrain-ghost" d={line} />
+              </svg>
+              {/* Clipped rather than redrawn: the same geometry, revealed from the
+                  top by the scroll. */}
+              <div className="career-terrain-fill">
+                <svg
+                  className="career-spine-svg"
+                  viewBox="0 0 200 1400"
+                  preserveAspectRatio="none"
+                >
+                  <path className="career-terrain-area" d={area} />
+                  <path className="career-terrain-line" d={line} />
+                </svg>
+              </div>
+            </div>
 
-          <div className="career-marks" ref={marksRef}>
-            {ordered.map((role, index) => (
-              <span
-                key={`${role.company}-${role.period}`}
-                className="career-mark"
-                data-active={index === active}
-              />
-            ))}
-          </div>
-        </div>
-
-        <ol className="career-roles" ref={rowsRef}>
-          {ordered.map((role, index) => (
-            <li
-              key={`${role.company}-${role.period}`}
-              className="career-role"
-              data-row
-              data-active={index === active}
-            >
-              <details open={index === active}>
-                <summary className="career-summary">
+            <ol className="career-roles">
+              {ordered.map((role, index) => (
+                <li
+                  key={`${role.company}-${role.period}`}
+                  className="career-role"
+                  data-active={index === active}
+                >
                   <span className="career-period">{role.period}</span>
                   <span className="career-title">
                     {role.current && <span className="sr-only">Current role: </span>}
@@ -204,51 +201,58 @@ export function Career() {
                   <span className="career-where">
                     {role.company} · {role.place}
                   </span>
-                  <span className="career-chevron" aria-hidden="true">
-                    ▾
-                  </span>
-                </summary>
+                </li>
+              ))}
+            </ol>
 
-                <ul className="career-detail">
+            <div className="career-block">
+              <p className="career-block-name">Credentials</p>
+              <ul className="career-credentials">
+                {CREDENTIALS.map((credential) => (
+                  <li key={credential.name}>
+                    {credential.url ? (
+                      <a
+                        href={credential.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="career-cred-name transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+                      >
+                        {credential.name}
+                      </a>
+                    ) : (
+                      <span className="career-cred-name">{credential.name}</span>
+                    )}
+                    <span className="career-cred-from">
+                      {credential.from}
+                      {credential.year ? ` · ${credential.year}` : ''}
+                    </span>
+                  </li>
+                ))}
+                <li>
+                  <span className="career-cred-name">
+                    {awards} industry award{awards === 1 ? '' : 's'}
+                  </span>
+                  <span className="career-cred-from">listed against the work above</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Every role's detail is in the markup. The pin only decides which one
+                is shown; without JavaScript, or without the pin, they all are. */}
+            <div className="career-readout" ref={readoutRef}>
+              {ordered.map((role, index) => (
+                <ul
+                  key={`${role.company}-${role.period}`}
+                  className="career-detail"
+                  data-active={index === active}
+                >
                   {role.detail.map((entry) => (
                     <li key={entry}>{entry}</li>
                   ))}
                 </ul>
-              </details>
-            </li>
-          ))}
-        </ol>
-
-        <div className="career-block">
-          <p className="career-block-name">Credentials</p>
-          <ul className="career-credentials">
-            {CREDENTIALS.map((credential) => (
-              <li key={credential.name}>
-                {credential.url ? (
-                  <a
-                    href={credential.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="career-cred-name transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-                  >
-                    {credential.name}
-                  </a>
-                ) : (
-                  <span className="career-cred-name">{credential.name}</span>
-                )}
-                <span className="career-cred-from">
-                  {credential.from}
-                  {credential.year ? ` · ${credential.year}` : ''}
-                </span>
-              </li>
-            ))}
-            <li>
-              <span className="career-cred-name">
-                {awards} industry award{awards === 1 ? '' : 's'}
-              </span>
-              <span className="career-cred-from">listed against the work above</span>
-            </li>
-          </ul>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

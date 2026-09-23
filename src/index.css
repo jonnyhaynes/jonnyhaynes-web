@@ -2520,21 +2520,23 @@
  * Career & credentials: the profile rotated, so time runs down the page.
  *
  * Newest first — the way the page reads and the way a CV is read. On a
- * horizontal axis time has to run left to right, which forces oldest-first
- * and sets this section against every other list on the page; down the page
- * the two orderings agree.
+ * horizontal axis time has to run left to right, which forces oldest-first and
+ * sets this section against every other list on the page; down the page the two
+ * orderings agree.
  *
- * The spine carries a real vertical cross-section of the elevation field the
- * background draws, with a marker per role. The line draws itself as the
- * section passes the viewport.
+ * The spine is a real vertical cross-section of the elevation field the
+ * background draws, and it is drawn twice: once as an outline, and once in
+ * colour inside a wrapper clipped to the scroll, so the profile fills from the
+ * top as the reader moves through the roles. The section draws its own progress
+ * rather than reporting it in a number.
  *
- * Scrolling drives it: the role nearest the reading line takes the marker and
- * opens, so the section shows its information without anything being hovered.
- * Every row reserves the height of its opened state, so the reveal cannot grow
- * and shrink the page under the reader.
+ * From lg up the section is one screen tall and sticks. The wrapper supplies the
+ * scroll and the contents stay put, so scrolling moves through the roles rather
+ * than past them — and every role's detail shares one readout sized to the
+ * tallest, so switching roles cannot resize the page.
  *
- * Each role is a native <details>, so it opens by click as well, and it still
- * works with JavaScript off.
+ * The single cue on the list is the active role's title coming forward. There is
+ * no dot and no coloured rule: both were there, and both were asked for.
  * ---------------------------------------------------------------- */
 
 .career-lead {
@@ -2545,43 +2547,21 @@
   color: var(--color-muted);
 }
 
-/* The fallback row pitch. Each row and its marker are given their own measured
-   height by the section itself, because the details differ in length by five lines
-   and one shared number cannot serve both the longest and the shortest. */
+/* Areas rather than implicit placement: the spine has to sit against the roles and
+   not against the readout, or the profile stops corresponding to the list. */
 .career-cols {
-  --career-row-h: 6rem;
   display: grid;
   grid-template-columns: 3rem minmax(0, 1fr);
-  gap: 0 1.25rem;
+  grid-template-areas:
+    'spine roles'
+    '.     readout'
+    'creds creds';
+  gap: 0 1.5rem;
   margin-top: 3rem;
-}
-
-/* Credentials, in the map legend's term/value shape. Full width until the third
-   column exists, where they sit under the profile rather than beside it. Placed
-   before the media query below, because the override has to come after the rule it
-   overrides — the other way round silently spans all three columns. */
-.career-block {
-  grid-column: 1 / -1;
-  margin-top: 3rem;
-}
-
-/* The credentials join as a third column only once the roles can still keep a
-   readable line length. Below lg they sit under the profile instead, because a
-   14rem column of qualification names alongside a squeezed timeline reads worse
-   than the extra scrolling costs. */
-@media (min-width: 64rem) {
-  .career-cols {
-    grid-template-columns: 5.5rem minmax(0, 1fr) minmax(14rem, 0.4fr);
-    gap: 0 2rem;
-  }
-
-  .career-block {
-    grid-column: auto;
-    margin-top: 0;
-  }
 }
 
 .career-spine {
+  grid-area: spine;
   position: relative;
 }
 
@@ -2592,85 +2572,50 @@
   height: 100%;
 }
 
-.career-spine-fill {
-  fill: color-mix(in oklab, var(--color-muted) 7%, transparent);
-}
-
-.career-spine-line {
+.career-terrain-ghost {
   fill: none;
-  stroke: color-mix(in oklab, var(--color-muted) 45%, transparent);
+  stroke: color-mix(in oklab, var(--color-muted) 25%, transparent);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
-  /* pathLength="1" on the path, plus the custom property the section writes as it
-     scrolls. Defaults to drawn, so the line is whole when the property is never
-     set — no JavaScript, or before the first scroll event. */
-  stroke-dasharray: 1px;
-  stroke-dashoffset: calc(1px - var(--career-p, 1) * 1px);
 }
 
-.career-marks {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+.career-terrain-fill {
+  position: absolute;
+  inset: 0;
+  /* Revealed from the top by the scroll. A clip, not a dash-length reveal — the dash
+     geometry is computed in the SVG's own user space, which `preserveAspectRatio="none"`
+     then scales by a different factor on each axis, so `pathLength="1"` stopped
+     meaning "the whole line" and the draw never rendered as one line: the computed
+     stroke-dashoffset moved, and nothing visible followed it. */
+  clip-path: inset(0 0 calc((1 - var(--career-p, 0)) * 100%) 0);
 }
 
-/* A shape as well as a colour, following the rail's active marker, so which role
-   is current survives greyscale. */
-.career-mark {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  min-height: var(--career-row-h);
-  padding-top: 1.15rem;
+.career-terrain-area {
+  fill: color-mix(in oklab, var(--color-accent-start) 20%, transparent);
 }
 
-.career-mark::after {
-  content: '';
-  width: 0.4rem;
-  height: 0.4rem;
-  border: 1px solid color-mix(in oklab, var(--color-muted) 60%, transparent);
-  background: var(--color-background);
-}
-
-.career-mark[data-active='true']::after {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-color: var(--color-accent-start);
-  background: var(--color-accent-start);
+.career-terrain-line {
+  fill: none;
+  stroke: var(--color-accent-start);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
 }
 
 .career-roles {
+  grid-area: roles;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .career-role {
-  /* flow-root so the detail's bottom margin stays inside the row. Without it the
-     margin collapses out while the row is being measured — which is measured with
-     min-height cleared — and every reservation comes back exactly one margin short. */
-  display: flow-root;
-  min-height: var(--career-row-h);
-}
-
-.career-summary {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.35rem 1rem;
-  margin-left: -1rem;
-  padding: 1rem 0 0.5rem 1rem;
-  border-left: 1px solid transparent;
-  cursor: pointer;
-  list-style: none;
-}
-
-.career-role[data-active='true'] .career-summary {
-  border-left-color: color-mix(in oklab, var(--color-accent-start) 55%, transparent);
-}
-
-.career-summary::-webkit-details-marker {
-  display: none;
+  padding: 0.5rem 0;
 }
 
 /* The three things a reader scans for, on one line where there's room. */
@@ -2683,13 +2628,16 @@
   color: var(--color-muted);
 }
 
-.career-role[data-active='true'] .career-period {
-  color: var(--color-accent-start);
-}
-
+/* Muted until the role is the active one, which is the whole cue. A colour
+   transition rather than a fade of the element, and the only transition here. */
 .career-title {
   font-size: 1.0625rem;
   font-weight: 500;
+  color: var(--color-muted);
+  transition: color 200ms ease;
+}
+
+.career-role[data-active='true'] .career-title {
   color: var(--color-foreground);
 }
 
@@ -2698,44 +2646,14 @@
   color: var(--color-muted);
 }
 
-.career-chevron {
-  margin-left: auto;
-  padding-left: 1rem;
-  color: var(--color-muted);
-  transition: rotate 200ms ease;
-}
-
-.career-role[open] .career-chevron {
-  rotate: 180deg;
-}
-
-.career-detail {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-width: 46rem;
-  margin: 0.25rem 0 1.25rem -1rem;
-  padding: 0 0 0 1rem;
-  list-style: none;
-  font-size: 0.9375rem;
-  line-height: 1.7;
-  color: var(--color-muted);
-}
-
-.career-detail > li {
-  position: relative;
-  padding-left: 1.1rem;
-}
-
-.career-detail > li::before {
-  content: '—';
-  position: absolute;
-  left: 0;
-  color: color-mix(in oklab, var(--color-muted) 45%, transparent);
+/* Credentials, in the map legend's term/value shape. Under the readout below lg;
+   a third column beside the roles once there is room for one. */
+.career-block {
+  grid-area: creds;
 }
 
 .career-block-name {
-  margin: 0 0 1rem;
+  margin: 2.5rem 0 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 18%, transparent);
   font-size: 0.6875rem;
@@ -2771,8 +2689,83 @@
   color: var(--color-muted);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .career-chevron {
-    transition: none;
+/* The one detail shown at a time. min-height is measured from the details
+   themselves by the section, so the box is exactly as tall as the longest of them
+   and no switch between roles can change the page height. */
+.career-readout {
+  grid-area: readout;
+  position: relative;
+  min-height: var(--career-readout-h, 0);
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 18%, transparent);
+}
+
+.career-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.career-detail > li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.career-detail > li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: color-mix(in oklab, var(--color-muted) 45%, transparent);
+}
+
+/* The pin, and the stepping it drives. Below lg and under reduced motion none of
+   this applies: the wrapper is its natural height, the contents sit in normal flow,
+   and every role's detail is open — which is also what a reader with no JavaScript
+   gets, since the readout only ever hides on the strength of the attribute the
+   section sets for itself. */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  .career-scroller {
+    height: calc(100dvh - var(--strip-h) + var(--career-steps) * 42dvh);
+  }
+
+  .career-pin {
+    position: sticky;
+    top: var(--strip-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100dvh - var(--strip-h));
+  }
+
+  .career-cols {
+    grid-template-columns: 5.5rem minmax(0, 1fr) minmax(14rem, 0.4fr);
+    grid-template-areas:
+      'spine roles creds'
+      '.     readout readout';
+    gap: 0 2rem;
+  }
+
+  .career-block-name {
+    margin-top: 0;
+  }
+
+  /* Stacked on top of one another, so the readout is as tall as the tallest detail
+     and the page cannot move when the active role changes. No bottom in the inset:
+     each detail keeps its own height rather than being stretched to the container,
+     which is what the measurement reads. */
+  .career-cols[data-pinned='true'] .career-detail {
+    position: absolute;
+    inset: 0 0 auto;
+  }
+
+  .career-cols[data-pinned='true'] .career-detail[data-active='false'] {
+    visibility: hidden;
   }
 }

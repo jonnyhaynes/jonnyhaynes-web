@@ -110,14 +110,21 @@ check(
   careerRoles >= 6 && careerRoles === careerDetails,
   `${careerDetails} details across ${careerRoles} roles`,
 );
+// The section shows one role's detail at a time from lg up, driven by scroll. The
+// guarantee is that this is a display decision and not a content one: all six lists
+// are in the markup above, and the markup marks exactly one as the active one, which
+// is what a reader gets before any scroll happens.
+const activeDetails = (career.match(/career-detail" data-active="true"/g) ?? []).length;
 check(
-  'exactly one role detail starts open',
-  (career.match(/<details[^>]*\bopen\b/g) ?? []).length === 1,
-  `${(career.match(/<details[^>]*\bopen\b/g) ?? []).length} open`,
+  'exactly one role detail is marked active',
+  activeDetails === 1,
+  `${activeDetails} active`,
 );
 check(
-  'the profile spine and credentials render',
-  career.includes('career-spine-line') && career.includes('career-credentials'),
+  'the profile is drawn as an outline and a fill, and the credentials render',
+  career.includes('career-terrain-ghost') &&
+    career.includes('career-terrain-fill') &&
+    career.includes('career-credentials'),
 );
 
 // Navigation must be real anchors, not click handlers.
