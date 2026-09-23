@@ -16,7 +16,7 @@ const COPY = {
   default: {
     // Section headings (the line each section opens with).
     headings: {
-      projects: 'Projects',
+      projects: 'Selected Work',
       skills: 'Skills',
       listening: 'On the digital turntable',
       reading: 'My bookshelf',

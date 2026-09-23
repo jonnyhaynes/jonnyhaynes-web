@@ -27,7 +27,7 @@ export type Section = {
 };
 
 export const SECTIONS: readonly Section[] = [
-  { id: 'projects', label: 'Projects', Icon: ProjectsIcon },
+  { id: 'projects', label: 'Selected Work', Icon: ProjectsIcon },
   { id: 'skills', label: 'Skills', Icon: SkillsIcon },
   { id: 'listening', label: 'Listening', Icon: RecordIcon },
   { id: 'reading', label: 'Reading', Icon: BookIcon },
