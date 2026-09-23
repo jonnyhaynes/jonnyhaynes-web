@@ -114,13 +114,21 @@ export function Hero() {
             — they read as one block of copy, so splitting them would break the
             paragraph apart as the cursor crossed it. */}
         <div className="hero-copy" ref={copyRef}>
-          <p className="font-mono text-2xl text-accent-start lg:text-4xl">
+          {/* A greeting, not a second heading: one step above the supporting copy
+              and well below the display, so it reads as the lead-in to the line
+              beneath it rather than as something competing with it. */}
+          <p className="font-mono text-xl text-accent-start lg:text-2xl">
             {SITE.hero.microcopy}
           </p>
 
+          {/* Tight to the greeting and well clear of the paragraph below, because
+              "Ey up, I'm Jonny" and "I'm a Full-Stack Developer" are one sentence
+              while the line under them is a separate thought. The gaps used to be
+              the other way round — a wider gap above than below — which is what
+              left the headline floating between the two. */}
           <h1
             id="hero-heading"
-            className="hero-headline mt-4 text-masthead lg:mt-8"
+            className="hero-headline mt-2 text-masthead lg:mt-3"
           >
             <span className="text-foreground">I’m </span>
             <span className="sr-only">{`${ARTICLES[articleIndex]} ${currentRole}`}</span>
@@ -143,7 +151,9 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg text-muted">{c.subheadline}</p>
+          <p className="mt-8 max-w-xl text-lg text-muted lg:mt-10">
+            {c.subheadline}
+          </p>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-4">

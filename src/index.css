@@ -19,32 +19,29 @@
    * type keeps reflowing at 320px and under 400% zoom (WCAG 1.4.10) instead of
    * jumping. Weights 700/800 are real JetBrains Mono weights — see the font
    * request in index.html; without those loaded, bold renders synthetically. */
-  --text-display: clamp(2.5rem, 6.5vw, 6rem);
-  --text-display--line-height: 0.95;
-  --text-display--letter-spacing: -0.03em;
-  --text-display--font-weight: 800;
-
   --text-title: clamp(1.75rem, 3.5vw, 3rem);
   --text-title--line-height: 1.05;
   --text-title--letter-spacing: -0.02em;
   --text-title--font-weight: 700;
 
-  /* The first screen's statement line: one step above --text-display, for the
-   * hero headline. Deliberately carries NO letter-spacing. .hero-headline owns
+  /* The first screen's statement line — the hero headline. The largest type on
+   * the site, and the only tier above the section titles. Deliberately carries NO
+   * letter-spacing. .hero-headline owns
    * tracking, and the headline derives every split-flap board's cell width from
    * that same variable — so setting tracking in two places would let the rolling
    * letters drift out of rhythm with the static "I'm a".
    *
-   * The ceiling is set by the column, not by taste. The hero's copy column is
-   * 704px, the longest role word is ten characters, and JetBrains Mono advances
-   * 0.57em per character once the headline's tracking is folded in — so the type
-   * has to stop at about 123px or "FULL-STACK" runs past the column's edge. It's a
-   * nowrap unit, so it can't reflow to save itself: it would drag the whole board
-   * onto its own line and leave "I'm a" stranded. Matching the two also gives the
-   * hero a natural end state — from about 1600px up the type and the column are
-   * both at their maximum and exactly in balance, instead of the type outgrowing
-   * its box. */
-  --text-masthead: clamp(3rem, 8.5vw, 7.7rem);
+   * The ceiling used to be forced by the copy column: the longest role word is ten
+   * characters at 0.57em each, so anything past about 123px burst the 704px column
+   * and dragged the board onto its own line. It is now a hierarchy choice well
+   * inside that limit, which frees the headline to be sized against the two lines
+   * that sit with it instead of against the column's edge.
+   *
+   * The hero has three tiers and they are meant to read as one family:
+   * --text-lg (1.125rem) for the supporting sentence, 1.5rem for the greeting —
+   * one 1.333 step above it — and this for the display, which is deliberately off
+   * the scale because that is what a display size is for. */
+  --text-masthead: clamp(2.5rem, 6vw, 5.5rem);
   --text-masthead--line-height: 0.9;
   --text-masthead--font-weight: 800;
 
