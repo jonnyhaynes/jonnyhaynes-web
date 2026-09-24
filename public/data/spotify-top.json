@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-23T22:05:57.963Z",
+  "fetchedAt": "2026-09-24T12:34:41.301Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -29,6 +29,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
+      "name": "Queen",
+      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
+      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
+    },
+    {
       "name": "Mushroomhead",
       "url": "https://open.spotify.com/artist/18absyD7lQaXUDBXnyzU8M",
       "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
@@ -37,11 +42,6 @@
       "name": "Green Day",
       "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
-    },
-    {
-      "name": "Curry Quiche",
-      "url": "https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD",
-      "image": "https://i.scdn.co/image/ab67616d00004851c347579038597c530ba495db"
     }
   ],
   "tracks": [
@@ -76,6 +76,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
+      "title": "Be More Kind",
+      "artist": "Frank Turner",
+      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
+    },
+    {
       "title": "Thunderstruck",
       "artist": "AC/DC",
       "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
@@ -86,12 +92,6 @@
       "artist": "Snollebollekes",
       "url": "https://open.spotify.com/track/5EcPtaqxmPvgLcB5gRPF2j",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485113f93416952d9f9309d71778"
-    },
-    {
-      "title": "Deutschland",
-      "artist": "Rammstein",
-      "url": "https://open.spotify.com/track/2bPGTMB5sFfFYQ2YvSmup0",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485102add2c77fb6999e311a3248"
     }
   ],
   "playlists": [
