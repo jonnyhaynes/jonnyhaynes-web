@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-24T11:28:19.256Z",
+  "fetchedAt": "2026-09-24T21:22:14.571Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,14 +16,37 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-24T08:52:05Z",
+      "pushedAt": "2026-09-24T16:09:52Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#773)",
-        "committedAt": "2026-09-24T08:52:04Z"
+        "message": "Refresh health data [skip ci] (#778)",
+        "committedAt": "2026-09-24T16:09:51Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-24T15:12:51Z",
+      "lastCommit": {
+        "message": "Show route difficulty rating on /routes (#100)",
+        "committedAt": "2026-09-24T14:16:08Z"
+      },
+      "isFork": false,
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "cmux-sentinel",
@@ -69,29 +92,6 @@
       "isFork": false,
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
       "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript",
-        "HTML"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-10T04:45:57Z",
-      "lastCommit": {
-        "message": "Bump astro, @astrojs/vercel and transitive security patches (#98)",
-        "committedAt": "2026-09-02T09:13:55Z"
-      },
-      "isFork": false,
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "app-live",
@@ -164,8 +164,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#773)",
-    "committedAt": "2026-09-24T08:52:04Z"
+    "message": "Refresh health data [skip ci] (#778)",
+    "committedAt": "2026-09-24T16:09:51Z"
   },
   "repoCount": 13,
   "languages": [
@@ -186,6 +186,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1455,
+  "totalContributions": 1461,
   "reviewContributions": 0
 }
