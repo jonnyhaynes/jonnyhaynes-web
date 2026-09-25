@@ -40,8 +40,13 @@ export type WorkProject = {
   awards: Award[];
 };
 
-/** The employer behind the work projects — carried into the card's sr-only label. */
+/** The main employer behind the work projects — carried into the card's sr-only
+ *  label. Not the only one: commercial work predates HMA, so an entry names its
+ *  own company where it differs. */
 export const COMPANY = 'HMA';
+
+/** An earlier employer, for the work that predates HMA. */
+export const LEDGARD_JEPSON = 'Ledgard Jepson';
 
 /**
  * The personal repos shown in the grid. List order is irrelevant — the grid
@@ -118,7 +123,7 @@ export const WORK_PROJECTS: WorkProject[] = [
     name: 'Calm Harm',
     company: COMPANY,
     pitch:
-      'A free Expo and React Native app that helps young people manage the urge to self-harm, using DBT-based activities — comfort, distract, express, release — plus guided breathing.',
+      'A free Expo and React Native app with more than 2 million downloads globally, helping young people manage the urge to self-harm through DBT-based activities — comfort, distract, express, release — plus guided breathing.',
     stack: ['Expo', 'React Native', 'Nativewind', 'Redux'],
     links: [
       {
@@ -144,6 +149,26 @@ export const WORK_PROJECTS: WorkProject[] = [
         url: 'https://www.hma.co.uk/insights/win-hma-uk-digital-experience-awards/',
       },
     ],
+  },
+  {
+    kind: 'work',
+    name: 'Ancon',
+    company: LEDGARD_JEPSON,
+    pitch:
+      'A multi-language Rails site for Ancon’s stainless-steel structural fixings, in hand-written HTML and CSS — plus the Wall Tie Product Selector app for iOS and Android.',
+    stack: ['Rails', 'HTML', 'CSS'],
+    links: [{ kind: 'live', url: 'https://www.ancon.co.uk/' }],
+    awards: [],
+  },
+  {
+    kind: 'work',
+    name: 'Ezz Steel',
+    company: LEDGARD_JEPSON,
+    pitch:
+      'A bilingual Rails site for the Egyptian steel producer, in hand-written HTML and CSS — the entire layout mirrors between the English and Arabic versions.',
+    stack: ['Rails', 'HTML', 'CSS'],
+    links: [{ kind: 'live', url: 'https://www.ezzsteel.com/' }],
+    awards: [],
   },
   {
     kind: 'work',

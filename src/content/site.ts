@@ -12,15 +12,21 @@ export const SITE = {
   // degradation) while it's absent.
   resumeUrl: '/resume.pdf' as string | null,
   hero: {
-    microcopy: '// Ey up. I’m Jonny.',
+    microcopy: 'Ey up! I’m Jonny.',
     // Split-flap role board: two flappers, each cycling its own list
-    // independently. Rendered with the animated-gradient text treatment. The
-    // lead-in is always "I’m a " — every word-1 value is consonant-led, so "a"
-    // is always correct; a vowel-led word here would need an a/an rule.
+    // independently, rendered with the animated-gradient text treatment.
+    //
+    // Word 1 also decides the article, and "AI" is vowel-led — so the lead-in is
+    // no longer a fixed "a": `articles` is a third flapper on the headline's first
+    // line, and Hero picks between the two by the first letter of whatever word 1
+    // is showing. Every pairing of the two lists reads as a role, which is what
+    // lets them cycle independently.
     roleWords: [
-      ['Full-Stack', 'Front-End', 'Software'],
-      ['Developer', 'Engineer'],
+      ['Full-Stack', 'Front-End', 'Software', 'AI'],
+      ['Developer', 'Engineer', 'Enthusiast'],
     ],
+    /** The lead-in's article, flipped to agree with word 1. Index 1 is "an". */
+    articles: ['a', 'an'],
     // Tech focus.
     subheadline:
       'Building React, React Native and TypeScript products — with AI woven through the workflow.',

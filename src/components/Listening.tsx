@@ -124,7 +124,7 @@ function CodingFuel() {
 
 export function Listening() {
   return (
-    <section id="listening" className="scroll-mt-16 py-16">
+    <section id="listening" className="section-screen scroll-mt-16 py-16">
       <SectionHeading section="listening" />
 
       {/* Responsive layout:

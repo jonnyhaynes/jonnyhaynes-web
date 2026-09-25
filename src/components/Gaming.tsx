@@ -303,7 +303,7 @@ export function Gaming() {
   const nextHero = () => setHeroIndex((i) => (i + 1) % games.length);
 
   return (
-    <section id="gaming" className="scroll-mt-16 py-16">
+    <section id="gaming" className="section-screen scroll-mt-16 py-16">
       <SectionHeading section="gaming" />
 
       {/* Desktop: hero TV and the jewel-cases split the row 50/50. The four

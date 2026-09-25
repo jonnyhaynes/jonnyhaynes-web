@@ -31,7 +31,7 @@ export function Home() {
 
       <main id="main">
         {/* Hero and prose sections stay at the narrower reading width; the
-            Projects grid manages its own wider container. */}
+            Projects traverse measures its own bleed out to the browser edges. */}
         <div className="mx-auto max-w-6xl px-6">
           <Hero />
         </div>

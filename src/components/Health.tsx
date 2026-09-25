@@ -408,7 +408,7 @@ export function Health() {
   const c = copy(palette).health;
 
   return (
-    <section id="health" className="scroll-mt-16 py-16">
+    <section id="health" className="section-screen scroll-mt-16 py-16">
       <SectionHeading section="health" />
       <p className="mt-4 max-w-xl text-muted">{c.lead}</p>
 

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router';
 
+import { ScrollProgress } from './components/ScrollProgress';
 import { TopographicBackground } from './components/TopographicBackground';
 import { Home } from './pages/Home';
 import { Privacy } from './pages/Privacy';
@@ -10,6 +11,9 @@ function App() {
       {/* Note: no bg-background here — the base colour lives on <body> in
           index.css so the fixed -z-10 topographic layer shows through instead
           of being painted over by this wrapper's own background. */}
+      {/* Above every route, because it reports the document rather than a page. */}
+      <ScrollProgress />
+
       {/* Behind every route. */}
       <TopographicBackground />
 

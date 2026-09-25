@@ -28,7 +28,7 @@ export function Contact() {
   const c = copy(palette).contact;
 
   return (
-    <section id="contact" className="scroll-mt-16 py-16">
+    <section id="contact" className="section-screen scroll-mt-16 py-16">
       <SectionHeading section="contact" />
 
       <p className="mt-4 max-w-xl text-lg text-muted">{c.prose}</p>

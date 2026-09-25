@@ -7,7 +7,21 @@ import { PortraitFigure } from './PortraitFigure';
 import { GitHubIcon, LinkedInIcon } from './icons';
 
 const [WORDS_1, WORDS_2] = SITE.hero.roleWords;
+const ARTICLES = SITE.hero.articles;
 const HOLD_MS = 5000;
+
+/**
+ * The article has to agree with whatever word 1 is showing, and word 1 cycles —
+ * so "a" and "an" are their own flapper on the headline's first line. Only the
+ * first sound matters: "an AI Enthusiast", "a Software Developer".
+ *
+ * A first-letter test rather than a full a/an rule: every word in the list is
+ * phonetically plain, so it's exact for what the site can actually show. A word
+ * like "hour" or "university" would need the real rule.
+ */
+function articleIndexFor(word: string): number {
+  return /^[aeiou]/i.test(word) ? 1 : 0;
+}
 
 export function Hero() {
   const [i1, setI1] = useState(0);
@@ -80,7 +94,20 @@ export function Hero() {
     };
   }, []);
 
+  // The cue is pinned to the viewport rather than to the hero, so it would sit
+  // over the sections below for the whole page. It clears on the first pixel of
+  // scroll and stays cleared — the moment the reader has started moving, the
+  // invitation has done its job — so it never flickers back at the top.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled((was) => was || window.scrollY > 0);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const currentRole = `${WORDS_1[i1]} ${WORDS_2[i2]}`;
+  const articleIndex = articleIndexFor(WORDS_1[i1]);
 
   return (
     <section ref={sectionRef} className="hero-with-portrait" aria-labelledby="hero-heading">
@@ -88,8 +115,22 @@ export function Hero() {
       <div className="min-w-0">
         <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
         <h1 id="hero-heading" className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
-          <span className="text-foreground">I’m a </span>
-          <span className="sr-only">{currentRole}</span>
+          <span className="text-foreground">I’m </span>
+          <span className="sr-only">{`${ARTICLES[articleIndex]} ${currentRole}`}</span>
+          {/* The article, and the only board not in the gradient: it reads as part
+              of the sentence rather than as the thing being announced, so it keeps
+              the headline's own ink. It sizes to whatever is showing, so "a" hands
+              its spare cell back and the word after it closes up — the line only
+              moves by the one cell "an" actually needs. */}
+          <span className="text-foreground" aria-hidden="true">
+            <FlipWord
+              words={ARTICLES}
+              index={articleIndex}
+              uppercase={false}
+              gradient={false}
+              width="content"
+            />
+          </span>{' '}
           <span className="flip-role" aria-hidden="true">
             <FlipWord words={WORDS_1} index={i1} />
             <FlipWord words={WORDS_2} index={i2} delayMs={150} />
@@ -130,6 +171,20 @@ export function Hero() {
             </a>
           </div>
         </div>
+      </div>
+
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none fixed inset-x-0 bottom-6 mx-auto hidden max-w-6xl px-6 transition-opacity duration-300 lg:block ${
+          scrolled ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        <p className="font-mono text-xs text-muted">
+          scroll
+          <span className="ml-2 inline-block animate-bounce motion-reduce:animate-none">
+            ↓
+          </span>
+        </p>
       </div>
     </section>
   );
