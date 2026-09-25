@@ -426,9 +426,95 @@
   }
 }
 
-.hero-with-portrait {
+/* Gradient wash — the flip-text gradient promoted to a page surface. Two
+ * instances share one definition so they cannot drift apart: the hero band
+ * opens the page (bright at the top, dissolving down over the top bar and the
+ * hero) and the footer band closes it with the same wash mirrored (transparent
+ * above, brightest at the foot of the page). Both use the same drifting tokens
+ * as .animate-gradient, so the surface and the headline move in step, and the
+ * same 20% peak so the topographic field still reads through. */
+.hero-band,
+.foot-band {
+  position: relative;
+}
+
+.hero-band {
   --portrait-x: 0px;
   --portrait-y: 0px;
+  /* Isolated so the wash stays behind the hero's own content; the top bar is a
+   * sibling inside <main> and therefore needs its own z-index (see Home). */
+  isolation: isolate;
+}
+
+/* The footer band is deliberately NOT isolated: its wash reaches up over the
+ * preceding section, and without a stacking context of its own it lands in the
+ * root's negative-z layer — behind every block of page content, rather than
+ * veiling the section it rises past. */
+.foot-band::before,
+.hero-band::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right in oklch,
+    var(--grad-1),
+    var(--grad-2)
+  );
+  animation: gradient-drift 6s linear infinite alternate;
+}
+
+/* Peak opacity 20% where the wash is strongest, easing to nothing at the far
+ * end, so it reads as a tint over the map rather than a flood and the copy keeps
+ * its own contrast. */
+.hero-band::before {
+  /* The negative top clears the top bar, whose measured height Home writes into
+   * --topbar-h (the header's own 5.625rem is the no-JS fallback), so the wash
+   * starts at the top of the page rather than below the bar. */
+  top: calc(-1 * var(--topbar-h, 5.625rem));
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.2) 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.2) 0%, transparent 100%);
+}
+
+.foot-band::before {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* A screen tall, so the page closes the way it opens. */
+  height: 100dvh;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.2) 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.2) 100%);
+}
+
+/* The @property initial-values are heather and can't be redeclared per-palette,
+ * so pin the blue base here (matching .animate-gradient) or the wash flashes
+ * purple under Yorkshire. Same reasoning for the reduced-motion pin below. */
+[data-palette='yorkshire'] .hero-band::before,
+[data-palette='yorkshire'] .foot-band::before {
+  animation-name: gradient-drift-yorkshire;
+  --grad-1: oklch(0.66 0.15 255);
+  --grad-2: oklch(0.62 0.13 230);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-band::before,
+  .foot-band::before {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-palette='yorkshire'] .hero-band::before,
+  [data-palette='yorkshire'] .foot-band::before {
+    --grad-1: oklch(0.66 0.15 255);
+    --grad-2: oklch(0.62 0.13 230);
+  }
+}
+
+.hero-grid {
   display: grid;
   min-height: 70vh;
   align-items: center;
@@ -489,7 +575,7 @@
 }
 
 @media (min-width: 64rem) {
-  .hero-with-portrait {
+  .hero-grid {
     grid-template-columns: minmax(15rem, 0.58fr) minmax(0, 1.42fr);
     gap: clamp(2.5rem, 5vw, 5rem);
     padding-block: 3rem 4rem;
