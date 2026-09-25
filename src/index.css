@@ -2083,6 +2083,7 @@
   width: 100%;
   padding: 1.5rem;
   border: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
+  border-radius: 0.5rem;
   background: color-mix(in oklab, var(--color-background) 72%, transparent);
   backdrop-filter: blur(6px);
   transition: border-color 200ms ease;
