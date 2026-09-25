@@ -131,6 +131,16 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <p
+        aria-hidden="true"
+        className="absolute bottom-6 left-0 hidden font-mono text-xs text-muted lg:block"
+      >
+        scroll
+        <span className="ml-2 inline-block animate-bounce motion-reduce:animate-none">
+          ↓
+        </span>
+      </p>
     </section>
   );
 }

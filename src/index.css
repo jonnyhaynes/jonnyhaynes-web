@@ -428,6 +428,7 @@
 .hero-with-portrait {
   --portrait-x: 0px;
   --portrait-y: 0px;
+  position: relative;
   display: grid;
   min-height: 70vh;
   align-items: center;
