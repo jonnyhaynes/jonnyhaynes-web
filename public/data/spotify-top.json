@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-09-25T12:35:57.858Z",
+  "fetchedAt": "2026-09-25T22:00:45.214Z",
   "timeRange": "short_term",
-  "topGenre": "pop punk",
+  "topGenre": null,
   "artists": [
     {
       "name": "Beastie Boys",
@@ -76,12 +76,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
-      "title": "Be More Kind",
-      "artist": "Frank Turner",
-      "url": "https://open.spotify.com/track/1AN3Ljpu2jB6fgtWAyU3oW",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851dce3805d8e00aac763236018"
-    },
-    {
       "title": "Thunderstruck",
       "artist": "AC/DC",
       "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
@@ -92,6 +86,12 @@
       "artist": "Snollebollekes",
       "url": "https://open.spotify.com/track/5EcPtaqxmPvgLcB5gRPF2j",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485113f93416952d9f9309d71778"
+    },
+    {
+      "title": "Ace of Spades",
+      "artist": "Motörhead",
+      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
     }
   ],
   "playlists": [
