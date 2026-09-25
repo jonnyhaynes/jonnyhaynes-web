@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-09-24T22:02:00.726Z",
+  "fetchedAt": "2026-09-25T12:35:57.858Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "pop punk",
   "artists": [
     {
       "name": "Beastie Boys",
@@ -29,11 +29,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
-      "name": "Queen",
-      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
-    },
-    {
       "name": "Mushroomhead",
       "url": "https://open.spotify.com/artist/18absyD7lQaXUDBXnyzU8M",
       "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
@@ -42,6 +37,11 @@
       "name": "Green Day",
       "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
       "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
+    },
+    {
+      "name": "Faith No More",
+      "url": "https://open.spotify.com/artist/6GbCJZrI318Ybm8mY36Of5",
+      "image": "https://i.scdn.co/image/87848b2d4dc66640f83601753f355a1eceb1b4ee"
     }
   ],
   "tracks": [
