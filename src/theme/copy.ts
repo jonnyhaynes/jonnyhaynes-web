@@ -4,7 +4,8 @@ import type { Palette } from './context';
  * Palette-keyed copy. The `default` set is byte-identical to the hand-authored
  * strings; `yorkshire` swaps in broad Yorkshire dialect when the rose is lit.
  *
- * Headings keep the shared `// lower-case` mono format — only the words change.
+ * Heading labels are plain words — they used to carry a `// ` prefix, but it was
+ * dropped: the section rule above each one already does the "terminal" job.
  * Prose + button labels go full dialect under Yorkshire (article reduction
  * "t'workflow", "wi'", "abaht", "reyt"; lexical swaps "natter", "gi' us a
  * shout"). Data labels, aria-labels on icon-only controls, and legal/privacy
@@ -12,15 +13,15 @@ import type { Palette } from './context';
  */
 const COPY = {
   default: {
-    // Section headings (the `// name` line each section opens with).
+    // Section headings (the line each section opens with).
     headings: {
-      projects: '// Projects',
-      skills: '// Skills',
-      listening: '// On the digital turntable',
-      reading: '// My bookshelf',
-      gaming: '// What I’m playing',
-      health: '// Life beyond the keyboard',
-      contact: '// Get in touch',
+      projects: 'Selected Work',
+      skills: 'Skills',
+      listening: 'On the digital turntable',
+      reading: 'My bookshelf',
+      gaming: 'What I’m playing',
+      health: 'Life beyond the keyboard',
+      contact: 'Get in touch',
     },
     hero: {
       subheadline:
@@ -55,13 +56,13 @@ const COPY = {
     // it makes the word unreadable. "I'm/I've" contractions are reworded away
     // rather than written "Im".
     headings: {
-      projects: '// Summat Ah med',
-      skills: '// What Ah do well',
-      listening: '// Ont digital turntable',
-      reading: '// Mi bookshelf',
-      gaming: '// What Ah play',
-      health: '// Life beyont keyboard',
-      contact: '// Gi us a shout',
+      projects: 'Summat Ah med',
+      skills: 'What Ah do well',
+      listening: 'Ont digital turntable',
+      reading: 'Mi bookshelf',
+      gaming: 'What Ah play',
+      health: 'Life beyont keyboard',
+      contact: 'Gi us a shout',
     },
     hero: {
       subheadline:

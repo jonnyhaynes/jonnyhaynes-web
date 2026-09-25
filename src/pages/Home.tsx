@@ -1,5 +1,4 @@
 import { Contact } from '../components/Contact';
-import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
 import { Gaming } from '../components/Gaming';
 import { Health } from '../components/Health';
@@ -19,10 +18,9 @@ export function Home() {
       </a>
 
       {/* The // Jonny Haynes line is gone — the hero carries the name now.
-          The live "currently building" chip takes its place opposite the
-          toggle. */}
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <CurrentlyBuildingChip />
+          The toggles keep the right edge; the live "currently building" chip has
+          moved into the Projects heading, where the work it describes is. */}
+      <header className="mx-auto flex max-w-6xl items-center justify-end px-6 py-6">
         <div className="flex items-center gap-2">
           <PaletteToggle />
           <ThemeToggle />
@@ -31,7 +29,7 @@ export function Home() {
 
       <main id="main">
         {/* Hero and prose sections stay at the narrower reading width; the
-            Projects grid manages its own wider container. */}
+            Projects traverse measures its own bleed out to the browser edges. */}
         <div className="mx-auto max-w-6xl px-6">
           <Hero />
         </div>

@@ -15,6 +15,15 @@
   --font-mono:
     'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
 
+  /* Display type scale. Fluid clamp() rather than stepped sizes so the display
+   * type keeps reflowing at 320px and under 400% zoom (WCAG 1.4.10) instead of
+   * jumping. Weight 700 is a real JetBrains Mono weight — see the font request in
+   * index.html; without it loaded, bold renders synthetically. */
+  --text-title: clamp(1.75rem, 3.5vw, 3rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 700;
+
   /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather.
    * accent-start lightened from #9e67b5 to clear WCAG AA (4.5:1) both as text
    * on the background and as the "View My Work" button colour (dark text). */
@@ -2017,6 +2026,134 @@
   }
   .watch-screen {
     transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Projects: the work as a horizontal traverse.
+ *
+ * The section is made taller than the viewport and its contents stick, while the
+ * track is translated sideways by scroll progress. The translation is expressed as
+ * `progress x (window - track)` width, which needs no measurement: 100cqw is the
+ * clipping window and 100% is the track's own width, so the track lands flush at
+ * both ends however many cards there are.
+ *
+ * Above the section, `--strip-h` is the height of the map strip the sticky top
+ * clears on feature/map-interface. There is no strip on this branch, so it stands
+ * in at 0 — the sticky top sits against the viewport and the section runs the full
+ * viewport height.
+ * ---------------------------------------------------------------- */
+:root {
+  --strip-h: 0rem;
+}
+
+.projects-window {
+  margin-top: 2.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Pulled out to the browser edges by the gutters Projects measures. The travel
+     distance is what the window is wide, so this is what makes the cards cross the
+     viewport rather than the content column. */
+  margin-inline: calc(var(--bleed-left, 0px) * -1) calc(var(--bleed-right, 0px) * -1);
+}
+
+.projects-window::-webkit-scrollbar {
+  display: none;
+}
+
+.projects-track {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  margin: 0;
+  /* Padded by the same gutters the window was pulled out by, so the first card
+     still aligns with the section heading and the last stops at the content's
+     right edge. */
+  padding: 0 var(--bleed-right, 0px) 0 var(--bleed-left, 0px);
+  list-style: none;
+  /* As wide as the row of cards, not as the window. This is load-bearing for the
+     traverse below: the translation is expressed as (100cqw - 100%), and without
+     this the track's own width would equal the window's — the cards would overflow
+     it — so the two terms would cancel and nothing would move. */
+  width: max-content;
+}
+
+.project-card {
+  display: flex;
+  flex: 0 0 auto;
+  /* One card at a time on a phone, with the next peeking to advertise the swipe. */
+  width: min(78vw, 22rem);
+}
+
+.project-card > article {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-muted) 22%, transparent);
+  background: color-mix(in oklab, var(--color-background) 72%, transparent);
+  backdrop-filter: blur(6px);
+  transition: border-color 200ms ease;
+}
+
+.project-card > article:hover {
+  border-color: color-mix(in oklab, var(--color-accent-start) 50%, transparent);
+}
+
+/* Every width, not only from lg: the work traverses sideways on a phone too. Reduced
+   motion is still the line — a large surface moving with the scroll is exactly what
+   that setting asks us not to do. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Tall enough to give the traverse somewhere to happen. Sticky travel is the
+     difference between this and the sticky child's own height. */
+  /* A fallback, for the server render and the frame before the effect measures.
+   * The real height is set from the track's measured travel — see `pace` in
+   * Projects — because it depends on the card count and this number cannot know it. */
+  .projects-scroller {
+    height: calc(300dvh - var(--strip-h));
+  }
+
+  .projects-sticky {
+    position: sticky;
+    top: var(--strip-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100dvh - var(--strip-h));
+  }
+
+  .projects-window {
+    /* Clipped, and a container so the track can be sized against it. */
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .projects-track {
+    transform: translateX(calc(var(--projects-p, 0) * (100cqw - 100%)));
+    will-change: transform;
+  }
+}
+
+/* The one fallback left: reduced motion drops the pinning and hands the track back as an
+   ordinary horizontal scroller, because scroll-driven movement of a large surface is what
+   that setting is asking us to avoid. */
+@media (prefers-reduced-motion: reduce) {
+  .projects-scroller {
+    height: auto;
+  }
+
+  .projects-sticky {
+    position: static;
+    height: auto;
+  }
+
+  .projects-window {
+    overflow-x: auto;
+  }
+
+  .projects-track {
+    transform: none;
+    will-change: auto;
   }
 }
 
