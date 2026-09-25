@@ -114,7 +114,7 @@ export function Hero() {
       <div className="hero-grid mx-auto max-w-6xl px-6">
         <PortraitFigure />
         <div className="min-w-0">
-          <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
+          <p className="font-mono on-wash">{SITE.hero.microcopy}</p>
           <h1 id="hero-heading" className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
             <span className="text-foreground">I’m </span>
             <span className="sr-only">{`${ARTICLES[articleIndex]} ${currentRole}`}</span>

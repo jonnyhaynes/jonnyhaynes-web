@@ -42,7 +42,7 @@ const COPY = {
       // The sentence wraps around the inline rose + links, so it's split into the
       // lead ("Forged in Yorkshire") and the "using" connective before the links.
       using: 'using',
-      andAi: '& AI',
+      andAi: 'and AI',
     },
     chip: {
       building: 'building',

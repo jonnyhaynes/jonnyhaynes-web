@@ -14,7 +14,7 @@ export function Footer() {
 
   return (
     <footer className="foot-band">
-      <div className="mx-auto max-w-4xl px-6 py-10 text-sm text-muted">
+      <div className="mx-auto max-w-4xl px-6 py-10 text-sm on-wash-muted">
         <p>
           Forged in Yorkshire
           <YorkshireRose className="mx-1 inline-block size-4 -translate-y-px align-middle" />
@@ -23,8 +23,8 @@ export function Footer() {
             React
           </a>
           ,{' '}
-          <a href="https://vite.dev/" className={LINK}>
-            Vite
+          <a href="https://tailwindcss.com/" className={LINK}>
+            Tailwind
           </a>{' '}
           {c.andAi}. &copy; 1985&ndash;{year}.{' '}
           <Link to="/privacy" className={LINK}>

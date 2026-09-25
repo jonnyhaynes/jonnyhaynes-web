@@ -179,7 +179,7 @@ function WeatherIcon({ code }: { code: number | null | undefined }) {
 /* ── Small inline glyphs ─────────────────────────────────────────────────── */
 
 const StepsIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <ellipse cx="7" cy="9" rx="2.4" ry="3.4" />
     <path d="M4.7 13.5c0 1.6.9 2.6 2.3 2.6s2.3-1 2.3-2.6" />
     <ellipse cx="16.5" cy="14" rx="2.4" ry="3.4" />
@@ -188,7 +188,7 @@ const StepsIcon = (
 );
 
 const FlameIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 3s5 4 5 9a5 5 0 0 1-10 0c0-1.6.8-2.9 1.6-3.8C9.2 9 9 10.4 10 11c0-2.3.8-5.5 2-8z" />
   </svg>
 );
