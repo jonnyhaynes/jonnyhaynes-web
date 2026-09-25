@@ -15,7 +15,7 @@ const COPY = {
     // Section headings (the line each section opens with).
     headings: {
       projects: 'Selected Work',
-      skills: 'Skills',
+      career: 'Career & credentials',
       listening: 'On the digital turntable',
       reading: 'My bookshelf',
       gaming: 'What I’m playing',
@@ -56,7 +56,7 @@ const COPY = {
     // rather than written "Im".
     headings: {
       projects: 'Summat Ah med',
-      skills: 'What Ah do well',
+      career: 'Mi work an learnin',
       listening: 'Ont digital turntable',
       reading: 'Mi bookshelf',
       gaming: 'What Ah play',
