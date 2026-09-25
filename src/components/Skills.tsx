@@ -7,7 +7,7 @@ export function Skills() {
   const data = useGitHubData();
 
   return (
-    <section id="skills" className="scroll-mt-16 py-16">
+    <section id="skills" className="section-screen scroll-mt-16 py-16">
       <SectionHeading section="skills" />
 
       {/* Data-backed language breakdown, above the hand-picked skills. */}

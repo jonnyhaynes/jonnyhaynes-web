@@ -9,8 +9,10 @@ import { SectionHeading } from './SectionHeading';
  * Desktop: the most-recent book stands face-out in the centre as a large square
  * cover (the "display copy"); the other six stand on their ends as tall vertical
  * spines — two on the left leaning right into the cover, four on the right
- * leaning left into it. Title + author run up each spine (rotated 90°) and every
- * item links to its Spotify page.
+ * leaning left into it. All seven show at every width the shelf renders: the
+ * spines are book-proportioned, which gives each one the height to carry a full
+ * title at a legible size. Title + author run up each spine (rotated 90°) and
+ * every item links to its Spotify page.
  *
  * Mobile: falls back to a simple stacked flow — the cover on top, horizontal
  * spine bars below — since the leaning shelf illusion needs the horizontal room.
@@ -27,18 +29,31 @@ export function Reading() {
   if (!books.length) return null;
 
   const [feature, ...rest] = books;
-  // Split the remaining six: two lean against the left of the cover, four the
-  // right. If fewer than seven came back, the left side takes up to two and the
-  // rest go right, so short lists still look intentional.
+  // Split the rest: two lean against the left of the cover, four the right. If
+  // fewer than seven came back, the left side takes up to two and the rest go
+  // right, so short lists still look intentional.
   const left = rest.slice(0, 2);
   const right = rest.slice(2);
 
+  // How far the innermost book on each side reaches across, as a fraction of the
+  // cover's height: its height × sin(lean), and its height is the cover × its
+  // fraction. The cover's side margins are set to this, so the books come to rest
+  // against it. Read from the books actually present, so a short list is exact
+  // rather than padded.
+  //
+  // Then pulled in a little further: sized to the reach exactly, the top corner
+  // stops just short of the cover, and a book that leans on something leans *onto*
+  // it. The cover paints above the spines, so the overlap reads as the corner
+  // resting against its face rather than passing in front of it.
+  const fracAt = (index: number) => SPINE_FRACTIONS[index % SPINE_FRACTIONS.length];
+  const leanOnLeft = left.length ? fracAt(left.length - 1) * SIN_LEAN * CONTACT : 0;
+  const leanOnRight = right.length ? fracAt(left.length) * SIN_LEAN * CONTACT : 0;
+
   return (
-    <section id="reading" className="scroll-mt-16 py-16">
-      {/* Title sits in the section's own wrapper, which is `max-w-4xl px-6` —
-          identical to the "What I'm playing" section — so the title and shelf
-          line match its width and left edge at every screen size with no extra
-          classes. Only the books row (below) breaks out wider. */}
+    <section id="reading" className="section-screen scroll-mt-16 py-16">
+      {/* Title and shelf line both sit in the section's own box, which now fills
+          the shell's single content container — so they share a width and left
+          edge with every other section at every screen size, with no classes. */}
       <SectionHeading section="reading" />
 
       {/* Mobile only: stacked cover + horizontal bars. The leaning shelf takes
@@ -55,37 +70,53 @@ export function Reading() {
       </div>
 
       {/* Desktop: the leaning bookshelf — one row of spines standing on their
-          ends, with the face-out cover in the centre. The section wrapper is
-          max-w-4xl (matching "What I'm playing"), but the books want more room,
-          so this row breaks out symmetrically to the wider max-w-6xl content
-          width via a centered fixed max-width and negative side margins. The
-          title and shelf line stay at the wrapper's 4xl width. */}
+          ends, with the face-out cover in the centre. The section keeps the
+          narrower reading width, so the row breaks out symmetrically to the wider
+          max-w-6xl measure — the shelf is what wants the horizontal room. */}
       <ul
-        className="bookshelf relative left-1/2 mt-10 hidden w-[min(72rem,100vw-3rem)] max-w-none -translate-x-1/2 items-end justify-center gap-3 md:flex"
+        className="bookshelf relative left-1/2 mt-10 hidden w-[min(72rem,100vw-3rem)] max-w-none -translate-x-1/2 items-end justify-center md:flex"
         role="list"
+        // How many books share the row, so the spine type can work out the width
+        // it has as well as the height it has; and how far the books lean on the
+        // cover, which is what the cover's margins and the row's spacing are built
+        // from. Custom properties cascade, so setting them here reaches every
+        // spine and the cover alike.
+        style={
+          {
+            '--spines': String(books.length - 1),
+            '--lean-left': String(leanOnLeft),
+            '--lean-right': String(leanOnRight),
+          } as CSSProperties
+        }
       >
-        {/* Left pair — lean right, into the cover. Outermost (i=0) leans most.
-            `pos` indexes into the size table so no two neighbours match. */}
+        {/* Left pair — lean right, onto the cover. Both at the same angle: a shared
+            lean means they lean as one unit and can sit touching, where a fan of
+            angles splays their tops apart and forces the gap open. */}
         {left.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
-            lean={left.length === 2 ? [8, 4][i] : 5}
+            side="left"
+            lean={LEAN_DEG}
             heightFrac={SPINE_FRACTIONS[i % SPINE_FRACTIONS.length]}
           />
         ))}
 
-        {/* Centre display copy — upright, face-out, up to a third of the row. */}
-        <li className="mx-3 w-1/3 shrink-0 self-end">
+        {/* Centre display copy — upright, face-out, up to a third of the row. Its
+            margins are the lean-on distance, set in CSS, so the books either side
+            rest against it. */}
+        <li className="book-cover w-1/3 shrink-0 self-end">
           <FeatureCover book={feature} className="w-full" />
         </li>
 
-        {/* Right four — lean left, into the cover. Grows outward: -4…-10deg. */}
+        {/* Right four — lean left, onto the cover, all at the same angle so they
+            stand as one row rather than fanning apart. */}
         {right.map((b, i) => (
           <SpineBar
             key={b.title}
             book={b}
-            lean={-(4 + i * 2)}
+            side="right"
+            lean={-LEAN_DEG}
             heightFrac={
               SPINE_FRACTIONS[(i + left.length) % SPINE_FRACTIONS.length]
             }
@@ -93,10 +124,10 @@ export function Reading() {
         ))}
       </ul>
 
-      {/* The shelf line spans the section wrapper's content width (max-w-4xl,
-          matching "What I'm playing") — narrower than the broken-out books row
-          above it. No extra max-width/padding of its own, so it can't drift from
-          the title. Shown with the leaning shelf (`md`) only. */}
+      {/* The shelf line spans the section's content width — the same width as
+          the books row above it and as the title. No max-width/padding of its
+          own, so it can't drift from either. Shown with the leaning shelf (`md`)
+          only. */}
       <div className="book-shelf-line hidden md:block" />
     </section>
   );
@@ -122,7 +153,7 @@ function FeatureCover({
         <img
           src={book.cover}
           alt=""
-          className="aspect-square w-full rounded-md object-cover transition-transform group-hover:scale-[1.01]"
+          className="aspect-square w-full rounded-md object-cover"
         />
       ) : (
         <span className="flex aspect-square w-full items-center justify-center rounded-md bg-muted/20 font-mono text-4xl text-muted">
@@ -143,15 +174,45 @@ const FALLBACK_SPINE = {
 };
 
 /**
- * Spine heights as a fraction of the centre cover's height — each book stands
- * roughly four-fifths to nearly the full height of the display copy, varied so
- * the shelf reads as a real mix of book sizes rather than six identical bars.
- * Width isn't fixed: each
- * spine grows as thick as its title needs to wrap into (see .book-spine in
- * index.css), so a long title makes a fatter book. Assigned by shelf position
- * (not book identity) so the shape stays stable across data refreshes.
+ * Spine heights as a fraction of the centre cover's height, read in shelf order:
+ * the left pair takes the first two, the right four the last four. Kept below 1 —
+ * the cover is square and stands in for a book's width, so a spine at or above the
+ * cover's own height reads over-large beside it.
+ *
+ * Deliberately mixed rather than ordered. Every book leans at the same angle, and
+ * two books at the same angle keep their faces parallel — so the distance between
+ * them is the gap between their slots, the same all the way up, and they touch
+ * whatever their heights. Heights are free to be a mix of sizes, as on a real
+ * shelf, with the tops stepping up and down.
  */
 const SPINE_FRACTIONS = [0.92, 0.8, 0.98, 0.85, 0.94, 0.78];
+
+/** The lean shared by every spine, in degrees. One per group — see the shelf row. */
+const LEAN_DEG = 6;
+
+const SIN_LEAN = Math.sin((LEAN_DEG * Math.PI) / 180);
+
+/**
+ * How much of the lean-on distance the cover keeps clear, the rest being overlap
+ * where the book's top corner rests against the cover's face. Sized to the reach
+ * exactly the books stop just short of it, which reads as a shelf that happens to
+ * have space in it rather than one where the books are leaning on each other.
+ */
+const CONTACT = 0.85;
+
+/**
+ * The most characters a spine can carry and still hold the minimum type size.
+ * The tightest shelf is seven books at `lg`: ~47px wide by ~198px of usable
+ * height, two columns, which is 58 characters at the 0.6875rem floor — 56 here,
+ * leaving a margin for rounding. Still a title and its author for anything short
+ * of a long subtitle.
+ *
+ * Derived from the geometry rather than chosen, so changing the spine fractions
+ * or the type floor means re-deriving this. At 60 characters it overflows the
+ * slot at `lg` by a hair, which is how this number was found. Trimming past it is
+ * a safety net, not the expected path.
+ */
+const SPINE_CHARS = 56;
 
 /**
  * A book "spine" linking to Spotify: a coloured strip in the cover's baked
@@ -166,14 +227,34 @@ function SpineBar({
   book,
   lean,
   heightFrac,
+  side,
   horizontal = false,
 }: {
   book: SpotifyAudiobook;
   lean?: number;
   heightFrac?: number;
+  /** Which half of the shelf this sits on. Hover straightens a whole side at once. */
+  side?: 'left' | 'right';
   horizontal?: boolean;
 }) {
   const spine = book.spine ?? FALLBACK_SPINE;
+  // The spine's text, in the longest form that fits the tightest shelf at the
+  // minimum type size: title and author if they fit, else the title alone, else
+  // the title trimmed.
+  //
+  // The tightest shelf is seven books at `lg` — ~47px per spine, ~142px of usable
+  // height — where 43 characters is what two columns hold at the 0.6875rem
+  // minimum. Keeping every spine to that length is what lets the type hold its
+  // minimum; the two numbers are derived from each other.
+  const withAuthor = `${book.title} · ${book.authors}`;
+  const spineText =
+    book.authors.length > 0 && withAuthor.length <= SPINE_CHARS
+      ? withAuthor
+      : book.title.length <= SPINE_CHARS
+        ? book.title
+        : `${book.title.slice(0, SPINE_CHARS - 1).trimEnd()}…`;
+  const showsAuthor = spineText === withAuthor;
+  const trimmed = !showsAuthor && spineText !== book.title;
 
   if (horizontal) {
     return (
@@ -198,7 +279,7 @@ function SpineBar({
   }
 
   return (
-    <li>
+    <li data-side={side}>
       <a
         href={book.url ?? '#'}
         target="_blank"
@@ -209,6 +290,9 @@ function SpineBar({
           {
             background: spine.bg,
             color: spine.ink,
+            // JetBrains Mono is monospace, so CSS can size the type to fit the
+            // spine exactly if it knows how many characters it has to hold.
+            '--chars': `${spineText.length}`,
             ...(lean != null
               ? {
                   '--lean': `${lean}deg`,
@@ -224,13 +308,25 @@ function SpineBar({
           } as CSSProperties
         }
       >
-        <span className="book-spine-text flex items-baseline gap-1.5">
-          <span className="text-sm font-medium leading-tight tracking-tight">
-            {book.title}
-          </span>
-          <span className="shrink-0 text-xs leading-tight">
-            {book.authors}
-          </span>
+        {/* One text run, not a flex row: the spaces around the separator are
+            literal, so the length really is characters × advance. The separator
+            keeps the title and author from reading as one string, and it's
+            aria-hidden because the link's label already says "by" — including the
+            full title when this has had to trim it. */}
+        <span className="book-spine-text">
+          {trimmed ? (
+            <span className="font-medium">{spineText}</span>
+          ) : (
+            <>
+              <span className="font-medium">{book.title}</span>
+              {showsAuthor && (
+                <>
+                  <span aria-hidden="true">{' · '}</span>
+                  <span>{book.authors}</span>
+                </>
+              )}
+            </>
+          )}
         </span>
       </a>
     </li>

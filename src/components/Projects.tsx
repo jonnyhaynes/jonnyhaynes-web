@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { useProjects } from '../data/projects';
+import { useMediaQuery } from '../lib/useMediaQuery';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { useScrollProgress } from '../lib/useScrollProgress';
 import { ProjectCard } from './ProjectCard';
@@ -38,14 +39,16 @@ export function Projects() {
   const trackRef = useRef<HTMLUListElement>(null);
 
   /**
-   * The same condition the stylesheet gates the pin on, to the letter: motion, and nothing
-   * about width — the traverse runs on a phone too now.
+   * The same condition the stylesheet gates the pin on, to the letter: from lg, and not
+   * under reduced motion. Below lg the window is an ordinary horizontal scroller, so a
+   * phone scrolls the page normally and the cards move only when they're swiped.
    *
-   * It still cannot be a bare guess: the height the effect writes is *inline*, so it beats
-   * the stylesheet's own `height: auto` in the reduced-motion fallback, and the section has
-   * to remove it there rather than leave it behind.
+   * It cannot be a bare guess: the height the effect writes is *inline*, so it would beat
+   * the stylesheet's own `height: auto` in the fallback, and the section has to remove it
+   * there rather than leave it behind.
    */
-  const pinned = !reduced;
+  const desktop = useMediaQuery('(min-width: 64rem)');
+  const pinned = desktop && !reduced;
   useScrollProgress(scrollerRef, '--projects-p', pinned);
 
   /**

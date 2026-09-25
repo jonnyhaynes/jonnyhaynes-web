@@ -359,19 +359,20 @@
   display: inline-flex;
   vertical-align: baseline;
   white-space: nowrap;
-}
-
-/* Wrapper around both flip words. The two words stack: word 1 flows inline
- * after "I'm a"; word 2 is forced onto its own line, flush to the h1's left
- * margin (see below). --slot-w is one cell's width, shared by the slots. */
-.flip-role {
-  display: inline;
-  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em),
-   * so the flip letters sit at the same rhythm as the static "I'm a". */
+  /* One cell width: 1ch folded with the headline's tracking-tight (-0.025em), so
+   * the flip letters sit at the same rhythm as the static "I'm". Set on the board
+   * itself rather than on .flip-role, because the article board that opens the
+   * line is a sibling of .flip-role, not a child of it. */
   --slot-w: calc(1ch - 0.025em);
 }
 
-/* Word 2 drops to a new line, aligned to the left margin under "I'm a" (not
+/* Wrapper around the two role boards. Word 1 flows inline after the article;
+ * word 2 is forced onto its own line, flush to the h1's left margin (see below). */
+.flip-role {
+  display: inline;
+}
+
+/* Word 2 drops to a new line, aligned to the left margin under the article (not
  * indented under word 1). A block break with a negative margin isn't needed —
  * as a block it starts at the h1's content edge, which is exactly the left
  * margin. */
@@ -428,7 +429,6 @@
 .hero-with-portrait {
   --portrait-x: 0px;
   --portrait-y: 0px;
-  position: relative;
   display: grid;
   min-height: 70vh;
   align-items: center;
@@ -1142,6 +1142,16 @@
  * — below md the component falls back to a plain vertical flow. */
 .bookshelf {
   align-items: flex-end;
+  /* As close to none as a gap can be. Every book leans at the same angle, so
+     neighbouring faces stay parallel and the slot gap *is* the visible gap along
+     their whole length — a hair of it is the difference between touching and
+     looking like books that happen to be near each other. Kept just off zero so
+     the sub-pixel rounding can't tip two books into overlapping. */
+  --gap: calc(var(--cover-h, 15rem) * 0.002);
+  column-gap: var(--gap);
+  /* How much the face-out cover grows when picked out. The leaning books tilt as
+     it does — see the hover below. */
+  --cover-grow: 0.04;
   /* Container so spine heights can scale off the row width (and thus off the
      centre cover, which is 1/3 of the row). */
   container-type: inline-size;
@@ -1157,10 +1167,62 @@
   border-top: 10px solid var(--color-shelf);
 }
 
+/* The face-out cover. Its side margins are the lean-on distance less the overlap
+ * the leaning books' top corners take up, so they come to rest against it rather
+ * than stopping short of it or lying across it. */
+.book-cover {
+  margin-inline: calc(var(--cover-h, 15rem) * var(--lean-left, 0))
+    calc(var(--cover-h, 15rem) * var(--lean-right, 0));
+  /* Painted above the spines, so a corner that overlaps it reads as resting
+   * against its face. Without this the right-hand books pass in front of it,
+   * which is the one thing a leaning book never does. */
+  z-index: 1;
+}
+
+/* Picking the display copy out tilts the books by the same amount hovering one of
+ * them does: a rotation about the base, so the base stays on the shelf and the top
+ * leans out. Nothing translates — the anchor is the point of the gesture.
+ *
+ * The cover is the innermost thing on the shelf, so every book is outward of it and
+ * all of them move. They come off it as they lean out, which is the same thing that
+ * happens to a book's neighbour when you hover that book.
+ *
+ * Keeping them *on* the cover at the same time would mean moving their bases, which
+ * is the movement this is undoing. It also couldn't be exact: the two sides lean
+ * back by different amounts (their innermost books differ in height), so no single
+ * growth of the cover would close both gaps. */
+.book-feature {
+  transform-origin: bottom center;
+  transition: transform 200ms ease;
+}
+
+.book-feature:hover,
+.book-feature:focus-visible {
+  transform: scale(calc(1 + var(--cover-grow, 0.04)));
+}
+
+.bookshelf [data-side] {
+  transition: transform 200ms ease;
+}
+
+.bookshelf:has(.book-feature:hover) .book-spine,
+.bookshelf:has(.book-feature:focus-visible) .book-spine {
+  transform: rotate(calc(var(--lean, 0deg) * 0.4)) translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-feature,
+  .bookshelf [data-side] {
+    transition: none;
+  }
+}
+
 /* A vertical spine standing on its end. `--lean` (deg) and `--spine-frac` are
  * set per-book inline so the shelf looks like a real mix of book sizes rather
- * than six identical bars. Height is `--spine-frac` (0–1) of the centre cover's
- * height, landing each spine around half to two-thirds of the display copy. The
+ * than six identical bars. Height is `--spine-frac` of the centre cover's height,
+ * and sits above 1: the cover is square and stands for a book's width, and books
+ * are taller than they are wide. That height is load-bearing rather than
+ * decorative — it's what lets a spine carry a full title at a legible size. The
  * title runs up the spine and wraps into extra columns when long, so the spine
  * widens (never truncates) to hold the full title — a thick book vs a thin one,
  * like a real shelf. transform-origin bottom so it pivots off the shelf. */
@@ -1168,7 +1230,8 @@
   height: calc(var(--cover-h, 15rem) * var(--spine-frac, 0.6));
   /* Never collapse below a readable minimum on narrow desktop widths. */
   min-height: 11rem;
-  /* Comfortable minimum thickness; grows wider as the title wraps. */
+  /* Comfortable minimum thickness; grows wider as the title wraps. Capped, so a
+     very long title makes a thicker book rather than an absurdly broad one. */
   min-width: 2.75rem;
   max-width: 5.5rem;
   /* Pivot on the bottom corner that rests on the shelf (bottom-left for a
@@ -1188,21 +1251,63 @@
     0 4px 6px -3px var(--book-shadow-cast);
 }
 
-/* Title + author rotated to read bottom-to-top up the spine. Wraps into extra
+/* Title + author rotated to read bottom-to-top up the spine, wrapping into extra
  * columns (spreading across the spine's thickness) when the text is longer than
- * the spine is tall, so the full title always shows. */
+ * the spine is tall, so the full title always shows.
+ *
+ * The type is sized to fit rather than left at a fixed size and allowed to spill.
+ * JetBrains Mono is monospace, so a string of N characters occupies exactly
+ * N × 0.6em at any size — which means the length is known without measuring the
+ * DOM, and the size that fits is arithmetic. `--chars` (title + separator +
+ * author, spaces included) and `--spines` (how many books share the row) come
+ * from the component.
+ *
+ * Two constraints, both applied: the text must fit two columns' worth of the
+ * spine's height, and two columns at that size must fit the width the row can
+ * spare. Taking the smaller of the two means the text always lands in two columns
+ * or fewer, inside both dimensions.
+ *
+ * Two is the budget, not a rule about lines: it's what the narrowest slot holds at
+ * the floor — a third column would need ~15px more than lg has. So a long title
+ * gets smaller type rather than a third line, and past the limit below it gets
+ * trimmed. At wider widths the type reaches its 14px ceiling first, so the
+ * two-column budget never binds there.
+ *
+ * The 0.6875rem floor is what makes the spines legible — some were reaching 4–6px
+ * without it. It also means the fit is no longer unconditional, so what each spine
+ * carries is chosen to hold the floor: title and author up to 56 characters, else
+ * the title, else the title trimmed. Six spines at `lg` share ~47px each, so the
+ * height each one is given is what buys that capacity — the floor, the spine
+ * fractions and the character limit are derived from each other. */
 .book-spine-text {
+  --avail: calc(
+    max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
+  );
+  /* Room one spine can take: the row, less the face-out cover, less everything
+     standing between them — the gaps *and* the cover's two lean-on margins.
+     All of it is expressed as fractions of the cover, so the estimate scales with
+     the row exactly as the real layout does. */
+  --spacing: calc(
+    (var(--spines, 6) - 1) * var(--gap, 1rem) +
+      (var(--lean-left, 0) + var(--lean-right, 0)) * var(--cover-h, 15rem)
+  );
+  --spine-w: calc(
+    (100cqw - var(--cover-h, 15rem) * 1 - var(--spacing)) / var(--spines, 6)
+  );
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   /* Bounded to the spine height so the block wraps instead of overflowing the
-     bottom edge; clearance matches .book-spine's py-5 (1.25rem each end). Uses
-     the same fraction-of-cover height as .book-spine, floored at its min. */
-  max-height: calc(
-    max(var(--cover-h, 15rem) * var(--spine-frac, 0.6), 11rem) - 2.5rem
+     bottom edge; clearance matches .book-spine's py-5 (1.25rem each end). */
+  max-height: var(--avail);
+  text-align: center;
+  font-size: max(
+    0.6875rem,
+    min(
+      0.875rem,
+      calc(var(--avail) * 2 / (var(--chars, 20) * 0.6)),
+      calc((var(--spine-w) - 1rem) / 2 / 1.4)
+    )
   );
-  flex-wrap: wrap;
-  align-content: center;
-  gap: 0.25rem 0.5rem;
 }
 
 .book-spine:hover {
@@ -1214,6 +1319,25 @@
     inset -2px 0 3px var(--book-shadow-page),
     0 10px 15px -3px var(--book-shadow-lift),
     0 4px 6px -4px var(--book-shadow-lift-sm);
+}
+
+/* Hovering a book stands up every book further from the cover on the same side,
+ * not just the one under the pointer.
+ *
+ * They all lean the same way, so straightening one on its own swings its top out
+ * from under the next book's lean and the two collide: measured, the intrusion
+ * goes from 4px to 12px against a 12px gap. Standing the whole side up together
+ * keeps the spacing coherent and the overshoot comfortably inside the gap.
+ *
+ * Only the transform is shared — the lift and the straighten, so the side moves as
+ * one. The glow and the cast shadow stay with the book actually being pointed at.
+ *
+ * The two sides need different selectors because the DOM runs outward → inward on
+ * the left and inward → outward on the right. `:has` isn't in every browser yet;
+ * where it's missing the left side simply doesn't cascade, which is harmless. */
+.bookshelf [data-side='right']:hover ~ [data-side='right'] .book-spine,
+.bookshelf [data-side='left']:has(~ [data-side='left']:hover) .book-spine {
+  transform: rotate(calc(var(--lean, 0deg) * 0.4)) translateY(-4px);
 }
 
 /* The upright centre display copy — a touch of lift to sit "in front". */
@@ -2021,6 +2145,22 @@
   }
 }
 
+/* Each content section fills the viewport and centres itself — the vertical
+ * rhythm Projects already sets — but only from lg, where the site turns into the
+ * desktop layout. Below that the sections keep their natural height and scroll
+ * like an ordinary page: stacked phone content is taller than a screen anyway, so
+ * stretching every section to one screen only pushed them apart. `min-height`
+ * rather than a fixed height, so a section taller than the screen (Health's watch,
+ * Gaming's cabinet) grows instead of being crushed into it. */
+@media (min-width: 64rem) {
+  .section-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100dvh;
+  }
+}
+
 /* ---------------------------------------------------------------- *
  * Projects: the work as a horizontal traverse.
  *
@@ -2093,10 +2233,12 @@
   border-color: color-mix(in oklab, var(--color-accent-start) 50%, transparent);
 }
 
-/* Every width, not only from lg: the work traverses sideways on a phone too. Reduced
-   motion is still the line — a large surface moving with the scroll is exactly what
-   that setting asks us not to do. */
-@media (prefers-reduced-motion: no-preference) {
+/* The traverse only runs where there is room and the reader isn't asking for
+   stillness: from lg, and never under prefers-reduced-motion. Below lg, and for
+   reduced motion, the base rules leave the window as an ordinary horizontal
+   scroller — a phone swipes the cards rather than having the page drive them — so
+   the section keeps its natural height and the page scrolls normally. */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
   /* Tall enough to give the traverse somewhere to happen. Sticky travel is the
      difference between this and the sticky child's own height. */
   /* A fallback, for the server render and the frame before the effect measures.
@@ -2127,26 +2269,29 @@
   }
 }
 
-/* The one fallback left: reduced motion drops the pinning and hands the track back as an
-   ordinary horizontal scroller, because scroll-driven movement of a large surface is what
-   that setting is asking us to avoid. */
-@media (prefers-reduced-motion: reduce) {
-  .projects-scroller {
-    height: auto;
-  }
+/* ---------------------------------------------------------------- *
+ * Scroll progress — a hairline across the top of the window.
+ *
+ * Fixed, so it rides above every route and every sticky bar; full width, because
+ * it reports the document's progress rather than any one section's; and inked in
+ * the theme's accent, so it is heather purple by default and blue under
+ * Yorkshire. The fill is scaled from the left rather than resized, so the frame
+ * doesn't trigger layout, and the value comes from --page-progress (see
+ * useDocumentProgress) so nothing re-renders as it moves. */
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 50;
+  height: 2px;
+  pointer-events: none;
+}
 
-  .projects-sticky {
-    position: static;
-    height: auto;
-  }
-
-  .projects-window {
-    overflow-x: auto;
-  }
-
-  .projects-track {
-    transform: none;
-    will-change: auto;
-  }
+.scroll-progress > span {
+  display: block;
+  height: 100%;
+  transform: scaleX(var(--page-progress, 0));
+  transform-origin: left center;
+  background: var(--color-accent-start);
 }
 

@@ -51,3 +51,49 @@ export function useScrollProgress(
     };
   }, [ref, property, enabled]);
 }
+
+/**
+ * Writes the *document's* scroll progress into a CSS custom property: 0 at the
+ * top of the page, 1 at the bottom.
+ *
+ * A sibling of `useScrollProgress` rather than a special case of it, because that
+ * one measures an element's own sticky travel and this one measures the whole
+ * page. Same contract otherwise — rAF-throttled, no re-renders, geometry read only
+ * inside the effect so it stays safe to prerender.
+ */
+export function useDocumentProgress(
+  ref: RefObject<HTMLElement | null>,
+  property: string,
+) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - window.innerHeight;
+      const progress =
+        scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      element.style.setProperty(property, progress.toFixed(4));
+    };
+
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(measure);
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    schedule();
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      element.style.removeProperty(property);
+    };
+  }, [ref, property]);
+}
