@@ -145,7 +145,7 @@ function fontFace(weight, b64) {
   return `@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:${weight};font-display:block;src:url(data:font/woff2;base64,${b64}) format('woff2');}`;
 }
 
-/** The // section label, lowercased to match the site's `// skills` heads. */
+/** The // section label, lowercased to match the site's `// career` heads. */
 function heading(title) {
   return `<h2><span class="slash">//</span> ${esc(title.toLowerCase())}</h2>`;
 }

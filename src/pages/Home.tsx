@@ -1,4 +1,5 @@
 import { Contact } from '../components/Contact';
+import { Career } from '../components/Career';
 import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
 import { Gaming } from '../components/Gaming';
@@ -7,7 +8,6 @@ import { Hero } from '../components/Hero';
 import { Listening } from '../components/Listening';
 import { Projects } from '../components/Projects';
 import { Reading } from '../components/Reading';
-import { Skills } from '../components/Skills';
 import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
@@ -38,9 +38,9 @@ export function Home() {
         <div className="mx-auto max-w-6xl px-6">
           <Projects />
         </div>
-        <div className="mx-auto max-w-4xl px-6">
-          <Skills />
-        </div>
+        {/* The career band bleeds its blurred surface to the browser edges, so it
+            sits outside the content wrapper and holds its own reading measure. */}
+        <Career />
         <div className="mx-auto max-w-4xl px-6">
           <Listening />
         </div>

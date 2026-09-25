@@ -2295,3 +2295,246 @@
   background: var(--color-accent-start);
 }
 
+/* ---------------------------------------------------------------- *
+ * Career & credentials — a full-bleed band over the topography, with
+ * the roles read as a two-column tab list.
+ *
+ * The band is translucent and blurred so the contour background reads
+ * through it, and its top and bottom hairlines give the section edges —
+ * which is what sets it apart from the plain sections above and below.
+ * The section is full width (it is not inside the content wrapper), so
+ * the band spans the browser while the content keeps the reading measure.
+ * ---------------------------------------------------------------- */
+.career-section {
+  border-top: 1px solid color-mix(in oklab, var(--color-muted) 18%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-muted) 18%, transparent);
+  background: color-mix(in oklab, var(--color-background) 62%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.career-lead {
+  max-width: 44rem;
+  margin-top: 1.25rem;
+  color: var(--color-muted);
+}
+
+.career-split {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  /* One surface, shared by the selected tab and the panel it opens, so the tab
+     reads as attached to the detail on the right rather than floating beside it. */
+  --career-surface: color-mix(in oklab, var(--color-background) 72%, transparent);
+  --career-surface-line: color-mix(in oklab, var(--color-muted) 20%, transparent);
+}
+
+.career-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.career-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.career-tab {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  text-align: left;
+  /* The title takes this ink — cream at rest, accent when selected. The meta line
+     sets its own muted colour below. */
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+/* The selected role takes the panel's own surface, so it reads as the tab that is
+   open — a filled shape, not a change of ink alone. */
+.career-tab[data-active='true'] {
+  color: var(--color-accent-start);
+  background: var(--career-surface);
+  border-color: var(--career-surface-line);
+}
+
+.career-tab-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.career-tab-title {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.career-tab-meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+/* The characters still to be typed hold their space invisibly, so the title never
+ * reflows as it is written and the cursor — an inline box between the two runs —
+ * sits at the insertion point, following the text onto a second line. */
+.career-tab-rest {
+  visibility: hidden;
+}
+
+/* The cursor that writes the title out and stays at the end of it, flashing like
+   the one on the "building …" line. */
+.career-caret {
+  display: inline-block;
+  margin-left: 0.15ch;
+  color: var(--color-accent-start);
+}
+
+/* The opened role's surface, matching the tab that selected it. */
+.career-panel {
+  padding: 1.25rem;
+  border: 1px solid var(--career-surface-line);
+  border-radius: 0.5rem;
+  background: var(--career-surface);
+  backdrop-filter: blur(6px);
+}
+
+.career-panel:focus-visible {
+  outline: 2px solid var(--color-accent-start);
+  outline-offset: 4px;
+}
+
+/* The opened role: the place it was worked from, then the detail itself in the
+   muted ink the project cards use for their copy. The title and period are not
+   repeated — the tab that opened this already carries both. */
+.career-panel-meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+.career-panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-left: 1.125rem;
+  list-style: disc;
+  color: var(--color-muted);
+}
+
+/* One panel hides behind another only once JavaScript is running: without it,
+ * every role's detail is on the page and visible. */
+[data-enhanced] .career-panel {
+  display: none;
+}
+
+[data-enhanced] .career-panel[data-active='true'] {
+  display: block;
+}
+
+.career-credentials {
+  display: grid;
+  /* Two across on a phone, four from the tablet tier up. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+}
+
+.career-credential {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.career-cred-name {
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--color-foreground);
+}
+
+.career-cred-from {
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+/* Four across once there is room for four columns of cards — the tablet tier on,
+ * keyed to the width the cards actually get rather than to the device. */
+@media (min-width: 48rem) {
+  .career-credentials {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Below `lg` the detail opens in place, under the title that was picked, so the open
+ * title and its panel read as one box: the border between them is dropped and the
+ * corners that meet are squared. This is the accordion arrangement, and it is
+ * deliberately scoped to below the desktop tier — the column layout below undoes it. */
+@media (max-width: 63.999rem) {
+  .career-item[data-active='true'] > .career-tab {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+  }
+
+  .career-item[data-active='true'] > .career-panel {
+    border-top-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+@media (min-width: 64rem) {
+  /* The item's own box is dropped, so its title and its panel become grid items
+     directly: the titles fill the first column and the open panel — the only one
+     displayed — spans every row of the second. That is what lets the two-column
+     arrangement and the accordion be the same markup. */
+  .career-item {
+    display: contents;
+  }
+
+  .career-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: 0;
+    row-gap: 0.25rem;
+  }
+
+  .career-tab {
+    grid-column: 1;
+  }
+
+  /* The selected tab joins the panel and every other tab stays divided from it:
+     the panel keeps its left border, and the chosen tab paints 1px into it so the
+     line reads as opening at that one role only. The edges that meet are squared,
+     and the panel takes the list's full height, so whichever role is picked lands
+     on its edge. */
+  .career-panel {
+    grid-column: 2;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  [data-enhanced] .career-panel[data-active='true'] {
+    grid-row: 1 / -1;
+  }
+
+  .career-tab[data-active='true'] {
+    position: relative;
+    z-index: 1;
+    border-right-color: transparent;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 1px 0 0 0 var(--career-surface);
+  }
+}
+
