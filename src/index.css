@@ -426,9 +426,115 @@
   }
 }
 
-.hero-with-portrait {
+/* Gradient wash — the flip-text gradient promoted to a page surface. Two
+ * instances share one definition so they cannot drift apart: the hero band
+ * opens the page (bright at the top, dissolving down over the top bar and the
+ * hero) and the footer band closes it with the same wash mirrored (transparent
+ * above, brightest at the foot of the page). Both use the same drifting tokens
+ * as .animate-gradient, so the surface and the headline move in step, and the
+ * same 20% peak so the topographic field still reads through.
+ *
+ * Each wash stays within the block that owns it. The tint lifts whatever is
+ * behind it toward the accent, which costs AA-tuned ink about a quarter of a
+ * ratio — so the band is responsible for its own content's contrast (see
+ * .on-wash below) and must not reach into another component's text. */
+.hero-band,
+.foot-band {
+  position: relative;
+}
+
+.hero-band {
   --portrait-x: 0px;
   --portrait-y: 0px;
+  /* Isolated so the wash stays behind the hero's own content; the top bar is a
+   * sibling inside <main> and therefore needs its own z-index (see Home). */
+  isolation: isolate;
+}
+
+/* The footer band is deliberately NOT isolated: without a stacking context of
+ * its own the wash lands in the root's negative-z layer, behind every block of
+ * page content including the footer's own line. */
+.foot-band::before,
+.hero-band::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right in oklch,
+    var(--grad-1),
+    var(--grad-2)
+  );
+  animation: gradient-drift 6s linear infinite alternate;
+}
+
+/* Peak opacity 20% where the wash is strongest, easing to nothing at the far
+ * end, so it reads as a tint over the map rather than a flood. */
+.hero-band::before {
+  /* The negative top clears the top bar, whose measured height Home writes into
+   * --topbar-h (the header's own 5.625rem is the no-JS fallback), so the wash
+   * starts at the top of the page rather than below the bar. */
+  top: calc(-1 * var(--topbar-h, 5.625rem));
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.2) 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.2) 0%, transparent 100%);
+}
+
+/* Bounded to the footer's own box rather than reaching a screen up: a taller
+ * ramp tinted the Contact copy and the /privacy body above it, pushing both
+ * under AA. Rising from the foot of the page and stopping at the block that
+ * owns it keeps the effect and the blast radius. */
+.foot-band::before {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.2) 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.2) 100%);
+}
+
+/* Ink for text a wash sits behind. The tint shifts the background toward the
+ * accent, enough to push text that was AA-tuned against the plain background
+ * under 4.5:1, so these mix the token toward the page's foreground — lighter in
+ * a dark theme, darker in a light one. The hue is kept (Jev rated the muted mix
+ * 0.61 and the accent mix 0.72 for still reading in its intended role: secondary
+ * and accent-coloured respectively), and the ratio is restored in both themes. */
+.on-wash {
+  color: color-mix(in oklch, var(--color-accent-start) 70%, var(--color-foreground));
+}
+
+.on-wash-muted {
+  color: color-mix(in oklch, var(--color-muted) 74%, var(--color-foreground));
+}
+
+/* The @property initial-values are heather and can't be redeclared per-palette,
+ * so pin the blue base here (matching .animate-gradient) or the wash flashes
+ * purple under Yorkshire. Same reasoning for the reduced-motion pin below. */
+[data-palette='yorkshire'] .hero-band::before,
+[data-palette='yorkshire'] .foot-band::before {
+  animation-name: gradient-drift-yorkshire;
+  --grad-1: oklch(0.66 0.15 255);
+  --grad-2: oklch(0.62 0.13 230);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-band::before,
+  .foot-band::before {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-palette='yorkshire'] .hero-band::before,
+  [data-palette='yorkshire'] .foot-band::before {
+    --grad-1: oklch(0.66 0.15 255);
+    --grad-2: oklch(0.62 0.13 230);
+  }
+}
+
+.hero-grid {
   display: grid;
   min-height: 70vh;
   align-items: center;
@@ -489,7 +595,7 @@
 }
 
 @media (min-width: 64rem) {
-  .hero-with-portrait {
+  .hero-grid {
     grid-template-columns: minmax(15rem, 0.58fr) minmax(0, 1.42fr);
     gap: clamp(2.5rem, 5vw, 5rem);
     padding-block: 3rem 4rem;
@@ -1791,7 +1897,9 @@
   font-size: 0.6rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--color-muted) 90%, transparent);
+  /* Muted at full strength: the 10% transparency this used to carry pulled an
+   * already AA-tuned token to 4.05:1, which axe flags in both light palettes. */
+  color: var(--color-muted);
 }
 .wf-synced-dot {
   width: 4px;

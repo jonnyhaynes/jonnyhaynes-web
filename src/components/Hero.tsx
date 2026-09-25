@@ -110,65 +110,67 @@ export function Hero() {
   const articleIndex = articleIndexFor(WORDS_1[i1]);
 
   return (
-    <section ref={sectionRef} className="hero-with-portrait" aria-labelledby="hero-heading">
-      <PortraitFigure />
-      <div className="min-w-0">
-        <p className="font-mono text-accent-start">{SITE.hero.microcopy}</p>
-        <h1 id="hero-heading" className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
-          <span className="text-foreground">I’m </span>
-          <span className="sr-only">{`${ARTICLES[articleIndex]} ${currentRole}`}</span>
-          {/* The article, and the only board not in the gradient: it reads as part
-              of the sentence rather than as the thing being announced, so it keeps
-              the headline's own ink. It sizes to whatever is showing, so "a" hands
-              its spare cell back and the word after it closes up — the line only
-              moves by the one cell "an" actually needs. */}
-          <span className="text-foreground" aria-hidden="true">
-            <FlipWord
-              words={ARTICLES}
-              index={articleIndex}
-              uppercase={false}
-              gradient={false}
-              width="content"
-            />
-          </span>{' '}
-          <span className="flip-role" aria-hidden="true">
-            <FlipWord words={WORDS_1} index={i1} />
-            <FlipWord words={WORDS_2} index={i2} delayMs={150} />
-          </span>
-        </h1>
-        <p className="mt-6 max-w-xl text-lg text-muted">{c.subheadline}</p>
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <a
-            href="#projects"
-            className="rounded-md bg-accent-start px-5 py-2.5 font-medium text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-          >
-            {c.viewWork}
-          </a>
-          <a
-            href="#contact"
-            className="rounded-md border border-muted/40 bg-background/70 px-5 py-2.5 font-medium text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-          >
-            {c.getInTouch}
-          </a>
-          <div className="flex w-full items-center gap-3 sm:ml-auto sm:w-auto">
+    <section ref={sectionRef} className="hero-band" aria-labelledby="hero-heading">
+      <div className="hero-grid mx-auto max-w-6xl px-6">
+        <PortraitFigure />
+        <div className="min-w-0">
+          <p className="font-mono on-wash">{SITE.hero.microcopy}</p>
+          <h1 id="hero-heading" className="mt-4 text-4xl font-medium tracking-tight sm:text-6xl">
+            <span className="text-foreground">I’m </span>
+            <span className="sr-only">{`${ARTICLES[articleIndex]} ${currentRole}`}</span>
+            {/* The article, and the only board not in the gradient: it reads as part
+                of the sentence rather than as the thing being announced, so it keeps
+                the headline's own ink. It sizes to whatever is showing, so "a" hands
+                its spare cell back and the word after it closes up — the line only
+                moves by the one cell "an" actually needs. */}
+            <span className="text-foreground" aria-hidden="true">
+              <FlipWord
+                words={ARTICLES}
+                index={articleIndex}
+                uppercase={false}
+                gradient={false}
+                width="content"
+              />
+            </span>{' '}
+            <span className="flip-role" aria-hidden="true">
+              <FlipWord words={WORDS_1} index={i1} />
+              <FlipWord words={WORDS_2} index={i2} delayMs={150} />
+            </span>
+          </h1>
+          <p className="mt-6 max-w-xl text-lg text-muted">{c.subheadline}</p>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
-              href={SITE.githubUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="GitHub"
-              className="text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              href="#projects"
+              className="rounded-md bg-accent-start px-5 py-2.5 font-medium text-background transition-colors hover:bg-accent-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
-              <GitHubIcon className="size-6" />
+              {c.viewWork}
             </a>
             <a
-              href={SITE.linkedinUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="LinkedIn"
-              className="text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              href="#contact"
+              className="rounded-md border border-muted/40 bg-background/70 px-5 py-2.5 font-medium text-foreground backdrop-blur-sm transition-colors hover:border-accent-start hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
-              <LinkedInIcon className="size-6" />
+              {c.getInTouch}
             </a>
+            <div className="flex w-full items-center gap-3 sm:ml-auto sm:w-auto">
+              <a
+                href={SITE.githubUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="GitHub"
+                className="text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              >
+                <GitHubIcon className="size-6" />
+              </a>
+              <a
+                href={SITE.linkedinUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="LinkedIn"
+                className="text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              >
+                <LinkedInIcon className="size-6" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
