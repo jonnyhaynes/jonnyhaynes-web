@@ -4,8 +4,7 @@ import type { Palette } from './context';
  * Palette-keyed copy. The `default` set is byte-identical to the hand-authored
  * strings; `yorkshire` swaps in broad Yorkshire dialect when the rose is lit.
  *
- * Heading labels are plain words — they used to carry a `// ` prefix, but it was
- * dropped: the section rule above each one already does the "terminal" job.
+ * Heading labels are plain words, upper-cased by the shared SectionHeading.
  * Prose + button labels go full dialect under Yorkshire (article reduction
  * "t'workflow", "wi'", "abaht", "reyt"; lexical swaps "natter", "gi' us a
  * shout"). Data labels, aria-labels on icon-only controls, and legal/privacy

@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react';
 import { useProjects } from '../data/projects';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { useScrollProgress } from '../lib/useScrollProgress';
-import { CurrentlyBuildingChip } from './CurrentlyBuildingChip';
 import { ProjectCard } from './ProjectCard';
 import { SectionHeading } from './SectionHeading';
 
@@ -158,11 +157,7 @@ export function Projects() {
     <section id="projects" className="scroll-mt-16 py-16">
       <div className="projects-scroller" ref={scrollerRef}>
         <div className="projects-sticky">
-          {/* The activity chip sits beside the title rather than pinned to the top
-              of the page — it's a fact about the work, so it belongs with the work. */}
-          <SectionHeading section="projects">
-            <CurrentlyBuildingChip />
-          </SectionHeading>
+          <SectionHeading section="projects" />
 
           <div className="projects-window" ref={windowRef}>
             {projects.length > 0 ? (

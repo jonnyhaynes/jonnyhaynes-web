@@ -1,4 +1,5 @@
 import { Contact } from '../components/Contact';
+import { CurrentlyBuildingChip } from '../components/CurrentlyBuildingChip';
 import { Footer } from '../components/Footer';
 import { Gaming } from '../components/Gaming';
 import { Health } from '../components/Health';
@@ -18,9 +19,10 @@ export function Home() {
       </a>
 
       {/* The // Jonny Haynes line is gone — the hero carries the name now.
-          The toggles keep the right edge; the live "currently building" chip has
-          moved into the Projects heading, where the work it describes is. */}
-      <header className="mx-auto flex max-w-6xl items-center justify-end px-6 py-6">
+          The live "currently building" chip takes its place opposite the
+          toggle. */}
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+        <CurrentlyBuildingChip />
         <div className="flex items-center gap-2">
           <PaletteToggle />
           <ThemeToggle />

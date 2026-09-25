@@ -15,15 +15,6 @@
   --font-mono:
     'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
 
-  /* Display type scale. Fluid clamp() rather than stepped sizes so the display
-   * type keeps reflowing at 320px and under 400% zoom (WCAG 1.4.10) instead of
-   * jumping. Weight 700 is a real JetBrains Mono weight — see the font request in
-   * index.html; without it loaded, bold renders synthetically. */
-  --text-title: clamp(1.75rem, 3.5vw, 3rem);
-  --text-title--line-height: 1.05;
-  --text-title--letter-spacing: -0.02em;
-  --text-title--font-weight: 700;
-
   /* Dark mode (default) — Sheffield Steel / York Stone / Moorland Heather.
    * accent-start lightened from #9e67b5 to clear WCAG AA (4.5:1) both as text
    * on the background and as the "View My Work" button colour (dark text). */

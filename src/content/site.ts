@@ -12,7 +12,7 @@ export const SITE = {
   // degradation) while it's absent.
   resumeUrl: '/resume.pdf' as string | null,
   hero: {
-    microcopy: '// Ey up. I’m Jonny.',
+    microcopy: 'Ey up. I’m Jonny.',
     // Split-flap role board: two flappers, each cycling its own list
     // independently. Rendered with the animated-gradient text treatment. The
     // lead-in is always "I’m a " — every word-1 value is consonant-led, so "a"
