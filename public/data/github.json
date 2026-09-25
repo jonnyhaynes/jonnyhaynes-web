@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-25T11:34:03.998Z",
+  "fetchedAt": "2026-09-25T21:22:19.390Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-25T10:58:14Z",
+      "pushedAt": "2026-09-25T16:09:48Z",
       "lastCommit": {
-        "message": "[ai-assisted] Projects section, hero flip and scroll chrome (#786)",
-        "committedAt": "2026-09-25T10:56:39Z"
+        "message": "Refresh health data [skip ci] (#793)",
+        "committedAt": "2026-09-25T16:09:47Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -39,10 +39,10 @@
         "HTML"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-25T09:39:03Z",
+      "pushedAt": "2026-09-25T13:49:49Z",
       "lastCommit": {
-        "message": "[ai-assisted] Share routes at the microsite root (routes.sitwell.cc/<…",
-        "committedAt": "2026-09-25T09:39:02Z"
+        "message": "[ai-assisted] Focus a shared route link on the one route (#103)",
+        "committedAt": "2026-09-25T13:49:17Z"
       },
       "isFork": false,
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
@@ -164,8 +164,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "[ai-assisted] Projects section, hero flip and scroll chrome (#786)",
-    "committedAt": "2026-09-25T10:56:39Z"
+    "message": "Refresh health data [skip ci] (#793)",
+    "committedAt": "2026-09-25T16:09:47Z"
   },
   "repoCount": 13,
   "languages": [
@@ -186,6 +186,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1466,
+  "totalContributions": 1472,
   "reviewContributions": 0
 }
