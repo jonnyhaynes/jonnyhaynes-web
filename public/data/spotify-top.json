@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-26T21:53:20.821Z",
+  "fetchedAt": "2026-09-27T12:49:41.376Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -14,19 +14,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f1785da36f8b98dd965336a1507a"
     },
     {
-      "name": "Frank Turner",
-      "url": "https://open.spotify.com/artist/27M9shmwhIjRo7WntpT9Rp",
-      "image": "https://i.scdn.co/image/ab6761610000f17815bc846cba5e7daed061cb0c"
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
       "name": "Spencer Sutherland",
       "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
       "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
-    },
-    {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
       "name": "Mushroomhead",
@@ -42,6 +37,11 @@
       "name": "Faith No More",
       "url": "https://open.spotify.com/artist/6GbCJZrI318Ybm8mY36Of5",
       "image": "https://i.scdn.co/image/87848b2d4dc66640f83601753f355a1eceb1b4ee"
+    },
+    {
+      "name": "Slipknot",
+      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
+      "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
     }
   ],
   "tracks": [
@@ -52,16 +52,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
-      "title": "Somebody's Gonna Love Me",
-      "artist": "Spencer Sutherland",
-      "url": "https://open.spotify.com/track/6hw8dMgvfPsYqAHKVRFMaK",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
-    },
-    {
       "title": "Duality",
       "artist": "Slipknot",
       "url": "https://open.spotify.com/track/61mWefnWQOLf90gepjOCb3",
       "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
+    },
+    {
+      "title": "Thunderstruck",
+      "artist": "AC/DC",
+      "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048519a9b1cc067e4460da04adce2"
     },
     {
       "title": "Freewill",
@@ -76,10 +76,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
-      "title": "Thunderstruck",
-      "artist": "AC/DC",
-      "url": "https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048519a9b1cc067e4460da04adce2"
+      "title": "Somebody's Gonna Love Me",
+      "artist": "Spencer Sutherland",
+      "url": "https://open.spotify.com/track/6hw8dMgvfPsYqAHKVRFMaK",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
     },
     {
       "title": "Links Rechts",
