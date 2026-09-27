@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-09-26T22:15:55.524Z",
-  "date": "2026-09-26",
-  "steps": 11728,
+  "fetchedAt": "2026-09-27T02:33:18.237Z",
+  "date": "2026-09-27",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 52,
-  "calories": 2173,
+  "restingHeartRate": 55,
+  "calories": 226,
   "history": {
     "steps": [
-      {
-        "date": "2026-09-24",
-        "value": 5617
-      },
       {
         "date": "2026-09-25",
         "value": 4375
       },
       {
         "date": "2026-09-26",
-        "value": 11728
+        "value": 13454
+      },
+      {
+        "date": "2026-09-27",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-09-24",
-        "value": 2166
-      },
       {
         "date": "2026-09-25",
         "value": 2416
       },
       {
         "date": "2026-09-26",
-        "value": 2173
+        "value": 2766
+      },
+      {
+        "date": "2026-09-27",
+        "value": 226
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-09-24",
-        "value": 49
-      },
       {
         "date": "2026-09-25",
         "value": 56
@@ -46,23 +42,21 @@
       {
         "date": "2026-09-26",
         "value": 52
+      },
+      {
+        "date": "2026-09-27",
+        "value": 55
       }
     ]
   },
   "weather": {
-    "tempC": 15,
+    "tempC": 12,
     "code": 0,
     "forecast": [
       {
-        "date": "2026-09-26",
-        "hiC": 20,
-        "loC": 11,
-        "code": 3
-      },
-      {
         "date": "2026-09-27",
         "hiC": 20,
-        "loC": 12,
+        "loC": 11,
         "code": 51
       },
       {
@@ -70,12 +64,18 @@
         "hiC": 18,
         "loC": 10,
         "code": 3
+      },
+      {
+        "date": "2026-09-29",
+        "hiC": 20,
+        "loC": 11,
+        "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "06:58",
-    "sunset": "18:54",
-    "sunriseTomorrow": "06:59"
+    "sunrise": "06:59",
+    "sunset": "18:51",
+    "sunriseTomorrow": "07:01"
   }
 }
