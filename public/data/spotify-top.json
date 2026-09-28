@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-28T15:00:55.716Z",
+  "fetchedAt": "2026-09-28T23:45:02.583Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,11 +24,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
-      "name": "Spencer Sutherland",
-      "url": "https://open.spotify.com/artist/6mjz3NMhNE5SK7GsbJIg6C",
-      "image": "https://i.scdn.co/image/ab6761610000f1786245e4eba86145cbf64cd9f5"
-    },
-    {
       "name": "Mushroomhead",
       "url": "https://open.spotify.com/artist/18absyD7lQaXUDBXnyzU8M",
       "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
@@ -42,6 +37,11 @@
       "name": "Slipknot",
       "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
       "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
+    },
+    {
+      "name": "Green Day",
+      "url": "https://open.spotify.com/artist/7oPftvlwr6VrsViSDV7fJY",
+      "image": "https://i.scdn.co/image/ab6761610000f1786ff0cd5ef2ecf733804984bb"
     }
   ],
   "tracks": [
@@ -76,12 +76,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
-      "title": "Somebody's Gonna Love Me",
-      "artist": "Spencer Sutherland",
-      "url": "https://open.spotify.com/track/6hw8dMgvfPsYqAHKVRFMaK",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851f0a10b6bfd5d37ba04226b51"
-    },
-    {
       "title": "Links Rechts",
       "artist": "Snollebollekes",
       "url": "https://open.spotify.com/track/5EcPtaqxmPvgLcB5gRPF2j",
@@ -92,6 +86,12 @@
       "artist": "Motörhead",
       "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
+    },
+    {
+      "title": "Tom Sawyer",
+      "artist": "Rush",
+      "url": "https://open.spotify.com/track/3QZ7uX97s82HFYSmQUAN1D",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
     }
   ],
   "playlists": [
