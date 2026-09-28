@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-09-27T22:42:06.871Z",
-  "date": "2026-09-27",
-  "steps": 11644,
+  "fetchedAt": "2026-09-28T02:37:01.842Z",
+  "date": "2026-09-28",
+  "steps": 20,
   "activeMinutes": 0,
-  "restingHeartRate": 51,
-  "calories": 2537,
+  "restingHeartRate": 56,
+  "calories": 298,
   "history": {
     "steps": [
-      {
-        "date": "2026-09-25",
-        "value": 4375
-      },
       {
         "date": "2026-09-26",
         "value": 13454
       },
       {
         "date": "2026-09-27",
-        "value": 11644
+        "value": 11712
+      },
+      {
+        "date": "2026-09-28",
+        "value": 20
       }
     ],
     "calories": [
-      {
-        "date": "2026-09-25",
-        "value": 2416
-      },
       {
         "date": "2026-09-26",
         "value": 2766
       },
       {
         "date": "2026-09-27",
-        "value": 2537
+        "value": 2628
+      },
+      {
+        "date": "2026-09-28",
+        "value": 298
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-09-25",
-        "value": 56
-      },
       {
         "date": "2026-09-26",
         "value": 52
@@ -46,19 +42,17 @@
       {
         "date": "2026-09-27",
         "value": 51
+      },
+      {
+        "date": "2026-09-28",
+        "value": 56
       }
     ]
   },
   "weather": {
-    "tempC": 13,
-    "code": 2,
+    "tempC": 12,
+    "code": 0,
     "forecast": [
-      {
-        "date": "2026-09-27",
-        "hiC": 20,
-        "loC": 11,
-        "code": 3
-      },
       {
         "date": "2026-09-28",
         "hiC": 18,
@@ -67,15 +61,21 @@
       },
       {
         "date": "2026-09-29",
+        "hiC": 21,
+        "loC": 11,
+        "code": 3
+      },
+      {
+        "date": "2026-09-30",
         "hiC": 22,
-        "loC": 12,
+        "loC": 16,
         "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "06:59",
-    "sunset": "18:51",
-    "sunriseTomorrow": "07:01"
+    "sunrise": "07:01",
+    "sunset": "18:49",
+    "sunriseTomorrow": "07:03"
   }
 }
