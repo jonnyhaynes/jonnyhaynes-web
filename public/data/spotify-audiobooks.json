@@ -1,6 +1,16 @@
 {
-  "fetchedAt": "2026-09-27T21:51:26.436Z",
+  "fetchedAt": "2026-09-28T15:00:55.716Z",
   "audiobooks": [
+    {
+      "title": "Letters to Our Sons",
+      "authors": "Stephen Graham",
+      "url": "https://open.spotify.com/show/5LyqKAUkDOUBQ8EuoPMssW",
+      "cover": "https://i.scdn.co/image/ab676663000022a8670cb01d0ba67e9bf7261c42",
+      "spine": {
+        "bg": "rgb(216 248 248)",
+        "ink": "#1a1b1e"
+      }
+    },
     {
       "title": "The Book of Trespass: Crossing the Lines that Divide Us",
       "authors": "Nick Hayes",
@@ -58,16 +68,6 @@
       "cover": "https://i.scdn.co/image/ab676663000022a840392ad8352c65f2adbac9d1",
       "spine": {
         "bg": "rgb(232 232 216)",
-        "ink": "#1a1b1e"
-      }
-    },
-    {
-      "title": "There Is No Antimemetics Division: The thrilling new sci-fi horror novel, 'mind-bendingly brilliant' Guardian",
-      "authors": "qntm",
-      "url": "https://open.spotify.com/show/6Yg3i7lZEK8bDq01y04TQD",
-      "cover": "https://i.scdn.co/image/ab676663000022a8eea25ebb1e81e80a02202734",
-      "spine": {
-        "bg": "rgb(200 232 56)",
         "ink": "#1a1b1e"
       }
     }
