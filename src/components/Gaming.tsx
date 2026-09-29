@@ -159,8 +159,11 @@ function TvHero({
         </GameLink>
 
         {/* Bezel lip: IR receiver window + label + power button and two channel
-            dials (previous / next game). */}
-        <div className="mt-3 flex items-center gap-3 px-1">
+            dials (previous / next game). The row wraps, so when the text is
+            enlarged (or the screen is very narrow) the controls drop to a second
+            line instead of running off the cabinet — at the default text size
+            there is room, so nothing wraps. */}
+        <div className="mt-3 flex flex-wrap items-center gap-3 px-1">
           <span aria-hidden="true" className="crt-ir-window" />
           <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--color-deck-panel-text)]">
             {powered ? bezelLabel(game) : 'Standby'}
@@ -171,7 +174,7 @@ function TvHero({
               aria-label={powered ? 'Turn screen off' : 'Turn screen on'}
               aria-pressed={powered}
               onClick={onTogglePower}
-              className="flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              className="tv-btn flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
               {/* Power symbol — glows accent when on, dim when off. */}
               <svg
@@ -195,7 +198,7 @@ function TvHero({
               type="button"
               aria-label="Previous game"
               onClick={onPrev}
-              className="flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              className="tv-btn flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
               <span
                 aria-hidden="true"
@@ -206,7 +209,7 @@ function TvHero({
               type="button"
               aria-label="Next game"
               onClick={onNext}
-              className="flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+              className="tv-btn flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
             >
               <span
                 aria-hidden="true"

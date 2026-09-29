@@ -183,7 +183,7 @@ export function Hero() {
       >
         <p className="font-mono text-xs text-muted">
           scroll
-          <span className="ml-2 inline-block animate-bounce motion-reduce:animate-none">
+          <span className="scroll-cue-arrow ml-2 inline-block">
             ↓
           </span>
         </p>

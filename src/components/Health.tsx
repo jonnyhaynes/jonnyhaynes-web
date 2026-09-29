@@ -466,7 +466,7 @@ export function Health() {
                   </span>
                 )}
 
-                <div className={`watch-screen${glance ? ' watch-screen--glance' : ''}`}>
+                <div className="watch-screen">
                   {glance === null ? (
                     /* ── HOME FACE — divider-separated bands, round face ── */
                     <div className="wf-home">

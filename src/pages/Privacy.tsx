@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
 import { Footer } from '../components/Footer';
+import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
@@ -15,6 +16,10 @@ const LINK =
  */
 export function Privacy() {
   const contactRef = useRef<HTMLSpanElement>(null);
+
+  // The tab, history and anything reading the page title should say where this
+  // is, not repeat the home page's title.
+  useDocumentTitle('Privacy - Jonny Haynes');
 
   useEffect(() => {
     // Email assembled at runtime so the address never appears in the raw HTML
@@ -56,10 +61,14 @@ export function Privacy() {
       </header>
 
       <main id="main" className="mx-auto max-w-4xl px-6 py-8">
-        <article className="flex flex-col gap-6">
+        {/* The page shell stays at max-w-4xl so the heading lines up with the
+            header and footer; the prose itself is held to a reading measure. At
+            the shell's own width these paragraphs ran to ~88 characters a line,
+            well past the 76ch ceiling, so the eye lost the line between returns. */}
+        <article className="flex max-w-[68ch] flex-col gap-6">
           <h1 className="text-4xl font-medium tracking-tight">Privacy</h1>
 
-          <p className="text-muted">
+          <p className="text-muted leading-[1.7]">
             This is a small personal website. It does not sell anything, run
             advertising, or build a profile of you. Here is exactly what happens
             when you visit.
@@ -67,7 +76,7 @@ export function Privacy() {
 
           <section className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-foreground">Analytics</h2>
-            <p className="text-muted">
+            <p className="text-muted leading-[1.7]">
               The site uses{' '}
               <a href="https://vercel.com/docs/analytics/privacy-policy" className={LINK}>
                 Vercel Web Analytics
@@ -83,7 +92,7 @@ export function Privacy() {
 
           <section className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-foreground">Fonts</h2>
-            <p className="text-muted">
+            <p className="text-muted leading-[1.7]">
               Type is served by{' '}
               <a href="https://fonts.bunny.net/" className={LINK}>
                 Bunny Fonts
@@ -95,7 +104,7 @@ export function Privacy() {
 
           <section className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-foreground">Hosting</h2>
-            <p className="text-muted">
+            <p className="text-muted leading-[1.7]">
               The site is hosted on{' '}
               <a href="https://vercel.com/" className={LINK}>
                 Vercel
@@ -108,7 +117,7 @@ export function Privacy() {
 
           <section className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-foreground">Map data</h2>
-            <p className="text-muted">
+            <p className="text-muted leading-[1.7]">
               The background contours are real South Yorkshire relief, derived
               from Ordnance Survey OS Terrain&nbsp;50. Contains OS data &copy;
               Crown copyright and database right 2026, used under the{' '}
@@ -126,7 +135,7 @@ export function Privacy() {
             <h2 className="text-xl font-medium text-foreground">
               Your rights &amp; contact
             </h2>
-            <p className="text-muted">
+            <p className="text-muted leading-[1.7]">
               Because no personal profile is created and no identifying data is
               stored, there is nothing for you to access or erase here. If you
               have any privacy question, email{' '}
