@@ -12,7 +12,9 @@ import { useTheme } from '../theme/useTheme';
  * than to an empty shell.
  *
  * The repo name truncates and the timeframe doesn't, so on a narrow phone the
- * name gives way first and "3 days ago" always survives.
+ * name gives way first and "3 days ago" always survives. The chip wraps rather
+ * than running off the bar when the text is enlarged, where the timeframe alone
+ * can be wider than the screen.
  */
 export function CurrentlyBuildingChip() {
   const activity = currentlyBuilding(useGitHubData());
@@ -27,7 +29,7 @@ export function CurrentlyBuildingChip() {
       target="_blank"
       rel="noreferrer noopener"
       title={activity.message ?? undefined}
-      className="group inline-flex min-w-0 max-w-full items-center gap-2 font-mono text-xs transition-colors on-wash-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
+      className="group inline-flex min-w-0 max-w-full flex-wrap items-center gap-2 font-mono text-xs transition-colors on-wash-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
     >
       <span
         aria-hidden="true"

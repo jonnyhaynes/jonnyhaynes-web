@@ -94,8 +94,14 @@
     />
     <meta name="twitter:image" content="https://www.jonnyhaynes.com/og-image.png" />
     <meta name="twitter:image:alt" content="Jonny Haynes — Full-Stack Developer." />
+    <!-- Weights are the ones the design actually sets: 400 body, 500 for
+         emphasis/headings, 600 + 700 for the watch face's numerals (a Garmin
+         fēnix is bold). Asking for a weight the family doesn't ship makes the
+         browser fake it by smearing the nearest face, so the faces are loaded
+         rather than synthesised. Mono metrics are identical across weights, so
+         the extra files cost no layout shift. -->
     <link
-      href="https://fonts.bunny.net/css?family=jetbrains-mono:400,500&display=swap"
+      href="https://fonts.bunny.net/css?family=jetbrains-mono:400,500,600,700&display=swap"
       rel="stylesheet"
     />
 

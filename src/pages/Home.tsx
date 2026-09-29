@@ -10,12 +10,17 @@ import { Hero } from '../components/Hero';
 import { Listening } from '../components/Listening';
 import { Projects } from '../components/Projects';
 import { Reading } from '../components/Reading';
+import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { PaletteToggle } from '../theme/PaletteToggle';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
 export function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+
+  // index.html carries this title for the first paint; setting it here restores
+  // it when the reader comes back from /privacy.
+  useDocumentTitle('Jonny Haynes - Est. 1985');
 
   // The hero wash reaches up over the top bar, so it needs the bar's real height.
   // Written straight to a custom property (no re-render) and kept honest by a

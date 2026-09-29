@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import {
   deriveTrackParams,
   useNowPlaying,
@@ -140,18 +141,75 @@ function Progress({
   );
 }
 
+/** How fast the readout scrolls when it has to, in px per second. Slow enough
+ *  to read a title as it passes; a fixed duration would race a long one. */
+const MARQUEE_SPEED = 45;
+
 /**
- * Readout line under the screen: a marquee of the track (title + artist)
- * glowing in the accent. Always scrolls — the motion is part of the hi-fi
- * look, even when the text technically fits.
+ * A readout that scrolls only when it has to.
+ *
+ * The deck display is narrow, so a long track genuinely needs the marquee — but
+ * the standby line and most titles fit inside it, and a marquee on text that
+ * already fits is motion with nothing to say. So the text is measured:
+ * `data-overflow` drives both the scroll and the edge mask, and the duration is
+ * derived from the distance the text actually travels.
+ */
+function useMarquee() {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [overflow, setOverflow] = useState(false);
+  const [duration, setDuration] = useState('12s');
+
+  useEffect(() => {
+    const readout = ref.current;
+    const text = readout?.firstElementChild;
+    if (!readout || !(text instanceof HTMLElement)) return;
+
+    const measure = () => {
+      // The scroll is a padding-left of 100%, so take it back off to get the
+      // width of the text itself — which is what has to fit.
+      const styles = getComputedStyle(text);
+      const width =
+        text.scrollWidth -
+        parseFloat(styles.paddingLeft) -
+        parseFloat(styles.paddingRight);
+      const box = readout.clientWidth;
+      const over = width > box + 1;
+      setOverflow(over);
+      if (over) {
+        setDuration(
+          `${Math.round(Math.min(40, Math.max(8, (width + box) / MARQUEE_SPEED)))}s`,
+        );
+      }
+    };
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(readout);
+    observer.observe(text);
+    measure();
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, overflow, duration };
+}
+
+/**
+ * Readout line under the screen: the track (title + artist) glowing in the
+ * accent, scrolling only when it does not fit the display.
  */
 function MarqueeReadout({ data }: { data: NowPlayingData }) {
+  const { ref, overflow, duration } = useMarquee();
+
   return (
     <div
       className="deck-readout mt-3 font-mono text-xs"
       style={{ paddingRight: 'var(--knob-clearance)' }}
     >
-      <span className="deck-lcd-text marquee block">
+      <span
+        ref={ref}
+        data-overflow={overflow ? 'true' : undefined}
+        className="deck-lcd-text marquee block"
+        style={{ '--marquee-duration': duration } as CSSProperties}
+      >
         {data.url ? (
           <a
             href={data.url}
@@ -179,6 +237,8 @@ function MarqueeReadout({ data }: { data: NowPlayingData }) {
  * box.
  */
 function DeckStandby() {
+  const { ref, overflow, duration } = useMarquee();
+
   return (
     <div className="deck-panel flex w-full flex-col overflow-hidden rounded-2xl p-4">
       {/* Header strip: standby label + steady dim LED. */}
@@ -209,7 +269,12 @@ function DeckStandby() {
         className="deck-readout mt-3 font-mono text-xs"
         style={{ paddingRight: 'var(--knob-clearance)' }}
       >
-        <span className="deck-lcd-text marquee block">
+        <span
+          ref={ref}
+          data-overflow={overflow ? 'true' : undefined}
+          className="deck-lcd-text marquee block"
+          style={{ '--marquee-duration': duration } as CSSProperties}
+        >
           <span>▸ Currently enjoying the silence.</span>
         </span>
       </div>

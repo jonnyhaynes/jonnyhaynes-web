@@ -1,6 +1,6 @@
 export function PortraitFigure() {
   return (
-    <figure className="portrait-art portrait-art--screenprint">
+    <figure className="portrait-art">
       <picture className="portrait-picture">
         <source
           type="image/webp"
