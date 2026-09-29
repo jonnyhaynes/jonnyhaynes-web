@@ -1,23 +1,46 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-29T12:31:37.806Z",
+  "fetchedAt": "2026-09-29T22:05:28.499Z",
   "projects": [
+    {
+      "name": "rotherham-virtual-school",
+      "description": "Prototype website for Rotherham Virtual School — Astro + EmDash + GOV.UK Design System. Exploration only; not the live site and not affiliated with Rotherham Council.",
+      "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
+      "homepageUrl": "virtual-school.colouringcode.com",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "SCSS",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-29T18:44:20Z",
+      "lastCommit": {
+        "message": "Read Turso's real environment variable names, and fix the S3 check",
+        "committedAt": "2026-09-29T18:44:18Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
+    },
     {
       "name": "thurcroft-church",
       "description": "Prototype website for St Simon and St Jude, Thurcroft — Next.js + Sanity. Exploration only; not the live site and not affiliated with the parish.",
       "url": "https://github.com/jonnyhaynes/thurcroft-church",
-      "homepageUrl": "https://church.colouringcode.com/",
+      "homepageUrl": "https://church.colouringcode.com",
       "language": "TypeScript",
       "languages": [
         "TypeScript",
+        "Shell",
         "CSS",
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-29T11:08:15Z",
+      "pushedAt": "2026-09-29T17:59:48Z",
       "lastCommit": {
-        "message": "Redact personal contact details from the content",
-        "committedAt": "2026-09-29T11:03:30Z"
+        "message": "Merge pull request #5 from jonnyhaynes/chore/proprietary-licence",
+        "committedAt": "2026-09-29T17:58:56Z"
       },
       "isFork": false,
       "pitch": null,
@@ -37,10 +60,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-29T10:15:55Z",
+      "pushedAt": "2026-09-29T17:17:55Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#836)",
-        "committedAt": "2026-09-29T10:15:55Z"
+        "message": "Refresh health data [skip ci] (#842)",
+        "committedAt": "2026-09-29T17:17:54Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -133,39 +156,15 @@
       "isFork": false,
       "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
       "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
-    },
-    {
-      "name": "skillswap",
-      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
-      "url": "https://github.com/jonnyhaynes/skillswap",
-      "homepageUrl": "https://skillswap.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "PLpgSQL",
-        "JavaScript",
-        "CSS",
-        "HTML",
-        "Shell"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-08-01T09:03:31Z",
-      "lastCommit": {
-        "message": "fix(build): install Chromium system libs so prerendering works on Ver…",
-        "committedAt": "2026-08-01T09:03:31Z"
-      },
-      "isFork": false,
-      "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
-      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     }
   ],
   "lastActivity": {
-    "repo": "thurcroft-church",
-    "url": "https://github.com/jonnyhaynes/thurcroft-church",
-    "message": "Redact personal contact details from the content",
-    "committedAt": "2026-09-29T11:03:30Z"
+    "repo": "rotherham-virtual-school",
+    "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
+    "message": "Read Turso's real environment variable names, and fix the S3 check",
+    "committedAt": "2026-09-29T18:44:18Z"
   },
-  "repoCount": 14,
+  "repoCount": 15,
   "languages": [
     {
       "name": "TypeScript",
@@ -177,13 +176,13 @@
     },
     {
       "name": "Astro",
-      "count": 1
+      "count": 2
     },
     {
       "name": "HTML",
       "count": 1
     }
   ],
-  "totalContributions": 1345,
+  "totalContributions": 1380,
   "reviewContributions": 0
 }
