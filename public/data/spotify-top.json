@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-30T13:22:26.243Z",
+  "fetchedAt": "2026-09-30T22:49:34.714Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -7,11 +7,6 @@
       "name": "Beastie Boys",
       "url": "https://open.spotify.com/artist/03r4iKL2g2442PT9n2UKsx",
       "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
-    },
-    {
-      "name": "blink-182",
-      "url": "https://open.spotify.com/artist/6FBDaR13swtiWwGhX1WQsP",
-      "image": "https://i.scdn.co/image/ab6761610000f1785da36f8b98dd965336a1507a"
     },
     {
       "name": "Daði Freyr",
@@ -27,6 +22,11 @@
       "name": "Mushroomhead",
       "url": "https://open.spotify.com/artist/18absyD7lQaXUDBXnyzU8M",
       "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
+    },
+    {
+      "name": "blink-182",
+      "url": "https://open.spotify.com/artist/6FBDaR13swtiWwGhX1WQsP",
+      "image": "https://i.scdn.co/image/ab6761610000f1785da36f8b98dd965336a1507a"
     },
     {
       "name": "Faith No More",
@@ -64,6 +64,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
     },
     {
+      "title": "Sabotage",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/0Puj4YlTm6xNzDDADXHMI9",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
+    },
+    {
       "title": "And Me - Remastered 2009",
       "artist": "Beastie Boys",
       "url": "https://open.spotify.com/track/0ZcJ2JdB8vdgCWij7mFUuQ",
@@ -76,22 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
+      "title": "Sure Shot",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
+    },
+    {
       "title": "Links Rechts",
       "artist": "Snollebollekes",
       "url": "https://open.spotify.com/track/5EcPtaqxmPvgLcB5gRPF2j",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485113f93416952d9f9309d71778"
-    },
-    {
-      "title": "Ace of Spades",
-      "artist": "Motörhead",
-      "url": "https://open.spotify.com/track/3CIOopLwvyMvXk97ZEksKO",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851cb92df4d1fdbafa4a6e18855"
-    },
-    {
-      "title": "Tom Sawyer",
-      "artist": "Rush",
-      "url": "https://open.spotify.com/track/3QZ7uX97s82HFYSmQUAN1D",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485172833c1ae3343cbfb4617073"
     }
   ],
   "playlists": [
