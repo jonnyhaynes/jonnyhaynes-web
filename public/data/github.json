@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-29T22:05:28.499Z",
+  "fetchedAt": "2026-09-30T12:16:44.563Z",
   "projects": [
     {
       "name": "rotherham-virtual-school",
@@ -11,36 +11,14 @@
       "languages": [
         "Astro",
         "SCSS",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-29T18:44:20Z",
-      "lastCommit": {
-        "message": "Read Turso's real environment variable names, and fix the S3 check",
-        "committedAt": "2026-09-29T18:44:18Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "thurcroft-church",
-      "description": "Prototype website for St Simon and St Jude, Thurcroft — Next.js + Sanity. Exploration only; not the live site and not affiliated with the parish.",
-      "url": "https://github.com/jonnyhaynes/thurcroft-church",
-      "homepageUrl": "https://church.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
         "TypeScript",
-        "Shell",
-        "CSS",
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-29T17:59:48Z",
+      "pushedAt": "2026-09-30T11:38:10Z",
       "lastCommit": {
-        "message": "Merge pull request #5 from jonnyhaynes/chore/proprietary-licence",
-        "committedAt": "2026-09-29T17:58:56Z"
+        "message": "Run the accessibility audit and fix what it found",
+        "committedAt": "2026-09-30T11:35:46Z"
       },
       "isFork": false,
       "pitch": null,
@@ -60,14 +38,36 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-29T17:17:55Z",
+      "pushedAt": "2026-09-30T10:07:37Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#842)",
-        "committedAt": "2026-09-29T17:17:54Z"
+        "message": "Refresh health data [skip ci] (#849)",
+        "committedAt": "2026-09-30T10:07:36Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "thurcroft-church",
+      "description": "Prototype website for St Simon and St Jude, Thurcroft — Next.js + Sanity. Exploration only; not the live site and not affiliated with the parish.",
+      "url": "https://github.com/jonnyhaynes/thurcroft-church",
+      "homepageUrl": "https://church.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "Shell",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-30T07:30:59Z",
+      "lastCommit": {
+        "message": "Merge pull request #6 from jonnyhaynes/feat/homepage-hero-overlay",
+        "committedAt": "2026-09-30T07:30:28Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "sitwellcc-web",
@@ -161,8 +161,8 @@
   "lastActivity": {
     "repo": "rotherham-virtual-school",
     "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
-    "message": "Read Turso's real environment variable names, and fix the S3 check",
-    "committedAt": "2026-09-29T18:44:18Z"
+    "message": "Run the accessibility audit and fix what it found",
+    "committedAt": "2026-09-30T11:35:46Z"
   },
   "repoCount": 15,
   "languages": [
@@ -183,6 +183,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1380,
+  "totalContributions": 1387,
   "reviewContributions": 0
 }
