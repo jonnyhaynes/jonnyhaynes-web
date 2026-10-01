@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-01T14:16:18.694Z",
+  "fetchedAt": "2026-10-01T23:00:51.331Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -52,6 +52,18 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
+      "title": "Wasted Lands",
+      "artist": "Clutch",
+      "url": "https://open.spotify.com/track/758slc35vXuBj1P0aDoomV",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851db1d43cd3ff1859292d4e223"
+    },
+    {
+      "title": "The Drifter Returns",
+      "artist": "Clutch",
+      "url": "https://open.spotify.com/track/2pfmaxNem3ZQkOqzFyqUYD",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851cf5d5060e4d23a2bfc4a33b7"
+    },
+    {
       "title": "Duality",
       "artist": "Slipknot",
       "url": "https://open.spotify.com/track/61mWefnWQOLf90gepjOCb3",
@@ -80,18 +92,6 @@
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/2DlSOBi6Urh2PUKaGo9O20",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
-    },
-    {
-      "title": "Wasted Lands",
-      "artist": "Clutch",
-      "url": "https://open.spotify.com/track/758slc35vXuBj1P0aDoomV",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851db1d43cd3ff1859292d4e223"
-    },
-    {
-      "title": "Sure Shot",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
     }
   ],
   "playlists": [
