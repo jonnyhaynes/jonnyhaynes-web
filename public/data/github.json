@@ -1,51 +1,7 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-09-30T22:05:00.247Z",
+  "fetchedAt": "2026-10-01T12:51:43.184Z",
   "projects": [
-    {
-      "name": "field-kit",
-      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
-      "url": "https://github.com/jonnyhaynes/field-kit",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "Shell",
-        "JavaScript",
-        "CSS"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-30T19:42:22Z",
-      "lastCommit": {
-        "message": "Merge pull request #30 from jonnyhaynes/feat/24-transfer-qr-share",
-        "committedAt": "2026-09-30T19:41:40Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "meliora",
-      "description": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms — Next.js + Payload CMS. Exploration only; not the live site and not affiliated with the business.",
-      "url": "https://github.com/jonnyhaynes/meliora",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "CSS",
-        "Dockerfile",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-30T19:41:15Z",
-      "lastCommit": {
-        "message": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms",
-        "committedAt": "2026-09-30T19:38:53Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -60,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-30T17:17:07Z",
+      "pushedAt": "2026-10-01T10:34:38Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#854)",
-        "committedAt": "2026-09-30T17:17:07Z"
+        "message": "Refresh health data [skip ci] (#861)",
+        "committedAt": "2026-10-01T10:34:37Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -74,18 +30,65 @@
       "description": "Prototype website for Rotherham Virtual School — Astro + EmDash + GOV.UK Design System. Exploration only; not the live site and not affiliated with Rotherham Council.",
       "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
       "homepageUrl": "virtual-school.colouringcode.com",
-      "language": "Astro",
+      "language": "HTML",
       "languages": [
+        "HTML",
         "Astro",
+        "JavaScript",
         "SCSS",
+        "CSS",
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-01T09:55:09Z",
+      "lastCommit": {
+        "message": "Migrate the site to the updated design system",
+        "committedAt": "2026-10-01T09:54:33Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "field-kit",
+      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
+      "url": "https://github.com/jonnyhaynes/field-kit",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
         "TypeScript",
+        "Shell",
+        "JavaScript",
+        "CSS"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-01T09:22:37Z",
+      "lastCommit": {
+        "message": "Merge pull request #31 from jonnyhaynes/feat/25-nfc-tags",
+        "committedAt": "2026-10-01T09:11:54Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "meliora",
+      "description": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms — Next.js + Payload CMS. Exploration only; not the live site and not affiliated with the business.",
+      "url": "https://github.com/jonnyhaynes/meliora",
+      "homepageUrl": "https://meliora.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "Dockerfile",
+        "Shell",
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-30T11:38:10Z",
+      "pushedAt": "2026-10-01T08:58:58Z",
       "lastCommit": {
-        "message": "Run the accessibility audit and fix what it found",
-        "committedAt": "2026-09-30T11:35:46Z"
+        "message": "Merge pull request #1 from jonnyhaynes/agent-project-setup",
+        "committedAt": "2026-10-01T08:56:31Z"
       },
       "isFork": false,
       "pitch": null,
@@ -104,10 +107,10 @@
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-09-30T07:30:59Z",
+      "pushedAt": "2026-10-01T07:50:12Z",
       "lastCommit": {
-        "message": "Merge pull request #6 from jonnyhaynes/feat/homepage-hero-overlay",
-        "committedAt": "2026-09-30T07:30:28Z"
+        "message": "Merge pull request #7 from jonnyhaynes/feat/forged-in-yorkshire-credit",
+        "committedAt": "2026-10-01T07:49:46Z"
       },
       "isFork": false,
       "pitch": null,
@@ -161,10 +164,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "field-kit",
-    "url": "https://github.com/jonnyhaynes/field-kit",
-    "message": "Merge pull request #30 from jonnyhaynes/feat/24-transfer-qr-share",
-    "committedAt": "2026-09-30T19:41:40Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh health data [skip ci] (#861)",
+    "committedAt": "2026-10-01T10:34:37Z"
   },
   "repoCount": 17,
   "languages": [
@@ -177,14 +180,14 @@
       "count": 3
     },
     {
-      "name": "Astro",
+      "name": "HTML",
       "count": 2
     },
     {
-      "name": "HTML",
+      "name": "Astro",
       "count": 1
     }
   ],
-  "totalContributions": 1409,
+  "totalContributions": 1430,
   "reviewContributions": 0
 }
