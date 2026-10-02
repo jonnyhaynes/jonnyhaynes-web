@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-02T12:14:45.626Z",
+  "fetchedAt": "2026-10-02T22:01:36.833Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-02T10:09:43Z",
+      "pushedAt": "2026-10-02T17:03:45Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#873)",
-        "committedAt": "2026-10-02T10:09:42Z"
+        "message": "Refresh health data [skip ci] (#878)",
+        "committedAt": "2026-10-02T17:03:45Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -166,8 +166,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#873)",
-    "committedAt": "2026-10-02T10:09:42Z"
+    "message": "Refresh health data [skip ci] (#878)",
+    "committedAt": "2026-10-02T17:03:45Z"
   },
   "repoCount": 17,
   "languages": [
