@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-01T22:32:07.764Z",
+  "fetchedAt": "2026-10-02T12:14:45.626Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,14 +16,37 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-01T17:43:56Z",
+      "pushedAt": "2026-10-02T10:09:43Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#866)",
-        "committedAt": "2026-10-01T17:43:55Z"
+        "message": "Refresh health data [skip ci] (#873)",
+        "committedAt": "2026-10-02T10:09:42Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "meliora",
+      "description": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms — Next.js + Payload CMS. Exploration only; not the live site and not affiliated with the business.",
+      "url": "https://github.com/jonnyhaynes/meliora",
+      "homepageUrl": "https://meliora.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "Dockerfile",
+        "Shell",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-02T08:27:46Z",
+      "lastCommit": {
+        "message": "Fix mobile menu collapsing under the header",
+        "committedAt": "2026-10-02T08:27:40Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "rotherham-virtual-school",
@@ -66,29 +89,6 @@
       "lastCommit": {
         "message": "Merge pull request #31 from jonnyhaynes/feat/25-nfc-tags",
         "committedAt": "2026-10-01T09:11:54Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "meliora",
-      "description": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms — Next.js + Payload CMS. Exploration only; not the live site and not affiliated with the business.",
-      "url": "https://github.com/jonnyhaynes/meliora",
-      "homepageUrl": "https://meliora.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "CSS",
-        "Dockerfile",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-01T08:58:58Z",
-      "lastCommit": {
-        "message": "Merge pull request #1 from jonnyhaynes/agent-project-setup",
-        "committedAt": "2026-10-01T08:56:31Z"
       },
       "isFork": false,
       "pitch": null,
@@ -166,8 +166,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#866)",
-    "committedAt": "2026-10-01T17:43:55Z"
+    "message": "Refresh health data [skip ci] (#873)",
+    "committedAt": "2026-10-02T10:09:42Z"
   },
   "repoCount": 17,
   "languages": [
@@ -188,6 +188,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1432,
+  "totalContributions": 1433,
   "reviewContributions": 0
 }
