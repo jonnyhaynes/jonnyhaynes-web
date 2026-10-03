@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-03T11:25:42.690Z",
+  "fetchedAt": "2026-10-03T20:52:11.132Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,14 +16,36 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-03T09:32:06Z",
+      "pushedAt": "2026-10-03T18:54:12Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#885)",
-        "committedAt": "2026-10-03T09:32:06Z"
+        "message": "Refresh health data [skip ci] (#891)",
+        "committedAt": "2026-10-03T18:54:12Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "field-kit",
+      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
+      "url": "https://github.com/jonnyhaynes/field-kit",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "Shell",
+        "JavaScript",
+        "CSS"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-03T17:03:53Z",
+      "lastCommit": {
+        "message": "Merge pull request #34 from jonnyhaynes/feat/cited-guidance-content",
+        "committedAt": "2026-10-03T13:33:06Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "meliora",
@@ -67,28 +89,6 @@
       "lastCommit": {
         "message": "Rename /reports/ to /outcomes/, add it to the footer, and clear out t…",
         "committedAt": "2026-10-01T15:05:36Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "field-kit",
-      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
-      "url": "https://github.com/jonnyhaynes/field-kit",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "Shell",
-        "JavaScript",
-        "CSS"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-01T09:22:37Z",
-      "lastCommit": {
-        "message": "Merge pull request #31 from jonnyhaynes/feat/25-nfc-tags",
-        "committedAt": "2026-10-01T09:11:54Z"
       },
       "isFork": false,
       "pitch": null,
@@ -166,8 +166,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#885)",
-    "committedAt": "2026-10-03T09:32:06Z"
+    "message": "Refresh health data [skip ci] (#891)",
+    "committedAt": "2026-10-03T18:54:12Z"
   },
   "repoCount": 17,
   "languages": [
@@ -188,6 +188,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1433,
+  "totalContributions": 1441,
   "reviewContributions": 0
 }
