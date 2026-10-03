@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-02T22:49:51.847Z",
+  "fetchedAt": "2026-10-03T12:16:34.811Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -46,16 +46,16 @@
   ],
   "tracks": [
     {
-      "title": "Intergalactic - Remastered 2009",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
-    },
-    {
       "title": "Wasted Lands",
       "artist": "Clutch",
       "url": "https://open.spotify.com/track/758slc35vXuBj1P0aDoomV",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851db1d43cd3ff1859292d4e223"
+    },
+    {
+      "title": "Intergalactic - Remastered 2009",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
       "title": "The Drifter Returns",
