@@ -1,7 +1,29 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-04T12:06:42.498Z",
+  "fetchedAt": "2026-10-04T21:07:54.574Z",
   "projects": [
+    {
+      "name": "field-kit",
+      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
+      "url": "https://github.com/jonnyhaynes/field-kit",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "Shell",
+        "JavaScript",
+        "CSS"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-04T17:07:42Z",
+      "lastCommit": {
+        "message": "Merge pull request #34 from jonnyhaynes/feat/cited-guidance-content",
+        "committedAt": "2026-10-03T13:33:06Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
+    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -16,36 +38,14 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-04T10:18:51Z",
+      "pushedAt": "2026-10-04T16:10:33Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#898)",
-        "committedAt": "2026-10-04T10:18:50Z"
+        "message": "Refresh health data [skip ci] (#903)",
+        "committedAt": "2026-10-04T16:10:33Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
-    },
-    {
-      "name": "field-kit",
-      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
-      "url": "https://github.com/jonnyhaynes/field-kit",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "Shell",
-        "JavaScript",
-        "CSS"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-03T23:14:39Z",
-      "lastCommit": {
-        "message": "Merge pull request #34 from jonnyhaynes/feat/cited-guidance-content",
-        "committedAt": "2026-10-03T13:33:06Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
     },
     {
       "name": "meliora",
@@ -166,8 +166,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#898)",
-    "committedAt": "2026-10-04T10:18:50Z"
+    "message": "Refresh health data [skip ci] (#903)",
+    "committedAt": "2026-10-04T16:10:33Z"
   },
   "repoCount": 17,
   "languages": [
