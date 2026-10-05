@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-04T21:07:54.574Z",
+  "fetchedAt": "2026-10-05T14:11:57.395Z",
   "projects": [
     {
       "name": "field-kit",
@@ -15,10 +15,10 @@
         "CSS"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-04T17:07:42Z",
+      "pushedAt": "2026-10-05T12:48:09Z",
       "lastCommit": {
-        "message": "Merge pull request #34 from jonnyhaynes/feat/cited-guidance-content",
-        "committedAt": "2026-10-03T13:33:06Z"
+        "message": "Merge pull request #48 from jonnyhaynes/feat/41-token-layer",
+        "committedAt": "2026-10-05T12:47:35Z"
       },
       "isFork": false,
       "pitch": null,
@@ -38,10 +38,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-04T16:10:33Z",
+      "pushedAt": "2026-10-05T10:59:55Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#903)",
-        "committedAt": "2026-10-04T16:10:33Z"
+        "message": "Refresh health data [skip ci] (#910)",
+        "committedAt": "2026-10-05T10:59:54Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -164,10 +164,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#903)",
-    "committedAt": "2026-10-04T16:10:33Z"
+    "repo": "field-kit",
+    "url": "https://github.com/jonnyhaynes/field-kit",
+    "message": "Merge pull request #48 from jonnyhaynes/feat/41-token-layer",
+    "committedAt": "2026-10-05T12:47:35Z"
   },
   "repoCount": 17,
   "languages": [
@@ -188,6 +188,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1441,
+  "totalContributions": 1482,
   "reviewContributions": 0
 }
