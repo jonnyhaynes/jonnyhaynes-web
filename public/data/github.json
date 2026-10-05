@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-05T14:11:57.395Z",
+  "fetchedAt": "2026-10-05T23:55:27.019Z",
   "projects": [
     {
       "name": "field-kit",
@@ -10,15 +10,15 @@
       "language": "TypeScript",
       "languages": [
         "TypeScript",
-        "Shell",
         "JavaScript",
+        "Shell",
         "CSS"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-05T12:48:09Z",
+      "pushedAt": "2026-10-05T20:03:51Z",
       "lastCommit": {
-        "message": "Merge pull request #48 from jonnyhaynes/feat/41-token-layer",
-        "committedAt": "2026-10-05T12:47:35Z"
+        "message": "Merge pull request #50 from jonnyhaynes/feat/violet-compositions",
+        "committedAt": "2026-10-05T20:03:50Z"
       },
       "isFork": false,
       "pitch": null,
@@ -38,10 +38,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-05T10:59:55Z",
+      "pushedAt": "2026-10-05T18:10:41Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#910)",
-        "committedAt": "2026-10-05T10:59:54Z"
+        "message": "Refresh gaming data [skip ci] (#914)",
+        "committedAt": "2026-10-05T18:10:40Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -166,8 +166,8 @@
   "lastActivity": {
     "repo": "field-kit",
     "url": "https://github.com/jonnyhaynes/field-kit",
-    "message": "Merge pull request #48 from jonnyhaynes/feat/41-token-layer",
-    "committedAt": "2026-10-05T12:47:35Z"
+    "message": "Merge pull request #50 from jonnyhaynes/feat/violet-compositions",
+    "committedAt": "2026-10-05T20:03:50Z"
   },
   "repoCount": 17,
   "languages": [
@@ -188,6 +188,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1482,
+  "totalContributions": 1488,
   "reviewContributions": 0
 }
