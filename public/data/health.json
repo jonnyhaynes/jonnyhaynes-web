@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-10-06T17:36:57.986Z",
+  "fetchedAt": "2026-10-06T23:26:55.049Z",
   "date": "2026-10-06",
-  "steps": 3482,
+  "steps": 4311,
   "activeMinutes": 0,
   "restingHeartRate": 49,
-  "calories": 1678,
+  "calories": 2356,
   "history": {
     "steps": [
       {
@@ -17,7 +17,7 @@
       },
       {
         "date": "2026-10-06",
-        "value": 3482
+        "value": 4311
       }
     ],
     "calories": [
@@ -31,7 +31,7 @@
       },
       {
         "date": "2026-10-06",
-        "value": 1678
+        "value": 2356
       }
     ],
     "restingHeartRate": [
@@ -50,32 +50,32 @@
     ]
   },
   "weather": {
-    "tempC": 17,
+    "tempC": 13,
     "code": 3,
     "forecast": [
-      {
-        "date": "2026-10-06",
-        "hiC": 21,
-        "loC": 14,
-        "code": 55
-      },
       {
         "date": "2026-10-07",
         "hiC": 14,
         "loC": 9,
-        "code": 53
+        "code": 61
       },
       {
         "date": "2026-10-08",
         "hiC": 14,
         "loC": 7,
-        "code": 61
+        "code": 55
+      },
+      {
+        "date": "2026-10-09",
+        "hiC": 17,
+        "loC": 10,
+        "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "07:15",
-    "sunset": "18:30",
-    "sunriseTomorrow": "07:17"
+    "sunrise": "07:17",
+    "sunset": "18:27",
+    "sunriseTomorrow": "07:19"
   }
 }
