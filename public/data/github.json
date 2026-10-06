@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-06T13:08:05.500Z",
+  "fetchedAt": "2026-10-06T22:33:07.246Z",
   "projects": [
     {
       "name": "field-kit",
@@ -15,10 +15,10 @@
         "CSS"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-06T13:06:20Z",
+      "pushedAt": "2026-10-06T19:49:00Z",
       "lastCommit": {
-        "message": "Merge pull request #50 from jonnyhaynes/feat/violet-compositions",
-        "committedAt": "2026-10-05T20:03:50Z"
+        "message": "Merge pull request #56 from jonnyhaynes/feat/contour-inheritance",
+        "committedAt": "2026-10-06T19:42:31Z"
       },
       "isFork": false,
       "pitch": null,
@@ -38,14 +38,36 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-06T10:55:21Z",
+      "pushedAt": "2026-10-06T17:37:37Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#920)",
-        "committedAt": "2026-10-06T10:55:21Z"
+        "message": "Refresh health data [skip ci] (#925)",
+        "committedAt": "2026-10-06T17:37:36Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "full-circle",
+      "description": "Prototype rebuild of the Full Circle Event Production website — unaffiliated: not commissioned by or endorsed by the business. Next.js + Payload CMS.",
+      "url": "https://github.com/jonnyhaynes/full-circle",
+      "homepageUrl": "https://full-circle.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "Dockerfile"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-06T15:22:22Z",
+      "lastCommit": {
+        "message": "Merge pull request #1 from jonnyhaynes/docs/agent-setup",
+        "committedAt": "2026-10-06T15:22:22Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "meliora",
@@ -138,42 +160,19 @@
       "isFork": false,
       "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
       "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
-    {
-      "name": "cmux-sentinel",
-      "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
-      "url": "https://github.com/jonnyhaynes/cmux-sentinel",
-      "homepageUrl": null,
-      "language": "Shell",
-      "languages": [
-        "Shell",
-        "Swift",
-        "TypeScript",
-        "Makefile",
-        "Ruby"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-09-15T15:17:14Z",
-      "lastCommit": {
-        "message": "Merge pull request #9 from jonnyhaynes/feat/commandcode-pane-watcher",
-        "committedAt": "2026-09-15T15:17:06Z"
-      },
-      "isFork": true,
-      "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
-      "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
     }
   ],
   "lastActivity": {
-    "repo": "jonnyhaynes-web",
-    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#920)",
-    "committedAt": "2026-10-06T10:55:21Z"
+    "repo": "field-kit",
+    "url": "https://github.com/jonnyhaynes/field-kit",
+    "message": "Merge pull request #56 from jonnyhaynes/feat/contour-inheritance",
+    "committedAt": "2026-10-06T19:42:31Z"
   },
-  "repoCount": 17,
+  "repoCount": 18,
   "languages": [
     {
       "name": "TypeScript",
-      "count": 10
+      "count": 11
     },
     {
       "name": "JavaScript",
@@ -188,6 +187,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1489,
+  "totalContributions": 1520,
   "reviewContributions": 0
 }
