@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-06T13:58:49.051Z",
+  "fetchedAt": "2026-10-06T22:55:17.225Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -17,6 +17,11 @@
       "name": "Rammstein",
       "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+    },
+    {
+      "name": "The Smashing Pumpkins",
+      "url": "https://open.spotify.com/artist/40Yq4vzPs9VNUrIBG5Jr2i",
+      "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
     },
     {
       "name": "Mushroomhead",
@@ -37,11 +42,6 @@
       "name": "Muse",
       "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
-      "name": "Queen",
-      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
     }
   ],
   "tracks": [
