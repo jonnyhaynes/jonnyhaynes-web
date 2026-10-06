@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-05T23:55:27.019Z",
+  "fetchedAt": "2026-10-06T13:08:05.500Z",
   "projects": [
     {
       "name": "field-kit",
@@ -15,7 +15,7 @@
         "CSS"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-05T20:03:51Z",
+      "pushedAt": "2026-10-06T13:06:20Z",
       "lastCommit": {
         "message": "Merge pull request #50 from jonnyhaynes/feat/violet-compositions",
         "committedAt": "2026-10-05T20:03:50Z"
@@ -38,10 +38,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-05T18:10:41Z",
+      "pushedAt": "2026-10-06T10:55:21Z",
       "lastCommit": {
-        "message": "Refresh gaming data [skip ci] (#914)",
-        "committedAt": "2026-10-05T18:10:40Z"
+        "message": "Refresh health data [skip ci] (#920)",
+        "committedAt": "2026-10-06T10:55:21Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -164,10 +164,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "field-kit",
-    "url": "https://github.com/jonnyhaynes/field-kit",
-    "message": "Merge pull request #50 from jonnyhaynes/feat/violet-compositions",
-    "committedAt": "2026-10-05T20:03:50Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh health data [skip ci] (#920)",
+    "committedAt": "2026-10-06T10:55:21Z"
   },
   "repoCount": 17,
   "languages": [
@@ -188,6 +188,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1488,
+  "totalContributions": 1489,
   "reviewContributions": 0
 }
