@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-10-05T15:36:57.107Z",
+  "fetchedAt": "2026-10-06T00:37:03.507Z",
   "timeRange": "short_term",
-  "topGenre": "metal",
+  "topGenre": null,
   "artists": [
     {
       "name": "Beastie Boys",
@@ -24,6 +24,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
     },
     {
+      "name": "Shinedown",
+      "url": "https://open.spotify.com/artist/70BYFdaZbEKbeauJ670ysI",
+      "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
+    },
+    {
       "name": "Slipknot",
       "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
       "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
@@ -37,11 +42,6 @@
       "name": "Queen",
       "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
       "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
-    },
-    {
-      "name": "Sleep Token",
-      "url": "https://open.spotify.com/artist/2n2RSaZqBuUUukhbLlpnE6",
-      "image": "https://i.scdn.co/image/ab6761610000f178d00c2ff422829437e6b5f1e0"
     }
   ],
   "tracks": [
@@ -70,12 +70,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
     },
     {
-      "title": "Freewill",
-      "artist": "Rush",
-      "url": "https://open.spotify.com/track/2XwYeBzumtjxVbFWwhJpsy",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485106c0d7ebcabad0c39b566983"
-    },
-    {
       "title": "Sabotage",
       "artist": "Beastie Boys",
       "url": "https://open.spotify.com/track/0Puj4YlTm6xNzDDADXHMI9",
@@ -92,6 +86,12 @@
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/2DlSOBi6Urh2PUKaGo9O20",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "Sure Shot",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
     }
   ],
   "playlists": [
