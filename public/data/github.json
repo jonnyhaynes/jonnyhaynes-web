@@ -1,29 +1,7 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-06T22:33:07.246Z",
+  "fetchedAt": "2026-10-07T13:02:42.418Z",
   "projects": [
-    {
-      "name": "field-kit",
-      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
-      "url": "https://github.com/jonnyhaynes/field-kit",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript",
-        "Shell",
-        "CSS"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-06T19:49:00Z",
-      "lastCommit": {
-        "message": "Merge pull request #56 from jonnyhaynes/feat/contour-inheritance",
-        "committedAt": "2026-10-06T19:42:31Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -38,14 +16,36 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-06T17:37:37Z",
+      "pushedAt": "2026-10-07T10:42:40Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#925)",
-        "committedAt": "2026-10-06T17:37:36Z"
+        "message": "Refresh health data [skip ci] (#932)",
+        "committedAt": "2026-10-07T10:42:39Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "field-kit",
+      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
+      "url": "https://github.com/jonnyhaynes/field-kit",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "Shell",
+        "CSS"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-07T09:45:04Z",
+      "lastCommit": {
+        "message": "Merge pull request #57 from jonnyhaynes/feat/43-capture-restructure",
+        "committedAt": "2026-10-07T06:08:36Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "full-circle",
@@ -163,10 +163,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "field-kit",
-    "url": "https://github.com/jonnyhaynes/field-kit",
-    "message": "Merge pull request #56 from jonnyhaynes/feat/contour-inheritance",
-    "committedAt": "2026-10-06T19:42:31Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh health data [skip ci] (#932)",
+    "committedAt": "2026-10-07T10:42:39Z"
   },
   "repoCount": 18,
   "languages": [
@@ -187,6 +187,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1520,
+  "totalContributions": 1526,
   "reviewContributions": 0
 }
