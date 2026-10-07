@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-10-07T14:15:53.986Z",
+  "fetchedAt": "2026-10-07T23:28:39.025Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "metal",
   "artists": [
     {
       "name": "Beastie Boys",
@@ -70,6 +70,12 @@
       "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
     },
     {
+      "title": "1979 - Remastered 2012",
+      "artist": "The Smashing Pumpkins",
+      "url": "https://open.spotify.com/track/5QLHGv0DfpeXLNFo7SFEy1",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851431ac6e6f393acf475730ec6"
+    },
+    {
       "title": "Sabotage",
       "artist": "Beastie Boys",
       "url": "https://open.spotify.com/track/0Puj4YlTm6xNzDDADXHMI9",
@@ -86,12 +92,6 @@
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/2DlSOBi6Urh2PUKaGo9O20",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
-    },
-    {
-      "title": "Sure Shot",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
     }
   ],
   "playlists": [
