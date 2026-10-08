@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-07T22:56:43.774Z",
+  "fetchedAt": "2026-10-08T13:09:53.904Z",
   "projects": [
     {
       "name": "colouringcode-web",
@@ -15,10 +15,10 @@
         "JavaScript"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-07T19:43:05Z",
+      "pushedAt": "2026-10-08T13:06:30Z",
       "lastCommit": {
-        "message": "Merge pull request #21 from jonnyhaynes/fix/audit-run-to-completion",
-        "committedAt": "2026-10-07T19:31:49Z"
+        "message": "Merge pull request #25 from jonnyhaynes/feature/work",
+        "committedAt": "2026-10-08T12:44:55Z"
       },
       "isFork": false,
       "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
@@ -38,14 +38,34 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-07T18:09:20Z",
+      "pushedAt": "2026-10-08T11:03:22Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#937)",
-        "committedAt": "2026-10-07T18:09:20Z"
+        "message": "Refresh health data [skip ci] (#944)",
+        "committedAt": "2026-10-08T11:03:22Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "app-live",
+      "description": "Build an Expo app locally with EAS and install it on the device you ask for — a connected device or a BrowserStack App Live cloud device. Ships as both an MCP server and a CLI.",
+      "url": "https://github.com/jonnyhaynes/app-live",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "Shell"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-08T02:27:29Z",
+      "lastCommit": {
+        "message": "Halve .portfolio.json copy length (#4)",
+        "committedAt": "2026-09-02T17:58:03Z"
+      },
+      "isFork": false,
+      "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
+      "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
     },
     {
       "name": "field-kit",
@@ -137,35 +157,13 @@
       "isFork": false,
       "pitch": null,
       "challenge": null
-    },
-    {
-      "name": "thurcroft-church",
-      "description": "Prototype website for St Simon and St Jude, Thurcroft — Next.js + Sanity. Exploration only; not the live site and not affiliated with the parish.",
-      "url": "https://github.com/jonnyhaynes/thurcroft-church",
-      "homepageUrl": "https://church.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "CSS",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-01T07:50:12Z",
-      "lastCommit": {
-        "message": "Merge pull request #7 from jonnyhaynes/feat/forged-in-yorkshire-credit",
-        "committedAt": "2026-10-01T07:49:46Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
     }
   ],
   "lastActivity": {
     "repo": "colouringcode-web",
     "url": "https://github.com/jonnyhaynes/colouringcode-web",
-    "message": "Merge pull request #21 from jonnyhaynes/fix/audit-run-to-completion",
-    "committedAt": "2026-10-07T19:31:49Z"
+    "message": "Merge pull request #25 from jonnyhaynes/feature/work",
+    "committedAt": "2026-10-08T12:44:55Z"
   },
   "repoCount": 18,
   "languages": [
@@ -186,6 +184,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1544,
+  "totalContributions": 1557,
   "reviewContributions": 0
 }
