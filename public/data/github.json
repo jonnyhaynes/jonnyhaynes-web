@@ -1,29 +1,7 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-09T12:56:28.047Z",
+  "fetchedAt": "2026-10-09T22:29:08.943Z",
   "projects": [
-    {
-      "name": "colouringcode-web",
-      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
-      "url": "https://github.com/jonnyhaynes/colouringcode-web",
-      "homepageUrl": "https://www.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "CSS",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-09T12:56:12Z",
-      "lastCommit": {
-        "message": "Merge pull request #38 from jonnyhaynes/feature/app-route-groups",
-        "committedAt": "2026-10-09T12:56:12Z"
-      },
-      "isFork": false,
-      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
-      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
-    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -38,14 +16,37 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-09T11:01:46Z",
+      "pushedAt": "2026-10-09T17:44:52Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#955)",
-        "committedAt": "2026-10-09T11:01:46Z"
+        "message": "Refresh health data [skip ci] (#960)",
+        "committedAt": "2026-10-09T17:44:51Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "colouringcode-web",
+      "description": "Single-page Next.js marketing site for Colouring Code, deployed on Vercel.",
+      "url": "https://github.com/jonnyhaynes/colouringcode-web",
+      "homepageUrl": "https://www.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "Shell",
+        "JavaScript",
+        "SCSS"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-09T17:20:42Z",
+      "lastCommit": {
+        "message": "Merge pull request #48 from jonnyhaynes/fix/lets-talk-band",
+        "committedAt": "2026-10-09T16:19:41Z"
+      },
+      "isFork": false,
+      "pitch": "The Colouring Code website — a single-page Next.js marketing site, styled with Tailwind and deployed on Vercel.",
+      "challenge": "Keeping a striking, type-led landing page fast and fully static with zero runtime dependencies."
     },
     {
       "name": "app-live",
@@ -160,10 +161,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "colouringcode-web",
-    "url": "https://github.com/jonnyhaynes/colouringcode-web",
-    "message": "Merge pull request #38 from jonnyhaynes/feature/app-route-groups",
-    "committedAt": "2026-10-09T12:56:12Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh health data [skip ci] (#960)",
+    "committedAt": "2026-10-09T17:44:51Z"
   },
   "repoCount": 18,
   "languages": [
@@ -184,6 +185,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1585,
+  "totalContributions": 1617,
   "reviewContributions": 0
 }
