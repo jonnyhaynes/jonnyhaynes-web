@@ -1,7 +1,8 @@
 // Fetches GitHub data and writes public/data/github.json.
 //
-// Surfaces the most-recently-PUSHED public repos (active work — NOT pinned),
-// their language breakdown, and the last commit. Two modes:
+// Surfaces the most-recently-PUSHED public repos (active work), their language
+// breakdown, and the last commit. The front end's curated repos are always
+// included regardless of recency (see pinnedRepoNames). Two modes:
 //   - With GITHUB_TOKEN: GraphQL API for repos + last commit + all-time
 //     contributions (summed a calendar year at a time, since a window is capped
 //     at a year) + language breakdown.
@@ -11,12 +12,58 @@
 //
 // Run: node scripts/fetch-github.mjs   (set GITHUB_USER to override the default)
 
-import { writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
 const USER = process.env.GITHUB_USER ?? 'jonnyhaynes';
 const TOKEN = process.env.GITHUB_TOKEN;
 const OUT = 'public/data/github.json';
+/** The curated repos live in the front end's content module; read, don't copy. */
+const PINNED_SOURCE = 'src/content/projects.ts';
+/** How many projects the snapshot bakes. */
+const PROJECT_SLOTS = 7;
+
+/**
+ * The curated repos (src/content/projects.ts → FEATURED_REPOS) that must appear
+ * in the snapshot. The front end's grid shows exactly those entries and silently
+ * skips any the bake omits (see curatedRepos in src/data/projects.ts), so if they
+ * compete on recency alone a busy stretch can quietly delete them from the site.
+ * Read from that file so the two lists can't drift, and fail the bake loudly if
+ * the shape changes rather than silently unpinning every project.
+ */
+async function pinnedRepoNames() {
+  const source = await readFile(PINNED_SOURCE, 'utf8');
+  const names = [...source.matchAll(/repo:\s*'([^']+)'/g)].map((m) => m[1]);
+  if (names.length === 0) {
+    throw new Error(
+      `No pinned repos matched in ${PINNED_SOURCE} — has FEATURED_REPOS moved?`,
+    );
+  }
+  return names;
+}
+
+/** Push time as epoch ms — the recency signal for ordering projects. */
+function pushedAtMs(project) {
+  return new Date(project.pushedAt ?? 0).getTime();
+}
+
+/**
+ * The baked project list: the freshest candidates fill the remaining slots, but
+ * the pinned repos always make the cut. Re-sorted by recency so the front end's
+ * "currently building" fallback (the first non-self project) still reads the
+ * freshest activity first.
+ */
+function selectProjects(pinned, candidates) {
+  const pinnedSet = new Set(pinned);
+  const byRecency = [...candidates].sort((a, b) => pushedAtMs(b) - pushedAtMs(a));
+  const pinnedProjects = byRecency.filter((p) => pinnedSet.has(p.name));
+  const others = byRecency
+    .filter((p) => !pinnedSet.has(p.name))
+    .slice(0, Math.max(0, PROJECT_SLOTS - pinnedProjects.length));
+  return [...pinnedProjects, ...others].sort(
+    (a, b) => pushedAtMs(b) - pushedAtMs(a),
+  );
+}
 
 /** Roll language counts up into a sorted [{ name, count }] breakdown. */
 function languageBreakdown(languages) {
@@ -162,7 +209,7 @@ async function allTimeContributions(createdAt) {
   return { totalContributions, reviewContributions };
 }
 
-async function fetchViaGraphQL() {
+async function fetchViaGraphQL(pinned) {
   // Shared node selection so owned repos and forks map identically via
   // mapProjectNode.
   const repoFields = `
@@ -254,20 +301,17 @@ async function fetchViaGraphQL() {
   await enrichWithPortfolioMeta(forkCandidates);
   const keptForks = forkCandidates.filter((p) => p.pitch != null || p.challenge != null);
 
-  // Projects: the most-recently-PUSHED public repos (active work, not pinned),
-  // plus any opted-in forks — all competing on recency for the top 7 slots.
-  // We bake 7 (not 6) so a full six survive the front end's SELF_EXCLUDE, which
-  // drops the portfolio repo itself; the UI then shows six, alphabetical.
-  // Merge and sort by recency BEFORE enriching, so we only fetch .portfolio.json
-  // for the handful that actually make the cut (allRepos is PUSHED_AT-desc; a
-  // small owned slice is more than enough candidates to fill 7 alongside forks).
-  const ownedCandidates = allRepos.slice(0, 7).map((r) => mapProjectNode(r));
-  const projects = [...ownedCandidates, ...keptForks]
-    .sort(
-      (a, b) =>
-        new Date(b.pushedAt ?? 0).getTime() - new Date(a.pushedAt ?? 0).getTime(),
-    )
-    .slice(0, 7);
+  // Projects: the most-recently-PUSHED public repos (active work), plus any
+  // opted-in forks — competing on recency for the top slots, with the curated
+  // repos pinned in regardless (see selectProjects). We bake 7 (not 6) so a full
+  // six survive the front end's SELF_EXCLUDE, which drops the portfolio repo
+  // itself; the UI then shows six, alphabetical. Merge and sort by recency BEFORE
+  // enriching, so we only fetch .portfolio.json for the handful that make the cut.
+  const pinnedSet = new Set(pinned);
+  const ownedCandidates = allRepos
+    .filter((r, i) => i < PROJECT_SLOTS || pinnedSet.has(r.name))
+    .map((r) => mapProjectNode(r));
+  const projects = selectProjects(pinned, [...ownedCandidates, ...keptForks]);
   // keptForks are already enriched; enrich the owned ones that made the cut.
   await enrichWithPortfolioMeta(projects.filter((p) => !p.isFork));
 
@@ -302,6 +346,9 @@ async function fetchViaGraphQL() {
         repo: top.repo,
         url: top.url,
         message: top.message,
+        // Rank and report the default branch's last commit, not pushedAt: a push
+        // to any branch (Dependabot/CI) would otherwise date the chip to work
+        // nobody did. committedAt is null only in the tokenless REST bake.
         committedAt: top.committedAt ?? top.pushedAt,
       }
     : null;
@@ -321,7 +368,7 @@ async function fetchViaGraphQL() {
   };
 }
 
-async function fetchViaREST() {
+async function fetchViaREST(pinned) {
   const headers = { Accept: 'application/vnd.github+json' };
   const res = await fetch(
     `https://api.github.com/users/${USER}/repos?sort=updated&per_page=100&type=owner`,
@@ -360,15 +407,14 @@ async function fetchViaREST() {
   await enrichWithPortfolioMeta(forkCandidates);
   const keptForks = forkCandidates.filter((p) => p.pitch != null || p.challenge != null);
 
-  // Merge owned + opted-in forks, compete on recency for the top 7. We bake 7
-  // (not 6) so six survive the front end's SELF_EXCLUDE; the UI shows six A–Z.
-  const ownedCandidates = sourceRepos.slice(0, 7).map((r) => toProject(r, false));
-  const projects = [...ownedCandidates, ...keptForks]
-    .sort(
-      (a, b) =>
-        new Date(b.pushedAt ?? 0).getTime() - new Date(a.pushedAt ?? 0).getTime(),
-    )
-    .slice(0, 7);
+  // Merge owned + opted-in forks, compete on recency with the curated repos
+  // pinned in (see selectProjects). We bake 7 (not 6) so six survive the front
+  // end's SELF_EXCLUDE; the UI shows six A–Z.
+  const pinnedSet = new Set(pinned);
+  const ownedCandidates = sourceRepos
+    .filter((r, i) => i < PROJECT_SLOTS || pinnedSet.has(r.name))
+    .map((r) => toProject(r, false));
+  const projects = selectProjects(pinned, [...ownedCandidates, ...keptForks]);
   // keptForks already enriched; enrich the owned ones that made the cut.
   await enrichWithPortfolioMeta(projects.filter((p) => !p.isFork));
 
@@ -393,7 +439,10 @@ async function main() {
   const mode = TOKEN ? 'GraphQL (pinned + contributions)' : 'REST (recent repos)';
   console.log(`Fetching GitHub data for "${USER}" via ${mode}…`);
 
-  const data = TOKEN ? await fetchViaGraphQL() : await fetchViaREST();
+  const pinned = await pinnedRepoNames();
+  const data = TOKEN
+    ? await fetchViaGraphQL(pinned)
+    : await fetchViaREST(pinned);
 
   const payload = {
     user: USER,
