@@ -57,12 +57,12 @@ export const ROLES: readonly Role[] = [
     ],
   },
   {
-    title: 'Founder',
-    company: 'Colouring Code',
-    period: 'Jan 2010 — Jan 2011',
-    place: 'Sheffield',
+    title: 'Designer',
+    company: 'Ebuyer',
+    period: 'Jul 2009 — Jan 2011',
+    place: 'Howden',
     detail: [
-      'Ran an independent consultancy, managing client relationships and shipping Ruby on Rails and HTML5 platforms for letting agents and brands including Pom-Bear Crisps.',
+      'Created original digital designs, asset templates and UI modifications, and produced print and digital assets for global technology vendors including Microsoft, NVIDIA, HP and Samsung.',
     ],
   },
   {
