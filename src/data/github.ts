@@ -88,7 +88,17 @@ export function useGitHubData(): GitHubData | null {
 export const SELF_EXCLUDE = new Set(['jonnyhaynes-web']);
 
 /**
- * The repo to show in the "currently building" chip: the most-recently-pushed
+ * When a project was last actually committed to — the honest "work" signal.
+ * `pushedAt` alone is not enough: it moves on a push to *any* branch, including
+ * automated ones (Dependabot/CI), which would date the chip to work nobody did.
+ * It stands in only when there is no commit (the tokenless REST bake).
+ */
+function lastWorkedAt(project: GitHubProject): string | null {
+  return project.lastCommit?.committedAt ?? project.pushedAt;
+}
+
+/**
+ * The repo to show in the "currently building" chip: the most recently worked-on
  * repo that isn't excluded (so the portfolio doesn't point at itself).
  * Prefers the baked `lastActivity` (which includes owned repos, forks, and
  * repos contributed to), falling back to the newest owned `project`.
@@ -105,14 +115,22 @@ export function currentlyBuilding(
     return data.lastActivity;
   }
 
-  // Fall back to the newest owned project (e.g. tokenless REST bake).
-  const pick = data.projects.find((p) => !SELF_EXCLUDE.has(p.name));
+  // Fall back to the newest owned project (e.g. tokenless REST bake). Rank by
+  // actual commit, not the array's pushedAt order: a bot push to a branch would
+  // otherwise win the top slot and date the chip to work nobody did.
+  const [pick] = data.projects
+    .filter((p) => !SELF_EXCLUDE.has(p.name))
+    .sort(
+      (a, b) =>
+        new Date(lastWorkedAt(b) ?? 0).getTime() -
+        new Date(lastWorkedAt(a) ?? 0).getTime(),
+    );
   if (pick) {
     return {
       repo: pick.name,
       url: pick.url,
       message: pick.lastCommit?.message ?? null,
-      committedAt: pick.lastCommit?.committedAt ?? pick.pushedAt,
+      committedAt: lastWorkedAt(pick),
     };
   }
 
