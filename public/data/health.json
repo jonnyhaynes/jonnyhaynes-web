@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-10T16:36:10.798Z",
+  "fetchedAt": "2026-10-10T23:05:46.988Z",
   "date": "2026-10-10",
   "steps": 2673,
   "activeMinutes": 0,
@@ -50,32 +50,32 @@
     ]
   },
   "weather": {
-    "tempC": 12,
-    "code": 53,
+    "tempC": 10,
+    "code": 0,
     "forecast": [
       {
-        "date": "2026-10-10",
-        "hiC": 13,
-        "loC": 10,
-        "code": 53
-      },
-      {
         "date": "2026-10-11",
-        "hiC": 15,
+        "hiC": 14,
         "loC": 9,
-        "code": 3
+        "code": 51
       },
       {
         "date": "2026-10-12",
-        "hiC": 19,
-        "loC": 12,
+        "hiC": 18,
+        "loC": 11,
+        "code": 3
+      },
+      {
+        "date": "2026-10-13",
+        "hiC": 18,
+        "loC": 13,
         "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "07:23",
-    "sunset": "18:20",
-    "sunriseTomorrow": "07:24"
+    "sunrise": "07:24",
+    "sunset": "18:18",
+    "sunriseTomorrow": "07:26"
   }
 }
