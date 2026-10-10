@@ -55,11 +55,12 @@ React Native · Expo · TypeScript · JavaScript · React · Next.js · HTML · 
 - **App Delivery:** Built the 'Wall Tie Product Selector' iOS/Android app using HTML5, SASS, and JavaScript.
 - **Advanced Web:** Engineered offline-capable web applications using HTML5 Local Storage to cache JSON data.
 
-### Founder — Colouring Code
+### Designer — Ebuyer
 
-*January 2010 – January 2011 • Sheffield*
+*July 2009 – January 2011 • Howden*
 
-- Operated independent consultancy managing client relationships and deploying Ruby on Rails/HTML5 platforms for letting agents and brands like Pom-Bear Crisps.
+- **Digital Asset Production:** Created original digital designs, asset templates, and user interface modifications using semantic XHTML and CSS to strict W3C standards.
+- **Brand Collaboration:** Partnered with internal marketing teams to design print and digital assets for major global technology vendors, including Microsoft, NVIDIA, HP, and Samsung.
 
 ### Consultant & Visiting Lecturer — Wakefield College
 
