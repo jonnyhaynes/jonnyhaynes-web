@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-10T12:14:13.309Z",
+  "fetchedAt": "2026-10-10T16:59:38.329Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-10T10:15:56Z",
+      "pushedAt": "2026-10-10T16:57:06Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#967)",
-        "committedAt": "2026-10-10T10:15:55Z"
+        "message": "[ai-assisted] Replace the Colouring Code role with the Ebuyer Designe…",
+        "committedAt": "2026-10-10T16:57:06Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -90,80 +90,81 @@
       "challenge": null
     },
     {
-      "name": "meliora",
-      "description": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms — Next.js + Payload CMS. Exploration only; not the live site and not affiliated with the business.",
-      "url": "https://github.com/jonnyhaynes/meliora",
-      "homepageUrl": "https://meliora.colouringcode.com",
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-25T13:49:49Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Focus a shared route link on the one route (#103)",
+        "committedAt": "2026-09-25T13:49:17Z"
+      },
+      "isFork": false,
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
+    },
+    {
+      "name": "cmux-sentinel",
+      "description": "Opinionated cmux custom sidebar with live agent states and pluggable AI usage meters",
+      "url": "https://github.com/jonnyhaynes/cmux-sentinel",
+      "homepageUrl": null,
+      "language": "Shell",
+      "languages": [
+        "Shell",
+        "Swift",
+        "TypeScript",
+        "Makefile",
+        "Ruby"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-09-15T15:17:14Z",
+      "lastCommit": {
+        "message": "Merge pull request #9 from jonnyhaynes/feat/commandcode-pane-watcher",
+        "committedAt": "2026-09-15T15:17:06Z"
+      },
+      "isFork": true,
+      "pitch": "cmux-sentinel is an opinionated custom sidebar for cmux: a monospace workspaces list with live per-agent states and pluggable AI usage meters.",
+      "challenge": "cmux sidebars are sandboxed to a fixed set of fields, so agent state is smuggled through reference-counted title markers and usage meters are fed by background pollers."
+    },
+    {
+      "name": "skillswap",
+      "description": "A community skill-swapping platform that connects neighbours to exchange knowledge and services — offer skills, propose swaps, and chat in real time.",
+      "url": "https://github.com/jonnyhaynes/skillswap",
+      "homepageUrl": "https://skillswap.colouringcode.com",
       "language": "TypeScript",
       "languages": [
         "TypeScript",
-        "CSS",
-        "Dockerfile",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-02T08:27:46Z",
-      "lastCommit": {
-        "message": "Fix mobile menu collapsing under the header",
-        "committedAt": "2026-10-02T08:27:40Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "rotherham-virtual-school",
-      "description": "Prototype website for Rotherham Virtual School — Astro + EmDash + GOV.UK Design System. Exploration only; not the live site and not affiliated with Rotherham Council.",
-      "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
-      "homepageUrl": "virtual-school.colouringcode.com",
-      "language": "HTML",
-      "languages": [
-        "HTML",
-        "Astro",
-        "SCSS",
+        "PLpgSQL",
         "JavaScript",
         "CSS",
-        "TypeScript"
+        "HTML",
+        "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-01T15:05:46Z",
+      "pushedAt": "2026-08-01T09:03:31Z",
       "lastCommit": {
-        "message": "Rename /reports/ to /outcomes/, add it to the footer, and clear out t…",
-        "committedAt": "2026-10-01T15:05:36Z"
+        "message": "fix(build): install Chromium system libs so prerendering works on Ver…",
+        "committedAt": "2026-08-01T09:03:31Z"
       },
       "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "thurcroft-church",
-      "description": "Prototype website for St Simon and St Jude, Thurcroft — Next.js + Sanity. Exploration only; not the live site and not affiliated with the parish.",
-      "url": "https://github.com/jonnyhaynes/thurcroft-church",
-      "homepageUrl": "https://church.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "CSS",
-        "Shell",
-        "JavaScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-01T07:50:12Z",
-      "lastCommit": {
-        "message": "Merge pull request #7 from jonnyhaynes/feat/forged-in-yorkshire-credit",
-        "committedAt": "2026-10-01T07:49:46Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
+      "pitch": "A community skill-swapping platform — neighbours offer, request and swap skills, with real-time messaging and reviews.",
+      "challenge": "Auditing every Supabase RLS policy to close a profile-PII leak, without breaking cross-user features like messaging and the verified-neighbour badge."
     }
   ],
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#967)",
-    "committedAt": "2026-10-10T10:15:55Z"
+    "message": "[ai-assisted] Replace the Colouring Code role with the Ebuyer Designe…",
+    "committedAt": "2026-10-10T16:57:06Z"
   },
   "repoCount": 17,
   "languages": [
@@ -184,6 +185,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1622,
+  "totalContributions": 1631,
   "reviewContributions": 0
 }
