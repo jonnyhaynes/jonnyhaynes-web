@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-10T16:59:38.329Z",
+  "fetchedAt": "2026-10-10T21:25:55.488Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-10T16:57:06Z",
+      "pushedAt": "2026-10-10T17:00:33Z",
       "lastCommit": {
-        "message": "[ai-assisted] Replace the Colouring Code role with the Ebuyer Designe…",
-        "committedAt": "2026-10-10T16:57:06Z"
+        "message": "Refresh GitHub data [skip ci] (#975)",
+        "committedAt": "2026-10-10T17:00:32Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -163,8 +163,8 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "[ai-assisted] Replace the Colouring Code role with the Ebuyer Designe…",
-    "committedAt": "2026-10-10T16:57:06Z"
+    "message": "Refresh GitHub data [skip ci] (#975)",
+    "committedAt": "2026-10-10T17:00:32Z"
   },
   "repoCount": 17,
   "languages": [
@@ -185,6 +185,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1631,
+  "totalContributions": 1639,
   "reviewContributions": 0
 }
