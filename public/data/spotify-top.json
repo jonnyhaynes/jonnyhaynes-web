@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-10T13:19:22.685Z",
+  "fetchedAt": "2026-10-10T22:15:22.680Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -9,14 +9,14 @@
       "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
     },
     {
-      "name": "Daði Freyr",
-      "url": "https://open.spotify.com/artist/3Hb64DQZIhDCgyHKrzBXOL",
-      "image": "https://i.scdn.co/image/ab6761610000f178b6f9c9bd5a9081d52186bb94"
-    },
-    {
       "name": "Rammstein",
       "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
       "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+    },
+    {
+      "name": "Daði Freyr",
+      "url": "https://open.spotify.com/artist/3Hb64DQZIhDCgyHKrzBXOL",
+      "image": "https://i.scdn.co/image/ab6761610000f178b6f9c9bd5a9081d52186bb94"
     },
     {
       "name": "The Smashing Pumpkins",
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
     },
     {
-      "name": "Slipknot",
-      "url": "https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8",
-      "image": "https://i.scdn.co/image/ab6761610000f178f5bd8b1496eb4fb7ca5031ad"
-    },
-    {
       "name": "Muse",
       "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
+    },
+    {
+      "name": "Queen",
+      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
+      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
     }
   ],
   "tracks": [
@@ -62,12 +62,6 @@
       "artist": "Clutch",
       "url": "https://open.spotify.com/track/2pfmaxNem3ZQkOqzFyqUYD",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cf5d5060e4d23a2bfc4a33b7"
-    },
-    {
-      "title": "Duality",
-      "artist": "Slipknot",
-      "url": "https://open.spotify.com/track/61mWefnWQOLf90gepjOCb3",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a"
     },
     {
       "title": "1979 - Remastered 2012",
@@ -92,6 +86,12 @@
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/2DlSOBi6Urh2PUKaGo9O20",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "Sure Shot",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
     }
   ],
   "playlists": [
