@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-10T22:15:22.680Z",
+  "fetchedAt": "2026-10-11T13:49:15.316Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -24,11 +24,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
     },
     {
-      "name": "Mushroomhead",
-      "url": "https://open.spotify.com/artist/18absyD7lQaXUDBXnyzU8M",
-      "image": "https://i.scdn.co/image/ab6761610000f17848e3d9fdff3ef62439099d24"
-    },
-    {
       "name": "Shinedown",
       "url": "https://open.spotify.com/artist/70BYFdaZbEKbeauJ670ysI",
       "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
@@ -42,6 +37,11 @@
       "name": "Queen",
       "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
       "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
+    },
+    {
+      "name": "Sleep Token",
+      "url": "https://open.spotify.com/artist/2n2RSaZqBuUUukhbLlpnE6",
+      "image": "https://i.scdn.co/image/ab6761610000f178d00c2ff422829437e6b5f1e0"
     }
   ],
   "tracks": [
@@ -62,12 +62,6 @@
       "artist": "Clutch",
       "url": "https://open.spotify.com/track/2pfmaxNem3ZQkOqzFyqUYD",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cf5d5060e4d23a2bfc4a33b7"
-    },
-    {
-      "title": "1979 - Remastered 2012",
-      "artist": "The Smashing Pumpkins",
-      "url": "https://open.spotify.com/track/5QLHGv0DfpeXLNFo7SFEy1",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851431ac6e6f393acf475730ec6"
     },
     {
       "title": "Sabotage",
@@ -92,6 +86,12 @@
       "artist": "Beastie Boys",
       "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
+    },
+    {
+      "title": "Sonne",
+      "artist": "Rammstein",
+      "url": "https://open.spotify.com/track/3gVhsZtseYtY1fMuyYq06F",
+      "albumArt": "https://i.scdn.co/image/ab67616d000048518b2c42026277efc3e058855b"
     }
   ],
   "playlists": [
