@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-11T13:49:15.316Z",
+  "fetchedAt": "2026-10-11T22:42:13.277Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -9,14 +9,14 @@
       "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
     },
     {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
-    },
-    {
       "name": "Daði Freyr",
       "url": "https://open.spotify.com/artist/3Hb64DQZIhDCgyHKrzBXOL",
       "image": "https://i.scdn.co/image/ab6761610000f178b6f9c9bd5a9081d52186bb94"
+    },
+    {
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     },
     {
       "name": "The Smashing Pumpkins",
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
-      "name": "Queen",
-      "url": "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-      "image": "https://i.scdn.co/image/ab6761610000f17873e4d22612ac8d944b5789b4"
-    },
-    {
       "name": "Sleep Token",
       "url": "https://open.spotify.com/artist/2n2RSaZqBuUUukhbLlpnE6",
       "image": "https://i.scdn.co/image/ab6761610000f178d00c2ff422829437e6b5f1e0"
+    },
+    {
+      "name": "Clutch",
+      "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
+      "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
     }
   ],
   "tracks": [
@@ -88,10 +88,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
     },
     {
-      "title": "Sonne",
-      "artist": "Rammstein",
-      "url": "https://open.spotify.com/track/3gVhsZtseYtY1fMuyYq06F",
-      "albumArt": "https://i.scdn.co/image/ab67616d000048518b2c42026277efc3e058855b"
+      "title": "Beautiful Day",
+      "artist": "Daði Freyr",
+      "url": "https://open.spotify.com/track/03MEX3gr39EnObh3BFixfe",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     }
   ],
   "playlists": [
