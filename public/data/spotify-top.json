@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-11T22:42:13.277Z",
+  "fetchedAt": "2026-10-12T16:32:21.906Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -34,14 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
-      "name": "Sleep Token",
-      "url": "https://open.spotify.com/artist/2n2RSaZqBuUUukhbLlpnE6",
-      "image": "https://i.scdn.co/image/ab6761610000f178d00c2ff422829437e6b5f1e0"
+      "name": "Trivium",
+      "url": "https://open.spotify.com/artist/278ZYwGhdK6QTzE3MFePnP",
+      "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
     },
     {
-      "name": "Clutch",
-      "url": "https://open.spotify.com/artist/161AC1AVRkIGIMxyj5djFQ",
-      "image": "https://i.scdn.co/image/ab6761610000f17802a3b5802998a3d537f8f1fb"
+      "name": "Mastodon",
+      "url": "https://open.spotify.com/artist/1Dvfqq39HxvCJ3GvfeIFuT",
+      "image": "https://i.scdn.co/image/ab6761610000f1789b92861a97e05664994bf21e"
     }
   ],
   "tracks": [
