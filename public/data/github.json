@@ -1,30 +1,7 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-12T15:00:49.612Z",
+  "fetchedAt": "2026-10-13T00:26:31.301Z",
   "projects": [
-    {
-      "name": "sitwellcc-web",
-      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
-      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-      "homepageUrl": "https://www.sitwell.cc",
-      "language": "Astro",
-      "languages": [
-        "Astro",
-        "TypeScript",
-        "CSS",
-        "JavaScript",
-        "HTML"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-12T11:41:29Z",
-      "lastCommit": {
-        "message": "[ai-assisted] Switch site maps from Google Maps to OpenStreetMap (#105)",
-        "committedAt": "2026-10-12T11:37:25Z"
-      },
-      "isFork": false,
-      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
-      "challenge": "Computing honest ride distance and elevation from raw GPX."
-    },
     {
       "name": "jonnyhaynes-web",
       "description": "My personal website — a static site built with React, Vite & TypeScript.",
@@ -39,14 +16,84 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-12T11:30:59Z",
+      "pushedAt": "2026-10-12T20:36:53Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#992)",
-        "committedAt": "2026-10-12T11:30:58Z"
+        "message": "Refresh health data [skip ci] (#997)",
+        "committedAt": "2026-10-12T20:36:53Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
       "challenge": "Keeping API secrets server-side while the site stays fully static: data is baked to JSON by scheduled GitHub Actions, with one Vercel function for live Spotify now-playing, so nothing sensitive ever reaches the client bundle."
+    },
+    {
+      "name": "meliora",
+      "description": "Prototype website for Meliora Kitchens, Bedrooms & Bathrooms — Next.js + Payload CMS. Exploration only; not the live site and not affiliated with the business.",
+      "url": "https://github.com/jonnyhaynes/meliora",
+      "homepageUrl": "https://meliora.colouringcode.com",
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "CSS",
+        "Dockerfile",
+        "Shell",
+        "JavaScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-12T16:04:21Z",
+      "lastCommit": {
+        "message": "Merge pull request #2 from jonnyhaynes/footer-colouring-code-rose",
+        "committedAt": "2026-10-12T16:04:21Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "rotherham-virtual-school",
+      "description": "Prototype website for Rotherham Virtual School — Astro + EmDash + GOV.UK Design System. Exploration only; not the live site and not affiliated with Rotherham Council.",
+      "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
+      "homepageUrl": "virtual-school.colouringcode.com",
+      "language": "HTML",
+      "languages": [
+        "HTML",
+        "Astro",
+        "SCSS",
+        "JavaScript",
+        "CSS",
+        "TypeScript"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-12T16:02:38Z",
+      "lastCommit": {
+        "message": "Merge pull request #1 from jonnyhaynes/footer-colouring-code-credit",
+        "committedAt": "2026-10-12T16:02:37Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
+    },
+    {
+      "name": "sitwellcc-web",
+      "description": "Website for Sitwell Cycling Club — built with Astro, React islands, Tailwind CSS, and Sanity CMS.",
+      "url": "https://github.com/jonnyhaynes/sitwellcc-web",
+      "homepageUrl": "https://www.sitwell.cc",
+      "language": "Astro",
+      "languages": [
+        "Astro",
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-12T15:45:30Z",
+      "lastCommit": {
+        "message": "[ai-assisted] Swap footer credit to Colouring Code rose (#106)",
+        "committedAt": "2026-10-12T15:45:08Z"
+      },
+      "isFork": false,
+      "pitch": "The Sitwell Cycling Club website — an Astro site with Sanity CMS, live ride listings and a contact form.",
+      "challenge": "Computing honest ride distance and elevation from raw GPX."
     },
     {
       "name": "app-live",
@@ -67,50 +114,6 @@
       "isFork": false,
       "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
       "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
-    },
-    {
-      "name": "field-kit",
-      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
-      "url": "https://github.com/jonnyhaynes/field-kit",
-      "homepageUrl": null,
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "JavaScript",
-        "Shell",
-        "CSS"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-07T09:45:04Z",
-      "lastCommit": {
-        "message": "Merge pull request #57 from jonnyhaynes/feat/43-capture-restructure",
-        "committedAt": "2026-10-07T06:08:36Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "full-circle",
-      "description": "Prototype rebuild of the Full Circle Event Production website — unaffiliated: not commissioned by or endorsed by the business. Next.js + Payload CMS.",
-      "url": "https://github.com/jonnyhaynes/full-circle",
-      "homepageUrl": "https://full-circle.colouringcode.com",
-      "language": "TypeScript",
-      "languages": [
-        "TypeScript",
-        "CSS",
-        "JavaScript",
-        "Dockerfile"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-06T15:22:22Z",
-      "lastCommit": {
-        "message": "Merge pull request #1 from jonnyhaynes/docs/agent-setup",
-        "committedAt": "2026-10-06T15:22:22Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
     },
     {
       "name": "cmux-sentinel",
@@ -161,10 +164,10 @@
     }
   ],
   "lastActivity": {
-    "repo": "sitwellcc-web",
-    "url": "https://github.com/jonnyhaynes/sitwellcc-web",
-    "message": "[ai-assisted] Switch site maps from Google Maps to OpenStreetMap (#105)",
-    "committedAt": "2026-10-12T11:37:25Z"
+    "repo": "jonnyhaynes-web",
+    "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
+    "message": "Refresh health data [skip ci] (#997)",
+    "committedAt": "2026-10-12T20:36:53Z"
   },
   "repoCount": 17,
   "languages": [
@@ -185,6 +188,6 @@
       "count": 1
     }
   ],
-  "totalContributions": 1667,
+  "totalContributions": 1678,
   "reviewContributions": 0
 }
