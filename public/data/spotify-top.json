@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-13T23:11:43.598Z",
+  "fetchedAt": "2026-10-14T12:41:14.409Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -39,9 +39,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
     },
     {
-      "name": "Mastodon",
-      "url": "https://open.spotify.com/artist/1Dvfqq39HxvCJ3GvfeIFuT",
-      "image": "https://i.scdn.co/image/ab6761610000f1789b92861a97e05664994bf21e"
+      "name": "Primus",
+      "url": "https://open.spotify.com/artist/64mPnRMMeudAet0E62ypkx",
+      "image": "https://i.scdn.co/image/ab6761610000f17854ed648a0c70ed8910840f4a"
     }
   ],
   "tracks": [
