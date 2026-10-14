@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-10-13T20:54:06.491Z",
-  "date": "2026-10-13",
-  "steps": 3829,
+  "fetchedAt": "2026-10-14T02:44:13.917Z",
+  "date": "2026-10-14",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 53,
-  "calories": 1754,
+  "restingHeartRate": 58,
+  "calories": 71,
   "history": {
     "steps": [
-      {
-        "date": "2026-10-11",
-        "value": 18705
-      },
       {
         "date": "2026-10-12",
         "value": 1044
       },
       {
         "date": "2026-10-13",
-        "value": 3829
+        "value": 5218
+      },
+      {
+        "date": "2026-10-14",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-10-11",
-        "value": 3224
-      },
       {
         "date": "2026-10-12",
         "value": 2309
       },
       {
         "date": "2026-10-13",
-        "value": 1754
+        "value": 2507
+      },
+      {
+        "date": "2026-10-14",
+        "value": 71
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-10-11",
-        "value": 50
-      },
       {
         "date": "2026-10-12",
         "value": 56
@@ -46,19 +42,17 @@
       {
         "date": "2026-10-13",
         "value": 53
+      },
+      {
+        "date": "2026-10-14",
+        "value": 58
       }
     ]
   },
   "weather": {
-    "tempC": 14,
+    "tempC": 11,
     "code": 0,
     "forecast": [
-      {
-        "date": "2026-10-13",
-        "hiC": 18,
-        "loC": 12,
-        "code": 51
-      },
       {
         "date": "2026-10-14",
         "hiC": 17,
@@ -68,14 +62,20 @@
       {
         "date": "2026-10-15",
         "hiC": 20,
-        "loC": 12,
-        "code": 53
+        "loC": 13,
+        "code": 51
+      },
+      {
+        "date": "2026-10-16",
+        "hiC": 14,
+        "loC": 9,
+        "code": 3
       }
     ]
   },
   "sun": {
-    "sunrise": "07:28",
-    "sunset": "18:13",
-    "sunriseTomorrow": "07:30"
+    "sunrise": "07:30",
+    "sunset": "18:11",
+    "sunriseTomorrow": "07:32"
   }
 }
