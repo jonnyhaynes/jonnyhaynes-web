@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-10-14T22:05:01.268Z",
+  "fetchedAt": "2026-10-15T12:29:25.327Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "rock",
   "artists": [
     {
       "name": "Beastie Boys",
@@ -19,11 +19,6 @@
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
     },
     {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
-    },
-    {
       "name": "Shinedown",
       "url": "https://open.spotify.com/artist/70BYFdaZbEKbeauJ670ysI",
       "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
@@ -39,9 +34,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
     },
     {
-      "name": "Royal Blood",
-      "url": "https://open.spotify.com/artist/2S5hlvw4CMtMGswFtfdK15",
-      "image": "https://i.scdn.co/image/ab6761610000f178feb10ed615ad2cf54842acdc"
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
+    },
+    {
+      "name": "DOWN",
+      "url": "https://open.spotify.com/artist/1m0B9ak05G0jqDY4ACLhQu",
+      "image": "https://i.scdn.co/image/ab67726900008f74e0d7af0376c6285910b1cc1a"
     }
   ],
   "tracks": [
