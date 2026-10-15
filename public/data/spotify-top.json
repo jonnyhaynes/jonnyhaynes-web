@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-10-15T12:29:25.327Z",
+  "fetchedAt": "2026-10-15T21:58:20.567Z",
   "timeRange": "short_term",
-  "topGenre": "rock",
+  "topGenre": null,
   "artists": [
     {
       "name": "Beastie Boys",
@@ -14,6 +14,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f178b6f9c9bd5a9081d52186bb94"
     },
     {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
+    },
+    {
       "name": "The Smashing Pumpkins",
       "url": "https://open.spotify.com/artist/40Yq4vzPs9VNUrIBG5Jr2i",
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
@@ -24,24 +29,19 @@
       "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
       "name": "Trivium",
       "url": "https://open.spotify.com/artist/278ZYwGhdK6QTzE3MFePnP",
       "image": "https://i.scdn.co/image/ab6761610000f1783a1260610a63efb224c4612b"
     },
     {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
-    },
-    {
       "name": "DOWN",
       "url": "https://open.spotify.com/artist/1m0B9ak05G0jqDY4ACLhQu",
       "image": "https://i.scdn.co/image/ab67726900008f74e0d7af0376c6285910b1cc1a"
+    },
+    {
+      "name": "Rammstein",
+      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
+      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     }
   ],
   "tracks": [
@@ -62,6 +62,12 @@
       "artist": "Clutch",
       "url": "https://open.spotify.com/track/2pfmaxNem3ZQkOqzFyqUYD",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cf5d5060e4d23a2bfc4a33b7"
+    },
+    {
+      "title": "The Dark Forest",
+      "artist": "Muse",
+      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     },
     {
       "title": "Sabotage",
@@ -86,12 +92,6 @@
       "artist": "Beastie Boys",
       "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
-    },
-    {
-      "title": "Beautiful Day",
-      "artist": "Daði Freyr",
-      "url": "https://open.spotify.com/track/03MEX3gr39EnObh3BFixfe",
-      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     }
   ],
   "playlists": [
