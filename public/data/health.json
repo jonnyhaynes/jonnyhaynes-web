@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-10-14T22:51:14.760Z",
-  "date": "2026-10-14",
-  "steps": 2927,
+  "fetchedAt": "2026-10-15T02:23:34.772Z",
+  "date": "2026-10-15",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 57,
-  "calories": 1704,
+  "restingHeartRate": 59,
+  "calories": 71,
   "history": {
     "steps": [
-      {
-        "date": "2026-10-12",
-        "value": 1044
-      },
       {
         "date": "2026-10-13",
         "value": 5218
       },
       {
         "date": "2026-10-14",
-        "value": 2927
+        "value": 4464
+      },
+      {
+        "date": "2026-10-15",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-10-12",
-        "value": 2309
-      },
       {
         "date": "2026-10-13",
         "value": 2507
       },
       {
         "date": "2026-10-14",
-        "value": 1704
+        "value": 2502
+      },
+      {
+        "date": "2026-10-15",
+        "value": 71
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-10-12",
-        "value": 56
-      },
       {
         "date": "2026-10-13",
         "value": 53
@@ -46,6 +42,10 @@
       {
         "date": "2026-10-14",
         "value": 57
+      },
+      {
+        "date": "2026-10-15",
+        "value": 59
       }
     ]
   },
@@ -54,28 +54,28 @@
     "code": 3,
     "forecast": [
       {
-        "date": "2026-10-14",
-        "hiC": 17,
-        "loC": 9,
-        "code": 3
-      },
-      {
         "date": "2026-10-15",
         "hiC": 19,
         "loC": 11,
-        "code": 61
+        "code": 63
       },
       {
         "date": "2026-10-16",
-        "hiC": 14,
+        "hiC": 13,
         "loC": 9,
         "code": 51
+      },
+      {
+        "date": "2026-10-17",
+        "hiC": 12,
+        "loC": 7,
+        "code": 3
       }
     ]
   },
   "sun": {
-    "sunrise": "07:30",
-    "sunset": "18:11",
-    "sunriseTomorrow": "07:32"
+    "sunrise": "07:32",
+    "sunset": "18:09",
+    "sunriseTomorrow": "07:34"
   }
 }
