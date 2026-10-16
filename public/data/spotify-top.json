@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-16T12:07:42.287Z",
+  "fetchedAt": "2026-10-16T21:56:39.759Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -29,6 +29,11 @@
       "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
     },
     {
+      "name": "Greta Van Fleet",
+      "url": "https://open.spotify.com/artist/4NpFxQe2UvRCAjto3JqlSl",
+      "image": "https://i.scdn.co/image/ab6761610000f178ec2b054086a86562dbd8a779"
+    },
+    {
       "name": "Fontaines D.C.",
       "url": "https://open.spotify.com/artist/3SXwqSqAoBz9WCI9PDQzY6",
       "image": "https://i.scdn.co/image/ab6761610000f17850d562d05673af1ca1380a07"
@@ -37,11 +42,6 @@
       "name": "DOWN",
       "url": "https://open.spotify.com/artist/1m0B9ak05G0jqDY4ACLhQu",
       "image": "https://i.scdn.co/image/ab67726900008f74e0d7af0376c6285910b1cc1a"
-    },
-    {
-      "name": "Rammstein",
-      "url": "https://open.spotify.com/artist/6wWVKhxIU2cEi0K81v7HvP",
-      "image": "https://i.scdn.co/image/ab6761610000f17832845b1556f9dbdfe8ee6575"
     }
   ],
   "tracks": [
