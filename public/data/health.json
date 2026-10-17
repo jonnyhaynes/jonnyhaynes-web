@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-10-16T22:19:59.843Z",
-  "date": "2026-10-16",
-  "steps": 3064,
+  "fetchedAt": "2026-10-17T02:10:09.890Z",
+  "date": "2026-10-17",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 49,
-  "calories": 1597,
+  "restingHeartRate": 57,
+  "calories": 15,
   "history": {
     "steps": [
-      {
-        "date": "2026-10-14",
-        "value": 4464
-      },
       {
         "date": "2026-10-15",
         "value": 3661
       },
       {
         "date": "2026-10-16",
-        "value": 3064
+        "value": 4265
+      },
+      {
+        "date": "2026-10-17",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-10-14",
-        "value": 2502
-      },
       {
         "date": "2026-10-15",
         "value": 2365
       },
       {
         "date": "2026-10-16",
-        "value": 1597
+        "value": 2397
+      },
+      {
+        "date": "2026-10-17",
+        "value": 15
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-10-14",
-        "value": 57
-      },
       {
         "date": "2026-10-15",
         "value": 54
@@ -46,36 +42,40 @@
       {
         "date": "2026-10-16",
         "value": 49
+      },
+      {
+        "date": "2026-10-17",
+        "value": 57
       }
     ]
   },
   "weather": {
-    "tempC": 9,
-    "code": 0,
+    "tempC": 8,
+    "code": 2,
     "forecast": [
       {
-        "date": "2026-10-16",
-        "hiC": 14,
-        "loC": 9,
-        "code": 55
-      },
-      {
         "date": "2026-10-17",
-        "hiC": 13,
-        "loC": 8,
+        "hiC": 12,
+        "loC": 7,
         "code": 3
       },
       {
         "date": "2026-10-18",
         "hiC": 12,
-        "loC": 6,
+        "loC": 7,
         "code": 3
+      },
+      {
+        "date": "2026-10-19",
+        "hiC": 14,
+        "loC": 9,
+        "code": 55
       }
     ]
   },
   "sun": {
-    "sunrise": "07:34",
-    "sunset": "18:07",
-    "sunriseTomorrow": "07:35"
+    "sunrise": "07:35",
+    "sunset": "18:04",
+    "sunriseTomorrow": "07:37"
   }
 }
