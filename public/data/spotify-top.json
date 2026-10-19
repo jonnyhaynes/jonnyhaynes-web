@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-19T14:24:12.961Z",
+  "fetchedAt": "2026-10-19T22:48:54.375Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
@@ -70,12 +70,6 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
     },
     {
-      "title": "Sabotage",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/0Puj4YlTm6xNzDDADXHMI9",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
-    },
-    {
       "title": "And Me - Remastered 2009",
       "artist": "Beastie Boys",
       "url": "https://open.spotify.com/track/0ZcJ2JdB8vdgCWij7mFUuQ",
@@ -88,10 +82,16 @@
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     },
     {
-      "title": "Sure Shot",
+      "title": "Sabotage",
       "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/21REQ1bCUWphT2QK3bLWYQ",
+      "url": "https://open.spotify.com/track/0Puj4YlTm6xNzDDADXHMI9",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
+    },
+    {
+      "title": "Beautiful Day",
+      "artist": "Daði Freyr",
+      "url": "https://open.spotify.com/track/03MEX3gr39EnObh3BFixfe",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     }
   ],
   "playlists": [
