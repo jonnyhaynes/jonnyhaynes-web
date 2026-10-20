@@ -1,7 +1,7 @@
 {
-  "fetchedAt": "2026-10-19T22:48:54.375Z",
+  "fetchedAt": "2026-10-20T12:33:54.321Z",
   "timeRange": "short_term",
-  "topGenre": null,
+  "topGenre": "rock",
   "artists": [
     {
       "name": "Beastie Boys",
@@ -14,14 +14,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f178b6f9c9bd5a9081d52186bb94"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
-    },
-    {
       "name": "The Smashing Pumpkins",
       "url": "https://open.spotify.com/artist/40Yq4vzPs9VNUrIBG5Jr2i",
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
+    },
+    {
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Shinedown",
@@ -52,28 +52,22 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851db1d43cd3ff1859292d4e223"
     },
     {
-      "title": "Intergalactic - Remastered 2009",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
-    },
-    {
       "title": "The Drifter Returns",
       "artist": "Clutch",
       "url": "https://open.spotify.com/track/2pfmaxNem3ZQkOqzFyqUYD",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cf5d5060e4d23a2bfc4a33b7"
     },
     {
+      "title": "Intergalactic - Remastered 2009",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
+    },
+    {
       "title": "The Dark Forest",
       "artist": "Muse",
       "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
       "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
-    },
-    {
-      "title": "And Me - Remastered 2009",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/0ZcJ2JdB8vdgCWij7mFUuQ",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     },
     {
       "title": "I Don't Wanna Talk",
@@ -92,6 +86,12 @@
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/03MEX3gr39EnObh3BFixfe",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "And Me - Remastered 2009",
+      "artist": "Beastie Boys",
+      "url": "https://open.spotify.com/track/0ZcJ2JdB8vdgCWij7mFUuQ",
+      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
     }
   ],
   "playlists": [
