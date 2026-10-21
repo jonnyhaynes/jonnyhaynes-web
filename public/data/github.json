@@ -1,6 +1,6 @@
 {
   "user": "jonnyhaynes",
-  "fetchedAt": "2026-10-20T21:26:41.348Z",
+  "fetchedAt": "2026-10-21T11:31:10.268Z",
   "projects": [
     {
       "name": "jonnyhaynes-web",
@@ -16,10 +16,10 @@
         "Shell"
       ],
       "stars": 0,
-      "pushedAt": "2026-10-20T16:03:19Z",
+      "pushedAt": "2026-10-21T09:00:07Z",
       "lastCommit": {
-        "message": "Refresh health data [skip ci] (#1093)",
-        "committedAt": "2026-10-20T16:03:18Z"
+        "message": "Refresh health data [skip ci] (#1100)",
+        "committedAt": "2026-10-21T09:00:07Z"
       },
       "isFork": false,
       "pitch": "My personal portfolio — a React + Vite SPA with live GitHub and Spotify data, a Modern Yorkshire theme, and an interactive topographic background.",
@@ -43,30 +43,6 @@
       "lastCommit": {
         "message": "Merge pull request #2 from jonnyhaynes/footer-colouring-code-rose",
         "committedAt": "2026-10-12T16:04:21Z"
-      },
-      "isFork": false,
-      "pitch": null,
-      "challenge": null
-    },
-    {
-      "name": "rotherham-virtual-school",
-      "description": "Prototype website for Rotherham Virtual School — Astro + EmDash + GOV.UK Design System. Exploration only; not the live site and not affiliated with Rotherham Council.",
-      "url": "https://github.com/jonnyhaynes/rotherham-virtual-school",
-      "homepageUrl": "virtual-school.colouringcode.com",
-      "language": "HTML",
-      "languages": [
-        "HTML",
-        "Astro",
-        "SCSS",
-        "JavaScript",
-        "CSS",
-        "TypeScript"
-      ],
-      "stars": 0,
-      "pushedAt": "2026-10-12T16:02:38Z",
-      "lastCommit": {
-        "message": "Merge pull request #1 from jonnyhaynes/footer-colouring-code-credit",
-        "committedAt": "2026-10-12T16:02:37Z"
       },
       "isFork": false,
       "pitch": null,
@@ -114,6 +90,28 @@
       "isFork": false,
       "pitch": "Builds an Expo app locally with EAS and installs it onto whichever device you name — physical or BrowserStack cloud. Ships as an MCP server and a CLI.",
       "challenge": "Making device routing invisible: one call detects whether the named device is local and picks the right installer, or falls back to BrowserStack — the caller never knows where the device lives."
+    },
+    {
+      "name": "field-kit",
+      "description": "First aid for remote and low-signal environments. Native iOS and Android, works fully offline.",
+      "url": "https://github.com/jonnyhaynes/field-kit",
+      "homepageUrl": null,
+      "language": "TypeScript",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "Shell",
+        "CSS"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-07T09:45:04Z",
+      "lastCommit": {
+        "message": "Merge pull request #57 from jonnyhaynes/feat/43-capture-restructure",
+        "committedAt": "2026-10-07T06:08:36Z"
+      },
+      "isFork": false,
+      "pitch": null,
+      "challenge": null
     },
     {
       "name": "cmux-sentinel",
@@ -166,10 +164,10 @@
   "lastActivity": {
     "repo": "jonnyhaynes-web",
     "url": "https://github.com/jonnyhaynes/jonnyhaynes-web",
-    "message": "Refresh health data [skip ci] (#1093)",
-    "committedAt": "2026-10-20T16:03:18Z"
+    "message": "Refresh health data [skip ci] (#1100)",
+    "committedAt": "2026-10-21T09:00:07Z"
   },
-  "repoCount": 17,
+  "repoCount": 16,
   "languages": [
     {
       "name": "TypeScript",
@@ -180,14 +178,14 @@
       "count": 3
     },
     {
-      "name": "HTML",
-      "count": 2
+      "name": "Astro",
+      "count": 1
     },
     {
-      "name": "Astro",
+      "name": "HTML",
       "count": 1
     }
   ],
-  "totalContributions": 1708,
+  "totalContributions": 1716,
   "reviewContributions": 0
 }
