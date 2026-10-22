@@ -1,7 +1,8 @@
 /**
  * Copy and data for the desk. Everything here is hand-authored except the live
- * panels (Spotify, games, health), which read the baked snapshots and fall back
- * to the values below when a fetch is missing or stale.
+ * panels (games and health), which read the baked snapshots and fall back to the
+ * values below when a fetch is missing or stale. The turntable uses the live
+ * now-playing API instead of a baked snapshot.
  */
 
 export type DeskLink = { label: string; href: string };

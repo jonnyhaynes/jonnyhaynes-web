@@ -5,7 +5,7 @@
 // Run:
 //   STEAM_API_KEY=xxx STEAM_ID=yyy XBL_API_KEY=zzz node scripts/fetch-gaming.mjs
 //
-// Design (mirrors fetch-spotify.mjs): each source is wrapped so a failure logs a
+// Design: each source is wrapped so a failure logs a
 // warning and yields no games rather than failing the whole bake — one platform
 // being down (or Xbox's third-party service being flaky) must never lose the
 // other's data. Each source reports a status ('ok' | 'error' | 'skipped') baked
