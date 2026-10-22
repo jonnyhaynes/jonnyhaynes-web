@@ -1,154 +1,83 @@
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
-import { Footer } from '../components/Footer';
+import { CursorArrow, MoonIcon, SunIcon } from '../desk/bits';
+import { PrivacyContent } from '../desk/PrivacyContent';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
-import { PaletteToggle } from '../theme/PaletteToggle';
-import { ThemeToggle } from '../theme/ThemeToggle';
-
-const LINK =
-  'text-foreground underline decoration-muted/40 underline-offset-4 transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start';
+import { useTheme } from '../theme/useTheme';
+import '../desk/desk.css';
+import '../desk/privacy.css';
 
 /**
- * Privacy page. Static content, served by the /privacy route so the whole
- * site shares one footer and stylesheet. Restyled for V2 (Tailwind); no
- * animated gradient.
+ * Direct-link fallback for the privacy policy. In the site itself privacy opens
+ * as a desk window; this page keeps /privacy working for external links, app
+ * store listings and anyone who bookmarks it.
  */
 export function Privacy() {
-  const contactRef = useRef<HTMLSpanElement>(null);
+  useDocumentTitle('Privacy — Jonny Haynes');
 
-  // The tab, history and anything reading the page title should say where this
-  // is, not repeat the home page's title.
-  useDocumentTitle('Privacy - Jonny Haynes');
-
-  useEffect(() => {
-    // Email assembled at runtime so the address never appears in the raw HTML
-    // source that spam scrapers read.
-    const user = ['jonny.d.haynes'];
-    const domain = ['gmail', 'com'];
-    const addr = user.join('') + String.fromCharCode(64) + domain.join('.');
-
-    const subject = encodeURIComponent('Privacy question — www.jonnyhaynes.com');
-    const link = document.createElement('a');
-    link.href = `mailto:${addr}?subject=${subject}`;
-    link.textContent = addr;
-    link.className = LINK;
-
-    const slot = contactRef.current;
-    if (slot) {
-      slot.textContent = '';
-      slot.appendChild(link);
-    }
-  }, []);
+  const { theme, toggle } = useTheme();
+  const dark = theme === 'dark';
+  const year = new Date().getFullYear();
 
   return (
-    <>
-      <a href="#main" className="skip-link">
+    <div className={`desk privacy${dark ? ' dark' : ''}`}>
+      <a className="skip" href="#main">
         Skip to content
       </a>
 
-      <header className="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
-        <Link
-          to="/"
-          className="font-mono text-sm text-muted transition-colors hover:text-accent-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-start"
-        >
-          &larr; Back to home
+      <header className="privacy-bar">
+        <Link to="/" className="privacy-back">
+          <span aria-hidden="true">←</span> Back to the desk
         </Link>
-        <div className="flex items-center gap-2">
-          <PaletteToggle />
-          <ThemeToggle />
-        </div>
+        <button
+          type="button"
+          className="ctl ctl-ico"
+          aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          onClick={toggle}
+        >
+          {dark ? <SunIcon /> : <MoonIcon />}
+        </button>
       </header>
 
-      <main id="main" className="mx-auto max-w-4xl px-6 py-8">
-        {/* The page shell stays at max-w-4xl so the heading lines up with the
-            header and footer; the prose itself is held to a reading measure. At
-            the shell's own width these paragraphs ran to ~88 characters a line,
-            well past the 76ch ceiling, so the eye lost the line between returns. */}
-        <article className="flex max-w-[68ch] flex-col gap-6">
-          <h1 className="text-4xl font-medium tracking-tight">Privacy</h1>
+      <main id="main" className="privacy-main" tabIndex={-1}>
+        <div className="privacy-hero">
+          <p className="privacy-kicker mono">THE SMALL PRINT</p>
 
-          <p className="text-muted leading-[1.7]">
-            This is a small personal website. It does not sell anything, run
+          <div className="privacy-sel">
+            <span className="h h1" aria-hidden="true" />
+            <span className="h h2" aria-hidden="true" />
+            <span className="h h3" aria-hidden="true" />
+
+            <span className="clabel lb privacy-cursor" aria-hidden="true">
+              <span className="cur">
+                <CursorArrow ink="#1D3FD1" />
+              </span>
+              <span className="ltxt">Privacy, but readable</span>
+            </span>
+
+            <h1 className="privacy-title">Privacy.</h1>
+          </div>
+
+          <p className="privacy-lede">
+            This is a small personal website. It doesn’t sell anything, run
             advertising, or build a profile of you. Here is exactly what happens
             when you visit.
           </p>
+        </div>
 
-          <section className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-foreground">Analytics</h2>
-            <p className="text-muted leading-[1.7]">
-              The site uses{' '}
-              <a href="https://vercel.com/docs/analytics/privacy-policy" className={LINK}>
-                Vercel Web Analytics
-              </a>{' '}
-              to count page views. It is cookieless: it sets no cookies and
-              stores nothing on your device. It records aggregate, anonymised
-              data such as the page visited, approximate country, referrer, and
-              device type. It does not track you across other sites or identify
-              you personally. For this reason there is no cookie banner — there
-              are no non-essential cookies to consent to.
-            </p>
-          </section>
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-foreground">Fonts</h2>
-            <p className="text-muted leading-[1.7]">
-              Type is served by{' '}
-              <a href="https://fonts.bunny.net/" className={LINK}>
-                Bunny Fonts
-              </a>
-              , a privacy-first, GDPR-compliant font delivery service that sets
-              no cookies and does not log personal data.
-            </p>
-          </section>
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-foreground">Hosting</h2>
-            <p className="text-muted leading-[1.7]">
-              The site is hosted on{' '}
-              <a href="https://vercel.com/" className={LINK}>
-                Vercel
-              </a>
-              , which processes standard server request logs (including IP
-              addresses) to deliver the site and protect against abuse, in line
-              with its own privacy policy.
-            </p>
-          </section>
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-foreground">Map data</h2>
-            <p className="text-muted leading-[1.7]">
-              The background contours are real South Yorkshire relief, derived
-              from Ordnance Survey OS Terrain&nbsp;50. Contains OS data &copy;
-              Crown copyright and database right 2026, used under the{' '}
-              <a
-                href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
-                className={LINK}
-              >
-                Open Government Licence v3.0
-              </a>
-              .
-            </p>
-          </section>
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-foreground">
-              Your rights &amp; contact
-            </h2>
-            <p className="text-muted leading-[1.7]">
-              Because no personal profile is created and no identifying data is
-              stored, there is nothing for you to access or erase here. If you
-              have any privacy question, email{' '}
-              <span ref={contactRef}>
-                <noscript>jonny.d.haynes [at] gmail [dot] com</noscript>
-              </span>
-              .
-            </p>
-          </section>
+        <article className="privacy-card">
+          <PrivacyContent headingLevel={2} />
         </article>
-      </main>
 
-      <Footer />
-    </>
+        <footer className="privacy-foot">
+          <span>© 1985–{year} Jonny Haynes</span>
+          <span className="privacy-sep" aria-hidden="true">
+            ·
+          </span>
+          <Link to="/">Back to the desk</Link>
+        </footer>
+      </main>
+    </div>
   );
 }
