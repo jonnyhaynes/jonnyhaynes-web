@@ -309,12 +309,6 @@ type ShelfBook = {
   ink: string;
 };
 
-const SHELF_FALLBACKS = [
-  { cover: '#FFD43B', ink: '#0B1B4A' },
-  { cover: '#E3E8F0', ink: '#0B1B4A' },
-  { cover: '#1D3FD1', ink: '#FFFFFF' },
-] as const;
-
 /** "Letters to Our Sons: The Instant…" → "Letters to Our Sons". */
 function shortTitle(title: string) {
   const short = title.split(':')[0].trim();
@@ -323,22 +317,20 @@ function shortTitle(title: string) {
 
 function shelfBooks(data: SpotifyAudiobook[] | null): ShelfBook[] {
   const latest = data?.slice(0, 3) ?? [];
-  if (!latest.length) {
-    return BOOKS.map((book) => ({
-      title: 'short' in book ? book.short : book.title,
-      author: book.author,
-      cover: book.cover,
-      ink: book.ink,
-    }));
-  }
-  return latest.map((book, i) => {
-    const fallback = SHELF_FALLBACKS[i % SHELF_FALLBACKS.length];
-    return {
-      title: shortTitle(book.title),
-      author: book.authors,
-      cover: book.spine?.bg ?? fallback.cover,
-      ink: book.spine?.ink ?? fallback.ink,
-    };
+  const source = latest.length
+    ? latest.map((book) => ({
+        title: shortTitle(book.title),
+        author: book.authors,
+      }))
+    : BOOKS.map((book) => ({
+        title: 'short' in book ? book.short : book.title,
+        author: book.author,
+      }));
+
+  // Keep the original shelf palette: the fitted titles change, the room doesn't.
+  return source.map((book, i) => {
+    const colour = BOOKS[i % BOOKS.length];
+    return { ...book, cover: colour.cover, ink: colour.ink };
   });
 }
 

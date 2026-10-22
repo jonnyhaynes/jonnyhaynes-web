@@ -31,10 +31,6 @@ jobs:
           node-version: 22
           cache: npm
 
-      # sharp derives each cover's dominant colour for the shelf spines.
-      - name: Install dependencies
-        run: npm ci
-
       - name: Fetch audiobook data
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}

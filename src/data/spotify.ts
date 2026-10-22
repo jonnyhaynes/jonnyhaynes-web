@@ -32,12 +32,6 @@ export type SpotifyAudiobook = {
   authors: string;
   url: string | null;
   cover: string | null;
-  /**
-   * Dominant-colour "spine" for the bookshelf render, baked from the cover
-   * (Spotify has no spine images). Optional so older baked JSON still
-   * type-checks and the component falls back to the shelf palette.
-   */
-  spine?: { bg: string; ink: string } | null;
 };
 
 export type SpotifyAudiobooks = {
