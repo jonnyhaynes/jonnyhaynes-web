@@ -252,6 +252,10 @@ export function JourneyWindow({ onClose }: { onClose: () => void }) {
                         <dt>Employer</dt>
                         <dd>{role.org}</dd>
                       </div>
+                      <div>
+                        <dt>Workplace</dt>
+                        <dd>{role.place}</dd>
+                      </div>
                       <div className="half">
                         <dt>Issued</dt>
                         <dd>{role.from}</dd>
