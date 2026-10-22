@@ -169,6 +169,7 @@ export const PROJECTS: readonly DeskProject[] = [
 export type DeskRole = {
   title: string;
   org: string;
+  place: string;
   years: string;
   from: number;
   to: number | null;
@@ -181,6 +182,7 @@ export const ROLES: readonly DeskRole[] = [
   {
     title: 'Full Stack Developer',
     org: 'HMA Digital',
+    place: 'Barnsley',
     years: '2017 — now',
     from: 2017,
     to: null,
@@ -197,52 +199,70 @@ export const ROLES: readonly DeskRole[] = [
   {
     title: 'Senior Front-End Developer',
     org: 'Ledgard Jepson',
+    place: 'Sheffield',
     years: '2015 — 2017',
     from: 2015,
     to: 2017,
     badge: { band: '#FFD43B', text: '#0B1B4A', strap: '#E0B21C' },
     access: [],
-    points: [],
+    points: [
+      'Mentored junior staff and took full responsibility for the technical quality of the team’s output.',
+      'Partnered with the Digital Director on resource planning and technical estimation, and translated designs into highly semantic interfaces.',
+    ],
   },
   {
     title: 'Front-End Developer',
     org: 'Ledgard Jepson',
+    place: 'Sheffield',
     years: '2011 — 2015',
     from: 2011,
     to: 2015,
     badge: { band: '#0B1B4A', text: '#FFFFFF', strap: '#0B1B4A' },
     access: [],
-    points: [],
+    points: [
+      'Directed the company’s move to responsive web design and mobile app production with PhoneGap.',
+      'Built the Wall Tie Product Selector iOS and Android app in HTML5, SASS and JavaScript — the app that sits alongside Ancon.',
+      'Engineered offline-capable web applications, caching JSON in HTML5 local storage.',
+    ],
   },
   {
     title: 'Designer',
     org: 'Ebuyer',
+    place: 'Howden',
     years: '2009 — 2011',
     from: 2009,
     to: 2011,
     badge: { band: '#C9D5FA', text: '#0B1B4A', strap: '#8FA6F5' },
     access: [],
-    points: [],
+    points: [
+      'Created original digital designs, asset templates and UI modifications, and produced print and digital assets for global technology vendors including Microsoft, NVIDIA, HP and Samsung.',
+    ],
   },
   {
     title: 'Consultant & Visiting Lecturer',
     org: 'Wakefield College',
+    place: 'Wakefield',
     years: '2009 — 2010',
     from: 2009,
     to: 2010,
     badge: { band: '#E3E8F0', text: '#0B1B4A', strap: '#9AA9C6' },
     access: [],
-    points: [],
+    points: [
+      'Modernised the FdA Web Design module structure and lectured on semantic HTML, CSS and web accessibility standards.',
+    ],
   },
   {
     title: 'Web User Experience Designer',
     org: 'TechnoPhobia Ltd.',
+    place: 'Sheffield',
     years: '2006 — 2009',
     from: 2006,
     to: 2009,
     badge: { band: '#EEF2FF', text: '#1D3FD1', strap: '#7C95FF' },
     access: [],
-    points: [],
+    points: [
+      'Built functional prototypes and templates for high-profile systems, including the South Yorkshire Police recruitment platform.',
+    ],
   },
 ];
 
