@@ -1,13 +1,8 @@
 {
-  "fetchedAt": "2026-10-21T22:09:25.241Z",
+  "fetchedAt": "2026-10-22T12:48:45.312Z",
   "timeRange": "short_term",
   "topGenre": null,
   "artists": [
-    {
-      "name": "Beastie Boys",
-      "url": "https://open.spotify.com/artist/03r4iKL2g2442PT9n2UKsx",
-      "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
-    },
     {
       "name": "Daði Freyr",
       "url": "https://open.spotify.com/artist/3Hb64DQZIhDCgyHKrzBXOL",
@@ -19,9 +14,14 @@
       "image": "https://i.scdn.co/image/ab6761610000f1782897dd777bbd8e3f23e49c99"
     },
     {
-      "name": "Muse",
-      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
-      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
+      "name": "Beastie Boys",
+      "url": "https://open.spotify.com/artist/03r4iKL2g2442PT9n2UKsx",
+      "image": "https://i.scdn.co/image/b6fafee2c4c169dadf039c2066ab77beb4c82b3e"
+    },
+    {
+      "name": "Greta Van Fleet",
+      "url": "https://open.spotify.com/artist/4NpFxQe2UvRCAjto3JqlSl",
+      "image": "https://i.scdn.co/image/ab6761610000f178ec2b054086a86562dbd8a779"
     },
     {
       "name": "Shinedown",
@@ -29,9 +29,9 @@
       "image": "https://i.scdn.co/image/ab6761610000f178f4abd88b7232d8cc5ed55ebb"
     },
     {
-      "name": "Greta Van Fleet",
-      "url": "https://open.spotify.com/artist/4NpFxQe2UvRCAjto3JqlSl",
-      "image": "https://i.scdn.co/image/ab6761610000f178ec2b054086a86562dbd8a779"
+      "name": "Muse",
+      "url": "https://open.spotify.com/artist/12Chz98pHFMPJEknJQMWvI",
+      "image": "https://i.scdn.co/image/ab6761610000f178ccb215d769112ec422a59ce6"
     },
     {
       "name": "Fontaines D.C.",
@@ -58,28 +58,10 @@
       "albumArt": "https://i.scdn.co/image/ab67616d00004851cf5d5060e4d23a2bfc4a33b7"
     },
     {
-      "title": "Intergalactic - Remastered 2009",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/5fpizYGbi5IQoEraj6FP0R",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851ab1d7b56d97842315dd0fdaa"
-    },
-    {
-      "title": "The Dark Forest",
-      "artist": "Muse",
-      "url": "https://open.spotify.com/track/1JIffDQIhTeOeqYW66uu9e",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851b295bd39e098e7b68d57aacf"
-    },
-    {
       "title": "I Don't Wanna Talk",
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/2DlSOBi6Urh2PUKaGo9O20",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
-    },
-    {
-      "title": "Sabotage",
-      "artist": "Beastie Boys",
-      "url": "https://open.spotify.com/track/0Puj4YlTm6xNzDDADXHMI9",
-      "albumArt": "https://i.scdn.co/image/ab67616d00004851436a305db8bd85b820da3e5a"
     },
     {
       "title": "Beautiful Day",
@@ -91,6 +73,24 @@
       "title": "Me and You",
       "artist": "Daði Freyr",
       "url": "https://open.spotify.com/track/3QiSrLqtn1jEHXQ1XrRi59",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "With You",
+      "artist": "Daði Freyr",
+      "url": "https://open.spotify.com/track/3bqu9p1h5YcG42huPmkWmI",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "Hot Damn",
+      "artist": "Daði Freyr",
+      "url": "https://open.spotify.com/track/4WZDUANy6NFViRAm7BLLPm",
+      "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
+    },
+    {
+      "title": "P.E.R.F.E.C.T.",
+      "artist": "Daði Freyr",
+      "url": "https://open.spotify.com/track/4ruCGjF1cIlFtUfD7EOicH",
       "albumArt": "https://i.scdn.co/image/ab67616d0000485173444289da5bac2b4d61b49c"
     }
   ],
