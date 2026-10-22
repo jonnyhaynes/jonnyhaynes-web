@@ -1,0 +1,73 @@
+name: Bake audiobook data
+
+# Fetches the latest three saved Spotify audiobooks and commits the refreshed
+# public/data/spotify-audiobooks.json to main for the desk shelf. Runs roughly
+# every three days plus on demand.
+on:
+  schedule:
+    # 06:00 UTC every third day. GitHub may delay scheduled runs under load.
+    - cron: '0 6 */3 * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: bake-spotify-audiobooks
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # sharp derives each cover's dominant colour for the shelf spines.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch audiobook data
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+        run: node scripts/fetch-spotify-audiobooks.mjs
+
+      # main is protected, so refresh a fixed data branch and let the existing
+      # auto-merge flow land it once the Vercel check passes.
+      - name: Open/refresh data PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          files="public/data/spotify-audiobooks.json"
+          if git diff --quiet -- $files; then
+            echo "No change in audiobook data — nothing to commit."
+            exit 0
+          fi
+
+          branch="bake/spotify-audiobooks"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add $files
+          git commit -m "Refresh audiobook data [skip ci]"
+          # Force: this is a disposable, machine-owned data branch.
+          git push --force origin "$branch"
+
+          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr create \
+              --base main --head "$branch" \
+              --title "Refresh audiobook data" \
+              --body "Automated data bake (latest three saved audiobooks for the desk shelf). Auto-merges once the Vercel check passes."
+            gh pr merge "$branch" --auto --squash
+          fi

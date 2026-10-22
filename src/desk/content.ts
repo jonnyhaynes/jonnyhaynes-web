@@ -1,8 +1,8 @@
 /**
  * Copy and data for the desk. Everything here is hand-authored except the live
- * panels (games and health), which read the baked snapshots and fall back to the
- * values below when a fetch is missing or stale. The turntable uses the live
- * now-playing API instead of a baked snapshot.
+ * panels (books, games and health), which read the baked snapshots and fall back
+ * to the values below when a fetch is missing or stale. The turntable uses the
+ * live now-playing API instead of a baked snapshot.
  */
 
 export type DeskLink = { label: string; href: string };
@@ -256,6 +256,7 @@ export const CREDENTIALS = [
   { title: '4 industry awards', meta: 'Listed against the work', highlight: true },
 ] as const;
 
+/** Static fallback until the baked audiobook snapshot loads (or if it is missing). */
 export const BOOKS = [
   {
     title: 'Letters to Our Sons',
@@ -278,18 +279,6 @@ export const BOOKS = [
     ink: '#FFFFFF',
   },
 ] as const;
-
-export const ALL_BOOKS = [
-  'Letters to Our Sons by Stephen Graham (currently reading)',
-  'The Book of Trespass by Nick Hayes',
-  'The Man in the High Castle by Philip K. Dick',
-  'Enshittification by Cory Doctorow',
-  'Careless People by Sarah Wynn-Williams',
-  'How Fascism Works by Jason Stanley',
-  'If We Tolerate This by Daniel Trilling',
-] as const;
-
-export const BOOKS_LABEL = `A few good reads: ${ALL_BOOKS.slice(0, -1).join(', ')}, and ${ALL_BOOKS[ALL_BOOKS.length - 1]}`;
 
 /** Shown until the baked games snapshot loads (or if it is missing). */
 export const GAMES_FALLBACK = [

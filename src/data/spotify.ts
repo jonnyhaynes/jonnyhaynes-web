@@ -27,6 +27,47 @@ export type NowPlaying = {
   audioFeatures?: SpotifyAudioFeatures | null;
 };
 
+export type SpotifyAudiobook = {
+  title: string;
+  authors: string;
+  url: string | null;
+  cover: string | null;
+  /**
+   * Dominant-colour "spine" for the bookshelf render, baked from the cover
+   * (Spotify has no spine images). Optional so older baked JSON still
+   * type-checks and the component falls back to the shelf palette.
+   */
+  spine?: { bg: string; ink: string } | null;
+};
+
+export type SpotifyAudiobooks = {
+  fetchedAt: string;
+  audiobooks: SpotifyAudiobook[];
+};
+
+/**
+ * Loads the baked saved-audiobooks snapshot. Returns null while loading and on
+ * failure so the shelf falls back to its hand-authored three.
+ */
+export function useSpotifyAudiobooks(): SpotifyAudiobooks | null {
+  const [data, setData] = useState<SpotifyAudiobooks | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/data/spotify-audiobooks.json')
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((json: SpotifyAudiobooks) => {
+        if (!cancelled) setData(json);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return data;
+}
+
 /** Slow poll when paused/idle — nothing is changing fast. */
 const IDLE_POLL_MS = 60_000;
 /** Never poll more often than this, even on a nearly-finished track. */

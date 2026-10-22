@@ -15,10 +15,12 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const REDIRECT_URI = 'http://127.0.0.1:8888/callback';
 const PORT = 8888;
 
-// Scopes: currently-playing + recently-played for the live turntable.
+// Scopes: currently-playing + recently-played for the live turntable, and
+// user-library-read for the latest-saved audiobooks shelf.
 const SCOPES = [
   'user-read-currently-playing',
   'user-read-recently-played',
+  'user-library-read',
 ].join(' ');
 
 if (!CLIENT_ID || !CLIENT_SECRET) {

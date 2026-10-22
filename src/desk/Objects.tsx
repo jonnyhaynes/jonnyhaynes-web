@@ -1,15 +1,15 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
 
 import { useGamingData } from '../data/gaming';
-import { useNowPlaying } from '../data/spotify';
+import { useNowPlaying, useSpotifyAudiobooks } from '../data/spotify';
 import {
   BOOKS,
-  BOOKS_LABEL,
   GAMES_FALLBACK,
   PROJECTS,
   TRACK_FALLBACK,
 } from './content';
 import type { HealthData } from '../data/health';
+import type { SpotifyAudiobook } from '../data/spotify';
 import type { DeskDrag } from './useDeskDrag';
 import {
   CursorLabel,
@@ -302,7 +302,52 @@ export function GamesObject({ drag, liveId }: ObjectProps) {
   );
 }
 
+type ShelfBook = {
+  title: string;
+  author: string;
+  cover: string;
+  ink: string;
+};
+
+const SHELF_FALLBACKS = [
+  { cover: '#FFD43B', ink: '#0B1B4A' },
+  { cover: '#E3E8F0', ink: '#0B1B4A' },
+  { cover: '#1D3FD1', ink: '#FFFFFF' },
+] as const;
+
+/** "Letters to Our Sons: The Instant…" → "Letters to Our Sons". */
+function shortTitle(title: string) {
+  const short = title.split(':')[0].trim();
+  return short || title;
+}
+
+function shelfBooks(data: SpotifyAudiobook[] | null): ShelfBook[] {
+  const latest = data?.slice(0, 3) ?? [];
+  if (!latest.length) {
+    return BOOKS.map((book) => ({
+      title: 'short' in book ? book.short : book.title,
+      author: book.author,
+      cover: book.cover,
+      ink: book.ink,
+    }));
+  }
+  return latest.map((book, i) => {
+    const fallback = SHELF_FALLBACKS[i % SHELF_FALLBACKS.length];
+    return {
+      title: shortTitle(book.title),
+      author: book.authors,
+      cover: book.spine?.bg ?? fallback.cover,
+      ink: book.spine?.ink ?? fallback.ink,
+    };
+  });
+}
+
 export function BooksObject({ drag, liveId }: ObjectProps) {
+  const data = useSpotifyAudiobooks();
+  const books = shelfBooks(data?.audiobooks ?? null);
+  const label = `A few good reads: ${books
+    .map((book) => `${book.title} by ${book.author}`)
+    .join('; ')}`;
   const offsets = [
     { left: 0, bottom: 0, rotate: -5 },
     { left: 80, bottom: 8, rotate: 1 },
@@ -315,12 +360,12 @@ export function BooksObject({ drag, liveId }: ObjectProps) {
         className="obj"
         role="group"
         tabIndex={0}
-        aria-label={BOOKS_LABEL}
+        aria-label={label}
         aria-describedby="drag-hint"
         onKeyDown={drag.key('books')}
       >
         <span className="shelf" aria-hidden="true">
-          {BOOKS.map((book, i) => {
+          {books.map((book, i) => {
             const o = offsets[i];
             return (
               <span
@@ -334,7 +379,7 @@ export function BooksObject({ drag, liveId }: ObjectProps) {
                   color: book.ink,
                 }}
               >
-                <b>{'short' in book ? book.short : book.title}</b>
+                <b>{book.title}</b>
                 <span>{book.author}</span>
               </span>
             );

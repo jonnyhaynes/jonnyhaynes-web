@@ -1,13 +1,13 @@
 name: Bake gaming data
 
 # Fetches recently-played games from Steam (official API) + Xbox (via OpenXBL)
-# and commits the refreshed public/data/gaming.json to main. Runs twice daily
-# plus on demand.
+# and commits the refreshed public/data/gaming.json to main. Games move slowly,
+# so this runs roughly every three days plus on demand.
 on:
   schedule:
-    # 09:00 and 21:00 UTC — offset from the health bake (08/20) to spread
-    # API load.
-    - cron: '0 9,21 * * *'
+    # 09:00 UTC every third day. The watch keeps its six-hour bake; the
+    # audiobook shelf also refreshes every three days.
+    - cron: '0 9 */3 * *'
   workflow_dispatch: {}
 
 concurrency:
