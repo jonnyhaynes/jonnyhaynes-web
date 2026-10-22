@@ -1,5 +1,10 @@
 # Resume PDF
 
+> **The live download is now [`public/jonnyhaynes-cv.pdf`](../../public/jonnyhaynes-cv.pdf).**
+> It is a hand-designed file supplied separately, not the output of this script.
+> The generator below is retained as a legacy tool and still writes
+> `public/resume.pdf`; running it will not update the site's CV.
+
 `public/resume.pdf` is generated from [`docs/resume.md`](../../docs/resume.md),
 styled to mirror the site's light "Chalk / Deep Coal / Bright Heather" theme:
 the hero-style gradient header (`// Ey up…` microcopy → gradient name → role),

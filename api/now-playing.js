@@ -42,8 +42,7 @@ function trackShape(track, isPlaying, progressMs = null) {
     trackId: track.id ?? null,
     progressMs,
     durationMs: track.duration_ms ?? null,
-    // 0–100; stands in for energy when the audio-features endpoint is
-    // unavailable (see deriveTrackParams client-side).
+    // Spotify popularity (0–100), when returned.
     popularity: typeof track.popularity === 'number' ? track.popularity : null,
   };
 }

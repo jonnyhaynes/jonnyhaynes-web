@@ -13,21 +13,38 @@ import {
   type ThemeContextValue,
 } from './context';
 
-const STORAGE_KEY = 'theme';
+const STORAGE_KEY = 'jh-theme';
 const PALETTE_STORAGE_KEY = 'palette';
+
+/** Storage can throw when cookies/private mode block it; never break the app. */
+function readStored(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // The choice simply won't persist; the current session still switches.
+  }
+}
 
 /**
  * Resolve the initial theme: an explicit stored choice always wins; otherwise
- * fall back to the OS `prefers-color-scheme` on first visit, and dark if that's
- * unavailable/unset. Kept in sync with the pre-paint script in index.html.
+ * follow the OS `prefers-color-scheme` on first visit. Kept in sync with the
+ * pre-paint script in index.html.
  */
 function initialTheme(): Theme {
   if (typeof window === 'undefined') return 'dark';
-  const stored = window.localStorage.getItem(STORAGE_KEY);
+  const stored = readStored(STORAGE_KEY);
   if (stored === 'light' || stored === 'dark') return stored;
-  return window.matchMedia?.('(prefers-color-scheme: light)').matches
-    ? 'light'
-    : 'dark';
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
 }
 
 /**
@@ -37,7 +54,7 @@ function initialTheme(): Theme {
  */
 function initialPalette(): Palette {
   if (typeof window === 'undefined') return 'default';
-  const stored = window.localStorage.getItem(PALETTE_STORAGE_KEY);
+  const stored = readStored(PALETTE_STORAGE_KEY);
   return stored === 'yorkshire' ? 'yorkshire' : 'default';
 }
 
@@ -63,7 +80,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme((t) => {
       const next = t === 'dark' ? 'light' : 'dark';
       // Persist only on an explicit user choice.
-      window.localStorage.setItem(STORAGE_KEY, next);
+      writeStored(STORAGE_KEY, next);
       return next;
     });
   }, []);
@@ -71,7 +88,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const togglePalette = useCallback(() => {
     setPalette((p) => {
       const next = p === 'yorkshire' ? 'default' : 'yorkshire';
-      window.localStorage.setItem(PALETTE_STORAGE_KEY, next);
+      writeStored(PALETTE_STORAGE_KEY, next);
       return next;
     });
   }, []);
