@@ -6,111 +6,148 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Set the theme before first paint to avoid a flash of the wrong palette.
+    <!-- Set the theme before first paint to avoid a flash of the wrong theme.
          An explicit stored choice wins; otherwise follow the OS preference on
-         first visit, falling back to dark. Mirrors initialTheme() in
-         ThemeContext. Does NOT persist — only an explicit toggle should. -->
+         first visit. Mirrors initialTheme() in ThemeContext. Does NOT persist —
+         only an explicit toggle should. -->
     <script>
       (function () {
         try {
-          var stored = localStorage.getItem('theme');
+          var stored = localStorage.getItem('jh-theme');
           var t =
             stored === 'light' || stored === 'dark'
               ? stored
               : window.matchMedia &&
-                  window.matchMedia('(prefers-color-scheme: light)').matches
-                ? 'light'
-                : 'dark';
+                  window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
           document.documentElement.setAttribute('data-theme', t);
-
-          // Palette (colour flavour) is independent of light/dark. Stored choice
-          // wins; no OS signal, so first visit is the heather default. Mirrors
-          // initialPalette() in ThemeContext. Set before paint to avoid a flash
-          // of the wrong accent.
-          var p = localStorage.getItem('palette');
-          document.documentElement.setAttribute(
-            'data-palette',
-            p === 'yorkshire' ? 'yorkshire' : 'default',
-          );
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          document.documentElement.setAttribute('data-palette', 'default');
+          // Storage can be unavailable (private mode / blocked cookies). Fall
+          // back to the same OS-derived theme the app itself resolves to.
+          var osDark =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute(
+            'data-theme',
+            osDark ? 'dark' : 'light',
+          );
         }
       })();
     </script>
 
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
 
-    <!-- Preload the hero portrait (the LCP element) so the browser fetches it
-         before it has parsed the JS/CSS that renders it. Mirrors the <picture>
-         srcSet/sizes in PortraitFigure so the right variant is chosen. -->
+    <!-- Preload the portrait on the desk (the LCP element) so the browser
+         fetches it before it has parsed the JS/CSS that renders it. Mirrors the
+         srcSet/sizes on the portrait object. -->
     <link
       rel="preload"
       as="image"
       type="image/webp"
-      href="/images/portrait-cutout-960.webp"
-      imagesrcset="/images/portrait-cutout-480.webp 480w, /images/portrait-cutout-960.webp 960w"
-      imagesizes="(min-width: 1024px) 30vw, 70vw"
+      href="/images/jonny-illustration-960.webp"
+      imagesrcset="/images/jonny-illustration-520.webp 520w, /images/jonny-illustration-960.webp 960w"
+      imagesizes="240px"
       fetchpriority="high"
     />
 
-    <title>Jonny Haynes - Est. 1985</title>
+    <title>Jonny Haynes — Full-Stack Developer</title>
     <meta
       name="description"
-      content="Building React, React Native and TypeScript products — with AI woven through the workflow."
+      content="Ey up! I’m Jonny — a full-stack developer with a design background, building React, React Native and TypeScript products in Rotherham, Yorkshire."
     />
     <meta name="author" content="Jonny Haynes" />
-    <meta name="theme-color" content="#1a1b1e" />
+    <meta
+      name="theme-color"
+      content="#FFFFFF"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#070C22"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="canonical" href="https://www.jonnyhaynes.com/" />
 
     <!-- Icons -->
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1D3FD1" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Jonny Haynes" />
-    <meta property="og:title" content="Jonny Haynes - Est. 1985" />
+    <meta property="og:title" content="Jonny Haynes — Full-Stack Developer" />
     <meta
       property="og:description"
-      content="Building React, React Native and TypeScript products — with AI woven through the workflow."
+      content="Ey up! A full-stack developer with a design background. Have a poke around — drag it, stretch it, click it."
     />
     <meta property="og:url" content="https://www.jonnyhaynes.com/" />
     <meta property="og:image" content="https://www.jonnyhaynes.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Jonny Haynes — Full-Stack Developer." />
+    <meta
+      property="og:image:alt"
+      content="“Ey up! I’m Jonny.” in big blue type on grid paper, beside an illustration of Jonny in glasses and an Ey Up cycling cap."
+    />
     <meta property="og:locale" content="en_GB" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Jonny Haynes - Est. 1985" />
+    <meta name="twitter:title" content="Jonny Haynes — Full-Stack Developer" />
     <meta
       name="twitter:description"
-      content="Building React, React Native and TypeScript products — with AI woven through the workflow."
+      content="Ey up! A full-stack developer with a design background. Have a poke around."
     />
     <meta name="twitter:image" content="https://www.jonnyhaynes.com/og-image.png" />
-    <meta name="twitter:image:alt" content="Jonny Haynes — Full-Stack Developer." />
+    <meta
+      name="twitter:image:alt"
+      content="“Ey up! I’m Jonny.” in big blue type on grid paper, beside an illustration of Jonny in glasses and an Ey Up cycling cap."
+    />
+    <!-- Weights are the ones the design actually sets: Inter Tight 800 for the
+         headline and display copy, JetBrains Mono 500–700 for labels and data.
+         Asking for a weight the family doesn't ship makes the browser fake it by
+         smearing the nearest face, so the faces are loaded rather than
+         synthesised. -->
     <link
-      href="https://fonts.bunny.net/css?family=jetbrains-mono:400,500&display=swap"
+      href="https://fonts.bunny.net/css?family=inter-tight:400,500,600,700,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.bunny.net/css?family=jetbrains-mono:400,500,600,700&display=swap"
       rel="stylesheet"
     />
 
     <script type="application/ld+json">
       {
-        "@context": "http://schema.org",
+        "@context": "https://schema.org",
         "@type": "Person",
+        "name": "Jonny Haynes",
         "givenName": "Jonny",
         "familyName": "Haynes",
+        "jobTitle": "Full-Stack Developer",
+        "url": "https://www.jonnyhaynes.com/",
+        "image": "https://www.jonnyhaynes.com/social-avatar.png",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "HMA Digital"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotherham",
+          "addressRegion": "South Yorkshire",
+          "addressCountry": "GB"
+        },
         "sameAs": [
+          "https://github.com/jonnyhaynes",
+          "https://www.linkedin.com/in/jonnyhaynes/",
           "https://www.facebook.com/jonnyhaynes",
           "https://www.instagram.com/jonnyhaynes",
-          "https://github.com/jonnyhaynes",
-          "https://dribbble.com/jonnyhaynes",
-          "https://bsky.app/profile/jonnyhaynes.bsky.social",
+          "https://dev-null.sh/@jonnyhaynes",
           "https://open.spotify.com/artist/4pK7N0CnWUoMVsmL9ds1DD"
         ]
       }

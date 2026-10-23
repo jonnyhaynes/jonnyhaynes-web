@@ -1,38 +1,5 @@
 import { useEffect, useState } from 'react';
 
-export type SpotifyArtist = {
-  name: string;
-  url: string | null;
-  image: string | null;
-};
-
-export type SpotifyTrack = {
-  title: string;
-  artist: string;
-  url: string | null;
-  albumArt: string | null;
-};
-
-/** A "Coding Fuel" playlist, baked from the Spotify playlist API. */
-export type SpotifyPlaylist = {
-  label: string;
-  id: string;
-  name: string;
-  url: string | null;
-  cover: string | null;
-};
-
-export type SpotifyTop = {
-  fetchedAt: string;
-  timeRange: string;
-  /** Modal genre across top artists — the "Current Vibe" string. Null if absent. */
-  topGenre: string | null;
-  artists: SpotifyArtist[];
-  tracks: SpotifyTrack[];
-  /** Coding-fuel playlists (may be absent in older baked data). */
-  playlists?: SpotifyPlaylist[];
-};
-
 /** Musical character of a track (0–1 unless noted). Null when the audio-features
  * endpoint is unavailable — every consumer must degrade gracefully. */
 export type SpotifyAudioFeatures = {
@@ -51,51 +18,20 @@ export type NowPlaying = {
   url?: string | null;
   albumArt?: string | null;
   trackId?: string | null;
-  /** Playback position at fetch time (ms); interpolated client-side thereafter. */
+  /** Playback position at fetch time (ms). */
   progressMs?: number | null;
   durationMs?: number | null;
-  /** Spotify popularity (0–100); feeds deriveTrackParams when audio-features is unavailable. */
+  /** Spotify popularity (0–100), when returned by the API. */
   popularity?: number | null;
   /** Present only for the actively-playing track; null on API failure. */
   audioFeatures?: SpotifyAudioFeatures | null;
 };
-
-/**
- * Deterministic per-track tempo/energy for when the audio-features endpoint is
- * unavailable (Spotify restricted it for apps registered after Nov 2024, so in
- * practice it usually is). NOT audio analysis: a stable hash of the track id
- * picks a plausible tempo, and Spotify's popularity stands in for energy — so
- * every track moves differently, but the same track always moves the same way.
- */
-export function deriveTrackParams(track: {
-  id: string;
-  popularity?: number | null;
-}): { tempo: number; energy: number } {
-  // djb2 string hash — stable across sessions for the same id.
-  let h = 5381;
-  for (let i = 0; i < track.id.length; i++) {
-    h = ((h << 5) + h + track.id.charCodeAt(i)) | 0;
-  }
-  const u = Math.abs(h);
-  const tempo = 80 + (u % 90); // 80–170 BPM, a plausible musical range.
-  const energy =
-    track.popularity != null
-      ? 0.35 + (Math.min(100, Math.max(0, track.popularity)) / 100) * 0.5
-      : 0.35 + (((u >> 8) % 50) / 100); // 0.35–0.85 either way.
-  return { tempo, energy };
-}
 
 export type SpotifyAudiobook = {
   title: string;
   authors: string;
   url: string | null;
   cover: string | null;
-  /**
-   * Dominant-colour "spine" for the bookshelf render, baked from the cover
-   * (Spotify has no spine images). Optional so older baked JSON still type-checks
-   * and the component falls back to the accent palette when it's absent.
-   */
-  spine?: { bg: string; ink: string } | null;
 };
 
 export type SpotifyAudiobooks = {
@@ -104,32 +40,8 @@ export type SpotifyAudiobooks = {
 };
 
 /**
- * Loads the baked top artists/tracks snapshot. Returns null while loading and
- * on failure so the music section degrades gracefully.
- */
-export function useSpotifyTop(): SpotifyTop | null {
-  const [data, setData] = useState<SpotifyTop | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/data/spotify-top.json')
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((json: SpotifyTop) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
-}
-
-/**
- * Loads the baked saved-audiobooks snapshot for the reading section. Returns
- * null while loading / on failure so the section degrades to hidden (also the
- * case before the widened-scope re-auth has happened).
+ * Loads the baked saved-audiobooks snapshot. Returns null while loading and on
+ * failure so the shelf falls back to its hand-authored three.
  */
 export function useSpotifyAudiobooks(): SpotifyAudiobooks | null {
   const [data, setData] = useState<SpotifyAudiobooks | null>(null);
@@ -202,36 +114,4 @@ export function useNowPlaying(): NowPlaying | null {
   }, []);
 
   return data;
-}
-
-/**
- * Interpolates the live playback position between 60s polls so a progress bar
- * advances smoothly. Anchors on the poll's progressMs and ticks every second,
- * clamped to durationMs. Returns null when not playing or data is missing, so
- * the progress bar simply doesn't render. Resets whenever the track or reported
- * position changes (i.e. on each fresh poll).
- */
-export function usePlaybackPosition(data: NowPlaying | null): number | null {
-  // Elapsed-since-anchor, bumped only from the interval callback (never
-  // synchronously in the effect body — that triggers cascading renders).
-  const [tick, setTick] = useState(0);
-
-  const playing = data?.isPlaying ?? false;
-  const anchorMs = data?.progressMs ?? null;
-  const durationMs = data?.durationMs ?? null;
-  const trackId = data?.trackId ?? null;
-
-  useEffect(() => {
-    if (!playing || anchorMs == null || durationMs == null) return;
-
-    const anchoredAt = performance.now();
-    // Force a re-derive each second; the actual position is computed below so
-    // no state need be written synchronously here.
-    const id = setInterval(() => setTick(performance.now() - anchoredAt), 1000);
-    return () => clearInterval(id);
-    // trackId included so a track change with an identical progressMs still resets.
-  }, [playing, anchorMs, durationMs, trackId]);
-
-  if (!playing || anchorMs == null || durationMs == null) return null;
-  return Math.min(anchorMs + tick, durationMs);
 }
