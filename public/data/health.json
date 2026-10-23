@@ -1,16 +1,12 @@
 {
-  "fetchedAt": "2026-10-22T22:52:32.527Z",
-  "date": "2026-10-22",
-  "steps": 2031,
+  "fetchedAt": "2026-10-23T02:34:45.274Z",
+  "date": "2026-10-23",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 57,
-  "calories": 2322,
+  "restingHeartRate": 59,
+  "calories": 325,
   "history": {
     "steps": [
-      {
-        "date": "2026-10-20",
-        "value": 3135
-      },
       {
         "date": "2026-10-21",
         "value": 4487
@@ -18,27 +14,27 @@
       {
         "date": "2026-10-22",
         "value": 2031
+      },
+      {
+        "date": "2026-10-23",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-10-20",
-        "value": 2345
-      },
       {
         "date": "2026-10-21",
         "value": 2448
       },
       {
         "date": "2026-10-22",
-        "value": 2322
+        "value": 2378
+      },
+      {
+        "date": "2026-10-23",
+        "value": 325
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-10-20",
-        "value": 50
-      },
       {
         "date": "2026-10-21",
         "value": 50
@@ -46,19 +42,17 @@
       {
         "date": "2026-10-22",
         "value": 57
+      },
+      {
+        "date": "2026-10-23",
+        "value": 59
       }
     ]
   },
   "weather": {
     "tempC": 9,
-    "code": 3,
+    "code": 63,
     "forecast": [
-      {
-        "date": "2026-10-22",
-        "hiC": 12,
-        "loC": 7,
-        "code": 3
-      },
       {
         "date": "2026-10-23",
         "hiC": 14,
@@ -67,15 +61,21 @@
       },
       {
         "date": "2026-10-24",
-        "hiC": 13,
-        "loC": 8,
+        "hiC": 14,
+        "loC": 7,
         "code": 63
+      },
+      {
+        "date": "2026-10-25",
+        "hiC": 10,
+        "loC": 8,
+        "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "07:45",
-    "sunset": "17:53",
-    "sunriseTomorrow": "07:47"
+    "sunrise": "07:47",
+    "sunset": "17:51",
+    "sunriseTomorrow": "07:49"
   }
 }
