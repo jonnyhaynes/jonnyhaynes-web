@@ -12,10 +12,63 @@ type DialogProps = {
   children: (close: ReactNode) => ReactNode;
 };
 
+let scrollLocks = 0;
+let lockedScrollY = 0;
+let savedBodyStyle: {
+  position: string;
+  top: string;
+  left: string;
+  right: string;
+  width: string;
+} | null = null;
+
+function lockPageScroll() {
+  scrollLocks += 1;
+  if (scrollLocks > 1) return;
+
+  const body = document.body;
+  lockedScrollY = window.scrollY;
+  savedBodyStyle = {
+    position: body.style.position,
+    top: body.style.top,
+    left: body.style.left,
+    right: body.style.right,
+    width: body.style.width,
+  };
+
+  body.style.position = 'fixed';
+  body.style.top = `-${lockedScrollY}px`;
+  body.style.left = '0';
+  body.style.right = '0';
+  body.style.width = '100%';
+}
+
+function unlockPageScroll() {
+  scrollLocks = Math.max(0, scrollLocks - 1);
+  if (scrollLocks > 0) return;
+
+  const body = document.body;
+  if (savedBodyStyle) {
+    body.style.position = savedBodyStyle.position;
+    body.style.top = savedBodyStyle.top;
+    body.style.left = savedBodyStyle.left;
+    body.style.right = savedBodyStyle.right;
+    body.style.width = savedBodyStyle.width;
+    savedBodyStyle = null;
+  }
+
+  window.scrollTo(0, lockedScrollY);
+}
+
 /** Overlay, focus trap, Escape-to-close and the initial focus on the close button. */
 export function Dialog({ cls, labelledBy, onClose, style, lanyard, children }: DialogProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    lockPageScroll();
+    return unlockPageScroll;
+  }, []);
 
   useEffect(() => {
     closeRef.current?.focus();
