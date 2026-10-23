@@ -30,21 +30,6 @@
   --color-accent-end: #673d7a;
 }
 
-/*
- * Yorkshire palette — the flag's "Broad Acres" blue, an independent axis from
- * light/dark. SOURCE ORDER IS LOAD-BEARING: the combined selector below must
- * outrank the two single-attribute blocks.
- */
-[data-palette='yorkshire'] {
-  --color-accent-start: #5b9dd6;
-  --color-accent-end: #3f7cb8;
-}
-
-[data-theme='light'][data-palette='yorkshire'] {
-  --color-accent-start: #1f6fb2;
-  --color-accent-end: #12456f;
-}
-
 @layer base {
   html {
     color-scheme: dark;

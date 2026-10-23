@@ -8,13 +8,11 @@ import {
 
 import {
   ThemeContext,
-  type Palette,
   type Theme,
   type ThemeContextValue,
 } from './context';
 
 const STORAGE_KEY = 'jh-theme';
-const PALETTE_STORAGE_KEY = 'palette';
 
 /** Storage can throw when cookies/private mode block it; never break the app. */
 function readStored(key: string): string | null {
@@ -47,20 +45,8 @@ function initialTheme(): Theme {
     : 'light';
 }
 
-/**
- * Resolve the initial palette: a stored choice wins, otherwise `default`. There
- * is no OS signal for this, so first visit is always the heather default. Kept
- * in sync with the pre-paint script in index.html.
- */
-function initialPalette(): Palette {
-  if (typeof window === 'undefined') return 'default';
-  const stored = readStored(PALETTE_STORAGE_KEY);
-  return stored === 'yorkshire' ? 'yorkshire' : 'default';
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
-  const [palette, setPalette] = useState<Palette>(initialPalette);
 
   // Reflect the theme onto <html data-theme> so CSS tokens + the dark: variant
   // switch. We do NOT persist here: writing on mount would freeze the
@@ -70,25 +56,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Reflect the palette onto <html data-palette> so the Yorkshire token
-  // overrides + theme-gated copy switch. Same discipline as theme.
-  useEffect(() => {
-    document.documentElement.setAttribute('data-palette', palette);
-  }, [palette]);
-
   const toggle = useCallback(() => {
     setTheme((t) => {
       const next = t === 'dark' ? 'light' : 'dark';
       // Persist only on an explicit user choice.
       writeStored(STORAGE_KEY, next);
-      return next;
-    });
-  }, []);
-
-  const togglePalette = useCallback(() => {
-    setPalette((p) => {
-      const next = p === 'yorkshire' ? 'default' : 'yorkshire';
-      writeStored(PALETTE_STORAGE_KEY, next);
       return next;
     });
   }, []);
@@ -101,12 +73,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       // Light Yorkshire twang (drop "the").
       toggleTitle:
         theme === 'dark' ? 'Put big light on' : 'Turn big light off',
-      palette,
-      togglePalette,
-      paletteTitle:
-        palette === 'yorkshire' ? 'Help, I’m lost' : 'Make it Yorkshire',
     }),
-    [theme, toggle, palette, togglePalette],
+    [theme, toggle],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

@@ -43,13 +43,12 @@ src/
   pages/         Home (renders <Desk />) and Privacy (direct-link fallback)
   data/          Typed loaders for the baked JSON snapshots (health, gaming,
                  spotify) — all degrade to null/hidden on failure
-  theme/         Light/dark theme context + toggles
-  components/    Shared bits (Yorkshire rose)
+  theme/         Light/dark theme context (useTheme)
   lib/           Small hooks (document title, reduced motion)
   index.css      Tailwind import + global tokens/themes
 api/
   now-playing.js Vercel serverless function for the live turntable
-scripts/         Node data-baking jobs + one-time auth helpers + CV builder
+scripts/         Node data-baking jobs + one-time auth helpers
 public/data/     Baked JSON snapshots (health, gaming, spotify-audiobooks)
 docs/            Source of truth for design, process and plans (see below)
 ```
@@ -95,10 +94,6 @@ SPOTIFY_CLIENT_ID=xxx SPOTIFY_CLIENT_SECRET=yyy SPOTIFY_REFRESH_TOKEN=zzz \
 `scripts/garmin-auth.mjs` and `scripts/spotify-auth.mjs` are one-time local
 helpers for capturing those tokens. Never commit them or put them in the repo.
 
-Other scripts: `build-topography.mjs` regenerates the contour SVG from OS
-Terrain 50 data, and `scripts/resume/build-resume.mjs` is a legacy CV generator
-(the live download is the hand-designed `public/jonnyhaynes-cv.pdf`).
-
 ## Deploy
 
 Import the repo into [Vercel](https://vercel.com/new) — it auto-detects Vite
@@ -115,6 +110,5 @@ Read these before a non-trivial change:
 - `docs/dev-workflow.md` — the plan-first loop and standing conventions
 - `docs/plans/` — per-ticket implementation plans
 - `docs/jonnyhaynes-site-handover/HANDOVER.md` — the full desk specification
-- `docs/resume.md` — source for the legacy CV generator
 
 Plan first, keep secrets server-side, and leave `build` + `lint` green.
