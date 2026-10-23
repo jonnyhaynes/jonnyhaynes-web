@@ -1,17 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <defs>
-    <!-- Moorland Heather sweep, matching the v2 hero gradient. -->
-    <linearGradient id="jh" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#a877bf" />
-      <stop offset="1" stop-color="#7a4988" />
-    </linearGradient>
-  </defs>
-  <!-- Sheffield Steel background (v2 color-background). -->
-  <rect width="512" height="512" rx="96" fill="#1a1b1e" />
-  <text x="256" y="360"
-        font-family="'JetBrains Mono', ui-monospace, 'SF Mono', monospace"
-        font-size="280" font-weight="700"
-        text-anchor="middle"
-        letter-spacing="-8"
-        fill="url(#jh)">JH</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#1D3FD1"/>
+  <g transform="translate(12.00 50.72) scale(0.0255 -0.0255)">
+    <path fill="#FFFFFF" d="M528 -20Q390 -20 270.5 29.0Q151 78 79.0 180.0Q7 282 7 443V454H366V443Q366 385 386.0 345.0Q406 305 442.5 284.0Q479 263 528 263Q580 263 616.0 285.0Q652 307 670.5 351.0Q689 395 689 459V1490H1044V459Q1044 315 981.0 207.0Q918 99 802.0 39.5Q686 -20 528 -20Z"/>
+    <path fill="#FFD43B" transform="translate(1036 0)" d="M335 -22Q254 -22 199.0 32.5Q144 87 144 167Q144 247 199.0 301.5Q254 356 335 356Q416 356 471.0 301.5Q526 247 526 167Q526 87 471.0 32.5Q416 -22 335 -22Z"/>
+  </g>
 </svg>
