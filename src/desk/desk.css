@@ -2419,6 +2419,89 @@
   }
 }
 
+/* ── iPad landscape ──────────────────────────────────────────────────────── */
+
+@media (min-width: 1001px) and (max-width: 1366px) {
+  .desk .hero {
+    font-size: clamp(140px, 16vw, 200px);
+  }
+
+  .desk .drag {
+    --k: 0.8;
+  }
+
+  .desk .o-email,
+  .desk .o-cv,
+  .desk .o-linkedin,
+  .desk .o-github {
+    --k: 0.9;
+  }
+
+  .desk .o-deck {
+    left: 3%;
+    top: -2%;
+  }
+
+  .desk .o-career {
+    left: 33%;
+    top: 0;
+  }
+
+  .desk .o-games {
+    right: -2%;
+    top: 4%;
+  }
+
+  .desk .o-work {
+    left: -7%;
+    top: 40%;
+  }
+
+  .desk .o-books {
+    left: 13%;
+    bottom: 0;
+  }
+
+  .desk .o-watch {
+    right: 24%;
+    bottom: -8%;
+    --k: 0.76;
+  }
+
+  .desk .o-me {
+    right: -1%;
+    top: 34%;
+  }
+
+  .desk .o-email {
+    left: 6%;
+    top: 30%;
+  }
+
+  .desk .o-cv {
+    right: 35%;
+    top: 8%;
+  }
+
+  .desk .o-linkedin {
+    left: 40%;
+    bottom: 6%;
+  }
+
+  .desk .o-github {
+    right: 9%;
+    bottom: 10%;
+  }
+
+  .desk .note {
+    left: 37%;
+  }
+
+  .desk .wcur {
+    right: -12px !important;
+  }
+}
+
 /* ── Phone ───────────────────────────────────────────────────────────────── */
 
 @media (max-width: 620px) {

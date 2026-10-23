@@ -44,7 +44,7 @@ type DragState = {
   a0: number;
 };
 
-const jitterAxis = () => Math.round(Math.random() * 100 - 50);
+const jitterAxis = (range = 50) => Math.round(Math.random() * range * 2 - range);
 
 /**
  * Direct manipulation for the desk: drag to move, the corner handle to scale and
@@ -71,11 +71,14 @@ export function useDeskDrag(onInteract: () => void) {
   const pressLen = useRef(0);
   const justDragged = useRef(0);
 
-  // A slightly different desk every visit: each thing lands within 50px of
-  // its spot. The name itself is the one fixed thing.
+  // A slightly different desk every visit: each thing lands near its spot.
+  // Tablets get a tighter range so the pieces don't drift into each other.
+  // The name itself is the one fixed thing.
   const jitter = useMemo(() => {
+    const width = typeof window !== 'undefined' ? window.innerWidth : 0;
+    const range = width > 620 && width <= 1366 ? 10 : 50;
     const out: Record<string, { x: number; y: number }> = {};
-    for (const id of IDS) out[id] = { x: jitterAxis(), y: jitterAxis() };
+    for (const id of IDS) out[id] = { x: jitterAxis(range), y: jitterAxis(range) };
     return out;
   }, []);
 
