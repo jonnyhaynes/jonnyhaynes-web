@@ -1,0 +1,353 @@
+/*
+ * Privacy. The shared sections are used twice: in the desk's privacy window
+ * (the primary route into it) and on the standalone /privacy page that direct
+ * links land on. The root of that page is `.desk privacy`, so tokens, buttons,
+ * dark theme and cursor chrome come from desk.css.
+ */
+
+/* ── Shared sections ─────────────────────────────────────────────────────── */
+
+.privacy-section {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 20px;
+  padding: 28px 32px;
+  border-top: 1px dashed var(--line);
+}
+
+.privacy-section:first-child {
+  border-top: 0;
+}
+
+.privacy-no {
+  padding-top: 4px;
+  color: var(--blue);
+  font: 700 11px 'JetBrains Mono', monospace;
+  letter-spacing: 0.12em;
+}
+
+.desk.dark .privacy-no {
+  color: #8fa6ff;
+}
+
+.privacy-section h2,
+.privacy-section h3 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: clamp(21px, 2.4vw, 26px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.desk.dark .privacy-section h2,
+.desk.dark .privacy-section h3 {
+  color: #e8edff;
+}
+
+.privacy-section p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.privacy-section p + p {
+  margin-top: 10px;
+}
+
+.privacy-link {
+  color: var(--blue);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.privacy-link:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
+}
+
+.desk.dark .privacy-link {
+  color: #8fa6ff;
+}
+
+.desk.dark .privacy-link:hover {
+  color: #fff;
+}
+
+/* ── The window ──────────────────────────────────────────────────────────── */
+
+.dlg.doc {
+  width: min(880px, 100%);
+  background: #fff;
+  color: #0b1b4a;
+}
+
+.desk.dark .dlg.doc {
+  background: #0e1638;
+  color: #e8edff;
+}
+
+.doc .dhead {
+  position: relative;
+  padding: 28px 30px 22px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.doc-cursor {
+  top: 16px;
+  left: 200px;
+}
+
+.doc .dhead h2 {
+  margin: 8px 0 0;
+  color: var(--blue);
+}
+
+.desk.dark .doc .dhead h2 {
+  color: #7c95ff;
+}
+
+.doc .dhead p {
+  max-width: 42em;
+}
+
+.doc-kicker {
+  display: block;
+  color: var(--blue);
+  font: 700 10px 'JetBrains Mono', monospace;
+  letter-spacing: 0.16em;
+}
+
+.desk.dark .doc-kicker {
+  color: var(--yellow);
+}
+
+.doc .dbody {
+  padding: 0 30px 24px;
+}
+
+.doc .privacy-section {
+  grid-template-columns: 44px minmax(0, 1fr);
+  padding: 22px 0;
+}
+
+.doc .privacy-section h3 {
+  font-size: 21px;
+}
+
+.doc .privacy-section p {
+  font-size: 15px;
+}
+
+/* ── The standalone page ─────────────────────────────────────────────────── */
+
+.desk.privacy {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  background-color: #fff;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: -1px -1px;
+}
+
+.desk.privacy.dark {
+  background-color: #070c22;
+}
+
+.privacy-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+.privacy-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font: 600 13px 'JetBrains Mono', monospace;
+  text-decoration: none;
+}
+
+.privacy-back span {
+  color: var(--blue);
+  font-size: 16px;
+}
+
+.privacy-back:hover {
+  color: var(--blue);
+}
+
+.desk.dark .privacy-back span {
+  color: var(--yellow);
+}
+
+.desk.dark .privacy-back:hover {
+  color: #8fa6ff;
+}
+
+.privacy-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px 72px;
+}
+
+.privacy-hero {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.privacy-kicker {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.desk.dark .privacy-kicker {
+  color: var(--yellow);
+}
+
+.privacy-sel {
+  position: relative;
+  display: inline-block;
+  padding: 0 24px 8px;
+  border: 1px dashed #c3cde0;
+}
+
+.desk.dark .privacy-sel {
+  border-color: rgba(150, 170, 255, 0.28);
+}
+
+.privacy-title {
+  margin: 0;
+  color: var(--blue);
+  font-size: clamp(72px, 12vw, 150px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.desk.dark .privacy-title {
+  color: #7c95ff;
+}
+
+.privacy-cursor {
+  top: -36px;
+  right: -104px;
+}
+
+.privacy-lede {
+  max-width: 36em;
+  margin: 26px 0 0;
+  color: var(--muted);
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.55;
+}
+
+.privacy-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(11, 27, 74, 0.12);
+}
+
+.desk.dark .privacy-card {
+  border-color: rgba(150, 170, 255, 0.16);
+  background: #0e1638;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+}
+
+.privacy-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 34px 0 0;
+  color: var(--muted);
+  font: 600 11px 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+.privacy-foot a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 2px;
+}
+
+.privacy-foot a:hover {
+  color: var(--blue);
+  text-decoration-color: currentColor;
+}
+
+.desk.dark .privacy-foot a:hover {
+  color: #8fa6ff;
+}
+
+.privacy-sep {
+  opacity: 0.55;
+}
+
+/* ── Phone ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 620px) {
+  .desk.privacy {
+    background-size: 40px 40px;
+  }
+
+  .privacy-bar {
+    padding: 14px 16px;
+  }
+
+  .privacy-main {
+    padding: 28px 16px 48px;
+  }
+
+  .privacy-sel {
+    padding: 0 12px 4px;
+  }
+
+  .desk .clabel.privacy-cursor,
+  .desk .clabel.doc-cursor {
+    display: none;
+  }
+
+  .privacy-section {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 22px 20px;
+  }
+
+  .privacy-no {
+    padding-top: 0;
+  }
+
+  .doc .dhead {
+    padding: 20px 18px 16px;
+  }
+
+  .doc .dbody {
+    padding: 0 18px 20px;
+  }
+
+  .doc .privacy-section {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 18px 0;
+  }
+}
