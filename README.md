@@ -1,35 +1,120 @@
-# jonnyhaynes-web
+# jonnyhaynes.com
 
-A static personal site built with [React](https://react.dev/) and [Vite](https://vite.dev/).
+Jonny Haynes's personal site. The home page is **"The Desk"**: a one-screen
+design-tool canvas with a grid-paper background, a big "Jonny." headline and a
+scatter of draggable, resizable, rotatable objects — a turntable, laptop, name
+badge, Steam Deck, watch, books and a portrait. Work and My Journey open richer
+windows; several objects pull in live data (Spotify, Steam/Xbox, Garmin,
+weather).
 
-## Getting Started
+Built with **React 19 + Vite 8 + TypeScript**, styled with **Tailwind v4** tokens
+plus hand-written CSS, routed with **react-router**, and deployed on **Vercel**.
 
-Install dependencies and run the development server:
+## Getting started
+
+Node 22 (see `.nvmrc`):
 
 ```bash
+nvm use
 npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
+Open [http://localhost:5173](http://localhost:5173). The page hot-reloads as you
+edit.
 
-Edit the page by modifying `src/App.tsx`. The page auto-updates as you edit.
+## Scripts
 
-## Build
+| Script | What it does |
+|---|---|
+| `npm run dev` | Vite dev server |
+| `npm run build` | `tsc` type-check, then `vite build` → `dist/` |
+| `npm run lint` | ESLint (flat config, `eslint.config.js`) |
+| `npm run preview` | Serve the production build locally |
 
-```bash
-npm run build
+There's no test runner or Prettier config — `build` and `lint` are the checks.
+
+## Project structure
+
+```
+src/
+  desk/          The home-page canvas: Desk, Objects, Windows, drag/resize,
+                 watch, content.ts (all hand-authored copy), desk.css
+  pages/         Home (renders <Desk />) and Privacy (direct-link fallback)
+  data/          Typed loaders for the baked JSON snapshots (health, gaming,
+                 spotify) — all degrade to null/hidden on failure
+  theme/         Light/dark theme context + toggles
+  components/    Shared bits (Yorkshire rose)
+  lib/           Small hooks (document title, reduced motion)
+  index.css      Tailwind import + global tokens/themes
+api/
+  now-playing.js Vercel serverless function for the live turntable
+scripts/         Node data-baking jobs + one-time auth helpers + CV builder
+public/data/     Baked JSON snapshots (health, gaming, spotify-audiobooks)
+docs/            Source of truth for design, process and plans (see below)
 ```
 
-This type-checks with `tsc` and produces a static bundle in `dist/`, ready to
-deploy to any static host. Preview the production build locally with:
+Routes are just `/` (the desk) and `/privacy`; `vercel.json` rewrites everything
+else to `index.html`. The CV download is `public/jonnyhaynes-cv.pdf`, with
+`/resume.pdf` permanently redirected there.
+
+## Live data
+
+Nothing sensitive ever reaches the client bundle. Values are either baked to
+static JSON by scheduled GitHub Actions or fetched through the one serverless
+function:
+
+| Data | Source | How it updates |
+|---|---|---|
+| Steps, calories, resting HR, weather, sun times | Garmin Connect + Open-Meteo | `.github/workflows/bake-health-data.yml`, every 4 hours → `public/data/health.json` |
+| Recently played games | Steam + Xbox (OpenXBL) | `bake-gaming-data.yml`, every 3 days → `public/data/gaming.json` |
+| Saved audiobooks | Spotify | `bake-spotify-audiobooks.yml`, every 3 days → `public/data/spotify-audiobooks.json` |
+| Now playing / last played | Spotify | `/api/now-playing` at request time (10s edge cache) |
+
+The bake workflows commit via an auto-merging PR to `main`. Every consumer
+treats missing or stale data as absent rather than an error, so an API outage
+never breaks the page. `now-playing.js` returns `{ isPlaying: false }` on any
+failure for the same reason.
+
+### Running the bakes locally
+
+Each script writes into `public/data/` and needs its own secrets:
 
 ```bash
-npm run preview
+# Health + weather
+GARMIN_TOKEN_BUNDLE='{"oauth1":{...},"oauth2":{...}}' node scripts/fetch-health.mjs
+
+# Games
+STEAM_API_KEY=xxx STEAM_ID=yyy XBL_API_KEY=zzz node scripts/fetch-gaming.mjs
+
+# Audiobooks and the now-playing function
+SPOTIFY_CLIENT_ID=xxx SPOTIFY_CLIENT_SECRET=yyy SPOTIFY_REFRESH_TOKEN=zzz \
+  node scripts/fetch-spotify-audiobooks.mjs
 ```
 
-## Deploy on Vercel
+`scripts/garmin-auth.mjs` and `scripts/spotify-auth.mjs` are one-time local
+helpers for capturing those tokens. Never commit them or put them in the repo.
 
-Import the repository into [Vercel](https://vercel.com/new). It auto-detects
-Vite — framework preset **Vite**, build command `npm run build`, output
-directory `dist`.
+Other scripts: `build-topography.mjs` regenerates the contour SVG from OS
+Terrain 50 data, and `scripts/resume/build-resume.mjs` is a legacy CV generator
+(the live download is the hand-designed `public/jonnyhaynes-cv.pdf`).
+
+## Deploy
+
+Import the repo into [Vercel](https://vercel.com/new) — it auto-detects Vite
+(`npm run build` → `dist`). `vercel.json` adds the SPA rewrite, the CV redirect,
+and security headers (HSTS, frame denial, restrictive permissions policy). The
+Spotify credentials for `/api/now-playing` live in Vercel environment variables;
+the bake jobs read theirs from GitHub Actions secrets.
+
+## Docs and conventions
+
+Read these before a non-trivial change:
+
+- `CLAUDE.md` — repo orientation, load-bearing principles, scope boundaries
+- `docs/dev-workflow.md` — the plan-first loop and standing conventions
+- `docs/plans/` — per-ticket implementation plans
+- `docs/jonnyhaynes-site-handover/HANDOVER.md` — the full desk specification
+- `docs/resume.md` — source for the legacy CV generator
+
+Plan first, keep secrets server-side, and leave `build` + `lint` green.
