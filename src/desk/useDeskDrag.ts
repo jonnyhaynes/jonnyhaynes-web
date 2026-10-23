@@ -72,11 +72,11 @@ export function useDeskDrag(onInteract: () => void) {
   const justDragged = useRef(0);
 
   // A slightly different desk every visit: each thing lands near its spot.
-  // Tablets get a tighter range so the pieces don't drift into each other.
-  // The name itself is the one fixed thing.
+  // Smaller screens get a tighter range so the pieces don't drift into each
+  // other or half off the screen. The name itself is the one fixed thing.
   const jitter = useMemo(() => {
     const width = typeof window !== 'undefined' ? window.innerWidth : 0;
-    const range = width > 620 && width <= 1366 ? 10 : 50;
+    const range = width <= 620 ? 14 : width <= 1366 ? 10 : 50;
     const out: Record<string, { x: number; y: number }> = {};
     for (const id of IDS) out[id] = { x: jitterAxis(range), y: jitterAxis(range) };
     return out;
@@ -93,9 +93,6 @@ export function useDeskDrag(onInteract: () => void) {
     (id: string, mode: DragMode) => (e: PointerEvent<HTMLElement>) => {
       if (e.button !== 0) return;
       if (mode !== 'move') e.stopPropagation();
-      if (e.pointerType === 'touch' && id !== 'word' && window.innerWidth <= 620) {
-        return;
-      }
 
       onInteract();
       pressAt.current = Date.now();
