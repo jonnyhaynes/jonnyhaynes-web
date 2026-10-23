@@ -4,8 +4,7 @@
  * Global shell.
  *
  * The home page is the desk (see src/desk/desk.css). This file is everything
- * the remaining routes and the shared footer need: the tokens, light/dark
- * themes and the footer's gradient wash.
+ * the remaining routes need: the tokens and the light/dark themes.
  */
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
@@ -96,89 +95,5 @@
     transform: translateY(0);
     outline: 2px solid var(--color-accent-start);
     outline-offset: 2px;
-  }
-}
-
-/* ── Footer wash ─────────────────────────────────────────────────────────── */
-
-@property --grad-1 {
-  syntax: '<color>';
-  inherits: false;
-  initial-value: oklch(0.62 0.15 320);
-}
-
-@property --grad-2 {
-  syntax: '<color>';
-  inherits: false;
-  initial-value: oklch(0.6 0.16 300);
-}
-
-@keyframes gradient-drift {
-  to {
-    --grad-1: oklch(0.62 0.2 340);
-    --grad-2: oklch(0.6 0.18 270);
-  }
-}
-
-@keyframes gradient-drift-yorkshire {
-  from {
-    --grad-1: oklch(0.66 0.15 255);
-    --grad-2: oklch(0.62 0.13 230);
-  }
-  to {
-    --grad-1: oklch(0.7 0.14 235);
-    --grad-2: oklch(0.6 0.15 215);
-  }
-}
-
-.foot-band {
-  position: relative;
-}
-
-.foot-band::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: linear-gradient(
-    to right in oklch,
-    var(--grad-1),
-    var(--grad-2)
-  );
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.2) 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.2) 100%);
-  animation: gradient-drift 6s linear infinite alternate;
-}
-
-/* Ink for text a wash sits behind. The tint shifts the background toward the
- * accent, so mix the token toward the page's foreground to restore the ratio. */
-.on-wash {
-  color: color-mix(in oklch, var(--color-accent-start) 70%, var(--color-foreground));
-}
-
-.on-wash-muted {
-  color: color-mix(in oklch, var(--color-muted) 74%, var(--color-foreground));
-}
-
-[data-palette='yorkshire'] .foot-band::before {
-  animation-name: gradient-drift-yorkshire;
-  --grad-1: oklch(0.66 0.15 255);
-  --grad-2: oklch(0.62 0.13 230);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .foot-band::before {
-    animation: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-palette='yorkshire'] .foot-band::before {
-    --grad-1: oklch(0.66 0.15 255);
-    --grad-2: oklch(0.62 0.13 230);
   }
 }
