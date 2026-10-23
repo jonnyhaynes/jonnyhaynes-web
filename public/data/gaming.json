@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-22T14:25:32.089Z",
+  "fetchedAt": "2026-10-23T15:46:01.054Z",
   "sources": {
     "steam": {
       "status": "ok",
@@ -11,6 +11,13 @@
     }
   },
   "games": [
+    {
+      "title": "Tony Hawk's™ Pro Skater™ 3 + 4",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.7791.13968131629601189.02100553-7fb7-4f1a-b080-6b3ac33c153c.1164e424-06a5-4cbd-a501-43f0aedc4f1a",
+      "lastPlayed": "2026-10-23T10:36:11.0606305Z",
+      "url": null
+    },
     {
       "title": "Farming Simulator 25 (PC)",
       "platform": "xbox",
@@ -51,13 +58,6 @@
       "platform": "xbox",
       "coverUrl": "https://store-images.s-microsoft.com/image/apps.43675.14280109286674604.0f240f37-6e7f-43b4-bd81-aabc884bc103.0aabbba3-e5f5-4665-9eac-7a9c36f80430",
       "lastPlayed": "2026-04-16T07:25:07.0391816Z",
-      "url": null
-    },
-    {
-      "title": "Starfield",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.1647.13567343664224659.1eb6fdf9-8a0b-4344-a135-ab17dfa3c609.39331391-9de2-48f8-8643-8eb1bd964383",
-      "lastPlayed": "2026-03-25T14:09:33.7677376Z",
       "url": null
     }
   ]
