@@ -7,35 +7,39 @@ few lines, move it to its own doc under `/docs` and link it.
 
 ## What this is
 
-Jonny Haynes's personal website — a React + Vite + TypeScript SPA.
+Jonny Haynes's personal website — a React + Vite + TypeScript SPA. The home
+page is an interactive "desk" canvas; live data is baked to static JSON.
 
 See `README.md` for status and `docs/dev-workflow.md` for how we build here.
 
 ## Stack
 
 **React 19 + Vite 8 + TypeScript** SPA, `npm` for packages. Routing via
-`react-router` 7. Strict TypeScript (avoid `any`). Deployed on Vercel.
+`react-router` 8. Strict TypeScript (avoid `any`). Deployed on Vercel. Node 22
+(`.nvmrc`).
 
 - `npm run dev` — Vite dev server
 - `npm run build` — `tsc && vite build` (type-check is part of the build)
 - `npm run lint` — ESLint (flat config, `eslint.config.js`)
 
-No test runner or Prettier config yet — `build` + `lint` are the checks. Styling is
-plain CSS in `src/app.css` (CSS custom properties, layers, `@keyframes`); no CSS
-framework.
+No test runner or Prettier config yet — `build` + `lint` are the checks. Styling
+is Tailwind v4 (via `@tailwindcss/vite`) for the global tokens/themes in
+`src/index.css`, plus hand-written CSS for the desk (`src/desk/desk.css`,
+`src/desk/privacy.css`).
 
 ## Load-bearing principles
 
 These shape the code. Don't change them without a deliberate, flagged decision.
 
-- **Secrets stay server-side.** API tokens (GitHub, Spotify, Google Health) live in Vercel
-  env vars / GitHub Actions secrets and never reach the client bundle. Live data is
-  fetched via server functions; most data is baked to static JSON by a scheduled job.
-  See `docs/about-page-plan.md`.
+- **Secrets stay server-side.** API tokens (Spotify, Garmin, Steam, Xbox) live in
+  Vercel env vars / GitHub Actions secrets and never reach the client bundle. Most
+  data is baked to static JSON by scheduled jobs; only `api/now-playing.js` runs at
+  request time. See `README.md`.
 - **Graceful degradation.** Data-driven sections must render fine when their JSON is
   missing or stale — an API being down can never break the page.
-- **No new styling framework.** Match the existing CSS conventions in `src/app.css`
-  (custom properties, `@layer`, grid/flex, `prefers-reduced-motion`).
+- **No new styling framework.** Tailwind v4 is already wired up; extend the tokens
+  in `src/index.css` and match the desk's conventions in `src/desk/desk.css`
+  (custom properties, logical properties, `prefers-reduced-motion`).
 - **Accessibility & reduced motion.** Animations respect `prefers-reduced-motion`;
   keep focus-visible outlines and readable minimum font sizes (`clamp()`).
 
@@ -45,10 +49,12 @@ What this project is **not**, and shouldn't drift towards. If a request would dr
 here, push back before building.
 
 - It's a **personal portfolio site**, not a web app or product — no auth, no user
-  accounts, no database, no backend beyond small read-only data-baking jobs.
+  accounts, no database, no backend beyond small read-only data-baking jobs and the
+  one `/api/now-playing` function.
 - Not a blog/CMS — content is hand-authored in components, not managed.
-- The health/music/GitHub sections are personality, not a dashboard product. Keep
-  them light; don't build a general-purpose analytics layer.
+- The desk's live objects (turntable, games, watch) are personality, not a
+  dashboard product. Keep them light; don't build a general-purpose analytics
+  layer.
 
 ## How we work (the short version)
 
@@ -69,9 +75,9 @@ Full process: `docs/dev-workflow.md`. The non-negotiables:
 
 Source of truth lives in `/docs`. Read the relevant doc before responding:
 
+- `README.md` -- stack, structure, and the data-baking pipeline
 - `docs/dev-workflow.md` -- how we build (the loop + standing conventions)
-- `docs/about-page-plan.md` -- implementation plan for the living About page
-  (CV / GitHub / Spotify / Google Health integrations); current in-flight work
+- `docs/jonnyhaynes-site-handover/HANDOVER.md` -- the full desk specification
 - `docs/plans/` -- per-ticket implementation plans (plan-first)
 
 ## Working style

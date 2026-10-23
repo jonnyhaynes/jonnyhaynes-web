@@ -17,14 +17,19 @@ change to a load-bearing decision explicitly rather than slipping it in.
    referenceable, and decoupled from any one Claude session.
 3. **Backlog** -- break the approved plan into tracked work (issues / tickets), each
    item carrying its acceptance criteria as the test contract.
-4. **Build** -- work the plan task by task, **test-first**: each acceptance criterion
-   becomes a failing test before the implementation. Prefer a fresh Claude context
-   per task -- it keeps each unit focused and reviewable. Review between tasks: does
-   it match the plan, and is the code good?
+4. **Build** -- work the plan task by task. There is **no test runner in this repo
+   yet**, so acceptance criteria are checked against `npm run build` (type-check +
+   bundle), `npm run lint`, and a manual pass of the changed UI (keyboard-only,
+   reduced motion, light/dark, narrow viewport). If a test runner is added, go back
+   to test-first: each acceptance criterion becomes a failing test before the
+   implementation. Prefer a fresh Claude context per task -- it keeps each unit
+   focused and reviewable. Review between tasks: does it match the plan, and is the
+   code good?
 5. **Review** -- run a code review across the branch. **Vet the findings; don't
-   blindly apply them.** Fix the real issues and strengthen any test that passed when
-   it shouldn't have.
-6. **Ship** -- run lint + format, type-check (`tsc --noEmit`), and the test suite (`npm test`) green locally, then open a PR. CI must be green before review.
+   blindly apply them.** Fix the real issues and strengthen the check (or test, once
+   there is a runner) that passed when it shouldn't have.
+6. **Ship** -- run `npm run lint` and `npm run build` green locally, then open a PR.
+   CI must be green before review.
 7. **Land** -- a human reviews the diff against the plan and merges. Then sync the
    main branch, delete the branch, and file any deferred follow-up work as tracked
    tickets.
@@ -40,13 +45,17 @@ Automation never moves the human gates: **plan approval (step 2) and the merge
 
 - **Package manager.** Use the project's lockfile manager (npm / pnpm / yarn / bun)
   -- don't mix. Commit the lockfile.
-- **TypeScript.** Strict mode; avoid `any`. Type-check with `tsc --noEmit` as a CI gate.
-- **Testing.** Run via the project's `test` script (Vitest / Jest behind it, with the
-  right config and env). A `PreToolUse` hook redirects direct `vitest` / `jest` calls
-  to that script -- but only when a `test` script exists, so it never blocks a project
-  that hasn't set one up yet. Test behaviour, not implementation; a test must fail if
+- **TypeScript.** Strict mode; avoid `any`. `npm run build` runs `tsc` first, so
+  Vercel's build is the type-check gate; run `npx tsc --noEmit` locally for a fast
+  check.
+- **Testing.** There is **no test runner configured** (`package.json` has no `test`
+  script). The gate is `npm run build` (type-check + bundle) plus `npm run lint` and a
+  manual pass of the UI. If a runner is added, run it via the project's `test` script
+  (never `vitest` / `jest` directly -- a `PreToolUse` hook redirects those to the
+  script whenever one exists). Test behaviour, not implementation; a test must fail if
   the feature is removed.
-- **Lint & format.** ESLint + Prettier; run green before opening a PR.
+- **Lint & format.** ESLint (flat config). No Prettier config yet -- match the
+  surrounding style by hand and run `npm run lint` green before opening a PR.
 
 ### Guardrails (`.claude/`)
 
