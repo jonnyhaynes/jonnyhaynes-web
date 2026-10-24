@@ -119,6 +119,19 @@ export function GitHubIcon() {
   );
 }
 
+export function DevNullIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">
+      <path d="M2 42h10L26 6H16Z" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M17.81 43.5h13.22L46.19 4.5H32.97ZM22.19 40.5l12.84-33h6.78l-12.84 33Z"
+      />
+    </svg>
+  );
+}
+
 export function ResetIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" {...stroke} strokeWidth={2.2} aria-hidden="true">

@@ -320,6 +320,7 @@ export const EMAIL_PARTS = ['jonny.d.haynes', 'gmail', 'com'] as const;
 export const CV_URL = '/jonnyhaynes-cv.pdf';
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/jonnyhaynes/';
 export const GITHUB_URL = 'https://github.com/jonnyhaynes';
+export const DEV_NULL_URL = 'https://dev-null.sh/@jonnyhaynes';
 
 export const ROLE_WORDS = {
   first: ['Full-Stack', 'Front-End', 'Software', 'AI'],
