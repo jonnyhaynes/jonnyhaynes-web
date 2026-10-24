@@ -61,24 +61,6 @@
   white-space: nowrap;
 }
 
-.desk .skip {
-  position: absolute;
-  left: 12px;
-  top: -60px;
-  z-index: 4000000;
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: var(--blue);
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.desk .skip:focus {
-  top: 12px;
-  color: #fff;
-}
-
 .desk .duo-defs {
   position: absolute;
 }

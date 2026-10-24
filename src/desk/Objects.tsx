@@ -74,7 +74,6 @@ export function WorkObject({
     <ObjectShell id="work" cls="o-work" drag={drag} liveId={liveId}>
       <button
         type="button"
-        id="things"
         className="obj"
         aria-haspopup="dialog"
         aria-label={`Selected work — ${PROJECTS.length} projects`}
