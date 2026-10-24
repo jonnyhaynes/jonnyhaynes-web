@@ -16,6 +16,7 @@ import {
 } from './bits';
 import {
   CV_URL,
+  DEV_NULL_URL,
   EMAIL_PARTS,
   GITHUB_URL,
   LINKEDIN_URL,
@@ -285,6 +286,7 @@ export function Desk() {
             cvUrl={CV_URL}
             linkedinUrl={LINKEDIN_URL}
             githubUrl={GITHUB_URL}
+            devNullUrl={DEV_NULL_URL}
           />
         </div>
       </main>

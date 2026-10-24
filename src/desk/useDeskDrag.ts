@@ -13,7 +13,7 @@ export type DragPos = { x: number; y: number; s: number; r: number };
 
 const ZERO: DragPos = { x: 0, y: 0, s: 1, r: 0 };
 
-/** Every draggable thing on the desk, so stacking and jitter stay in one place. */
+/** The things that land in a slightly different spot on each visit. */
 const IDS = [
   'work',
   'deck',

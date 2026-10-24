@@ -13,6 +13,7 @@ import type { SpotifyAudiobook } from '../data/spotify';
 import type { DeskDrag } from './useDeskDrag';
 import {
   CursorLabel,
+  DevNullIcon,
   DownloadIcon,
   GitHubIcon,
   LinkedInIcon,
@@ -463,11 +464,13 @@ export function AppIcons({
   cvUrl,
   linkedinUrl,
   githubUrl,
+  devNullUrl,
 }: ObjectProps & {
   mailto: string;
   cvUrl: string;
   linkedinUrl: string;
   githubUrl: string;
+  devNullUrl: string;
 }) {
   const external = (href: string) => drag.guarded(() => window.open(href, '_blank', 'noopener,noreferrer'));
   const email = drag.guarded(() => {
@@ -547,6 +550,21 @@ export function AppIcons({
         >
           <span className="ico ico-github">
             <GitHubIcon />
+          </span>
+        </button>
+      </ObjectShell>
+
+      <ObjectShell id="devnull" cls="o-devnull" drag={drag} liveId={liveId}>
+        <button
+          type="button"
+          className="app"
+          aria-label="Jonny on dev/null (opens in a new tab)"
+          aria-describedby="drag-hint"
+          onClick={external(devNullUrl)}
+          onKeyDown={drag.key('devnull')}
+        >
+          <span className="ico ico-devnull">
+            <DevNullIcon />
           </span>
         </button>
       </ObjectShell>
