@@ -138,10 +138,6 @@ export function Desk() {
       className={`desk${dark ? ' dark' : ''}${motion ? '' : ' still'}`}
       style={vars({ '--yellow': '#FFD43B' })}
     >
-      <a className="skip" href="#things">
-        Skip to my stuff
-      </a>
-
       <DuotoneFilter />
 
       <main

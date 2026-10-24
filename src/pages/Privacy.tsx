@@ -21,10 +21,6 @@ export function Privacy() {
 
   return (
     <div className={`desk privacy${dark ? ' dark' : ''}`}>
-      <a className="skip" href="#main">
-        Skip to content
-      </a>
-
       <header className="privacy-bar">
         <Link to="/" className="privacy-back">
           <span aria-hidden="true">←</span> Back to the desk
@@ -40,7 +36,7 @@ export function Privacy() {
         </button>
       </header>
 
-      <main id="main" className="privacy-main" tabIndex={-1}>
+      <main className="privacy-main">
         <div className="privacy-hero">
           <p className="privacy-kicker mono">THE SMALL PRINT</p>
 
