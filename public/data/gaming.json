@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-23T15:46:01.054Z",
+  "fetchedAt": "2026-10-25T13:37:15.732Z",
   "sources": {
     "steam": {
       "status": "ok",
@@ -7,10 +7,45 @@
     },
     "xbox": {
       "status": "ok",
-      "count": 13
+      "count": 18
     }
   },
   "games": [
+    {
+      "title": "Forza Horizon 5",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.28758.13734397844529069.202e3fc9-37d6-4853-a58b-fabe504b71e8.4335e940-f927-4be4-af08-8e689a17bd7a",
+      "lastPlayed": "2026-10-25T13:14:33.32709Z",
+      "url": null
+    },
+    {
+      "title": "No Man's Sky",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.7092.68818099466568894.c45f3219-f40b-416f-b0ee-34cb9652410f.ca4d1687-ccff-4a3c-82c7-967fe95ba8f5",
+      "lastPlayed": "2026-10-25T07:31:57.1691831Z",
+      "url": null
+    },
+    {
+      "title": "Human Fall Flat",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.46523.69811231537758929.fc90ef4a-ab04-4596-8db8-fa6120f06b6b.880ed630-208c-467c-8dba-fbd8efc622c5",
+      "lastPlayed": "2026-10-25T07:17:01.1839966Z",
+      "url": null
+    },
+    {
+      "title": "SUPERHOT: MIND CONTROL DELETE",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.3858.14383048766618347.734b0c9a-e030-4976-bf99-73f141752531.08f6c65c-abce-4c54-bd0e-ef73b94e8b17",
+      "lastPlayed": "2026-10-24T17:56:33.8870626Z",
+      "url": null
+    },
+    {
+      "title": "Hollow Knight: Silksong",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.40391.13915115277924383.ab2daab8-cb71-4e1a-ad73-9e4a3e87c3f3.960a3fa2-5987-49b8-9d15-602af0a1ff93",
+      "lastPlayed": "2026-10-24T17:43:49.804031Z",
+      "url": null
+    },
     {
       "title": "Tony Hawk's™ Pro Skater™ 3 + 4",
       "platform": "xbox",
@@ -23,41 +58,6 @@
       "platform": "xbox",
       "coverUrl": "https://store-images.s-microsoft.com/image/apps.28544.14299110548313627.7e916051-145b-467d-9222-536b54bd914d.f1180687-efea-4c4b-bd1b-a2c042e91091",
       "lastPlayed": "2026-09-04T11:28:12.2305719Z",
-      "url": null
-    },
-    {
-      "title": "The Alters",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.13356.13917104365848520.341eb5c3-f24f-4ac7-9edc-635f72e40d99.9eb8a5bb-b187-406c-a3e3-25087c535afd",
-      "lastPlayed": "2026-07-27T12:54:18.5013196Z",
-      "url": null
-    },
-    {
-      "title": "Clair Obscur: Expedition 33",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.13628.14322280443288156.27788484-2760-47f7-be0d-dd693682e016.04a10e3c-848f-424d-a431-2846f34b1a6b",
-      "lastPlayed": "2026-07-17T15:26:51.496949Z",
-      "url": null
-    },
-    {
-      "title": "Call of Duty®: Modern Warfare® III",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.33315.14294905624066082.f3b1b1de-21ce-4c60-ac69-bb414fe67291.d2614660-e506-466f-9f1e-6beb5c08d840",
-      "lastPlayed": "2026-06-10T12:39:16.3299071Z",
-      "url": null
-    },
-    {
-      "title": "Hollow Knight: Voidheart Edition",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.60451.13847644057609868.8865d2a2-5e11-4424-85ce-1db30a161bd9.afb33e4e-ebe8-4f60-a3e0-a61a855c1ced",
-      "lastPlayed": "2026-04-16T07:41:04.2699176Z",
-      "url": null
-    },
-    {
-      "title": "Grounded",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.43675.14280109286674604.0f240f37-6e7f-43b4-bd81-aabc884bc103.0aabbba3-e5f5-4665-9eac-7a9c36f80430",
-      "lastPlayed": "2026-04-16T07:25:07.0391816Z",
       "url": null
     }
   ]
