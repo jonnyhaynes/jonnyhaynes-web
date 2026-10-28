@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-25T13:37:15.732Z",
+  "fetchedAt": "2026-10-28T15:48:34.342Z",
   "sources": {
     "steam": {
       "status": "ok",
@@ -7,7 +7,7 @@
     },
     "xbox": {
       "status": "ok",
-      "count": 18
+      "count": 21
     }
   },
   "games": [
@@ -15,7 +15,28 @@
       "title": "Forza Horizon 5",
       "platform": "xbox",
       "coverUrl": "https://store-images.s-microsoft.com/image/apps.28758.13734397844529069.202e3fc9-37d6-4853-a58b-fabe504b71e8.4335e940-f927-4be4-af08-8e689a17bd7a",
-      "lastPlayed": "2026-10-25T13:14:33.32709Z",
+      "lastPlayed": "2026-10-26T15:56:06.1932064Z",
+      "url": null
+    },
+    {
+      "title": "Forza Motorsport",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.31966.14520062614241202.dce7e4da-1fb9-4f81-b347-74af80631e33.5fc9c294-ff75-4e5c-8566-73c49bbaebd3",
+      "lastPlayed": "2026-10-25T19:50:36.7638524Z",
+      "url": null
+    },
+    {
+      "title": "Call of Duty®",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.16540.13966330883349940.4dd14557-7da0-410c-be6f-a8a48bf42283.024ce1ae-5177-4554-b058-86ab8f466a5d",
+      "lastPlayed": "2026-10-25T17:36:13.2813356Z",
+      "url": null
+    },
+    {
+      "title": "Minecraft Dungeons for Windows",
+      "platform": "xbox",
+      "coverUrl": "https://store-images.s-microsoft.com/image/apps.45275.14089602043039621.efe46bfe-4de2-4879-a22b-f3b08650221c.11115897-ede5-444b-b624-6b01c23fcdf1",
+      "lastPlayed": "2026-10-25T15:49:18.0551951Z",
       "url": null
     },
     {
@@ -37,27 +58,6 @@
       "platform": "xbox",
       "coverUrl": "https://store-images.s-microsoft.com/image/apps.3858.14383048766618347.734b0c9a-e030-4976-bf99-73f141752531.08f6c65c-abce-4c54-bd0e-ef73b94e8b17",
       "lastPlayed": "2026-10-24T17:56:33.8870626Z",
-      "url": null
-    },
-    {
-      "title": "Hollow Knight: Silksong",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.40391.13915115277924383.ab2daab8-cb71-4e1a-ad73-9e4a3e87c3f3.960a3fa2-5987-49b8-9d15-602af0a1ff93",
-      "lastPlayed": "2026-10-24T17:43:49.804031Z",
-      "url": null
-    },
-    {
-      "title": "Tony Hawk's™ Pro Skater™ 3 + 4",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.7791.13968131629601189.02100553-7fb7-4f1a-b080-6b3ac33c153c.1164e424-06a5-4cbd-a501-43f0aedc4f1a",
-      "lastPlayed": "2026-10-23T10:36:11.0606305Z",
-      "url": null
-    },
-    {
-      "title": "Farming Simulator 25 (PC)",
-      "platform": "xbox",
-      "coverUrl": "https://store-images.s-microsoft.com/image/apps.28544.14299110548313627.7e916051-145b-467d-9222-536b54bd914d.f1180687-efea-4c4b-bd1b-a2c042e91091",
-      "lastPlayed": "2026-09-04T11:28:12.2305719Z",
       "url": null
     }
   ]
