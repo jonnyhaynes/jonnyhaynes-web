@@ -1,0 +1,133 @@
+/*
+ * Not found. The page shell — grid paper, bar, kicker, selected title, card,
+ * footer — comes from privacy.css, which is why the root is `.desk privacy`
+ * too. This file only adds the 404's own bits: the empty "missing object"
+ * frame and the quick links.
+ */
+
+/* ── The object that isn't there ─────────────────────────────────────────── */
+
+.nf-ghost {
+  --nf-line: #c3cde0;
+  position: absolute;
+  top: 6px;
+  right: 0;
+  width: 196px;
+  height: 132px;
+  border: 1px dashed var(--nf-line);
+  background-image:
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.5px),
+      var(--nf-line) calc(50% - 0.5px),
+      var(--nf-line) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--nf-line) calc(50% - 0.5px),
+      var(--nf-line) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+}
+
+.desk.dark .nf-ghost {
+  --nf-line: rgba(150, 170, 255, 0.28);
+}
+
+.nf-ghost span {
+  position: absolute;
+  color: var(--muted);
+  font: 700 9px 'JetBrains Mono', monospace;
+  letter-spacing: 0.14em;
+}
+
+.nf-ghost span:first-child {
+  top: 9px;
+  left: 11px;
+}
+
+.nf-ghost-size {
+  right: 11px;
+  bottom: 8px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Ways back: the card is three whole-row links ────────────────────────── */
+
+.nf-row {
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: start;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.nf-row:hover {
+  background: var(--tint);
+}
+
+.desk.dark .nf-row:hover {
+  background: rgba(124, 149, 255, 0.08);
+}
+
+.nf-row:hover h2 {
+  color: var(--blue);
+}
+
+.desk.dark .nf-row:hover h2 {
+  color: #8fa6ff;
+}
+
+.nf-row:focus-visible {
+  outline-offset: -3px;
+}
+
+.nf-body {
+  min-width: 0;
+}
+
+.nf-arrow {
+  padding-top: 2px;
+  color: var(--blue);
+  font: 700 18px 'Inter Tight', sans-serif;
+  transition: transform 0.2s ease;
+}
+
+.desk.dark .nf-arrow {
+  color: #8fa6ff;
+}
+
+.nf-row:hover .nf-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 900px) {
+  .nf-ghost {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .nf-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 10px;
+  }
+
+  .nf-row .privacy-no {
+    grid-column: 1 / -1;
+  }
+
+  .nf-body {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .nf-arrow {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    padding-top: 0;
+  }
+}
