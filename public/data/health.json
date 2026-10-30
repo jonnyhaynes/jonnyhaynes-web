@@ -1,44 +1,40 @@
 {
-  "fetchedAt": "2026-10-29T23:42:26.088Z",
-  "date": "2026-10-29",
-  "steps": 2583,
+  "fetchedAt": "2026-10-30T03:34:22.788Z",
+  "date": "2026-10-30",
+  "steps": null,
   "activeMinutes": 0,
-  "restingHeartRate": 59,
-  "calories": 2127,
+  "restingHeartRate": 54,
+  "calories": 187,
   "history": {
     "steps": [
-      {
-        "date": "2026-10-27",
-        "value": 22397
-      },
       {
         "date": "2026-10-28",
         "value": 6372
       },
       {
         "date": "2026-10-29",
-        "value": 2583
+        "value": 2705
+      },
+      {
+        "date": "2026-10-30",
+        "value": null
       }
     ],
     "calories": [
-      {
-        "date": "2026-10-27",
-        "value": 3240
-      },
       {
         "date": "2026-10-28",
         "value": 2538
       },
       {
         "date": "2026-10-29",
-        "value": 2127
+        "value": 2333
+      },
+      {
+        "date": "2026-10-30",
+        "value": 187
       }
     ],
     "restingHeartRate": [
-      {
-        "date": "2026-10-27",
-        "value": 57
-      },
       {
         "date": "2026-10-28",
         "value": 53
@@ -46,19 +42,17 @@
       {
         "date": "2026-10-29",
         "value": 59
+      },
+      {
+        "date": "2026-10-30",
+        "value": 54
       }
     ]
   },
   "weather": {
-    "tempC": 12,
-    "code": 3,
+    "tempC": 10,
+    "code": 0,
     "forecast": [
-      {
-        "date": "2026-10-29",
-        "hiC": 15,
-        "loC": 9,
-        "code": 3
-      },
       {
         "date": "2026-10-30",
         "hiC": 14,
@@ -69,13 +63,19 @@
         "date": "2026-10-31",
         "hiC": 14,
         "loC": 8,
-        "code": 45
+        "code": 3
+      },
+      {
+        "date": "2026-11-01",
+        "hiC": 12,
+        "loC": 5,
+        "code": 51
       }
     ]
   },
   "sun": {
-    "sunrise": "06:58",
-    "sunset": "16:38",
-    "sunriseTomorrow": "07:00"
+    "sunrise": "07:00",
+    "sunset": "16:37",
+    "sunriseTomorrow": "07:02"
   }
 }
